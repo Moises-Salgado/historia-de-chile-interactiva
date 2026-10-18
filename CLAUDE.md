@@ -3,7 +3,7 @@
 Sitio estático: Vite (solo empaquetador) + HTML + CSS + JS con ES modules. Sin frameworks ni librerías de UI o de líneas de tiempo. Interfaz en español de Chile.
 Estructura: `src/` (main.js con router `#evento/<id>`, timeline.js, detalle.js, filtros.js, datos.js, fechas.js, util.js, styles.css, sw.js = plantilla del Service Worker que completa `vite.config.js` al construir) · `data/` (periodos.json, temas.json, `NN-*.json`) · `public/placeholders/` · `scripts/` · `docs/` · `.github/workflows/pages.yml`.
 Esquema de datos: `data/README.md`. Comandos: `npm run dev` · `npm run build` · `npm run preview` · `npm test` (valida datos) · `npm run verificar-imagenes` · `npm run docs` (regenera docs/FUENTES.md y las listas de REVISION_PENDIENTE).
-Estado: fases 0-5 completas. Al cambiar datos: editar el JSON → `npm test` → `npm run verificar-imagenes` → `npm run docs`.
+Estado: fases 0-5 completas; mejoras visuales por olas en `docs/PLAN_MEJORAS.md` (Ola 1 hecha), con agentes en `.claude/agents/`. Al cambiar datos: editar el JSON → `npm test` → `npm run verificar-imagenes` → `npm run docs`.
 
 ## Trabajo por fases (0-5) y tokens
 - Plan ≤ 8 líneas al iniciar una fase; resumen ≤ 5 líneas al cerrarla; commit corto (`fase N: ...`); esperar "continúa".

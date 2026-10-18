@@ -24,47 +24,59 @@ function listaFuentes(urls) {
     .join('');
 }
 
-const vecino = (ev, lado) =>
+const vecino = (ev, lado, colorDe) =>
   ev
-    ? `<a class="vecino ${lado}" href="#evento/${ev.id}">
-        <span class="vecino-rotulo">${lado === 'antes' ? '<span aria-hidden="true">◀</span> ¿Qué pasó antes?' : '¿Qué pasó después? <span aria-hidden="true">▶</span>'}</span>
-        <span class="vecino-fecha">${esc(ev.fechaTexto)}</span>
-        <span class="vecino-titulo">${esc(ev.titulo)}</span>
+    ? `<a class="vecino ${lado}" href="#evento/${ev.id}" style="--color:${colorDe(ev)}">
+        <img class="vecino-img" src="${urlImagen(ev.imagen.archivo, 120)}" srcset="${urlImagen(ev.imagen.archivo, 120)} 120w, ${urlImagen(ev.imagen.archivo, 250)} 250w"
+          sizes="4.5rem" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}">
+        <span class="vecino-texto">
+          <span class="vecino-rotulo">${lado === 'antes' ? '<span aria-hidden="true">◀</span> ¿Qué pasó antes?' : '¿Qué pasó después? <span aria-hidden="true">▶</span>'}</span>
+          <span class="vecino-fecha">${esc(ev.fechaTexto)}</span>
+          <span class="vecino-titulo">${esc(ev.titulo)}</span>
+        </span>
       </a>`
     : `<p class="vecino vacio">${lado === 'antes' ? 'Este es el primer evento.' : 'Este es el último evento.'}</p>`;
 
-/** Crea el panel en `raiz`. alVolver() cierra el detalle; alBuscar(nombre) busca otros eventos de un personaje. */
-export function crearDetalle(raiz, { periodos, temas, alVolver, alBuscar }) {
+/** Crea el panel en `raiz` («Volver» está en la barra inferior). alBuscar(nombre) busca los eventos de un personaje. */
+export function crearDetalle(raiz, { periodos, temas, alBuscar }) {
   const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   const temaDe = new Map(temas.map((t) => [t.id, t.nombre]));
+  const colorDe = (ev) => periodoDe.get(ev.periodoId).color;
   let actual = null;
   let vecinos = { antes: null, despues: null };
   let nivel = 'general';
 
   raiz.addEventListener('click', (e) => {
-    const boton = e.target.closest('button[data-accion]');
-    if (boton?.dataset.accion === 'volver') alVolver();
-    else if (boton?.dataset.accion === 'buscar') alBuscar(boton.dataset.nombre);
+    const boton = e.target.closest('button[data-accion="buscar"]');
+    if (boton) alBuscar(boton.dataset.nombre);
   });
 
   const cuerpo = () => PARRAFOS[nivel](actual).map((p) => `<p>${esc(p)}</p>`).join('');
 
-  function mostrar(ev, { antes, despues, nivel: nivelLectura, enfocar = true }) {
+  function mostrar(ev, { antes, despues, nivel: nivelLectura, regla = '', enfocar = true }) {
     actual = ev;
     vecinos = { antes, despues };
     nivel = nivelLectura;
     const p = periodoDe.get(ev.periodoId);
     const img = ev.imagen;
     const licencia = urlLicencia(img.licencia) ? externo(urlLicencia(img.licencia), esc(img.licencia)) : esc(img.licencia);
-    const volver = '<button type="button" class="boton" data-accion="volver"><span aria-hidden="true">◀</span> Volver a la línea de tiempo</button>';
 
+    // Orden de lectura: fecha y título primero (en celular, antes que la imagen); en pantallas anchas
+    // la imagen va a la izquierda con la grilla.
     raiz.style.setProperty('--color', p.color);
     raiz.innerHTML = `
-      <div class="detalle-barra">${volver}</div>
       <div class="detalle-contenido">
+        <header class="detalle-encabezado">
+          <p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time> · ${esc(ev.lugar)}</p>
+          <h2 id="detalle-titulo" tabindex="-1">${esc(ev.titulo)}</h2>
+          <p class="etiquetas"><span class="etiqueta periodo">${esc(p.nombre)}</span>${ev.temas
+            .map((t) => `<span class="etiqueta">${esc(temaDe.get(t))}</span>`)
+            .join('')}</p>
+          ${regla}
+        </header>
         <figure class="detalle-figura">
           <div class="detalle-marco">
-            <img src="${urlImagen(img.archivo, 800)}" alt="${esc(img.pieDeFoto)}" loading="lazy" decoding="async" data-periodo="${ev.periodoId}">
+            <img src="${urlImagen(img.archivo, 800)}" alt="${esc(img.pieDeFoto)}" fetchpriority="high" decoding="async" data-periodo="${ev.periodoId}">
           </div>
           <figcaption>
             <span class="pie">${esc(img.pieDeFoto)}</span>
@@ -72,11 +84,6 @@ export function crearDetalle(raiz, { periodos, temas, alVolver, alBuscar }) {
           </figcaption>
         </figure>
         <div class="detalle-texto">
-          <p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time> · ${esc(ev.lugar)}</p>
-          <h2 id="detalle-titulo" tabindex="-1">${esc(ev.titulo)}</h2>
-          <p class="etiquetas"><span class="etiqueta periodo">${esc(p.nombre)}</span>${ev.temas
-            .map((t) => `<span class="etiqueta">${esc(temaDe.get(t))}</span>`)
-            .join('')}</p>
           <div class="detalle-cuerpo" data-nivel="${nivel}">${cuerpo()}</div>
           ${
             ev.personajes.length
@@ -89,16 +96,15 @@ export function crearDetalle(raiz, { periodos, temas, alVolver, alBuscar }) {
                 </section>`
               : ''
           }
-          <nav class="vecinos" aria-label="Eventos anterior y siguiente">${vecino(antes, 'antes')}${vecino(despues, 'despues')}</nav>
-          <details class="plegable">
-            <summary>Sobre el período: ${esc(p.nombre)} (${esc(p.fechasTexto)})</summary>
+          <nav class="vecinos" aria-label="Eventos anterior y siguiente">${vecino(antes, 'antes', colorDe)}${vecino(despues, 'despues', colorDe)}</nav>
+          <section class="sobre-periodo" aria-labelledby="sobre-periodo-titulo">
+            <h3 id="sobre-periodo-titulo">Sobre el período: ${esc(p.nombre)} <span class="sobre-periodo-fechas">(${esc(p.fechasTexto)})</span></h3>
             <p>${esc(p.descripcion)}</p>
-          </details>
+          </section>
           <details class="plegable">
             <summary>Fuentes (${ev.fuentes.length})</summary>
             <ul class="fuentes">${listaFuentes(ev.fuentes)}</ul>
           </details>
-          <p class="detalle-pie">${volver}</p>
         </div>
       </div>`;
     raiz.hidden = false;

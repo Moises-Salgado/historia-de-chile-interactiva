@@ -1,14 +1,13 @@
-// Panel «Buscar y filtrar»: búsqueda por título, personaje o año (sin importar tildes) y filtros por
-// período y tema. La línea de tiempo muestra solo los eventos que cumplen todo.
-import { esc, normalizar } from './util.js';
+// Panel «Buscar y filtrar»: búsqueda por título, personaje, lugar o año (sin importar tildes) y filtros
+// por período y tema. La línea de tiempo muestra solo los eventos que cumplen todo.
+// La búsqueda va por niveles: primero las palabras completas («Prat» → Arturo Prat) y aparte las que solo
+// empiezan igual («Prat» → Carlos Prats), con el motivo a la vista. Si hay coincidencias completas, las
+// parciales no filtran la línea de tiempo.
+import { esc, normalizar, urlImagen } from './util.js';
 
 const MAX_RESULTADOS = 30;
 
-const palabras = (texto) =>
-  normalizar(texto)
-    .replace(/[^\p{L}\p{N}'.\s-]/gu, ' ')
-    .split(/\s+/)
-    .filter(Boolean);
+const palabras = (texto) => normalizar(texto).split(/[^\p{L}\p{N}]+/u).filter(Boolean);
 
 /**
  * Crea el panel en `panel`; `boton` lo abre y lo cierra. alCambiar() avisa que cambió el filtro,
@@ -16,16 +15,27 @@ const palabras = (texto) =>
  */
 export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar, alElegir, alAbrirOCerrar }) {
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
-  const nombrePeriodo = new Map(periodos.map((p) => [p.id, p.nombre]));
+  const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   const nombreTema = new Map(temas.map((t) => [t.id, t.nombre]));
-  const textoDe = new Map(
+  // Campos donde se busca, en orden de preferencia para explicar una coincidencia (el título no se explica).
+  const camposDe = new Map(
     eventos.map((ev) => [
       ev,
-      normalizar([ev.titulo, ev.fechaTexto, ev.lugar, ...ev.personajes, nombrePeriodo.get(ev.periodoId), ...ev.temas.map((t) => nombreTema.get(t))].join(' · ')),
+      [
+        { tipo: '', texto: ev.titulo },
+        ...ev.personajes.map((texto) => ({ tipo: 'Personaje', texto })),
+        { tipo: 'Lugar', texto: ev.lugar },
+        { tipo: '', texto: ev.fechaTexto },
+        { tipo: 'Período', texto: periodoDe.get(ev.periodoId).nombre },
+        ...ev.temas.map((t) => ({ tipo: 'Tema', texto: nombreTema.get(t) })),
+      ].map((campo) => ({ ...campo, palabras: palabras(campo.texto) })),
     ]),
   );
-  const elegidos = { periodo: new Set(nombrePeriodo.keys()), tema: new Set(nombreTema.keys()) };
+  const elegidos = { periodo: new Set(periodoDe.keys()), tema: new Set(nombreTema.keys()) };
   let terminos = [];
+  let personaje = null; // nombre exacto (normalizado) al llegar desde el botón de un personaje
+  let encontrados = []; // [{ ev, parcial, motivo }] según la búsqueda actual
+  let aceptados = null; // eventos que la búsqueda deja en la línea de tiempo (null = sin búsqueda)
 
   const opcion = (grupo, { id, nombre, color, fechasTexto }) => `
     <label class="opcion">
@@ -40,10 +50,10 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
         <h2 id="panel-titulo">Buscar y filtrar</h2>
         <button type="button" class="boton" data-accion="cerrar">Cerrar</button>
       </div>
-      <label class="rotulo" for="buscar">Buscar por título, personaje o año</label>
+      <label class="rotulo" for="buscar">Buscar por título, personaje, lugar o año</label>
       <input id="buscar" class="campo" type="search" autocomplete="off" spellcheck="false" placeholder="Ej.: Prat, 1879, terremoto">
       <p class="resultados-cuenta" role="status"></p>
-      <ol class="resultados"></ol>
+      <div class="resultados"></div>
       <fieldset class="opciones"><legend>Períodos</legend>${periodos.map((p) => opcion('periodo', p)).join('')}</fieldset>
       <fieldset class="opciones"><legend>Temas</legend>${temas.map((t) => opcion('tema', t)).join('')}</fieldset>
       <div class="panel-acciones">
@@ -55,40 +65,84 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
   const cuenta = panel.querySelector('.resultados-cuenta');
   const resultados = panel.querySelector('.resultados');
 
+  const pasaFiltros = (ev) => elegidos.periodo.has(ev.periodoId) && ev.temas.some((t) => elegidos.tema.has(t));
+
+  // Mejor coincidencia de un término en un evento: completa (0), parcial (1) o ninguna (null).
   // Un año (3 o 4 cifras) también encuentra los procesos que lo abarcan: «1900» → auge del salitre.
-  function coincide(ev) {
-    if (!elegidos.periodo.has(ev.periodoId) || !ev.temas.some((t) => elegidos.tema.has(t))) return false;
-    const texto = textoDe.get(ev);
-    return terminos.every((t) => texto.includes(t) || (/^\d{3,4}$/.test(t) && ev.anio <= Number(t) && Number(t) <= ev.anioFin));
+  function comparar(ev, termino) {
+    const anio = /^\d{3,4}$/.test(termino) ? Number(termino) : null;
+    if (anio !== null && ev.anio <= anio && anio <= ev.anioFin) return { nivel: 0, campo: null };
+    let parcial = null;
+    for (const c of camposDe.get(ev)) {
+      if (c.palabras.includes(termino)) return { nivel: 0, campo: c };
+      if (!parcial && c.palabras.some((p) => p.startsWith(termino))) parcial = { nivel: 1, campo: c };
+    }
+    return parcial;
   }
 
-  const activo = () => terminos.length > 0 || elegidos.periodo.size < periodos.length || elegidos.tema.size < temas.length;
+  function buscarEventos() {
+    if (personaje) {
+      return eventos.filter((ev) => pasaFiltros(ev) && ev.personajes.some((n) => normalizar(n) === personaje)).map((ev) => ({ ev, parcial: false, motivo: null }));
+    }
+    const lista = [];
+    for (const ev of eventos) {
+      if (!pasaFiltros(ev)) continue;
+      const coincidencias = terminos.map((t) => comparar(ev, t));
+      if (coincidencias.some((c) => !c)) continue;
+      const parcial = coincidencias.some((c) => c.nivel === 1);
+      // Se explica la coincidencia que no está en el título (la parcial, si hay).
+      const explicar = (c) => c.campo?.tipo;
+      const motivo = (coincidencias.find((c) => c.nivel === 1 && explicar(c)) ?? coincidencias.find(explicar))?.campo ?? null;
+      lista.push({ ev, parcial, motivo });
+    }
+    return lista;
+  }
+
+  const coincide = (ev) => pasaFiltros(ev) && (!aceptados || aceptados.has(ev));
+  const hayBusqueda = () => terminos.length > 0 || personaje !== null;
+  const activo = () => hayBusqueda() || elegidos.periodo.size < periodos.length || elegidos.tema.size < temas.length;
+
+  const resultado = ({ ev, motivo }) => {
+    const p = periodoDe.get(ev.periodoId);
+    return `<li><button type="button" class="resultado" data-id="${ev.id}" style="--color:${p.color}">
+      <img class="resultado-img" src="${urlImagen(ev.imagen.archivo, 120)}" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}">
+      <span class="resultado-texto">
+        <span class="resultado-meta"><span class="resultado-periodo">${esc(p.nombre)}</span> · ${esc(ev.fechaTexto)}</span>
+        <span class="resultado-titulo">${esc(ev.titulo)}</span>
+        ${motivo ? `<span class="resultado-motivo">Coincide con ${esc(motivo.tipo.toLowerCase())}: ${esc(motivo.texto)}</span>` : ''}
+      </span></button></li>`;
+  };
+
+  const grupo = (titulo, lista) =>
+    lista.length ? `${titulo ? `<h3 class="resultados-grupo">${titulo}</h3>` : ''}<ol class="resultados-lista">${lista.map(resultado).join('')}</ol>` : '';
 
   function actualizar() {
+    encontrados = hayBusqueda() ? buscarEventos() : [];
+    const completos = encontrados.filter((r) => !r.parcial);
+    const parciales = encontrados.filter((r) => r.parcial);
+    aceptados = hayBusqueda() ? new Set((completos.length ? completos : parciales).map((r) => r.ev)) : null;
     alCambiar();
-    if (!terminos.length) {
+    if (!hayBusqueda()) {
       cuenta.textContent = '';
       resultados.replaceChildren();
       return;
     }
-    const encontrados = eventos.filter(coincide);
     const n = encontrados.length;
     cuenta.textContent = !n
       ? 'Sin resultados. Prueba con otra palabra o con un año.'
       : `${n} ${n === 1 ? 'resultado' : 'resultados'}${n > MAX_RESULTADOS ? ` (se muestran los primeros ${MAX_RESULTADOS})` : ''}.`;
-    resultados.innerHTML = encontrados
-      .slice(0, MAX_RESULTADOS)
-      .map(
-        (ev) => `<li><button type="button" class="resultado" data-id="${ev.id}">
-          <span class="resultado-fecha">${esc(ev.fechaTexto)}</span><span class="resultado-titulo">${esc(ev.titulo)}</span></button></li>`,
-      )
-      .join('');
+    const mostrados = completos.slice(0, MAX_RESULTADOS);
+    const masParciales = parciales.slice(0, MAX_RESULTADOS - mostrados.length);
+    resultados.innerHTML =
+      grupo(completos.length && masParciales.length ? 'Coincidencias exactas' : '', mostrados) +
+      grupo(completos.length ? 'También empiezan así' : '', masParciales);
   }
 
   let espera;
   campo.addEventListener('input', () => {
     clearTimeout(espera);
     espera = setTimeout(() => {
+      personaje = null;
       terminos = palabras(campo.value);
       actualizar();
     }, 200);
@@ -128,6 +182,7 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
   function limpiar() {
     clearTimeout(espera);
     terminos = [];
+    personaje = null;
     campo.value = '';
     for (const casilla of panel.querySelectorAll('input[type="checkbox"]')) {
       casilla.checked = true;
@@ -136,11 +191,12 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
     actualizar();
   }
 
-  /** Busca un texto (por ejemplo, un personaje) y muestra los resultados en el panel. */
-  function buscar(texto) {
+  /** Muestra los eventos donde aparece un personaje (por su nombre exacto, no por parecido). */
+  function buscarPersonaje(nombre) {
     clearTimeout(espera);
-    campo.value = texto;
-    terminos = palabras(texto);
+    campo.value = nombre;
+    terminos = palabras(nombre);
+    personaje = normalizar(nombre);
     actualizar();
     abrir();
   }
@@ -150,7 +206,7 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
     activo,
     cerrar,
     limpiar,
-    buscar,
+    buscarPersonaje,
     get abierto() {
       return !panel.hidden;
     },

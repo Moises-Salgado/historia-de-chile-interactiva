@@ -69,8 +69,7 @@ const linea = crearLineaDeTiempo(seccionLinea, $('#minimapa'), {
 const detalle = crearDetalle(elDetalle, {
   periodos,
   temas,
-  alVolver: volver,
-  alBuscar: (nombre) => filtros.buscar(nombre),
+  alBuscar: (nombre) => filtros.buscarPersonaje(nombre),
 });
 const filtros = crearFiltros($('#panel-filtros'), {
   periodos,
@@ -131,7 +130,7 @@ function mostrarDetalle(ev, desdeBoton) {
   const lista = linea.visibles.includes(ev) ? linea.visibles : eventos;
   const i = lista.indexOf(ev);
   filtros.cerrar({ devolverFoco: false });
-  detalle.mostrar(ev, { antes: lista[i - 1] ?? null, despues: lista[i + 1] ?? null, nivel, enfocar: !desdeBoton });
+  detalle.mostrar(ev, { antes: lista[i - 1] ?? null, despues: lista[i + 1] ?? null, nivel, regla: linea.regla(ev), enfocar: !desdeBoton });
   document.body.dataset.vista = 'detalle';
   document.title = `${ev.titulo} · ${TITULO}`;
   actualizarInert();
