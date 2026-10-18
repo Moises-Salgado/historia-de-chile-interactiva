@@ -1,0 +1,347 @@
+[
+  {
+    "id": "1826-tratado-de-tantauco",
+    "titulo": "Incorporación de Chiloé: Tratado de Tantauco",
+    "fecha": "1826-01",
+    "fechaAproximada": false,
+    "fechaTexto": "enero de 1826",
+    "periodoId": "04",
+    "temas": ["politica", "guerra"],
+    "importancia": 2,
+    "lugar": "Chiloé",
+    "resumenNino": "Después de la independencia, las islas de Chiloé todavía eran gobernadas por España. En 1826 llegó un ejército chileno y, con un acuerdo llamado Tratado de Tantauco, Chiloé pasó a formar parte de Chile.",
+    "resumen": "Tras la independencia, el archipiélago de Chiloé siguió en manos españolas. En 1826, después de dos expediciones fallidas, el director supremo Ramón Freire encabezó una campaña que tomó los fuertes que protegían la bahía de Ancud. El gobernador español, Antonio de Quintanilla, firmó entonces el Tratado de Tantauco, por el cual el archipiélago se incorporó a Chile. Así terminó el dominio español en el territorio chileno.",
+    "detalle": "Cuando Chile declaró su independencia, en 1818, el archipiélago de Chiloé siguió bajo control realista, gobernado por Antonio de Quintanilla. Los primeros intentos chilenos por ocuparlo fracasaron.\n\nA comienzos de 1826, una expedición encabezada por el director supremo Ramón Freire desembarcó en Chiloé y tomó las fortificaciones que custodiaban la bahía de Ancud. Quintanilla aceptó entonces firmar el Tratado de Tantauco, por el cual el archipiélago se incorporó a Chile. Las fuentes no coinciden en el día exacto de la firma, ocurrida en enero de 1826. Con este tratado terminó el dominio español en Chiloé, el último territorio de Chile que seguía en manos de la Corona.",
+    "personajes": ["Ramón Freire", "Antonio de Quintanilla"],
+    "imagen": {
+      "archivo": "Antonio_de_Quintanilla.jpg",
+      "autor": "Prat",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Antonio_de_Quintanilla.jpg",
+      "pieDeFoto": "Retrato de Antonio de Quintanilla, de 1843."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-642.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92790.html"
+    ]
+  },
+  {
+    "id": "1830-batalla-de-lircay",
+    "titulo": "Batalla de Lircay",
+    "fecha": "1830-04-17",
+    "fechaAproximada": false,
+    "fechaTexto": "17 de abril de 1830",
+    "periodoId": "04",
+    "temas": ["guerra", "politica"],
+    "importancia": 2,
+    "lugar": "Talca",
+    "resumenNino": "En 1830, dos grupos de chilenos que pensaban distinto sobre cómo gobernar el país se enfrentaron en una batalla cerca de Talca. Ganaron los conservadores, que gobernaron Chile durante muchos años.",
+    "resumen": "La batalla de Lircay, librada cerca de Talca el 17 de abril de 1830, puso fin a la guerra civil iniciada a fines de 1829. El ejército conservador, dirigido por el general José Joaquín Prieto, derrotó por completo a las fuerzas liberales del general Ramón Freire. La victoria consolidó el gobierno provisional de José Tomás Ovalle, en el que Diego Portales tenía un papel central. Con ella comenzó un largo período de gobiernos conservadores.",
+    "detalle": "La guerra civil comenzó a fines de 1829, tras una disputa por la elección del vicepresidente de ese año. Los conservadores, llamados pelucones, se alzaron contra el gobierno liberal, cuyos partidarios eran conocidos como pipiolos. En abril de 1830 asumió en Santiago un gobierno provisional encabezado por José Tomás Ovalle, que nombró ministro a Diego Portales.\n\nEl 17 de abril de 1830, en el campo de Lircay, junto a Talca, el ejército de José Joaquín Prieto derrotó a las tropas de Ramón Freire, que quedaron prácticamente destruidas. Después de la batalla, el gobierno aplicó duras sanciones a los jefes y oficiales liberales, y Freire fue juzgado y desterrado.\n\nEl triunfo de Lircay dio paso a un orden político autoritario, que se plasmó en la Constitución de 1833. Hay distintas interpretaciones sobre este período: algunos historiadores destacan la estabilidad que trajo, mientras otros subrayan que nació del derrocamiento por las armas de un gobierno legalmente establecido.",
+    "personajes": ["José Joaquín Prieto", "Ramón Freire", "José Tomás Ovalle", "Diego Portales"],
+    "imagen": {
+      "archivo": "José_Joaquín_Prieto.jpg",
+      "autor": "Narcisse Edmond Joseph Desmadryl",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:José_Joaquín_Prieto.jpg",
+      "pieDeFoto": "Retrato de José Joaquín Prieto, presidente de Chile entre 1831 y 1841, por Narcisse Desmadryl (1854)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-94938.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92157.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92159.html"
+    ]
+  },
+  {
+    "id": "1832-plata-de-chanarcillo",
+    "titulo": "Descubrimiento de la plata de Chañarcillo",
+    "fecha": "1832-05",
+    "fechaAproximada": false,
+    "fechaTexto": "mayo de 1832",
+    "periodoId": "04",
+    "temas": ["economia"],
+    "importancia": 1,
+    "lugar": "Chañarcillo, Atacama",
+    "resumenNino": "Un buscador de minerales llamado Juan Godoy encontró plata en un cerro del desierto de Atacama. Miles de personas llegaron a trabajar en las minas y la ciudad de Copiapó creció mucho.",
+    "resumen": "En mayo de 1832, el cateador Juan Godoy descubrió un rico yacimiento de plata en Chañarcillo, unos 50 kilómetros al sur de Copiapó. La noticia atrajo a miles de personas, y algunos mineros y empresarios hicieron grandes fortunas. Copiapó se transformó en el centro comercial y de servicios de toda la zona minera. El hallazgo inició un largo auge de la minería de la plata en Chile.",
+    "detalle": "En mayo de 1832, Juan Godoy, un cateador o buscador de yacimientos, encontró un afloramiento de plata, es decir, mineral visible en la superficie, en el cerro de Chañarcillo, en la actual Región de Atacama. Las fuentes no coinciden en el día exacto: algunas indican el 16 de mayo y otras el 18.\n\nLa riqueza del mineral atrajo a miles de trabajadores y aventureros. Copiapó pasó a ser una importante plaza comercial y de servicios para toda la zona minera, y con capitales de la región se construyó el ferrocarril entre esa ciudad y el puerto de Caldera, inaugurado en 1851. El descubrimiento marcó el inicio de un auge de la minería de la plata que duró varias décadas.",
+    "personajes": ["Juan Godoy"],
+    "imagen": {
+      "archivo": "Estacion_de_Chañarcillo_1862_de_Rafael_Castro_y_Ordoñez.jpg",
+      "autor": "Rafael Castro y Ordoñez",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Estacion_de_Chañarcillo_1862_de_Rafael_Castro_y_Ordoñez.jpg",
+      "pieDeFoto": "Estación de ferrocarril de Chañarcillo, en Atacama, fotografiada por Rafael Castro y Ordóñez en 1862."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-727.html",
+      "https://www.museodeatacama.gob.cl/sites/www.museodeatacama.gob.cl/files/images/articles-88574_archivo_01.pdf"
+    ]
+  },
+  {
+    "id": "1833-constitucion",
+    "titulo": "Constitución de 1833",
+    "fecha": "1833-05-25",
+    "fechaAproximada": false,
+    "fechaTexto": "25 de mayo de 1833",
+    "periodoId": "04",
+    "temas": ["politica", "derechos"],
+    "importancia": 3,
+    "lugar": "Santiago",
+    "resumenNino": "En 1833 Chile aprobó una nueva Constitución, que es la ley más importante de un país. Daba mucho poder al presidente y estuvo vigente durante casi cien años.",
+    "resumen": "El 25 de mayo de 1833 se promulgó una nueva Constitución, que reemplazó a la de 1828. Fue preparada por una Gran Convención convocada durante el gobierno de José Joaquín Prieto, que tomó como base un proyecto de Mariano Egaña. Estableció un Poder Ejecutivo fuerte, la religión católica como oficial y un voto censitario, es decir, limitado a los hombres que cumplían requisitos de propiedad o renta. Con varias reformas, rigió hasta 1925.",
+    "detalle": "Tras la guerra civil de 1829-1830, el nuevo gobierno buscó reformar la Constitución de 1828. Para ello se reunió una Gran Convención, que trabajó sobre un proyecto de Mariano Egaña, modificado en parte por una comisión revisora y redactora. El texto fue promulgado y publicado el 25 de mayo de 1833.\n\nLa Constitución dio gran poder al Presidente de la República, que duraba cinco años en el cargo y podía ser reelegido para el período siguiente: así, José Joaquín Prieto, Manuel Bulnes y Manuel Montt gobernaron diez años cada uno. Declaró la religión católica como la del Estado, sin permitir el ejercicio público de otras, y estableció un voto censitario, reservado a los hombres que cumplían ciertos requisitos de propiedad o renta.\n\nCon el tiempo, varias reformas redujeron el predominio del Poder Ejecutivo. La Constitución de 1833 rigió hasta 1925 y es la que más tiempo ha estado vigente en Chile. Para algunos historiadores fue la base de la estabilidad política del siglo XIX; para otros, consolidó un orden autoritario y excluyente.",
+    "personajes": ["José Joaquín Prieto", "Mariano Egaña"],
+    "imagen": {
+      "archivo": "Manuscrito_original_de_la_Constitución_Política_de_la_República_de_Chile_de_1833._Archivo_Nacional_de_Chile.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Manuscrito_original_de_la_Constitución_Política_de_la_República_de_Chile_de_1833._Archivo_Nacional_de_Chile.jpg",
+      "pieDeFoto": "Manuscrito original de la Constitución de 1833, conservado en el Archivo Nacional de Chile."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3506.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-614187.html"
+    ]
+  },
+  {
+    "id": "1835-terremoto-de-concepcion",
+    "titulo": "Terremoto de Concepción, descrito por Charles Darwin",
+    "fecha": "1835-02-20",
+    "fechaAproximada": false,
+    "fechaTexto": "20 de febrero de 1835",
+    "periodoId": "04",
+    "temas": ["desastres", "ciencia"],
+    "importancia": 1,
+    "lugar": "Concepción",
+    "resumenNino": "Un terremoto muy fuerte destruyó las ciudades de Concepción y Talcahuano, y después llegó una gran ola desde el mar. El científico inglés Charles Darwin, que viajaba por Chile, vio las ruinas y escribió lo que observó.",
+    "resumen": "El 20 de febrero de 1835, un gran terremoto destruyó Concepción y dañó a muchas localidades cercanas. En el puerto de Talcahuano, una gran ola posterior al sismo inundó la ciudad. El naturalista inglés Charles Darwin, que recorría Chile en el viaje del HMS Beagle, sintió el temblor en Valdivia y luego recorrió las ruinas de Concepción. Tras el terremoto, la ciudad de Chillán fue trasladada a su ubicación actual.",
+    "detalle": "El naturalista Charles Darwin viajaba alrededor del mundo a bordo del HMS Beagle, una nave británica al mando del capitán Robert FitzRoy. El 20 de febrero de 1835 se encontraba en un bosque cerca de Valdivia cuando sintió un violento terremoto, con epicentro en la zona de Concepción.\n\nAl llegar después a Concepción, Darwin encontró la ciudad en ruinas. En Talcahuano, la ola que siguió al sismo había inundado la ciudad y dejado montones de escombros; el maremoto también afectó al archipiélago de Juan Fernández. Darwin escribió que la tierra, que solemos ver como un símbolo de solidez, se había movido bajo sus pies.\n\nDarwin y FitzRoy registraron que el terreno se había levantado hasta unos 2,7 metros en la isla Santa María y en otros puntos cercanos a la bahía de Concepción, observaciones que Darwin relacionó con la elevación de los continentes. El terremoto también llevó a trasladar Chillán desde el sector que hoy es Chillán Viejo a su ubicación actual.",
+    "personajes": ["Charles Darwin", "Robert FitzRoy"],
+    "imagen": {
+      "archivo": "Remains_of_the_Cathedral_of_Conception_-_1835.png",
+      "autor": "John Clements Wickham (dibujo) y S. Bull (grabado)",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Remains_of_the_Cathedral_of_Conception_-_1835.png",
+      "pieDeFoto": "Ruinas de la catedral de Concepción en 1835: grabado de S. Bull basado en un dibujo de John Clements Wickham."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-93307.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-93187.html",
+      "https://gsa.confex.com/gsa/2009AM/webprogram/Paper160971.html"
+    ]
+  },
+  {
+    "id": "1837-asesinato-de-diego-portales",
+    "titulo": "Asesinato de Diego Portales",
+    "fecha": "1837-06-06",
+    "fechaAproximada": false,
+    "fechaTexto": "6 de junio de 1837",
+    "periodoId": "04",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Quillota y Valparaíso",
+    "resumenNino": "Diego Portales fue un ministro muy influyente que ayudó a organizar el gobierno de Chile. En 1837 murió durante una rebelión de soldados que se oponían a ir a una guerra.",
+    "resumen": "Diego Portales fue ministro de los gobiernos de José Tomás Ovalle y José Joaquín Prieto, y una figura central del orden conservador. En 1837, mientras se preparaba la guerra contra la Confederación Perú-Boliviana, el coronel José Antonio Vidaurre encabezó un motín en Quillota y tomó prisionero a Portales el 3 de junio. Tres días después, el 6 de junio, Portales fue asesinado cerca de Valparaíso. En Chile muchos atribuyeron el crimen al mariscal Andrés de Santa Cruz, lo que aumentó el apoyo a la guerra.",
+    "detalle": "Diego Portales, comerciante de profesión, asumió en abril de 1830 como ministro del Interior, de Relaciones Exteriores y de Guerra y Marina. Desde esos cargos impulsó un gobierno fuerte y centralizado. Volvió a ser ministro en 1835 y fue uno de los principales impulsores de la guerra contra la Confederación Perú-Boliviana, que generó oposición dentro del país.\n\nEl 3 de junio de 1837, mientras pasaba revista a las tropas en Quillota, fue tomado prisionero por soldados sublevados bajo el mando del coronel José Antonio Vidaurre. Los amotinados avanzaron hacia Valparaíso, donde fueron derrotados por tropas del gobierno. El 6 de junio, en el cerro Barón, Portales fue fusilado por orden del oficial que lo custodiaba, el capitán Santiago Florín. Vidaurre y Florín fueron juzgados y condenados.\n\nSu figura ha recibido interpretaciones muy distintas. La imagen tradicional, construida después de su muerte, lo presenta como el organizador del Estado chileno; estudios más recientes revisan críticamente su papel y lo sitúan en el contexto de su época.",
+    "personajes": ["Diego Portales", "José Antonio Vidaurre", "José Joaquín Prieto"],
+    "imagen": {
+      "archivo": "Diego_Portales_-_Galeria_nacional.jpg",
+      "autor": "Narcisse Edmond Joseph Desmadryl",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Diego_Portales_-_Galeria_nacional.jpg",
+      "pieDeFoto": "Retrato de Diego Portales por Narcisse Desmadryl (1854)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3358.html",
+      "https://www.latercera.com/culto/2022/06/22/quien-asesino-a-diego-portales-libro-plantea-una-revision-a-la-muerte-del-ministro/"
+    ]
+  },
+  {
+    "id": "1839-batalla-de-yungay",
+    "titulo": "Guerra contra la Confederación Perú-Boliviana: batalla de Yungay",
+    "fecha": "1839-01-20",
+    "fechaAproximada": false,
+    "fechaTexto": "20 de enero de 1839",
+    "periodoId": "04",
+    "temas": ["guerra", "politica"],
+    "importancia": 2,
+    "lugar": "Yungay, Perú",
+    "resumenNino": "Chile tuvo una guerra contra la Confederación Perú-Boliviana, una unión de Perú y Bolivia. En 1839, un ejército de chilenos y peruanos contrarios a la Confederación ganó la batalla de Yungay, y poco después Perú y Bolivia volvieron a separarse.",
+    "resumen": "Desde fines de 1836, Chile estuvo en guerra contra la Confederación Perú-Boliviana, creada por el mariscal Andrés de Santa Cruz. Según las fuentes chilenas, las causas fueron la rivalidad comercial, una deuda impaga del Perú y el apoyo de Santa Cruz a una expedición de Ramón Freire contra el gobierno chileno. El 20 de enero de 1839, el Ejército Unido Restaurador, dirigido por el general Manuel Bulnes, derrotó a Santa Cruz cerca del pueblo peruano de Yungay. Ese mismo año, la Confederación se disolvió.",
+    "detalle": "En 1836, el mariscal Andrés de Santa Cruz unió Perú y Bolivia en la Confederación Perú-Boliviana. El gobierno chileno, en el que Diego Portales tenía un papel central, la consideró una amenaza. Según Memoria Chilena, influyeron la rivalidad comercial con el Perú, que amenazaba el predominio del puerto de Valparaíso, el no pago de un préstamo chileno al Perú y el apoyo de Santa Cruz a una expedición de Ramón Freire contra el gobierno de Chile. A fines de 1836, Chile declaró la guerra.\n\nUna primera expedición, al mando de Manuel Blanco Encalada, desembarcó en el sur del Perú en 1837 y firmó el Tratado de Paucarpata, que el gobierno chileno rechazó. Una segunda expedición, dirigida por Manuel Bulnes y formada por tropas chilenas y peruanas contrarias a Santa Cruz, desembarcó cerca de Lima en 1838. El 20 de enero de 1839 derrotó a Santa Cruz en Yungay, en una batalla que incluyó el ataque al cerro Pan de Azúcar, y ese mismo año se disolvió la Confederación.\n\nLa victoria fortaleció al gobierno chileno, y Bulnes fue elegido presidente en 1841. En Perú y Bolivia existen otras lecturas de esta guerra, que valoran de distinta manera el proyecto de Santa Cruz y la intervención chilena.",
+    "personajes": ["Manuel Bulnes", "Andrés de Santa Cruz", "Manuel Blanco Encalada", "Diego Portales"],
+    "imagen": {
+      "archivo": "Batalla_de_Yungay_1839.jpg",
+      "autor": "Charles Clotsworthy Wood Taylor",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Batalla_de_Yungay_1839.jpg",
+      "pieDeFoto": "Vista del ataque al cerro Pan de Azúcar y plano de la batalla de Yungay, obra de Charles Wood Taylor (c. 1839)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-639.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3587.html"
+    ]
+  },
+  {
+    "id": "1842-universidad-de-chile",
+    "titulo": "Fundación de la Universidad de Chile",
+    "fecha": "1842-11-19",
+    "fechaAproximada": false,
+    "fechaTexto": "19 de noviembre de 1842",
+    "periodoId": "04",
+    "temas": ["cultura", "ciencia"],
+    "importancia": 3,
+    "lugar": "Santiago",
+    "resumenNino": "En 1842 se creó la Universidad de Chile, un lugar para estudiar y desarrollar las ciencias y las letras. Su primer rector fue Andrés Bello, un escritor y profesor nacido en Venezuela.",
+    "resumen": "La ley que creó la Universidad de Chile se firmó el 19 de noviembre de 1842, durante el gobierno de Manuel Bulnes. Su proyecto fue redactado por Andrés Bello por encargo del ministro Manuel Montt. La universidad se instaló el 17 de septiembre de 1843 con un discurso de Bello, su primer rector, cargo que ocupó hasta su muerte en 1865. En su origen estaba formada por cinco facultades.",
+    "detalle": "Durante el gobierno de Manuel Bulnes, el ministro Manuel Montt encargó a Andrés Bello, intelectual venezolano que vivía en Chile desde 1829, el proyecto de ley de una universidad nacional. La ley orgánica de la Universidad de Chile se firmó el 19 de noviembre de 1842, y la institución se instaló diez meses después, el 17 de septiembre de 1843.\n\nEn la ceremonia de instalación, Bello pronunció un discurso en el que expuso el papel que la universidad debía cumplir en el país. En su origen, la universidad estaba formada por cinco facultades, cada una integrada por treinta miembros. Bello fue rector desde 1843 hasta su muerte, en 1865.",
+    "personajes": ["Andrés Bello", "Manuel Bulnes", "Manuel Montt"],
+    "imagen": {
+      "archivo": "AndresBello.jpg",
+      "autor": "Raymond Monvoisin",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:AndresBello.jpg",
+      "pieDeFoto": "Retrato de Andrés Bello pintado en Chile por Raymond Monvoisin, entre 1843 y 1858."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-720.html",
+      "https://uchile.cl/presentacion/historia/rectores-de-la-u-de-chile/andres-bello-lopez-1843-1865",
+      "https://uchile.cl/noticias/244631/u-de-chile-releva-la-vigencia-del-discurso-de-instalacion-de-andres-bello",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3290.html"
+    ]
+  },
+  {
+    "id": "1843-fuerte-bulnes",
+    "titulo": "Fuerte Bulnes: Chile toma posesión del Estrecho de Magallanes",
+    "fecha": "1843-09-21",
+    "fechaAproximada": false,
+    "fechaTexto": "21 de septiembre de 1843",
+    "periodoId": "04",
+    "temas": ["politica", "pueblos-originarios"],
+    "importancia": 2,
+    "lugar": "Estrecho de Magallanes",
+    "resumenNino": "En 1843, la goleta Ancud viajó desde Chiloé hasta el Estrecho de Magallanes, donde su tripulación declaró que esas tierras eran de Chile y construyó el Fuerte Bulnes. En esa región ya vivían pueblos originarios, como los aónikenk y los kawésqar.",
+    "resumen": "En mayo de 1843 zarpó desde Ancud la goleta Ancud, al mando del capitán de fragata Juan Williams, rumbo al Estrecho de Magallanes. El 21 de septiembre de 1843 la expedición desembarcó en Punta Santa Ana y tomó posesión del estrecho en nombre de Chile. Allí construyó el Fuerte Bulnes, llamado así en honor al presidente Manuel Bulnes. La zona estaba habitada por pueblos originarios como los aónikenk (tehuelches) y los kawésqar (alacalufes).",
+    "detalle": "El gobierno de Manuel Bulnes buscó asegurar la presencia chilena en el Estrecho de Magallanes, un paso de navegación entre los océanos Atlántico y Pacífico. En mayo de 1843 zarpó desde San Carlos de Ancud, en Chiloé, la goleta Ancud, al mando del capitán de fragata Juan Williams. Entre sus tripulantes iba el naturalista Bernardo Philippi.\n\nTras unos cuatro meses de viaje, la expedición desembarcó en Punta Santa Ana y, el 21 de septiembre de 1843, tomó posesión del estrecho en nombre de Chile. En las semanas siguientes levantó el Fuerte Bulnes. En 1848 se decidió trasladar la colonia hacia el norte, al lugar donde se desarrolló la ciudad de Punta Arenas. El fuerte que hoy se visita es una reconstrucción terminada en 1943.\n\nEstas tierras no estaban deshabitadas: en la región vivían pueblos originarios, como los aónikenk (tehuelches), cazadores de la estepa patagónica, y los kawésqar (alacalufes), navegantes de los canales occidentales.",
+    "personajes": ["Juan Williams", "Bernardo Philippi", "Manuel Bulnes"],
+    "imagen": {
+      "archivo": "Entrada_a_Fuerte_Bulnes.JPG",
+      "autor": "Magallanes1",
+      "licencia": "CC BY-SA 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Entrada_a_Fuerte_Bulnes.JPG",
+      "pieDeFoto": "Entrada al Fuerte Bulnes, fotografiada en 2011."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-714.html"
+    ]
+  },
+  {
+    "id": "1846-colonizacion-alemana",
+    "titulo": "Colonización alemana en el sur de Chile",
+    "fecha": "1846",
+    "fechaFin": "1875",
+    "fechaAproximada": false,
+    "fechaTexto": "1846-1875",
+    "periodoId": "04",
+    "temas": ["economia", "pueblos-originarios"],
+    "importancia": 2,
+    "lugar": "Valdivia, Osorno y Llanquihue",
+    "resumenNino": "El gobierno de Chile invitó a familias de Alemania a vivir y trabajar en el sur del país. Llegaron a lugares como Valdivia y el lago Llanquihue, donde ya vivían comunidades huilliche.",
+    "resumen": "Con la Ley de Colonización de 1845, el gobierno de Manuel Bulnes inició un plan para poblar territorios del sur con inmigrantes europeos. En 1846 llegaron a Corral los primeros colonos alemanes, y en los años siguientes los agentes de colonización Bernardo Philippi y Vicente Pérez Rosales promovieron la llegada de muchas más familias. La colonización se extendió desde Valdivia hacia Osorno y el lago Llanquihue, donde surgieron ciudades como Puerto Montt y Puerto Varas. Esas tierras estaban habitadas por comunidades huilliche, cuyos territorios se vieron afectados.",
+    "detalle": "El 18 de noviembre de 1845 se promulgó la Ley de Colonización de Terrenos Baldíos, con la que el gobierno de Manuel Bulnes buscó atraer colonos europeos al sur del país. El explorador y naturalista Bernardo Philippi, que había recorrido la zona, promovió la llegada de familias alemanas, y en 1846 un primer grupo desembarcó en Corral y se instaló junto al río Bueno. Desde 1850, Vicente Pérez Rosales fue agente de colonización y viajó a Alemania para reclutar nuevas familias.\n\nLa colonización se realizó en varias etapas hasta 1875. Se extendió desde Valdivia hacia La Unión, Osorno y el lago Llanquihue, cuyo entorno fue declarado territorio de colonización en 1853, y dio origen a ciudades como Puerto Montt y Puerto Varas.\n\nEstas tierras no estaban vacías: allí vivían comunidades huilliche (williche). Según Memoria Chilena, la ocupación de parte de sus tierras tradicionales se hizo mediante medidas ilegales y acciones violentas. Existen distintas interpretaciones de este proceso: algunas destacan el aporte de los colonos al desarrollo del sur, y otras, sus efectos sobre los pueblos originarios.",
+    "personajes": ["Bernardo Philippi", "Vicente Pérez Rosales", "Manuel Bulnes"],
+    "imagen": {
+      "archivo": "Vicente_Perez_Rosales.jpeg",
+      "autor": "Anónimo - Universidad de Chile",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Vicente_Perez_Rosales.jpeg",
+      "pieDeFoto": "Retrato de Vicente Pérez Rosales (1807-1886), del siglo XIX."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-676.html",
+      "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Vicente_P%C3%A9rez_Rosales"
+    ]
+  },
+  {
+    "id": "1851-ferrocarril-caldera-copiapo",
+    "titulo": "Primer ferrocarril de Chile: Caldera-Copiapó",
+    "fecha": "1851-07-04",
+    "fechaFin": "1851-12-25",
+    "fechaAproximada": false,
+    "fechaTexto": "julio a diciembre de 1851",
+    "periodoId": "04",
+    "temas": ["economia"],
+    "importancia": 2,
+    "lugar": "Caldera y Copiapó",
+    "resumenNino": "En 1851 empezó a funcionar el primer tren de Chile, que unía la ciudad minera de Copiapó con el puerto de Caldera. Así era más fácil llevar los minerales hasta los barcos.",
+    "resumen": "El primer ferrocarril de Chile unió el puerto de Caldera con Copiapó, centro de la minería de la plata. Fue impulsado por el empresario estadounidense William Wheelwright y financiado con capitales de la región. El primer tramo, entre Caldera y Monte Amargo, se inauguró en julio de 1851, y el 25 de diciembre de ese año el tren llegó por primera vez a Copiapó. La locomotora «Copiapó» fue la primera en recorrer las vías del país.",
+    "detalle": "El auge de la plata, iniciado con el descubrimiento de Chañarcillo en 1832, hizo necesario un transporte más rápido entre Copiapó y la costa. La idea de un ferrocarril fue planteada por el relojero de Valparaíso Juan Mouat, y la llevó adelante William Wheelwright, impulsor de la Compañía del Camino Ferro-Carril de Copiapó, financiada íntegramente con capitales de la región.\n\nLas obras comenzaron en Caldera en 1850. El 4 de julio de 1851 se inauguró el primer tramo, de 41 kilómetros, hasta Monte Amargo, y el 25 de diciembre de ese año el tren llegó por primera vez a Copiapó. La línea, de unos 81 kilómetros, se entregó al servicio público en enero de 1852. La locomotora «Copiapó», fabricada en Estados Unidos en 1850, se conserva hoy en esa ciudad.",
+    "personajes": ["William Wheelwright", "Juan Mouat"],
+    "imagen": {
+      "archivo": "Locomotora_de_Copiapó_-_Frente.jpg",
+      "autor": "MatiasSierraV",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Locomotora_de_Copiapó_-_Frente.jpg",
+      "pieDeFoto": "La locomotora «Copiapó», fabricada por Norris Brothers en Filadelfia en 1850, exhibida como monumento en Copiapó (fotografía de 2021)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3401.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-98238.html",
+      "https://auroradechile.uchile.cl/index.php/AICH/article/download/32816/34574/111442"
+    ]
+  },
+  {
+    "id": "1851-guerra-civil-loncomilla",
+    "titulo": "Guerra civil de 1851 y batalla de Loncomilla",
+    "fecha": "1851-12-08",
+    "fechaAproximada": false,
+    "fechaTexto": "8 de diciembre de 1851",
+    "periodoId": "04",
+    "temas": ["guerra", "politica"],
+    "importancia": 1,
+    "lugar": "Loncomilla, Maule",
+    "resumenNino": "En 1851, algunos chilenos no aceptaron la elección del nuevo presidente, Manuel Montt, y se rebelaron. El gobierno ganó la guerra en la batalla de Loncomilla.",
+    "resumen": "En 1851, la elección de Manuel Montt como presidente provocó una rebelión encabezada por el general José María de la Cruz, que había sido su rival, con apoyo de sectores liberales. En septiembre estallaron alzamientos en La Serena y en Concepción. El 8 de diciembre de 1851, el ejército del gobierno, dirigido por el general Manuel Bulnes, derrotó a De la Cruz en la batalla de Loncomilla. Tras la derrota, Montt pudo gobernar hasta 1861.",
+    "detalle": "El general José María de la Cruz aspiraba a suceder al presidente Manuel Bulnes, pero el gobierno apoyó a Manuel Montt, que ganó la elección de 1851. De la Cruz contó con el respaldo de liberales del norte y del sur, de parte de la élite y de sectores populares. Según el historiador Sergio Grez, también participaron comunidades indígenas, como changos y mapuche.\n\nLa revolución estalló en La Serena el 7 de septiembre de 1851 y en Concepción la noche del 13 de septiembre, donde De la Cruz se sublevó contra el gobierno. El 8 de diciembre, en Loncomilla, en la actual Región del Maule, el ejército del gobierno, al mando de Manuel Bulnes, derrotó a las fuerzas de De la Cruz. Las cifras de muertos y heridos varían según las fuentes.\n\nTras esta derrota la rebelión perdió fuerza, y Manuel Montt gobernó durante dos períodos, hasta 1861.",
+    "personajes": ["José María de la Cruz", "Manuel Montt", "Manuel Bulnes"],
+    "imagen": {
+      "archivo": "Jose_Maria_de_la_cruz.jpg",
+      "autor": "José Gil de Castro",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Jose_Maria_de_la_cruz.jpg",
+      "pieDeFoto": "Retrato de José María de la Cruz por José Gil de Castro (1822)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-96177.html",
+      "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Jose_Mar%C3%ADa_De_la_Cruz_Prieto"
+    ]
+  },
+  {
+    "id": "1855-codigo-civil",
+    "titulo": "Código Civil de Andrés Bello",
+    "fecha": "1855-12-14",
+    "fechaAproximada": false,
+    "fechaTexto": "14 de diciembre de 1855",
+    "periodoId": "04",
+    "temas": ["politica", "derechos"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "Andrés Bello escribió el Código Civil, un libro de leyes con reglas sobre las familias, las propiedades y los acuerdos entre personas. Se aprobó en 1855 y todavía se usa en Chile.",
+    "resumen": "El Código Civil reunió en un solo texto las normas sobre las personas, la familia, los bienes, las herencias y los contratos. Su principal redactor fue Andrés Bello, que trabajó durante años en el proyecto. Fue aprobado por el Congreso y promulgado el 14 de diciembre de 1855, durante el gobierno de Manuel Montt, y entró en vigencia el 1 de enero de 1857. Con muchas reformas, sigue vigente y sirvió de modelo para los códigos de otros países, como Ecuador y Colombia.",
+    "detalle": "Después de la independencia, en Chile seguían aplicándose muchas leyes de la época colonial, dispersas en distintos textos. Andrés Bello trabajó durante años en un código que las reemplazara: su proyecto se publicó en 1853 y luego fue revisado por una comisión. El Congreso aprobó el Código Civil, y el presidente Manuel Montt lo promulgó el 14 de diciembre de 1855. Comenzó a regir el 1 de enero de 1857.\n\nEl Código regula materias como las personas, el matrimonio y la familia, la propiedad, las herencias y los contratos. Según la Universidad de Chile, Ecuador y Colombia lo adoptaron con muy pocas modificaciones, y sirvió de fuente para los códigos de otros países del continente. Con numerosas reformas, sigue vigente en Chile.",
+    "personajes": ["Andrés Bello", "Manuel Montt"],
+    "imagen": {
+      "archivo": "Codigo_Civil_Chile_01.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Codigo_Civil_Chile_01.jpg",
+      "pieDeFoto": "Primera página de la primera edición del Código Civil de Chile, impresa en Santiago por la Imprenta Nacional en 1856."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/leychile/navegar?idNorma=1973",
+      "https://www.memoriachilena.gob.cl/602/w3-article-10454.html",
+      "https://uchile.cl/presentacion/historia/rectores-de-la-u-de-chile/andres-bello-lopez-1843-1865"
+    ]
+  }
+]

@@ -1,0 +1,353 @@
+[
+  {
+    "id": "1861-ocupacion-de-la-araucania",
+    "titulo": "Ocupación de la Araucanía",
+    "fecha": "1861",
+    "fechaFin": "1883",
+    "fechaAproximada": false,
+    "fechaTexto": "1861-1883",
+    "periodoId": "05",
+    "temas": ["pueblos-originarios", "guerra", "politica"],
+    "importancia": 3,
+    "lugar": "Araucanía",
+    "resumenNino": "El Ejército de Chile avanzó hacia el sur del río Biobío, donde el pueblo mapuche vivía de manera independiente, y construyó fuertes y pueblos. Los mapuche perdieron gran parte de sus tierras, y hoy esta historia se recuerda y se discute.",
+    "resumen": "Entre 1861 y 1883, el Estado chileno ocupó militarmente el territorio mapuche al sur del río Biobío, que hasta entonces se mantenía independiente. El Ejército avanzó por etapas, levantó fuertes y fundó pueblos, mientras llegaban colonos chilenos y europeos. En su época el Estado llamó a este proceso «Pacificación de la Araucanía», un nombre que hoy se discute: muchos historiadores y organizaciones mapuche prefieren hablar de «ocupación». Para el pueblo mapuche significó la pérdida de la mayor parte de sus tierras y su radicación en reducciones.",
+    "detalle": "Desde la época colonial, el territorio entre los ríos Biobío y Toltén estaba en manos del pueblo mapuche, que había negociado con la Corona española en parlamentos. A mediados del siglo XIX, el Estado chileno se interesó en esas tierras para la agricultura y para unir el centro del país con Valdivia y las colonias del sur. Aunque el avance había comenzado antes, en 1861 el militar Cornelio Saavedra presentó un plan para llevar la frontera hasta el río Malleco y vender las tierras que el Estado consideraba baldías.\n\nDesde 1862 el Ejército levantó una línea de fuertes, entre ellos Angol, y una ley de 1866 permitió fundar poblados en territorio indígena. En 1881, mientras se desarrollaba la Guerra del Pacífico, las tropas avanzaron hasta el río Cautín y fundaron el fuerte de Temuco. Ese año comenzó el último gran alzamiento mapuche, que fue derrotado, y el 1 de enero de 1883 tropas al mando de Gregorio Urrutia refundaron Villarrica, hecho con el que suele darse por terminada la ocupación militar.\n\nEntre 1884 y 1929, la Comisión Radicadora de Indígenas entregó «títulos de merced» que radicaron a las familias mapuche en reducciones, sobre una pequeña parte de su territorio original; el resto quedó en manos del Estado, que lo remató o lo entregó a colonos chilenos y europeos. El Informe de la Comisión Verdad Histórica y Nuevo Trato (2003) analizó este proceso y la pérdida posterior de tierras de muchas comunidades, y varias demandas mapuche actuales se remontan a él. Existen distintas interpretaciones: algunos lo ven como la integración del territorio al país y otros como la conquista de un pueblo que era independiente.",
+    "personajes": ["Cornelio Saavedra", "Gregorio Urrutia"],
+    "imagen": {
+      "archivo": "Familia_mapuche_-_Traiguen_1890.jpg",
+      "autor": "Gustavo Milet Ramírez",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Familia_mapuche_-_Traiguen_1890.jpg",
+      "pieDeFoto": "Hombre, mujer y bebé mapuche en un retrato de estudio tomado en Traiguén hacia 1890 por Gustavo Milet Ramírez."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3630.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-96469.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-122901.html"
+    ]
+  },
+  {
+    "id": "1866-bombardeo-de-valparaiso",
+    "titulo": "Guerra contra España y bombardeo de Valparaíso",
+    "fecha": "1866-03-31",
+    "fechaAproximada": false,
+    "fechaTexto": "31 de marzo de 1866",
+    "periodoId": "05",
+    "temas": ["guerra"],
+    "importancia": 2,
+    "lugar": "Valparaíso",
+    "resumenNino": "Barcos de guerra españoles dispararon sus cañones contra el puerto de Valparaíso y destruyeron muchas bodegas y edificios. Ocurrió durante una guerra entre España y Chile, que se había aliado con Perú.",
+    "resumen": "En 1864, una escuadra española ocupó las islas Chincha, en el Perú, y Chile se solidarizó con ese país. En septiembre de 1865, tras rechazar un ultimátum español, Chile declaró la guerra a España y luego se alió con el Perú. El 31 de marzo de 1866, la escuadra española al mando de Casto Méndez Núñez bombardeó Valparaíso, un puerto comercial sin defensas, y destruyó gran parte de sus almacenes y bodegas. Después atacó el Callao, en el Perú, y se retiró de América del Sur.",
+    "detalle": "A comienzos de la década de 1860, España envió una expedición al Pacífico y en 1864 ocupó las islas Chincha, ricas en guano, para presionar al Perú. En Chile, la medida se vio como una amenaza para los países de la región. El almirante José Manuel Pareja exigió a Chile satisfacciones por supuestas ofensas, bajo amenaza de atacar sus puertos, y el gobierno de José Joaquín Pérez rechazó el ultimátum; en septiembre de 1865, Chile declaró la guerra.\n\nEl 26 de noviembre de 1865, la corbeta Esmeralda, al mando de Juan Williams Rebolledo, capturó a la goleta española Covadonga frente a Papudo. En febrero de 1866, buques chilenos y peruanos enfrentaron a fragatas españolas en Abtao, en Chiloé. Como Chile se negó a devolver la Covadonga y a cumplir otras exigencias, el nuevo jefe de la escuadra, Casto Méndez Núñez, anunció el ataque y bombardeó Valparaíso el 31 de marzo de 1866. El fuego destruyó edificios públicos, bodegas y mercaderías, muchas de ellas de comerciantes extranjeros.\n\nLuego la escuadra atacó el Callao, el 2 de mayo de 1866, y abandonó el Pacífico. Los combates terminaron, aunque la paz formal entre Chile y España se firmó años más tarde. La guerra dejó en evidencia la debilidad de la defensa naval chilena, que se reforzó en los años siguientes.",
+    "personajes": ["Casto Méndez Núñez", "José Manuel Pareja", "Juan Williams Rebolledo", "José Joaquín Pérez"],
+    "imagen": {
+      "archivo": "Bombardeo_de_Valparaíso_-_Gibbons.jpg",
+      "autor": "William Gibbons",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Bombardeo_de_Valparaíso_-_Gibbons.jpg",
+      "pieDeFoto": "Valparaíso durante el bombardeo de la escuadra del almirante Méndez Núñez, óleo de William Gibbons (c. 1870)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-92282.html",
+      "https://en.wikipedia.org/wiki/Bombardment_of_Valpara%C3%ADso"
+    ]
+  },
+  {
+    "id": "1877-decreto-amunategui",
+    "titulo": "Decreto Amunátegui: las mujeres pueden obtener títulos universitarios",
+    "fecha": "1877-02-06",
+    "fechaAproximada": false,
+    "fechaTexto": "6 de febrero de 1877",
+    "periodoId": "05",
+    "temas": ["derechos", "cultura"],
+    "importancia": 1,
+    "lugar": "Chile",
+    "resumenNino": "Un decreto permitió que las mujeres rindieran los mismos exámenes que los hombres para obtener una profesión en la universidad. Gracias a eso, años después Chile tuvo sus primeras médicas y abogadas.",
+    "resumen": "El 6 de febrero de 1877, durante el gobierno de Aníbal Pinto, el ministro de Justicia, Culto e Instrucción Pública, Miguel Luis Amunátegui, firmó un decreto que permitió a las mujeres rendir exámenes válidos para obtener títulos profesionales, con las mismas reglas que los hombres. La medida respondió a gestiones de educadoras como Antonia Tarragó e Isabel Le Brun. Gracias a ella, Eloísa Díaz se tituló de médica en 1887 y Matilde Throup de abogada en 1892, las primeras en esas profesiones en Chile.",
+    "detalle": "A mediados del siglo XIX, algunas jóvenes chilenas estudiaban en colegios particulares, pero no podían rendir los exámenes que daban acceso a los títulos universitarios. Educadoras como Antonia Tarragó e Isabel Le Brun, junto a otras mujeres, pidieron que las alumnas pudieran rendirlos ante la universidad.\n\nEl Decreto N.º 547, de 6 de febrero de 1877, declaró que las mujeres debían ser admitidas a rendir exámenes válidos para obtener títulos profesionales, sujetas a las mismas disposiciones que los hombres. Según Memoria Chilena, se fundó en la conveniencia de estimular el estudio en las mujeres, en sus aptitudes para ciertas profesiones y en la necesidad de que pudieran sostenerse por sí mismas.\n\nEl decreto abrió el camino a las primeras profesionales universitarias del país: Eloísa Díaz se tituló de médica en 1887 y Matilde Throup se convirtió en la primera abogada en 1892. En las décadas siguientes, cada vez más mujeres ingresaron a la universidad.",
+    "personajes": ["Miguel Luis Amunátegui", "Antonia Tarragó", "Isabel Le Brun", "Eloísa Díaz", "Matilde Throup"],
+    "imagen": {
+      "archivo": "Eloísa_Diaz_(1900).jpg",
+      "autor": "Imágenes de la Universidad de Chile (1977)",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Eloísa_Diaz_(1900).jpg",
+      "pieDeFoto": "La doctora Eloísa Díaz Insunza en 1900."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-755.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-96113.html",
+      "https://www.senado.cl/comunicaciones/noticias/148-anos-del-decreto-amunategui"
+    ]
+  },
+  {
+    "id": "1879-guerra-del-pacifico",
+    "titulo": "Guerra del Pacífico",
+    "fecha": "1879-02-14",
+    "fechaFin": "1884",
+    "fechaAproximada": false,
+    "fechaTexto": "1879-1884",
+    "periodoId": "05",
+    "temas": ["guerra", "economia", "politica"],
+    "importancia": 3,
+    "lugar": "Antofagasta",
+    "resumenNino": "Chile tuvo una guerra con Perú y Bolivia por territorios del desierto ricos en salitre, un mineral que se usaba como abono. Chile ganó y su territorio creció hacia el norte, pero cada país recuerda esta guerra de manera diferente.",
+    "resumen": "La Guerra del Pacífico enfrentó a Chile con Bolivia y el Perú entre 1879 y 1884. Comenzó cuando Bolivia cobró un nuevo impuesto a una empresa salitrera de capitales chilenos, lo que Chile consideró contrario al tratado de 1874, y tropas chilenas ocuparon Antofagasta el 14 de febrero de 1879. Tras campañas por mar y por tierra, Chile ocupó Lima en 1881, y la guerra terminó con el Tratado de Ancón con el Perú (1883) y el Pacto de Tregua con Bolivia (1884). Chile incorporó Tarapacá y el litoral de Antofagasta, Bolivia perdió su salida al mar, y sus causas y consecuencias se interpretan de manera distinta en los tres países.",
+    "detalle": "En el desierto de Atacama había grandes yacimientos de salitre, muy valioso en esa época como fertilizante. El tratado de 1874 fijó la frontera entre Chile y Bolivia en el paralelo 24° y comprometió a Bolivia a no aumentar durante 25 años los impuestos a las personas, industrias y capitales chilenos de la zona. En 1878, durante el gobierno de Hilarión Daza, Bolivia fijó un impuesto de 10 centavos por quintal de salitre exportado a la Compañía de Salitres y Ferrocarril de Antofagasta; la empresa se negó a pagarlo y Bolivia ordenó rematar sus bienes el 14 de febrero de 1879. Ese día, tropas chilenas al mando del coronel Emilio Sotomayor desembarcaron en Antofagasta. El Perú tenía con Bolivia un tratado secreto de alianza firmado en 1873, y el 5 de abril de 1879 Chile declaró la guerra a ambos países.\n\nLa primera etapa fue naval: tras el combate de Iquique (mayo de 1879) y la captura del blindado peruano Huáscar en Angamos (octubre de 1879), Chile obtuvo el control del mar. Siguieron las campañas terrestres de Tarapacá (1879), Tacna y Arica (1880) y Lima, ocupada en enero de 1881. La resistencia peruana continuó en la sierra hasta 1883. La guerra terminó con el Tratado de Ancón (1883) y el Pacto de Tregua con Bolivia (1884); el límite definitivo con Bolivia se fijó en el Tratado de Paz y Amistad de 1904.\n\nChile incorporó territorios cuyo salitre fue por décadas la principal fuente de ingresos del Estado. En Bolivia y el Perú existen otras lecturas de la guerra: parte de su historiografía sostiene que el impuesto fue un pretexto y que el objetivo era controlar las riquezas del desierto. Sus consecuencias aún se discuten: Bolivia demandó a Chile ante la Corte Internacional de Justicia para que negociara una salida soberana al mar, y el 1 de octubre de 2018 la Corte concluyó que Chile no había contraído esa obligación.",
+    "personajes": ["Hilarión Daza", "Aníbal Pinto", "Mariano Ignacio Prado", "Emilio Sotomayor"],
+    "imagen": {
+      "archivo": "Ejercito_chileno_en_Antofagasta_(1879).jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Ejercito_chileno_en_Antofagasta_(1879).jpg",
+      "pieDeFoto": "Batallón N.º 3 de Línea del Ejército de Chile formado en la Plaza Colón de Antofagasta, en 1879."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-96541.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-693.html",
+      "https://www.icj-cij.org/case/153",
+      "https://www.cidob.org/publicaciones/bolivia-chile-historia-caja-pandora-mar"
+    ]
+  },
+  {
+    "id": "1879-combate-naval-de-iquique",
+    "titulo": "Combate Naval de Iquique",
+    "fecha": "1879-05-21",
+    "fechaAproximada": false,
+    "fechaTexto": "21 de mayo de 1879",
+    "periodoId": "05",
+    "temas": ["guerra"],
+    "importancia": 3,
+    "lugar": "Iquique",
+    "resumenNino": "Frente a Iquique, el antiguo barco de madera Esmeralda, al mando de Arturo Prat, se enfrentó al barco blindado peruano Huáscar, dirigido por Miguel Grau. La Esmeralda se hundió y Prat murió, y cada 21 de mayo Chile recuerda este combate.",
+    "resumen": "El 21 de mayo de 1879, la corbeta Esmeralda y la goleta Covadonga, que bloqueaban el puerto peruano de Iquique, fueron atacadas por los blindados Huáscar e Independencia. La Esmeralda, un buque de madera mucho más débil, combatió durante varias horas contra el Huáscar, al mando de Miguel Grau; su comandante, Arturo Prat, murió al saltar al abordaje del buque peruano, y la corbeta se hundió. En tanto, la Covadonga, al mando de Carlos Condell, fue perseguida por la Independencia, que encalló en Punta Gruesa. En Chile, el 21 de mayo se conmemora como el Día de las Glorias Navales.",
+    "detalle": "Al comenzar la guerra, la escuadra chilena bloqueó Iquique, entonces puerto peruano. A mediados de mayo de 1879, el grueso de la flota zarpó hacia el Callao y dejó en el bloqueo solo dos buques antiguos: la Esmeralda, al mando de Arturo Prat, y la Covadonga, al mando de Carlos Condell. El 21 de mayo llegaron los blindados peruanos Huáscar, comandado por Miguel Grau, e Independencia, comandado por Juan Guillermo More.\n\nLa Esmeralda resistió los disparos del Huáscar hasta que este la embistió con su espolón. En la primera embestida, Prat saltó al abordaje del Huáscar y murió en su cubierta; entre los tripulantes que también murieron estuvieron el teniente Ignacio Serrano y el guardiamarina Ernesto Riquelme. Tras otras dos embestidas, la Esmeralda se hundió. Mientras tanto, la Covadonga navegó hacia el sur perseguida por la Independencia, que encalló en los roqueríos de Punta Gruesa y se perdió.\n\nLa pérdida de la Independencia debilitó a la flota peruana. Grau rescató a sobrevivientes de la Esmeralda y luego envió a la viuda de Prat, Carmela Carvajal, objetos personales de su esposo junto con una carta. En Chile, Prat se convirtió en un símbolo nacional, y en el Perú Grau es recordado como héroe nacional.",
+    "personajes": ["Arturo Prat", "Miguel Grau", "Carlos Condell", "Juan Guillermo More"],
+    "imagen": {
+      "archivo": "Combate_Naval_Iquique-Thomas_Somerscales.jpg",
+      "autor": "Thomas Somerscales",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Combate_Naval_Iquique-Thomas_Somerscales.jpg",
+      "pieDeFoto": "El combate naval de Iquique, pintura de Thomas Somerscales."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-96912.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-693.html"
+    ]
+  },
+  {
+    "id": "1880-toma-del-morro-de-arica",
+    "titulo": "Asalto y toma del Morro de Arica",
+    "fecha": "1880-06-07",
+    "fechaAproximada": false,
+    "fechaTexto": "7 de junio de 1880",
+    "periodoId": "05",
+    "temas": ["guerra"],
+    "importancia": 2,
+    "lugar": "Arica",
+    "resumenNino": "Soldados chilenos subieron y tomaron el Morro de Arica, un gran cerro junto al mar que defendía el ejército peruano. Hoy en su cima hay un museo que recuerda lo ocurrido.",
+    "resumen": "Tras la batalla de Tacna (26 de mayo de 1880), el ejército chileno avanzó sobre Arica, defendida por tropas peruanas al mando del coronel Francisco Bolognesi, quien rechazó rendirse. El 7 de junio de 1880, regimientos dirigidos por el coronel Pedro Lagos asaltaron los fuertes y, en menos de una hora, tomaron el Morro. En el combate murieron Bolognesi y muchos de sus soldados, y también oficiales chilenos como Juan José San Martín. En Chile la fecha se conmemora como el Día de la Infantería, y en el Perú Bolognesi es recordado como héroe nacional.",
+    "detalle": "La campaña de Tacna y Arica buscaba controlar el sur del Perú. Después de la victoria chilena en Tacna, el puerto de Arica quedó aislado. Estaba protegido por fuertes, campos de minas y el Morro, un alto cerro junto al mar. Ante la negativa de Bolognesi a rendirse, el general en jefe Manuel Baquedano encargó el ataque al coronel Pedro Lagos.\n\nLos días 5 y 6 de junio, buques chilenos bombardearon el Morro y los fuertes cercanos. El 7 de junio, regimientos chilenos atacaron los fuertes del Este y de la Ciudadela y luego avanzaron hasta la cima, donde izaron su bandera. Las fuentes no coinciden en la duración exacta del asalto (entre 44 y 55 minutos) ni en el número de víctimas.\n\nCon la toma de Arica terminó la campaña de Tacna y Arica. Ambas ciudades quedaron bajo administración chilena tras el Tratado de Ancón, y en 1929 se acordó que Tacna volviera al Perú y que Arica quedara en Chile. El Morro de Arica es Monumento Histórico desde 1971 y alberga un museo.",
+    "personajes": ["Pedro Lagos", "Francisco Bolognesi", "Juan José San Martín", "Manuel Baquedano"],
+    "imagen": {
+      "archivo": "Morro_de_Arica_desde_la_playa.JPG",
+      "autor": "Jowyto",
+      "licencia": "CC BY-SA 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Morro_de_Arica_desde_la_playa.JPG",
+      "pieDeFoto": "El Morro de Arica visto desde la playa, en 2012."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/historiadelaley/historia-de-la-ley/vista-expandida/4461/",
+      "https://www.monumentos.gob.cl/monumentos/monumentos-historicos/morro-de-arica",
+      "https://www.memoriachilena.gob.cl/602/w3-article-68008.html"
+    ]
+  },
+  {
+    "id": "1881-ocupacion-de-lima",
+    "titulo": "Ocupación de Lima",
+    "fecha": "1881-01-17",
+    "fechaAproximada": false,
+    "fechaTexto": "17 de enero de 1881",
+    "periodoId": "05",
+    "temas": ["guerra"],
+    "importancia": 2,
+    "lugar": "Lima (Perú)",
+    "resumenNino": "Después de ganar dos batallas cerca de Lima, el ejército chileno entró a la capital del Perú. Los soldados chilenos se quedaron allí casi tres años, hasta que se firmó la paz.",
+    "resumen": "A fines de 1880, el ejército chileno, al mando del general Manuel Baquedano, desembarcó al sur de Lima. Tras vencer a las fuerzas peruanas en las batallas de Chorrillos (13 de enero de 1881) y Miraflores (15 de enero), entró a la capital del Perú el 17 de enero de 1881. Comenzó así una ocupación militar que se extendió hasta 1883, mientras en la sierra peruana continuaba la resistencia. Este episodio se recuerda de manera muy distinta en Chile y en el Perú.",
+    "detalle": "Aunque Chile ya controlaba Tarapacá, Tacna y Arica, el gobierno peruano no aceptó firmar la paz en los términos chilenos, por lo que el gobierno chileno decidió atacar Lima. Según Memoria Chilena, a fines de diciembre de 1880 unos 27 mil soldados chilenos estaban reunidos en Lurín, al sur de la capital.\n\nEl 13 de enero de 1881, el ejército chileno venció en Chorrillos y el 15 de enero en Miraflores a las fuerzas organizadas por Nicolás de Piérola, que gobernaba el Perú. El balneario de Chorrillos quedó destruido. Tras la derrota hubo desórdenes y saqueos en Lima, y representantes de las colonias extranjeras pidieron a Baquedano que ocupara la ciudad. El 17 de enero, las tropas chilenas entraron a Lima.\n\nDesde 1881, el marino Patricio Lynch encabezó la ocupación. En el interior del Perú, Andrés Avelino Cáceres dirigió una resistencia que continuó hasta 1883. La ocupación de Lima terminó después de la firma del Tratado de Ancón, en 1883, y la presencia militar chilena en el Perú se prolongó hasta 1884.",
+    "personajes": ["Manuel Baquedano", "Nicolás de Piérola", "Patricio Lynch", "Andrés Avelino Cáceres"],
+    "imagen": {
+      "archivo": "Entrada_del_ejército_chileno_a_Lima_(1881).jpg",
+      "autor": "Eduardo Clifford Spencer",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Entrada_del_ejército_chileno_a_Lima_(1881).jpg",
+      "pieDeFoto": "Entrada del ejército chileno a Lima el 17 de enero de 1881, fotografía de Eduardo Clifford Spencer."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-97962.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-693.html"
+    ]
+  },
+  {
+    "id": "1881-tratado-de-limites-con-argentina",
+    "titulo": "Tratado de Límites con Argentina",
+    "fecha": "1881-07-23",
+    "fechaAproximada": false,
+    "fechaTexto": "23 de julio de 1881",
+    "periodoId": "05",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Buenos Aires (Argentina)",
+    "resumenNino": "Chile y Argentina firmaron un acuerdo para decidir por dónde pasaba la frontera entre ambos países. La frontera seguiría las cumbres más altas de la cordillera de los Andes.",
+    "resumen": "El 23 de julio de 1881, en Buenos Aires, Chile y Argentina firmaron un tratado para resolver su disputa sobre la Patagonia y el extremo sur del continente. La frontera se fijó en la cordillera de los Andes, por las cumbres más altas que dividen las aguas, hasta el paralelo 52°; la Patagonia oriental quedó para Argentina, el estrecho de Magallanes para Chile y la isla de Tierra del Fuego se dividió entre ambos. Chile lo firmó en plena Guerra del Pacífico, con la mediación de los representantes de Estados Unidos en ambos países. Su interpretación dio origen a nuevas controversias, algunas resueltas mediante arbitrajes y acuerdos posteriores.",
+    "detalle": "Desde mediados del siglo XIX, Chile y Argentina discutían la soberanía sobre la Patagonia y el estrecho de Magallanes, donde Chile había fundado el Fuerte Bulnes en 1843 y luego Punta Arenas. A fines de la década de 1870, la disputa llegó a un punto de fuerte tensión. Según Memoria Chilena, la guerra con el Perú y Bolivia llevó a Chile a buscar un acuerdo con Argentina.\n\nEl tratado lo firmaron Bernardo de Irigoyen, ministro de Relaciones Exteriores de Argentina, y Francisco de Borja Echeverría, representante de Chile en Buenos Aires. Estableció que la frontera seguiría las cumbres más altas de los Andes que dividen las aguas hasta el paralelo 52°; más al sur, fijó una línea que dejó el estrecho de Magallanes bajo soberanía chilena, aunque neutralizado y con libre navegación para todas las banderas, y dividió Tierra del Fuego por el meridiano 68°34' oeste. Entró en vigor en octubre de 1881.\n\nAl demarcar la frontera surgieron diferencias: Chile sostenía que el límite debía seguir la línea divisoria de las aguas, y Argentina, la de las cumbres más altas. Esas diferencias llevaron a nuevos acuerdos, como el Protocolo de 1893, y a un arbitraje británico cuyo fallo se dictó en 1902. Otras controversias, como la del canal Beagle, se resolvieron mucho después.",
+    "personajes": ["Bernardo de Irigoyen", "Francisco de Borja Echeverría", "Aníbal Pinto", "Julio Argentino Roca"],
+    "imagen": {
+      "archivo": "Chile.CarlosPrieto.1881.jpg",
+      "autor": "Carlos M. Prieto (Oficina Hidrográfica de Chile)",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Chile.CarlosPrieto.1881.jpg",
+      "pieDeFoto": "Mapa oficial de la Oficina Hidrográfica de Chile, publicado en agosto de 1881 para ilustrar el Tratado de Límites, obra del ingeniero Carlos M. Prieto."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/leychile/navegar?idNorma=400050",
+      "https://tratados.cancilleria.gob.ar/tratado_ficha.php?id=kqGjng%3D%3D",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92197.html"
+    ]
+  },
+  {
+    "id": "1883-tratado-de-ancon",
+    "titulo": "Tratado de Ancón",
+    "fecha": "1883-10-20",
+    "fechaAproximada": false,
+    "fechaTexto": "20 de octubre de 1883",
+    "periodoId": "05",
+    "temas": ["politica", "guerra"],
+    "importancia": 2,
+    "lugar": "Lima (Perú)",
+    "resumenNino": "Chile y Perú firmaron un tratado de paz que terminó la guerra entre ambos países. Perú entregó a Chile la provincia de Tarapacá.",
+    "resumen": "El 20 de octubre de 1883, representantes de Chile y del gobierno peruano de Miguel Iglesias firmaron en Lima el Tratado de Ancón, que puso fin a la guerra entre ambos países. El Perú cedió a Chile a perpetuidad la provincia de Tarapacá. Tacna y Arica quedarían bajo posesión chilena por diez años, y luego un plebiscito decidiría a qué país pertenecerían. Ese plebiscito nunca se realizó, y la cuestión se resolvió recién con el Tratado de Lima de 1929.",
+    "detalle": "Tras la ocupación de Lima, Chile buscó un gobierno peruano dispuesto a firmar la paz con cesión de territorio. En 1882, el militar peruano Miguel Iglesias llamó a poner fin a la guerra, y Chile reconoció su gobierno. Mientras tanto, la resistencia encabezada por Andrés Avelino Cáceres en la sierra fue derrotada en la batalla de Huamachuco, en julio de 1883.\n\nEl tratado lo firmaron Jovino Novoa, por Chile, y José Antonio de Lavalle y Mariano Castro Zaldívar, por el Perú. Además de la cesión de Tarapacá, estableció que Tacna y Arica seguirían bajo posesión chilena por diez años y que después un plebiscito decidiría su destino; el país que se quedara con esos territorios pagaría al otro diez millones de pesos. El Perú lo ratificó en 1884 y las tropas chilenas se retiraron de su territorio ese año.\n\nComo el plebiscito no llegó a realizarse, Tacna y Arica fueron motivo de tensión entre ambos países durante décadas. El Tratado de Lima, del 3 de junio de 1929, dispuso que Tacna volviera al Perú y que Arica quedara en Chile.",
+    "personajes": ["Jovino Novoa", "José Antonio de Lavalle", "Mariano Castro Zaldívar", "Miguel Iglesias"],
+    "imagen": {
+      "archivo": "Tratado_de_Ancón.svg",
+      "autor": "Janitoalevic",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Tratado_de_Ancón.svg",
+      "pieDeFoto": "Mapa actual de los cambios territoriales que siguieron al Tratado de Ancón (1883)."
+    },
+    "fuentes": [
+      "https://controversiasinternacionales.difrol.cl/wp-content/uploads/2023/09/1883.10.20.-Tratado-de-Ancon-entre-Chile-y-Peru.-Espanol-e-Ingles.pdf",
+      "https://www.memoriachilena.gob.cl/602/w3-article-96351.html"
+    ]
+  },
+  {
+    "id": "1884-pacto-de-tregua-con-bolivia",
+    "titulo": "Pacto de Tregua con Bolivia",
+    "fecha": "1884-04-04",
+    "fechaAproximada": false,
+    "fechaTexto": "4 de abril de 1884",
+    "periodoId": "05",
+    "temas": ["politica", "guerra"],
+    "importancia": 1,
+    "lugar": "Valparaíso",
+    "resumenNino": "Chile y Bolivia firmaron un acuerdo para dejar de pelear. La costa que había sido de Bolivia quedó bajo el gobierno de Chile.",
+    "resumen": "El 4 de abril de 1884, Chile y Bolivia firmaron en Valparaíso un Pacto de Tregua que puso fin a las hostilidades entre ambos países. No era un tratado de paz definitivo: establecía que, mientras durara la tregua, Chile seguiría gobernando el antiguo litoral boliviano, entre el paralelo 23° y la desembocadura del río Loa. Bolivia aceptó además devolver bienes incautados a ciudadanos chilenos, y se fijaron normas sobre el comercio entre ambos países. La frontera definitiva se estableció en el Tratado de Paz y Amistad de 1904.",
+    "detalle": "Bolivia combatió junto al Perú en los primeros años de la guerra, pero tras la batalla de Tacna, en 1880, dejó de participar en las operaciones. Una vez firmado el Tratado de Ancón, Chile y Bolivia negociaron el fin de las hostilidades.\n\nEl pacto lo firmaron Aniceto Vergara Albano, por Chile, y Belisario Salinas y Belisario Boeto, por Bolivia. Con él, Bolivia aceptó la administración chilena del litoral de la provincia de Antofagasta mientras se negociaba un tratado definitivo.\n\nEsa situación se formalizó con el Tratado de Paz y Amistad del 20 de octubre de 1904, en el que Bolivia reconoció el dominio perpetuo de Chile sobre ese territorio, y Chile se comprometió, entre otras obligaciones, a construir el ferrocarril de Arica a La Paz y a otorgar a Bolivia libre tránsito por sus puertos. La pérdida de su salida al mar sigue siendo un tema central en las relaciones entre ambos países.",
+    "personajes": ["Aniceto Vergara Albano", "Belisario Salinas", "Belisario Boeto", "Domingo Santa María"],
+    "imagen": {
+      "archivo": "Domingo_Santa_María_y_Aniceto_Vergara_Albano.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Domingo_Santa_María_y_Aniceto_Vergara_Albano.jpg",
+      "pieDeFoto": "Domingo Santa María, presidente de Chile entre 1881 y 1886, y Aniceto Vergara Albano, en un retrato del siglo XIX."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-66408.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-96351.html"
+    ]
+  },
+  {
+    "id": "1888-incorporacion-de-rapa-nui",
+    "titulo": "Incorporación de Rapa Nui",
+    "fecha": "1888-09-09",
+    "fechaAproximada": false,
+    "fechaTexto": "9 de septiembre de 1888",
+    "periodoId": "05",
+    "temas": ["pueblos-originarios", "politica"],
+    "importancia": 2,
+    "lugar": "Rapa Nui (Isla de Pascua)",
+    "resumenNino": "El marino chileno Policarpo Toro y el ariki (jefe) rapanui Atamu Tekena firmaron un acuerdo, y Rapa Nui pasó a formar parte de Chile. Hoy se discute qué significaba ese acuerdo, porque sus textos en castellano y en rapanui no dicen lo mismo.",
+    "resumen": "El 9 de septiembre de 1888, el capitán de corbeta Policarpo Toro, en nombre del gobierno de Chile, y el ariki Atamu Tekena, junto a otros jefes rapanui, firmaron en la isla el llamado Acuerdo de Voluntades, con el que Rapa Nui se incorporó a Chile. El documento se redactó en castellano y en rapanui mezclado con tahitiano antiguo, y ambos textos no dicen lo mismo, por lo que su interpretación se discute hasta hoy. Desde 1895 el Estado arrendó la isla a particulares, que la convirtieron en una gran estancia de ovejas, y la población rapanui quedó concentrada en Hanga Roa.",
+    "detalle": "En la segunda mitad del siglo XIX, la población rapanui había disminuido drásticamente a causa de las incursiones esclavistas de 1862 y 1863 y de las enfermedades. En 1886, por encargo del presidente José Manuel Balmaceda, se iniciaron las gestiones para anexar la isla, a cargo del marino Policarpo Toro, comandante del buque Angamos.\n\nEl 9 de septiembre de 1888 se firmaron un acta de cesión y una proclamación. Según el Informe de la Comisión Verdad Histórica y Nuevo Trato (2003), el texto en castellano habla de una cesión de soberanía, mientras que la versión en rapanui no se refiere a la entrega de la tierra. Por eso, para muchos rapanui el acuerdo fue una alianza de amistad y no una cesión de sus tierras, y existen distintas interpretaciones sobre su alcance.\n\nEn 1895, el Estado arrendó la isla al comerciante Enrique Merlet; más tarde la explotó la Compañía Explotadora de Isla de Pascua, controlada por la firma Williamson, Balfour y Cía. Durante casi sesenta años la isla funcionó como una estancia ovejera, y la población rapanui quedó concentrada en el poblado de Hanga Roa. El arriendo terminó a mediados del siglo XX.",
+    "personajes": ["Policarpo Toro", "Atamu Tekena", "José Manuel Balmaceda"],
+    "imagen": {
+      "archivo": "Busts_of_King_Atamu_Tekena_and_Captain_Policarpo_Toro_(7704402080).jpg",
+      "autor": "Dan Lundberg",
+      "licencia": "CC BY-SA 2.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Busts_of_King_Atamu_Tekena_and_Captain_Policarpo_Toro_(7704402080).jpg",
+      "pieDeFoto": "Bustos del ariki Atamu Tekena y del capitán Policarpo Toro en la plaza de Hanga Roa."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3524.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-70702.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-94620.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-122901.html"
+    ]
+  },
+  {
+    "id": "1891-guerra-civil",
+    "titulo": "Guerra civil de 1891",
+    "fecha": "1891-01-07",
+    "fechaFin": "1891-08-28",
+    "fechaAproximada": false,
+    "fechaTexto": "enero-agosto de 1891",
+    "periodoId": "05",
+    "temas": ["guerra", "politica"],
+    "importancia": 3,
+    "lugar": "Chile",
+    "resumenNino": "El presidente José Manuel Balmaceda y el Congreso no se pusieron de acuerdo sobre quién debía tener más poder, y Chile vivió una guerra entre chilenos. Ganaron los partidarios del Congreso.",
+    "resumen": "La guerra civil de 1891 enfrentó al presidente José Manuel Balmaceda con la mayoría del Congreso, que lo acusaba de exceder sus atribuciones. Como el Congreso no aprobó las leyes del presupuesto y de las fuerzas armadas, Balmaceda las declaró vigentes por decreto, y el 7 de enero de 1891 la Escuadra se sublevó en apoyo del Congreso, mientras la mayor parte del Ejército se mantuvo leal al presidente. Tras organizar un gobierno en Iquique, las fuerzas del Congreso vencieron en las batallas de Concón (21 de agosto) y Placilla (28 de agosto). Con su triunfo comenzó el período conocido como República Parlamentaria.",
+    "detalle": "Durante su gobierno, Balmaceda impulsó grandes obras públicas financiadas con los ingresos del salitre, pero tuvo crecientes conflictos con el Congreso, donde la mayoría de los partidos se oponía a su forma de gobernar. En 1890 el Congreso no aprobó las leyes que autorizaban el presupuesto y las fuerzas armadas para el año siguiente, y en enero de 1891 Balmaceda decidió mantener vigentes por decreto las del año anterior. La mayoría del Congreso consideró que esa decisión violaba la Constitución.\n\nEl 7 de enero de 1891, la Escuadra, al mando del marino Jorge Montt y con dirigentes del Congreso a bordo, como Waldo Silva y Ramón Barros Luco, se sublevó y zarpó hacia el norte. Las fuerzas del Congreso tomaron el control de Tarapacá y sus salitreras, y el 12 de abril formaron en Iquique una Junta de Gobierno presidida por Montt. En agosto, su ejército desembarcó en la bahía de Quintero y venció a las tropas de Balmaceda en Concón, el 21 de agosto, y en Placilla, el 28 de agosto. Según Memoria Chilena, la batalla de Placilla dejó miles de muertos.\n\nLa guerra también golpeó a civiles: en agosto, tropas del gobierno dieron muerte a jóvenes opositores reunidos en el fundo Lo Cañas, y tras la victoria del Congreso hubo saqueos de casas de partidarios de Balmaceda en Santiago. El 29 de agosto, Balmaceda entregó el mando al general Manuel Baquedano y se refugió en la Legación Argentina. Después de la guerra, el Congreso tuvo un fuerte poder sobre los gobiernos, y las causas del conflicto siguen siendo objeto de interpretaciones distintas.",
+    "personajes": ["José Manuel Balmaceda", "Jorge Montt", "Waldo Silva", "Ramón Barros Luco", "Manuel Baquedano"],
+    "imagen": {
+      "archivo": "Batalla_de_Placilla_-_posición_dictatorial.png",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Batalla_de_Placilla_-_posición_dictatorial.png",
+      "pieDeFoto": "Vista panorámica del campo de batalla de Placilla (1891)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-92983.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3473.html",
+      "https://www.armada.cl/tradicion-e-historia/principales-acciones-navales/la-guerra-civil-de-1891/la-junta-de-gobierno-y-sus-primeras-medidas-12-de-abril-de-1891",
+      "https://www.archivonacional.gob.cl/lo-canas-la-noche-triste-del-19-de-agosto-de-1891"
+    ]
+  },
+  {
+    "id": "1891-muerte-de-balmaceda",
+    "titulo": "Muerte de José Manuel Balmaceda",
+    "fecha": "1891-09-19",
+    "fechaAproximada": false,
+    "fechaTexto": "19 de septiembre de 1891",
+    "periodoId": "05",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "José Manuel Balmaceda, que había sido presidente de Chile, murió en Santiago poco después de terminar la guerra civil. Algunas personas lo recuerdan como un gran presidente y otras critican su forma de gobernar.",
+    "resumen": "Tras la derrota de sus fuerzas en Placilla, José Manuel Balmaceda entregó el mando al general Manuel Baquedano y se refugió en la Legación Argentina en Santiago. El 19 de septiembre de 1891, un día después de terminado su período presidencial, se quitó la vida en ese lugar. Antes de morir escribió cartas y un documento conocido como su testamento político. Su figura ha sido interpretada de formas muy distintas: para unos fue un estadista que impulsó el desarrollo del país, y para otros un gobernante que pasó por sobre las instituciones.",
+    "detalle": "José Manuel Balmaceda asumió la presidencia el 18 de septiembre de 1886. Su gobierno impulsó un gran plan de obras públicas, como el viaducto del Malleco, inaugurado en 1890, y mejoras en la educación pública.\n\nDespués de la batalla de Placilla, el 29 de agosto de 1891, delegó el mando en el general Manuel Baquedano y buscó asilo en la Legación Argentina, mientras su familia se refugiaba en otras legaciones. Permaneció allí varias semanas y el 19 de septiembre, un día después de expirado su mandato, se quitó la vida.\n\nDesde entonces su figura ha sido muy debatida. Algunos autores lo consideran un estadista visionario que impulsó el desarrollo del país; otros, un gobernante que pasó por sobre las instituciones y desencadenó la guerra civil. Desde mediados del siglo XX también se le ha visto como un precursor de políticas económicas nacionalistas, y en la memoria popular quedó como una figura que se sacrificó.",
+    "personajes": ["José Manuel Balmaceda", "Manuel Baquedano"],
+    "imagen": {
+      "archivo": "JoseManuelBalmaceda.JPG",
+      "autor": "Fernando Laroche",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:JoseManuelBalmaceda.JPG",
+      "pieDeFoto": "Retrato de José Manuel Balmaceda por Fernando Laroche (1891)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-662.html",
+      "https://www.archivonacional.gob.cl/lo-canas-la-noche-triste-del-19-de-agosto-de-1891"
+    ]
+  }
+]

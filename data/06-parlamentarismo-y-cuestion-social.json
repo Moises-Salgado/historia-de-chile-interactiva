@@ -1,0 +1,325 @@
+[
+  {
+    "id": "1880-auge-del-salitre",
+    "titulo": "Auge del salitre",
+    "fecha": "1880",
+    "fechaFin": "1930",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1880-1930",
+    "periodoId": "06",
+    "temas": ["economia"],
+    "importancia": 3,
+    "lugar": "Tarapacá y Antofagasta",
+    "resumenNino": "En el desierto del norte de Chile había salitre, una sustancia que se usaba como abono para las plantas. Miles de trabajadores vivían en pueblos llamados oficinas salitreras, y su venta a otros países trajo mucho dinero a Chile.",
+    "resumen": "Después de la Guerra del Pacífico, Chile pasó a controlar las zonas salitreras de Tarapacá y Antofagasta. La exportación de salitre, usado sobre todo como fertilizante, creció con fuerza y el Estado cobró un alto impuesto a su exportación, que le dio grandes recursos. Miles de trabajadores vivían en las oficinas salitreras, donde muchas veces parte del sueldo se pagaba con fichas que solo servían en la pulpería de la empresa. La Primera Guerra Mundial, los fertilizantes sintéticos y la crisis mundial de 1929 pusieron fin a este ciclo de expansión.",
+    "detalle": "El salitre (nitrato de sodio) se explotaba en el desierto desde antes de la Guerra del Pacífico; según Memoria Chilena, la primera exportación a Europa se hizo en 1830. Terminada la ocupación de Tarapacá, en 1880 se reanudaron las faenas y la exportación. La industria atrajo capitales extranjeros, sobre todo británicos, pero también alemanes, italianos, franceses, españoles y croatas, y el Estado chileno aplicó un elevado impuesto a la exportación que generó grandes recursos fiscales.\n\nLa producción creció rápidamente: en 1900 las exportaciones superaron por primera vez los 14 millones de quintales y en 1908, los 20 millones. Entre 1895 y 1899 había 48 oficinas salitreras con más de 18.000 operarios, y entre 1910 y 1914 llegaron a 118 oficinas con unos 46.000 trabajadores. Las oficinas eran pueblos en medio del desierto, con viviendas, pulpería (almacén) y otros servicios. En muchas, parte del sueldo se pagaba con fichas que solo podían cambiarse en la pulpería de la propia empresa, una práctica que generó reclamos de los trabajadores.\n\nLa industria vivió etapas de auge y crisis. Al comenzar la Primera Guerra Mundial se cerró el mercado europeo, aunque luego la demanda para la guerra hizo subir las exportaciones; además, la aparición de los fertilizantes sintéticos le quitó mercado. La crisis económica mundial de 1929 afectó directamente a la industria y marcó el fin de su ciclo expansivo.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Desripiadores-oficina-mapocho-1900.jpg",
+      "autor": "Patrimonio cultural común",
+      "licencia": "CC BY 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Desripiadores-oficina-mapocho-1900.jpg",
+      "pieDeFoto": "Desripiadores, trabajadores de la oficina salitrera Mapocho, hacia 1900."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3309.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3548.html",
+      "https://dialnet.unirioja.es/descarga/articulo/4602047.pdf"
+    ]
+  },
+  {
+    "id": "1880-cuestion-social",
+    "titulo": "La cuestión social",
+    "fecha": "1880",
+    "fechaFin": "1920",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1880-1920",
+    "periodoId": "06",
+    "temas": ["derechos", "economia"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "Hace más de cien años, muchas familias trabajadoras vivían amontonadas en piezas pequeñas y sin higiene, y muchos niños se enfermaban. Los trabajadores se unieron para ayudarse y pedir una vida mejor.",
+    "resumen": "Se llama «cuestión social» al conjunto de problemas que afectaron a los trabajadores y sectores populares de Chile entre fines del siglo XIX y comienzos del XX. El crecimiento desordenado de las ciudades llevó a muchas familias a vivir hacinadas en conventillos, con malas condiciones de higiene, alta mortalidad infantil y enfermedades como la tuberculosis. Los trabajadores formaron mutuales, mancomunales y sociedades de resistencia, y realizaron huelgas para exigir mejoras. Desde 1906 el Estado comenzó a dictar las primeras leyes sociales.",
+    "detalle": "El término se difundió en Chile, entre otros, con una serie de artículos que el médico Augusto Orrego Luco publicó en 1884 con el título «La cuestión social». Según Memoria Chilena, la pobreza ya existía antes, pero se transformó en una cuestión social por la combinación de un capitalismo consolidado, una industrialización incipiente y una urbanización descontrolada. En ciudades como Santiago y Valparaíso, muchas familias arrendaban una pieza en un conventillo, donde el hacinamiento y la falta de higiene favorecían las enfermedades y una alta mortalidad infantil.\n\nLos trabajadores se organizaron primero en mutuales o sociedades de socorros mutuos, que ayudaban a sus socios en caso de enfermedad o muerte, y luego en mancomunales y sociedades de resistencia, más orientadas a defender sus intereses frente a los patrones. Hubo numerosas huelgas, como la gran huelga de Valparaíso (1903), la «huelga de la carne» en Santiago (1905) y la huelga salitrera de 1907, que terminó en la matanza de la Escuela Santa María de Iquique.\n\nSurgieron respuestas desde el catolicismo social, inspirado en la encíclica Rerum Novarum; desde el liberalismo laico, ligado al Partido Radical, y desde el socialismo impulsado por los propios trabajadores. El Estado dictó las primeras leyes sociales, como la de Habitaciones Obreras (1906), la de Descanso Dominical (1907), la «Ley de la Silla» (1915) y la de Accidentes del Trabajo (1916). Existen distintas interpretaciones sobre el alcance que tuvieron estas primeras medidas.",
+    "personajes": ["Augusto Orrego Luco"],
+    "imagen": {
+      "archivo": "Lavanderas_en_un_Conventillo_1903.jpg",
+      "autor": "Carlos Tornero (libro de 1903)",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Lavanderas_en_un_Conventillo_1903.jpg",
+      "pieDeFoto": "Lavanderas en un conventillo, imagen del libro «Chile: descripción física, política, social, industrial y comercial de la República de Chile», de Carlos Tornero (1903)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-679.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-603.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-621.html"
+    ]
+  },
+  {
+    "id": "1904-tratado-de-paz-con-bolivia",
+    "titulo": "Tratado de Paz y Amistad con Bolivia",
+    "fecha": "1904-10-20",
+    "fechaAproximada": false,
+    "fechaTexto": "20 de octubre de 1904",
+    "periodoId": "06",
+    "temas": ["politica"],
+    "importancia": 1,
+    "lugar": "Santiago",
+    "resumenNino": "Veinte años después de la Guerra del Pacífico, Chile y Bolivia firmaron un tratado de paz. Chile se comprometió, entre otras cosas, a construir un tren entre Arica y La Paz.",
+    "resumen": "El 20 de octubre de 1904, en Santiago, Chile y Bolivia firmaron el Tratado de Paz y Amistad, que reemplazó al pacto de tregua vigente desde 1884, después de la Guerra del Pacífico. Bolivia reconoció el dominio absoluto y perpetuo de Chile sobre los territorios que este ocupaba, incluido el antiguo litoral boliviano. A cambio, Chile se comprometió a construir a su costa un ferrocarril entre Arica y La Paz, a pagar 300.000 libras esterlinas y a reconocer a Bolivia el libre tránsito comercial por su territorio y sus puertos.",
+    "detalle": "Tras la Guerra del Pacífico, Chile y Bolivia firmaron en 1884 un Pacto de Tregua que dejó bajo administración chilena el antiguo litoral boliviano. En los veinte años siguientes hubo varias negociaciones para llegar a un acuerdo definitivo. El tratado fue firmado por el ministro de Relaciones Exteriores de Chile, Emilio Bello Codesido, y por el enviado extraordinario y ministro plenipotenciario de Bolivia, Alberto Gutiérrez.\n\nAdemás de reconocer la soberanía chilena sobre esos territorios, el tratado estableció que Chile construiría el ferrocarril de Arica al Alto de La Paz y que su sección boliviana pasaría a Bolivia quince años después de terminada. Chile se obligó también a pagar 300.000 libras esterlinas en dos cuotas y reconoció a Bolivia, a perpetuidad, el más amplio y libre derecho de tránsito comercial por su territorio y sus puertos del Pacífico. El ferrocarril se inauguró en 1913.\n\nEl tratado sigue vigente. Bolivia ha mantenido su aspiración de recuperar un acceso soberano al mar, un tema en el que ambos países tienen posiciones distintas.",
+    "personajes": ["Emilio Bello Codesido", "Alberto Gutiérrez"],
+    "imagen": {
+      "archivo": "Puente_del_ferrocarril_Arica-La_Paz_sobre_el_río_Lluta.png",
+      "autor": "Libro de Alberto Decombe",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Puente_del_ferrocarril_Arica-La_Paz_sobre_el_río_Lluta.png",
+      "pieDeFoto": "Puente del ferrocarril de Arica a La Paz sobre el río Lluta, en un libro de Alberto Decombe (1913)."
+    },
+    "fuentes": [
+      "https://www.efe.cl/wp-content/uploads/2020/06/Tratado-de-1904.pdf",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92273.html"
+    ]
+  },
+  {
+    "id": "1906-terremoto-de-valparaiso",
+    "titulo": "Terremoto de Valparaíso",
+    "fecha": "1906-08-16",
+    "fechaAproximada": false,
+    "fechaTexto": "16 de agosto de 1906",
+    "periodoId": "06",
+    "temas": ["desastres"],
+    "importancia": 2,
+    "lugar": "Valparaíso",
+    "resumenNino": "Un terremoto muy fuerte destruyó gran parte de Valparaíso y luego hubo incendios. Muchas personas murieron y la ciudad tuvo que reconstruirse.",
+    "resumen": "En la noche del 16 de agosto de 1906, un violento terremoto, seguido de incendios, dejó casi destruida la ciudad de Valparaíso, entonces el principal puerto del país. Según Memoria Chilena, murieron cerca de 3.000 personas. Las autoridades organizaron redes de ayuda para los damnificados y aplicaron duras medidas contra los saqueos. En 1908 se creó el Servicio Sismológico de Chile.",
+    "detalle": "A comienzos del siglo XX, Valparaíso era el principal puerto de Chile. El terremoto ocurrió en la noche del 16 de agosto de 1906: muchas construcciones se derrumbaron y los incendios que siguieron agravaron la destrucción. Según Memoria Chilena, dejó unas 3.000 víctimas fatales; las estimaciones sobre su magnitud varían según la fuente.\n\nLas autoridades organizaron rápidamente la ayuda a los damnificados, y el presidente electo, Pedro Montt, recorrió las ruinas. El marino Luis Gómez Carreño quedó a cargo del orden en la ciudad. Ante los saqueos se ordenó fusilar a quienes fueran sorprendidos robando, una medida polémica, porque se presume que varios de los fusilados no eran culpables.\n\nEl desastre impulsó el estudio de los sismos en Chile: en 1908 se creó el Servicio Sismológico, bajo la tuición de la Universidad de Chile, cuyo primer director fue el francés Fernand de Montessus de Ballore.",
+    "personajes": ["Pedro Montt", "Luis Gómez Carreño", "Fernand de Montessus de Ballore"],
+    "imagen": {
+      "archivo": "Colegio_Padres_Franceses_después_terremoto_Valparaíso_1906_cropped.JPG",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Colegio_Padres_Franceses_después_terremoto_Valparaíso_1906_cropped.JPG",
+      "pieDeFoto": "El Colegio de los Padres Franceses de Valparaíso después del terremoto de 1906."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-97953.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-87206.html"
+    ]
+  },
+  {
+    "id": "1907-matanza-escuela-santa-maria",
+    "titulo": "Matanza de la Escuela Santa María de Iquique",
+    "fecha": "1907-12-21",
+    "fechaAproximada": false,
+    "fechaTexto": "21 de diciembre de 1907",
+    "periodoId": "06",
+    "temas": ["derechos", "politica"],
+    "importancia": 3,
+    "lugar": "Iquique",
+    "resumenNino": "Miles de trabajadores del salitre llegaron a Iquique para pedir mejores sueldos y se reunieron en una escuela. Los soldados dispararon contra ellos y murieron muchas personas, un hecho muy triste que Chile recuerda.",
+    "resumen": "En diciembre de 1907, miles de trabajadores del salitre se declararon en huelga y llegaron a Iquique para pedir mejores salarios y condiciones de trabajo. Se reunieron en la escuela Domingo Santa María y en la plaza vecina. El 21 de diciembre, como los huelguistas se negaron a abandonar el lugar, el general Roberto Silva Renard ordenó a las tropas disparar contra la multitud. El número de muertos nunca se estableció con certeza: el parte oficial habló de 140 muertos y heridos, mientras otras fuentes y estimaciones posteriores hablan de cientos e incluso miles de víctimas.",
+    "detalle": "La huelga comenzó a inicios de diciembre de 1907 en la oficina San Lorenzo y se extendió a otras oficinas salitreras de Tarapacá. Desde el 15 de diciembre, columnas de miles de trabajadores llegaron a Iquique, y muchos se alojaron en la escuela fiscal Domingo Santa María. El ministro del Interior, Rafael Sotomayor, ordenó restringir la libertad de reunión, y el intendente Carlos Eastman decretó restricciones a la libertad de tránsito y ordenó a los huelguistas abandonar la ciudad.\n\nEl 21 de diciembre, durante el gobierno de Pedro Montt, el general Silva Renard ordenó a sus tropas disparar contra los huelguistas que permanecían en la escuela y en la plaza Montt. Las cifras de víctimas varían mucho y es posible que nunca haya consenso: van desde las 140 personas entre muertos y heridos que informó el general Silva Renard hasta los 3.600 muertos que menciona la Cantata Santa María de Iquique, una obra musical posterior.\n\nLa llegada de miles de huelguistas despertó temor en parte de la población de Iquique, y ese temor se invocó para justificar la represión. Existen distintas interpretaciones sobre lo ocurrido, que se convirtió en un símbolo para el movimiento obrero chileno.",
+    "personajes": ["Roberto Silva Renard", "Carlos Eastman", "Rafael Sotomayor", "Pedro Montt"],
+    "imagen": {
+      "archivo": "Obreros_de_la_Pampa_-_Masacre_Escuela_Santa_María_1907.JPG",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Obreros_de_la_Pampa_-_Masacre_Escuela_Santa_María_1907.JPG",
+      "pieDeFoto": "Desfile de trabajadores llegados desde la pampa salitrera a Iquique durante la huelga de diciembre de 1907."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3604.html",
+      "https://www.redalyc.org/journal/3713/371358885004/html/"
+    ]
+  },
+  {
+    "id": "1910-centenario-de-la-independencia",
+    "titulo": "Centenario de la Independencia",
+    "fecha": "1910-09",
+    "fechaAproximada": false,
+    "fechaTexto": "septiembre de 1910",
+    "periodoId": "06",
+    "temas": ["cultura", "politica"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "En 1910 Chile celebró los cien años de su Primera Junta de Gobierno con desfiles, fiestas y nuevos edificios, como el Museo de Bellas Artes.",
+    "resumen": "En septiembre de 1910 Chile celebró el centenario de la Primera Junta Nacional de Gobierno de 1810. Las fiestas se realizaron en medio del duelo por la muerte del presidente Pedro Montt y del vicepresidente Elías Fernández Albano, por lo que las encabezó el vicepresidente Emiliano Figueroa Larraín. Hubo desfiles, llegaron delegaciones extranjeras, como la argentina, encabezada por el presidente José Figueroa Alcorta, y se inauguraron obras como el Palacio de Bellas Artes. También hubo críticas por el gasto y por la escasa participación del pueblo en los festejos.",
+    "detalle": "El presidente Pedro Montt murió el 16 de agosto de 1910 en Bremen, Alemania, y pocas semanas después falleció el vicepresidente Elías Fernández Albano. Por eso las celebraciones fueron encabezadas por el vicepresidente Emiliano Figueroa Larraín. Más tarde fue elegido presidente Ramón Barros Luco.\n\nPara el Centenario se levantaron obras públicas como el Palacio de Bellas Artes, inaugurado el 21 de septiembre de 1910, y la Estación Mapocho, además de monumentos donados por colectividades extranjeras. Llegaron delegaciones de varios países; la de Argentina fue encabezada por su presidente, José Figueroa Alcorta.\n\nAlgunas voces criticaron el protagonismo de la élite, la ausencia del pueblo en los festejos y el gasto de recursos públicos en medio de una crisis económica. Ese mismo año, el profesor Alejandro Venegas, con el seudónimo de «Doctor Julio Valdés Cange», publicó «Sinceridad: Chile íntimo en 1910», un libro crítico sobre la situación social del país.",
+    "personajes": ["Emiliano Figueroa Larraín", "Pedro Montt", "Elías Fernández Albano", "José Figueroa Alcorta", "Alejandro Venegas"],
+    "imagen": {
+      "archivo": "Desfile_en_la_Alameda-Centenario_Chile_1910.png",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Desfile_en_la_Alameda-Centenario_Chile_1910.png",
+      "pieDeFoto": "Desfile oficial en la Alameda de las Delicias (actual Avenida Libertador Bernardo O'Higgins) durante el Centenario, en 1910."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-710.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-62070.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-97691.html",
+      "https://www.bcn.cl/historiapolitica/resenas_biograficas/wiki/Emiliano_Figueroa_Larra%C3%ADn",
+      "https://www.memoriachilena.gob.cl/602/w3-article-94701.html"
+    ]
+  },
+  {
+    "id": "1912-partido-obrero-socialista",
+    "titulo": "Recabarren y el Partido Obrero Socialista",
+    "fecha": "1912",
+    "fechaAproximada": false,
+    "fechaTexto": "1912",
+    "periodoId": "06",
+    "temas": ["politica", "derechos"],
+    "importancia": 1,
+    "lugar": "Iquique",
+    "resumenNino": "Luis Emilio Recabarren, un tipógrafo que defendía a los trabajadores, fundó junto a otros obreros del norte un partido político para ellos: el Partido Obrero Socialista.",
+    "resumen": "En 1912, Luis Emilio Recabarren y otros dirigentes del norte salitrero se separaron del Partido Democrático y fundaron el Partido Obrero Socialista (POS), para representar a los obreros desde las ideas socialistas. Las fuentes difieren en la fecha exacta: Memoria Chilena indica el 24 de mayo de 1912, en la oficina salitrera La Cholita, y la Biblioteca del Congreso Nacional, el 4 de junio de 1912, en Iquique. En 1922 el partido se transformó en el Partido Comunista de Chile.",
+    "detalle": "Luis Emilio Recabarren nació en Valparaíso en 1876 y trabajó como tipógrafo. Militó en el Partido Democrático y escribió en periódicos obreros. En 1906 fue elegido diputado, pero la Cámara no aceptó su incorporación.\n\nEn 1912 las secciones nortinas del Partido Democrático acordaron separarse de él. La reunión de Iquique fue presidida por Recabarren, y entre los fundadores del nuevo partido estuvo también Teresa Flores. Ese año Recabarren escribía en El Despertar de los Trabajadores, periódico de Iquique.\n\nA partir del 1 de enero de 1922, el POS se constituyó en el Partido Comunista de Chile. Recabarren fue elegido diputado en 1921 y murió en Santiago en 1924.",
+    "personajes": ["Luis Emilio Recabarren", "Teresa Flores"],
+    "imagen": {
+      "archivo": "Luis_Emilio_Recabarren_-_1906.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Luis_Emilio_Recabarren_-_1906.jpg",
+      "pieDeFoto": "Luis Emilio Recabarren en su publicación «Mi juramento», sobre la sesión de la Cámara de Diputados del 5 de junio de 1906."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-97320.html",
+      "https://www.bcn.cl/historiapolitica/partidos_politicos/wiki/Partido_Obrero_Socialista",
+      "https://www.memoriachilena.gob.cl/602/w3-article-735.html"
+    ]
+  },
+  {
+    "id": "1914-gabriela-mistral-juegos-florales",
+    "titulo": "Gabriela Mistral gana los Juegos Florales",
+    "fecha": "1914-12-22",
+    "fechaAproximada": false,
+    "fechaTexto": "22 de diciembre de 1914",
+    "periodoId": "06",
+    "temas": ["cultura"],
+    "importancia": 1,
+    "lugar": "Santiago",
+    "resumenNino": "Una profesora llamada Lucila Godoy ganó un concurso de poesía con sus «Sonetos de la muerte». Firmaba como Gabriela Mistral y, años después, recibió el Premio Nobel de Literatura.",
+    "resumen": "El 22 de diciembre de 1914 se entregaron en Santiago los premios de los Juegos Florales, un concurso de poesía. El máximo galardón, la Flor Natural, con medalla de oro y corona de laurel, fue para «Los sonetos de la muerte», firmados por Gabriela Mistral, seudónimo de la profesora Lucila Godoy Alcayaga. Ella prefirió no recibir el premio en persona. Desde entonces usó siempre ese seudónimo, con el que en 1945 obtuvo el Premio Nobel de Literatura.",
+    "detalle": "Lucila Godoy Alcayaga nació en 1889 en Vicuña, en el valle de Elqui. En 1914 era profesora de Castellano en el Liceo de Niñas de Los Andes.\n\nEn los Juegos Florales de Santiago presentó «Los sonetos de la muerte», tres sonetos sobre el amor y la muerte. Obtuvo la Flor Natural, una medalla de oro y una corona de laurel, pero no asistió a recibirlos. A partir de este certamen adoptó definitivamente el seudónimo de Gabriela Mistral.\n\nLos sonetos se incluyeron más tarde en su libro Desolación (1922). En 1945 recibió el Premio Nobel de Literatura, la primera vez que este premio se otorgó a una escritora o escritor de América Latina.",
+    "personajes": ["Gabriela Mistral"],
+    "imagen": {
+      "archivo": "Gabriela_Mistral_1920.JPG",
+      "autor": "Desconocido - en revista Pacífico Magazine",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Gabriela_Mistral_1920.JPG",
+      "pieDeFoto": "Gabriela Mistral en una fotografía publicada en la revista Pacífico Magazine en 1920."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-95071.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3429.html"
+    ]
+  },
+  {
+    "id": "1920-eleccion-de-arturo-alessandri",
+    "titulo": "Elección de Arturo Alessandri Palma",
+    "fecha": "1920-06-25",
+    "fechaAproximada": false,
+    "fechaTexto": "25 de junio de 1920",
+    "periodoId": "06",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "Arturo Alessandri ganó la elección presidencial con un discurso dirigido a los trabajadores y a las personas más pobres. El resultado fue tan estrecho que un tribunal especial tuvo que decidirlo.",
+    "resumen": "El 25 de junio de 1920 se realizó la elección presidencial entre Arturo Alessandri Palma, apoyado por liberales reformistas, radicales y demócratas (la Alianza Liberal), y Luis Barros Borgoño, apoyado por los conservadores. Alessandri, senador por Tarapacá, hizo una campaña dirigida a los sectores populares que reunió a grandes multitudes. El resultado fue muy estrecho: Barros obtuvo más votos, pero Alessandri consiguió más electores, y un Tribunal de Honor le dio el triunfo. Asumió la presidencia el 23 de diciembre de 1920.",
+    "detalle": "Bajo la Constitución de 1833, el presidente se elegía de forma indirecta, por medio de electores. Memoria Chilena describe esta elección como un punto de inflexión en la política chilena: aunque persistían los abusos electorales de la época, Alessandri apeló en su discurso a los sectores populares y movilizó a grandes multitudes. Aun así, el número de votantes no superó el 5% de la población.\n\nEl resultado fue disputado. Para resolverlo se formó un Tribunal de Honor, que revisó la votación de los electores y dio el triunfo a Alessandri; luego el Congreso lo proclamó. Asumió el 23 de diciembre de 1920 para el período 1920-1925.\n\nDurante su gobierno, varias de las reformas sociales que había propuesto se demoraron en el Congreso, situación que fue parte del contexto de la crisis política de 1924.",
+    "personajes": ["Arturo Alessandri Palma", "Luis Barros Borgoño"],
+    "imagen": {
+      "archivo": "Arturo_Alessandri_(1920).jpg",
+      "autor": "William Belmont Parker, Chileans of To-day (1920)",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Arturo_Alessandri_(1920).jpg",
+      "pieDeFoto": "Arturo Alessandri Palma en el libro Chileans of To-day, de William Belmont Parker (1920)."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/historiapolitica/resenas_biograficas/wiki/Arturo_Alessandri_Palma",
+      "https://www.memoriachilena.gob.cl/602/w3-article-93503.html",
+      "https://radio.uchile.cl/2020/07/21/centenario-de-quema-de-libros-en-santiago/"
+    ]
+  },
+  {
+    "id": "1920-ley-instruccion-primaria-obligatoria",
+    "titulo": "Ley de Instrucción Primaria Obligatoria",
+    "fecha": "1920-08-26",
+    "fechaAproximada": false,
+    "fechaTexto": "26 de agosto de 1920",
+    "periodoId": "06",
+    "temas": ["derechos", "cultura"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "Una ley hizo obligatorio que los niños y niñas fueran a la escuela primaria al menos cuatro años, y las escuelas del Estado eran gratuitas.",
+    "resumen": "El 26 de agosto de 1920, durante el gobierno de Juan Luis Sanfuentes, se publicó la Ley N° 3.654 de Educación Primaria Obligatoria. Estableció que la educación primaria era obligatoria y que la impartida por el Estado y las municipalidades sería gratuita y para ambos sexos. Los padres o tutores debían hacer que sus hijos asistieran a una escuela primaria al menos durante cuatro años, antes de que cumplieran 13 años. La ley fue el resultado de un largo debate sobre el papel del Estado en la educación.",
+    "detalle": "A comienzos del siglo XX, una parte importante de la población chilena no sabía leer ni escribir, y muchos niños no asistían a la escuela o la dejaban pronto para trabajar. Durante años se discutió en el Congreso si el Estado debía obligar a las familias a educar a sus hijos; entre quienes defendieron la instrucción primaria obligatoria estuvo el senador Arturo Alessandri, que en 1919 pronunció un discurso sobre el tema.\n\nLa Ley N° 3.654 fue publicada en el Diario Oficial el 26 de agosto de 1920. Según Memoria Chilena, con ella se cerró el período de formación y consolidación del sistema de educación primaria en Chile. Leyes posteriores aumentaron los años de escolaridad obligatoria.",
+    "personajes": ["Juan Luis Sanfuentes", "Arturo Alessandri Palma"],
+    "imagen": {
+      "archivo": "Juan_Luis_Sanfuentes_2.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Juan_Luis_Sanfuentes_2.jpg",
+      "pieDeFoto": "Juan Luis Sanfuentes, presidente de Chile entre 1915 y 1920; durante su gobierno se publicó la ley."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/leychile/Navegar?idNorma=24146",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3565.html"
+    ]
+  },
+  {
+    "id": "1924-ruido-de-sables",
+    "titulo": "«Ruido de sables» y leyes sociales",
+    "fecha": "1924-09",
+    "fechaAproximada": false,
+    "fechaTexto": "septiembre de 1924",
+    "periodoId": "06",
+    "temas": ["politica", "derechos"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "Un grupo de jóvenes oficiales del Ejército protestó en el Senado haciendo sonar sus sables. Pocos días después, el Congreso aprobó leyes para proteger a los trabajadores.",
+    "resumen": "El 3 de septiembre de 1924, mientras el Senado discutía una dieta (sueldo) para los parlamentarios, un grupo de jóvenes oficiales del Ejército manifestó ruidosamente su descontento desde las tribunas y, al salir, golpeó sus sables contra el piso. Los oficiales formaron un Comité Militar y presentaron peticiones al presidente Arturo Alessandri. El 8 de septiembre el Congreso aprobó en bloque un conjunto de leyes sociales que llevaban tiempo postergadas. Pocos días después Alessandri dejó el país y una Junta de Gobierno encabezada por el general Luis Altamirano disolvió el Congreso.",
+    "detalle": "A comienzos de la década de 1920 había malestar en el Ejército por los bajos sueldos, y varias reformas sociales seguían detenidas en el Congreso. Según la Biblioteca del Congreso Nacional, las demandas de los oficiales combinaban mejoras para los militares con reformas postergadas, como las leyes sociales y la jornada laboral de ocho horas. El 5 de septiembre de 1924, el Comité Militar entregó a Alessandri un pliego de peticiones.\n\nEl 8 de septiembre el Congreso aprobó leyes sobre contrato de trabajo, seguro obrero obligatorio, accidentes del trabajo, organización sindical y tribunales de conciliación y arbitraje, entre otras. El 9 de septiembre Alessandri renunció; el Congreso no aceptó su renuncia y le otorgó un permiso constitucional de seis meses. Se asiló en la embajada de Estados Unidos y luego partió a Italia. El 11 de septiembre, la Junta encabezada por el general Luis Altamirano disolvió el Congreso Nacional.\n\nEl 23 de enero de 1925, otro movimiento militar, en el que participó Carlos Ibáñez del Campo, reemplazó a esa Junta y pidió el regreso de Alessandri, que volvió al país en marzo. Estos hechos marcaron el fin de la República Parlamentaria, y existen distintas interpretaciones sobre el papel que tuvieron en ellos los militares y los políticos.",
+    "personajes": ["Arturo Alessandri Palma", "Luis Altamirano", "Carlos Ibáñez del Campo"],
+    "imagen": {
+      "archivo": "Junta_Altamirano.jpg",
+      "autor": "Eugenio Figueroa",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Junta_Altamirano.jpg",
+      "pieDeFoto": "Integrantes de la Junta de Gobierno encabezada por el general Luis Altamirano, que asumió tras el movimiento militar de septiembre de 1924."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/constitucion1925/ruido.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-94574.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3633.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3307.html"
+    ]
+  },
+  {
+    "id": "1925-constitucion-de-1925",
+    "titulo": "Constitución de 1925",
+    "fecha": "1925-09-18",
+    "fechaAproximada": false,
+    "fechaTexto": "18 de septiembre de 1925",
+    "periodoId": "06",
+    "temas": ["politica"],
+    "importancia": 3,
+    "lugar": "Santiago",
+    "resumenNino": "En 1925 Chile aprobó una nueva Constitución, que es la ley más importante de un país. Le dio más poder al presidente y separó a la Iglesia del Estado.",
+    "resumen": "A su regreso al país en 1925, el presidente Arturo Alessandri impulsó una nueva Constitución para reemplazar a la de 1833. El texto fue aprobado en un plebiscito el 30 de agosto de 1925 y promulgado el 18 de septiembre de ese año. Fortaleció al presidente frente al Congreso, lo que puso fin al régimen parlamentario, y estableció la separación entre la Iglesia y el Estado. Con varias reformas, se aplicó hasta su suspensión tras el golpe de Estado de 1973.",
+    "detalle": "En abril de 1925 Alessandri formó una Comisión Consultiva de 122 miembros y una subcomisión que preparó el proyecto. En el plebiscito del 30 de agosto se podía aceptar el proyecto tal como lo presentó el presidente, aceptarlo con un régimen parlamentario o rechazarlo. Según la Biblioteca del Congreso Nacional, la primera opción obtuvo 127.509 votos y participó el 45% del padrón electoral.\n\nLa Constitución fue promulgada y publicada el 18 de septiembre de 1925 y entró en vigencia treinta días después. El presidente podía nombrar y remover a sus ministros sin aprobación del Congreso, y este perdió la facultad de derribar gabinetes. También estableció la separación entre la Iglesia y el Estado, un período presidencial de seis años y la elección directa del presidente. Se aplicó durante casi cinco décadas, hasta su suspensión tras el golpe de Estado de 1973.",
+    "personajes": ["Arturo Alessandri Palma"],
+    "imagen": {
+      "archivo": "Chile_Constitucion_1925.jpg",
+      "autor": "Desconocido - Diario La Nación",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Chile_Constitucion_1925.jpg",
+      "pieDeFoto": "El presidente Arturo Alessandri encabeza la firma de la reforma de la Constitución en el Salón Rojo del Palacio de La Moneda, el 18 de septiembre de 1925."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/constitucion1925/historia.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3573.html"
+    ]
+  }
+]

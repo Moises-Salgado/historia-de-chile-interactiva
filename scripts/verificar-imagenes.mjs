@@ -10,7 +10,7 @@ const MINIATURA = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
 const ANCHO = 800;
 const HEADERS = { 'User-Agent': 'HistoriaDeChileInteractiva/0.1 (sitio educativo; verificador de imagenes)' };
 const LOTE = 50; // máximo de títulos por consulta a la API
-const SIMULTANEAS = 4;
+const SIMULTANEAS = 2;
 
 const imagenes = readdirSync(DIR)
   .filter((n) => /^\d{2}-[a-z0-9-]+\.json$/.test(n))
@@ -19,14 +19,17 @@ const imagenes = readdirSync(DIR)
 
 const fallas = [];
 const falla = (img, msg) => fallas.push(`${img.donde} ${img.archivo}: ${msg}`);
+const limitadas = []; // miniaturas que Wikimedia no entregó por límite de peticiones (429)
 
-// Reintenta ante límite de peticiones (429) o errores del servidor.
+// Reintenta ante límite de peticiones (429) o errores del servidor, con espera creciente o la
+// que pida Retry-After; si esa espera supera 30 s, se rinde (Wikimedia limita por IP y por minutos).
 async function pedir(url) {
   for (let intento = 1; ; intento++) {
     const res = await fetch(url, { headers: HEADERS });
-    if ((res.status !== 429 && res.status < 500) || intento === 3) return res;
+    const espera = Number(res.headers.get('retry-after')) * 1000 || 2000 * 2 ** (intento - 1);
+    if ((res.status !== 429 && res.status < 500) || intento === 5 || espera > 30000) return res;
     await res.body?.cancel();
-    await new Promise((listo) => setTimeout(listo, 1500 * intento));
+    await new Promise((listo) => setTimeout(listo, espera));
   }
 }
 
@@ -87,6 +90,7 @@ async function revisarMiniatura(img) {
     const res = await pedir(`${MINIATURA}${encodeURIComponent(img.archivo.replace(/ /g, '_'))}?width=${ANCHO}`);
     const tipo = res.headers.get('content-type') ?? '';
     await res.body?.cancel();
+    if (res.status === 429) return limitadas.push(`${img.donde} ${img.archivo}`);
     if (!res.ok || !tipo.startsWith('image/')) falla(img, `la miniatura no carga (HTTP ${res.status} ${tipo})`);
   } catch (e) {
     falla(img, `la miniatura no carga (${e.cause?.code ?? e.message})`);
@@ -109,9 +113,15 @@ try {
 }
 await enParalelo(imagenes.filter((img) => img.existe), SIMULTANEAS, revisarMiniatura);
 
+if (limitadas.length) {
+  console.log(`SIN VERIFICAR (${limitadas.length}): Wikimedia limitó las peticiones (HTTP 429). Existen y su licencia está bien; reintentar más tarde.`);
+  for (const l of limitadas) console.log(`  - ${l}`);
+}
 if (fallas.length) {
   console.log(`FALLAS (${fallas.length}):\n${fallas.map((f) => `  - ${f}`).join('\n')}`);
   process.exitCode = 1;
 } else {
-  console.log('OK: todas las imágenes existen, tienen licencia permitida y su miniatura carga.');
+  console.log(limitadas.length
+    ? 'OK: todas las imágenes existen y tienen licencia permitida (algunas miniaturas quedaron sin verificar).'
+    : 'OK: todas las imágenes existen, tienen licencia permitida y su miniatura carga.');
 }

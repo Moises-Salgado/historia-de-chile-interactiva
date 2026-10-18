@@ -84,7 +84,9 @@ function validarFechas(ev, d, ctx) {
     if (f.anio > ANIO_ACTUAL) error(d, 'fecha en el futuro');
     if (f.anio > 2023 && ev.pendienteVerificacion !== true) ctx.recientes.push(ev.id);
     const p = ctx.periodos.get(ev.periodoId);
-    if (p && (f.anio < p.inicio || f.anio > (p.fin ?? ANIO_ACTUAL))) {
+    // Un proceso (con fechaFin) basta con que se cruce con el período.
+    const anioFin = (typeof ev.fechaFin === 'string' && parseFecha(ev.fechaFin)?.anio) || f.anio;
+    if (p && (anioFin < p.inicio || f.anio > (p.fin ?? ANIO_ACTUAL))) {
       aviso(d, `fecha fuera del rango del período ${p.id} (${p.fechasTexto})`);
     }
   }

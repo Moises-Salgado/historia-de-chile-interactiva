@@ -48,3 +48,44 @@ Datos con menor certeza o con fuentes que no coinciden. En la app se eligió la 
 - **Maipú**: las frases del «abrazo» no tienen fuente primaria y se omitieron. Las cifras de tropas son del gobierno argentino.
 - **Expedición Libertadora**: Memoria Chilena da otras fechas para la captura de la Reina María Isabel (17 de noviembre) y la toma de Valdivia (2 de febrero).
 - **Abolición de la esclavitud**: unas aclaraciones del 28 de julio de 1823 habrían limitado su alcance.
+
+## 04 · Organización de la República
+
+- **Tantauco**: firma el 15, el 18 o el 19 de enero de 1826 según la fuente; se usó «enero de 1826».
+- **Lircay**: Memoria Chilena da el 17 y el 16 de abril de 1830 en fichas distintas; se usó el 17. Se omitieron las bajas.
+- **Chañarcillo**: hallazgo el 16 (Museo Regional de Atacama) o el 18 de mayo de 1832 (Jotabeche); se usó solo el mes.
+- **Constitución de 1833**: el mandato de 5 años con reelección inmediata sale del texto constitucional; dos fichas de Memoria Chilena traen erratas (6 años, «25 de agosto»).
+- **Terremoto de 1835**: se omitieron la magnitud y las víctimas; el alzamiento de la costa de hasta 2,7 m viene de un resumen de la GSA (2009).
+- **Portales**: el lugar (cerro Barón), el nombre de Florín y la condena de los culpables vienen de La Tercera (2022), no de Memoria Chilena.
+- **Confederación y Yungay**: la guerra empieza en 1836 (declaración) o en 1837 (Memoria Chilena). Se omitieron Paucarpata (16 o 17-11-1837) y el día de la disolución de la Confederación.
+- **Universidad de Chile**: un artículo de la revista Atenea atribuye el primer rectorado al canónigo Meneses; se mantuvo a Andrés Bello (versión oficial).
+- **Fuerte Bulnes**: Memoria Chilena da dos fechas para el fuerte (30-10 y 11-11-1843) y para el traslado a Punta Arenas (1848 o 1849).
+- **Colonización alemana**: fin del proceso en 1875 (Memoria Chilena) o en 1880; se omitieron las fundaciones de Puerto Montt y Puerto Varas y el número de colonos.
+- **Ferrocarril**: Memoria Chilena dice «julio de 1851»; el 4-07 y el 25-12-1851 vienen de los Anales del Instituto de Chile.
+- **Guerra civil de 1851**: se omitieron el Tratado de Purapel (sin fuente institucional) y las bajas de Loncomilla.
+- **Código Civil**: se omitieron los años de adopción en otros países porque varían.
+
+## 05 · Expansión y Guerra del Pacífico
+
+- **Araucanía**: Memoria Chilena fecha el proceso en 1851-1883; se usó 1861 (plan de Saavedra). Se omitieron las hectáreas de los títulos de merced (entre unas 434.000 y 529.000 según la fuente).
+- **Guerra contra España**: declaración del 24 o del 25 de septiembre de 1865; se escribió «septiembre de 1865». Se omitieron los daños.
+- **Decreto Amunátegui**: 06-02-1877 (Senado y Memoria Chilena) o firmado el 05-02 en Viña del Mar (revista Historia, UC). Título de Eloísa Díaz: 27-12-1886 o 1887.
+- **Guerra del Pacífico**: la ley boliviana del impuesto es del 10 o del 14-02-1878; se escribió «1878». Se omitieron las bajas.
+- **Iquique**: se omitieron la dotación y los muertos de la Esmeralda (201 y 141 según la prensa) y la arenga de Prat, por no tener fuente institucional.
+- **Morro de Arica**: la duración del asalto (44, 45 o 55 minutos) y las bajas difieren entre el Ejército, la BCN y el CMN.
+- **Tratado de 1881 con Argentina**: Memoria Chilena da el 28-07; el texto del tratado, el 23-07 (la usada). No se nombró a los mediadores de EE. UU.
+- **Lima y Ancón**: el fin de la ocupación de Lima (1883) y la retirada chilena del Perú (1884) van solo con el año.
+- **Rapa Nui**: el arriendo terminó en 1952-1953 o en 1966 según la fuente (se escribió «a mediados del siglo XX»). La diferencia entre los textos del acuerdo se cita del Informe de 2003 a través de fuentes secundarias.
+- **Guerra civil de 1891**: una ficha de Memoria Chilena fecha la sublevación de la Escuadra el 11-02-1891; se usó el 7-01 (BCN y otra ficha de Memoria Chilena). Sin cifras de muertos.
+
+## 06 · Parlamentarismo y cuestión social
+
+- **Salitre y cuestión social**: son procesos (c. 1880-1930 y c. 1880-1920) que empiezan antes del período; sus límites son convencionales.
+- **Escuela Santa María**: se dejó el rango con fuente: 140 muertos y heridos según el parte de Silva Renard y 3.600 según la Cantata. Se omitieron otras cifras (más de 200 muertos según testigos, 494 según El Proletario, 126 oficiales) por no estar en las fuentes citadas. Inicio de la huelga: 9 o 10 de diciembre de 1907.
+- **Partido Obrero Socialista**: 24-05-1912 en la oficina La Cholita (Memoria Chilena) o 04-06-1912 en Iquique (BCN); se usó «1912».
+- **Centenario**: la cronología de Memoria Chilena pone a Fernández Albano al frente de las fiestas, pero murió antes; se siguió a la BCN (Figueroa Larraín).
+- **Gabriela Mistral**: su biografía en Memoria Chilena ubica el fallo en septiembre de 1914; se usó la ceremonia del 22-12-1914. Se omitió su vínculo, discutido, con Romelio Ureta.
+- **Elección de 1920**: electores 179 contra 175 (BCN) o 177 contra 176 (Tribunal de Honor), por eso se omitieron. La fecha del 25-06-1920 se respalda en Radio Universidad de Chile.
+- **Terremoto de Valparaíso**: se omitieron la magnitud (7,9 a 8,2) y la hora (19:48 o 19:55) por discrepancias.
+- **Ruido de sables**: algunas fuentes lo fechan el 2 de septiembre de 1924; se siguió a la BCN (día 3).
+- **Constitución de 1925**: el color de cada cédula del plebiscito difiere entre la BCN y la prensa; se omitió.
