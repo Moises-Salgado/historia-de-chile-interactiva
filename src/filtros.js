@@ -105,7 +105,7 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
   const resultado = ({ ev, motivo }) => {
     const p = periodoDe.get(ev.periodoId);
     return `<li><button type="button" class="resultado" data-id="${ev.id}" style="--color:${p.color}">
-      <img class="resultado-img" src="${urlImagen(ev.imagen.archivo, 120)}" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}">
+      <span class="resultado-img"><img src="${urlImagen(ev.imagen.archivo, 120)}" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}"></span>
       <span class="resultado-texto">
         <span class="resultado-meta"><span class="resultado-periodo">${esc(p.nombre)}</span> · ${esc(ev.fechaTexto)}</span>
         <span class="resultado-titulo">${esc(ev.titulo)}</span>

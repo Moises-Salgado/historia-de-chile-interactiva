@@ -1,5 +1,6 @@
 // Panel de detalle de un evento: imagen con crédito y licencia, texto según el nivel de lectura,
 // personajes, «¿Qué pasó antes / después?», período y fuentes.
+import { haceCuanto } from './fechas.js';
 import { esc, nombreFuente, urlImagen, urlLicencia } from './util.js';
 
 // «Detallado» suma el detalle al resumen general: el detalle lo continúa, no lo repite.
@@ -27,8 +28,8 @@ function listaFuentes(urls) {
 const vecino = (ev, lado, colorDe) =>
   ev
     ? `<a class="vecino ${lado}" href="#evento/${ev.id}" style="--color:${colorDe(ev)}">
-        <img class="vecino-img" src="${urlImagen(ev.imagen.archivo, 120)}" srcset="${urlImagen(ev.imagen.archivo, 120)} 120w, ${urlImagen(ev.imagen.archivo, 250)} 250w"
-          sizes="4.5rem" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}">
+        <span class="vecino-img"><img src="${urlImagen(ev.imagen.archivo, 120)}" srcset="${urlImagen(ev.imagen.archivo, 120)} 120w, ${urlImagen(ev.imagen.archivo, 250)} 250w"
+          sizes="4.5rem" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}"></span>
         <span class="vecino-texto">
           <span class="vecino-rotulo">${lado === 'antes' ? '<span aria-hidden="true">◀</span> ¿Qué pasó antes?' : '¿Qué pasó después? <span aria-hidden="true">▶</span>'}</span>
           <span class="vecino-fecha">${esc(ev.fechaTexto)}</span>
@@ -60,6 +61,8 @@ export function crearDetalle(raiz, { periodos, temas, alBuscar }) {
     const p = periodoDe.get(ev.periodoId);
     const img = ev.imagen;
     const licencia = urlLicencia(img.licencia) ? externo(urlLicencia(img.licencia), esc(img.licencia)) : esc(img.licencia);
+    // «hace…» no se repite si la fecha ya lo dice («c. 14.500 años atrás»).
+    const hace = /años atrás/.test(ev.fechaTexto) ? null : haceCuanto(ev);
 
     // Orden de lectura: fecha y título primero (en celular, antes que la imagen); en pantallas anchas
     // la imagen va a la izquierda con la grilla.
@@ -67,9 +70,10 @@ export function crearDetalle(raiz, { periodos, temas, alBuscar }) {
     raiz.innerHTML = `
       <div class="detalle-contenido">
         <header class="detalle-encabezado">
-          <p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time> · ${esc(ev.lugar)}</p>
+          <p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time>${hace ? ` <span class="detalle-hace">(${hace})</span>` : ''} · ${esc(ev.lugar)}</p>
           <h2 id="detalle-titulo" tabindex="-1">${esc(ev.titulo)}</h2>
           <p class="etiquetas"><span class="etiqueta periodo">${esc(p.nombre)}</span>${ev.temas
+            .filter((t) => temaDe.get(t) !== p.nombre)
             .map((t) => `<span class="etiqueta">${esc(temaDe.get(t))}</span>`)
             .join('')}</p>
           ${regla}
@@ -133,6 +137,9 @@ export function crearDetalle(raiz, { periodos, temas, alBuscar }) {
     ponerNivel,
     get abierto() {
       return !raiz.hidden;
+    },
+    get actual() {
+      return actual;
     },
     get antes() {
       return vecinos.antes;

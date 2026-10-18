@@ -15,6 +15,30 @@ export const normalizar = (texto) =>
 
 export const movimientoReducido = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/** Anima con la Web Animations API; si se pidió reducir el movimiento, no hace nada. */
+export const animar = (el, cuadros, opciones) => (movimientoReducido() || !el?.animate ? null : el.animate(cuadros, opciones));
+
+// Mejora progresiva: sin View Transitions (o con movimiento reducido) el cambio es inmediato, igual que antes.
+let transicion = 0;
+
+/**
+ * Hace un cambio de la página con una View Transition. cambiar(animado) puede ser asíncrona (la vista
+ * anterior queda congelada mientras tanto). `tipo` queda en <html data-transicion> mientras dura, para el
+ * CSS. Devuelve una promesa que se cumple al terminar la animación (o el cambio, si no hay animación).
+ */
+export function conTransicion(cambiar, tipo = '') {
+  if (movimientoReducido() || !document.startViewTransition || document.hidden) return Promise.resolve(cambiar(false));
+  const raiz = document.documentElement;
+  const n = ++transicion;
+  raiz.dataset.transicion = tipo;
+  const t = document.startViewTransition(() => cambiar(true));
+  return t.finished
+    .catch(() => {})
+    .finally(() => {
+      if (n === transicion) delete raiz.dataset.transicion;
+    });
+}
+
 // localStorage puede no estar disponible (modo privado o bloqueado): la app funciona igual, sin recordar.
 const PREFIJO = 'historia-chile:';
 

@@ -9,6 +9,7 @@ Línea de tiempo interactiva de la historia de Chile, desde el poblamiento hasta
 - Búsqueda por título, personaje o año, y filtros por período y tema.
 - Accesible: se maneja con teclado, mouse o pantalla táctil y funciona con lector de pantalla. El texto mide al menos 18 px, hay un botón «Texto grande», el modo oscuro es automático y se respeta la preferencia de reducir el movimiento.
 - Funciona sin conexión para lo ya visitado (Service Worker).
+- Transiciones suaves donde el navegador las admite: la imagen de una tarjeta crece hasta el detalle, «Anterior / Siguiente» pasan la página, y los eventos ya leídos llevan una marca discreta. Si se pide reducir el movimiento, no hay animaciones.
 
 ## Uso local
 
@@ -35,8 +36,8 @@ El sitio queda en `http://localhost:5173`.
 ```text
 data/       períodos, temas y un JSON de eventos por período (esquema en data/README.md)
 src/        main.js (rutas #evento/<id>), timeline.js, detalle.js, filtros.js, datos.js,
-            fechas.js, util.js, styles.css y sw.js (plantilla del Service Worker)
-public/     favicon y dibujos de respaldo por período (placeholders/)
+            fechas.js, util.js, styles.css, sw.js (plantilla del Service Worker) y fonts/
+public/     favicon, dibujos de respaldo por período (placeholders/) y licencia de la fuente (fonts/)
 scripts/    validación de datos, verificación de imágenes y generación de docs/
 docs/       FUENTES.md y REVISION_PENDIENTE.md
 ```
@@ -59,4 +60,5 @@ Sin GitHub Actions, ejecuta `npm run build` y sube el contenido de `dist/` a cua
 - [`docs/FUENTES.md`](docs/FUENTES.md) reúne las fuentes y la imagen de cada evento.
 - [`docs/REVISION_PENDIENTE.md`](docs/REVISION_PENDIENTE.md) lista los datos de menor certeza o con fuentes que no coinciden. Conviene revisarlo antes de usar el sitio en clases.
 - Las imágenes son de [Wikimedia Commons](https://commons.wikimedia.org/), con licencias de dominio público, CC0, CC BY o CC BY-SA. El autor y la licencia se muestran junto a cada imagen. Se cargan desde Commons y no se copian al repositorio; si una no carga, se muestra un dibujo del período.
+- Los títulos usan Source Serif 4 SemiBold, de Adobe, con la licencia SIL Open Font License 1.1 (texto en [`public/fonts/OFL-Source-Serif-4.txt`](public/fonts/OFL-Source-Serif-4.txt)). Se incluye solo el subconjunto latino que distribuye Google Fonts, sin modificar.
 - Para agregar o corregir eventos, edita `data/NN-*.json` según `data/README.md` y luego ejecuta `npm test`, `npm run verificar-imagenes` y `npm run docs`.

@@ -4,7 +4,7 @@
 // los años densos de la Independencia. El zoom cambia el ancho de la ranura y la importancia mínima que
 // se muestra (zoom mínimo: solo hitos); las tarjetas que no caben quedan como puntos sobre el eje.
 import { anioDecimal, fechaCorta, formatearAnio } from './fechas.js';
-import { esc, movimientoReducido, urlImagen } from './util.js';
+import { animar, esc, movimientoReducido, urlImagen } from './util.js';
 
 // Medidas en rem (crecen con «Texto grande»); las de la tarjeta deben coincidir con styles.css.
 const MEDIDA = { tarjetaAncho: 17, tarjetaAlto: 6, hueco: 0.75, tallo: 1.5, margen: 1.25, arriba: 0.5, eje: 1.25, anios: 1.75, franjas: 2.25 };
@@ -14,6 +14,7 @@ const CARTELA = { completa: 7, corta: 2.75 };
 // Con `max` ya todos los eventos tienen tarjeta: acercar más solo los separaría.
 const ZOOM = { min: 0.25, max: 1.64, inicial: 0.6, paso: 1.4, hitos: 0.45, todos: 0.8 };
 const MAX_CARRILES = 5;
+const CURVA = 'cubic-bezier(0.2, 0.7, 0.2, 1)';
 // Tramos sin eventos de al menos estos años se marcan en el eje: la escala ahí está comprimida.
 const SALTO_ANIOS = 1000;
 const VISTA = {
@@ -164,8 +165,8 @@ const tarjeta = (ev, color) => {
   return `
     <li class="evento imp-${ev.importancia}" data-id="${ev.id}" style="--color:${color}" hidden>
       <button type="button" class="tarjeta" tabindex="-1" aria-label="${esc(`${ev.fechaTexto}: ${ev.titulo}`)}">
-        <img class="tarjeta-img" src="${urlImagen(archivo, 120)}" srcset="${urlImagen(archivo, 120)} 120w, ${urlImagen(archivo, 250)} 250w"
-          sizes="6rem" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}">
+        <span class="tarjeta-img"><img src="${urlImagen(archivo, 120)}" srcset="${urlImagen(archivo, 120)} 120w, ${urlImagen(archivo, 250)} 250w"
+          sizes="6rem" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}"></span>
         <span class="tarjeta-texto"><span class="tarjeta-fecha">${esc(fechaCorta(ev))}</span><span class="tarjeta-titulo">${esc(ev.titulo)}</span></span>
       </button>
     </li>`;
@@ -450,6 +451,8 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   }
 
   // ---- Selección y navegación ----
+  const enVista = (ev) => Boolean(ev?.pos) && ev.pos.x + g.w > ventana.scrollLeft && ev.pos.x < ventana.scrollLeft + ventana.clientWidth;
+
   function centrarEn(ev, suave = true) {
     const x = ev.pos ? ev.pos.x + g.w / 2 : X(ev.u);
     ventana.scrollTo({ left: x - ventana.clientWidth / 2, behavior: suave ? conducta() : 'auto' });
@@ -540,7 +543,49 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     return mejor?.x ?? ancho / 2;
   }
 
+  // El zoom no se anima: con View Transitions no llegaba a 50 fps con la CPU frenada 4× (docs/PLAN_MEJORAS.md).
+  // Las tarjetas que aparecen entran con un fundido (styles.css).
   const zoom = (dir) => zoomEn(f * ZOOM.paso ** dir, anclaDeZoom());
+
+  // Entrada de la portada: el eje se dibuja de izquierda a derecha, los puntos aparecen a su paso y las
+  // tarjetas a la vista suben. Dura menos de 400 ms y no bloquea nada (la línea se puede usar de inmediato).
+  function entrada() {
+    if (movimientoReducido()) return;
+    const izq = ventana.scrollLeft;
+    const ancho = ventana.clientWidth;
+    const fraccion = (x) => limitar(x / g.ancho, 0, 1);
+    seccion.classList.add('entrando');
+    const animaciones = [
+      animar(pista.querySelector('.eje-linea'), [{ scale: `${fraccion(izq)} 1` }, { scale: `${fraccion(izq + ancho)} 1`, offset: 0.999 }, { scale: '1 1' }], {
+        duration: 350,
+        easing: CURVA,
+      }),
+      animar(capaAnios, [{ opacity: 0 }, { opacity: 1 }], { duration: 250, delay: 100, fill: 'backwards' }),
+      animar(cielo, [{ opacity: 0, translate: '0 -0.5rem' }, { opacity: 1, translate: '0 0' }], { duration: 300, easing: CURVA, fill: 'backwards' }),
+    ];
+    for (const ev of visibles) {
+      const x = X(ev.u) - izq;
+      const punto = elPunto.get(ev.id);
+      if (x < 0 || x > ancho || punto.hidden) continue;
+      animaciones.push(animar(punto, [{ opacity: 0 }, { opacity: 1 }], { duration: 100, delay: (x / ancho) * 280, fill: 'backwards' }));
+    }
+    visibles
+      .filter(enVista)
+      .sort((a, b) => a.pos.x - b.pos.x)
+      .forEach((ev, i) => {
+        const cuadros = [{ opacity: 0, translate: '0 1rem' }, { opacity: 1, translate: '0 0' }];
+        animaciones.push(animar(elTarjeta.get(ev.id), cuadros, { duration: 300, delay: Math.min(i, 6) * 15, easing: CURVA, fill: 'backwards' }));
+      });
+    Promise.all(animaciones.map((a) => a?.finished)).finally(() => seccion.classList.remove('entrando'));
+  }
+
+  // La imagen grande del detalle se pide al presionar una tarjeta (o con Enter), un instante antes del clic.
+  const precargadas = new Set();
+  function precargar(ev) {
+    if (!ev || precargadas.has(ev.id)) return;
+    precargadas.add(ev.id);
+    new Image().src = urlImagen(ev.imagen.archivo, 800);
+  }
 
   let zoomPendiente = null;
   function pedirZoom(factor, ancla) {
@@ -583,6 +628,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   lista.addEventListener('keydown', (e) => {
     const ev = eventoDe(e.target);
     if (!ev || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === 'Enter' || e.key === ' ') precargar(ev);
     const accion = {
       ArrowRight: () => vecinoConTarjeta(1, ev),
       ArrowLeft: () => vecinoConTarjeta(-1, ev),
@@ -607,6 +653,8 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   let evitarClic = false;
   ventana.addEventListener('pointerdown', (e) => {
     punteroAbajo = true;
+    // Con el dedo, presionar suele ser el comienzo de un deslizamiento: ahí no se precarga.
+    if (e.pointerType !== 'touch') precargar(eventoDe(e.target));
     if (e.pointerType === 'mouse' && e.button === 0) arrastre = { x: e.clientX, inicio: ventana.scrollLeft, id: e.pointerId, movido: false };
   });
   ventana.addEventListener('pointermove', (e) => {
@@ -762,6 +810,19 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     seleccionar,
     redistribuir,
     regla,
+    entrada,
+    /** Imagen de la tarjeta de un evento si está a la vista (para la transición al detalle); si no, null. */
+    miniatura: (ev) => (enVista(ev) ? elTarjeta.get(ev.id).querySelector('.tarjeta-img img') : null),
+    /** Marca como ya vistos los eventos dados: un punto discreto en la tarjeta y «(ya visto)» en su nombre. */
+    marcarVistos(ids) {
+      for (const id of ids) {
+        const ev = porId.get(id);
+        const li = elTarjeta.get(id);
+        if (!ev || li.classList.contains('visto')) continue;
+        li.classList.add('visto');
+        botonDe(ev).setAttribute('aria-label', `${ev.fechaTexto}: ${ev.titulo} (ya visto)`);
+      }
+    },
     /** Aplica un filtro; si ninguna tarjeta queda a la vista, lleva a la primera que coincide. */
     filtrar(coincide, activo) {
       const centro = uEn(ventana.scrollLeft + ventana.clientWidth / 2);

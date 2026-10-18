@@ -4,7 +4,7 @@ import { cargarDatos } from './datos.js';
 import { crearDetalle } from './detalle.js';
 import { crearFiltros } from './filtros.js';
 import { crearLineaDeTiempo } from './timeline.js';
-import { guardarPreferencia, leerPreferencia, urlPlaceholder } from './util.js';
+import { conTransicion, guardarPreferencia, leerPreferencia, urlPlaceholder } from './util.js';
 
 const { periodos, temas, eventos } = cargarDatos();
 const porId = new Map(eventos.map((ev) => [ev.id, ev]));
@@ -21,6 +21,15 @@ function anunciar(texto) {
     avisos.textContent = texto;
   }, 100);
 }
+
+// Imagen que carga: aparece con un fundido sobre el tono del período (styles.css).
+document.addEventListener(
+  'load',
+  (e) => {
+    if (e.target instanceof HTMLImageElement && e.target.dataset.periodo) e.target.classList.add('cargada');
+  },
+  true,
+);
 
 // Imagen que no carga: placeholder SVG del período; si tampoco carga, queda el fondo de color.
 document.addEventListener(
@@ -81,6 +90,16 @@ const filtros = crearFiltros($('#panel-filtros'), {
   alAbrirOCerrar: actualizarInert,
 });
 
+// «Ya visto»: los eventos abiertos se recuerdan en este navegador, solo para una marca discreta en la tarjeta.
+const vistos = new Set((leerPreferencia('vistos') ?? '').split(',').filter((id) => porId.has(id)));
+linea.marcarVistos(vistos);
+function marcarVisto(ev) {
+  if (vistos.has(ev.id)) return;
+  vistos.add(ev.id);
+  guardarPreferencia('vistos', [...vistos].join(','));
+  linea.marcarVistos([ev.id]);
+}
+
 botonTexto.addEventListener('click', () => {
   const grande = botonTexto.getAttribute('aria-pressed') !== 'true';
   ponerTextoGrande(grande);
@@ -114,7 +133,14 @@ function aplicarRuta({ desdeBoton = false } = {}) {
   else if (detalle.abierto) cerrarDetalle();
   if (id && !ev) anunciar('No encontramos ese evento.');
 }
-window.addEventListener('hashchange', () => aplicarRuta());
+// En celulares, el gesto de volver trae su propia animación: entonces no se suma otra.
+window.addEventListener('popstate', (e) => {
+  sinAnimar = e.hasUAVisualTransition === true;
+});
+window.addEventListener('hashchange', () => {
+  aplicarRuta();
+  sinAnimar = false;
+});
 
 function volver() {
   if (history.state?.app) {
@@ -125,26 +151,82 @@ function volver() {
   }
 }
 
+// ---- Transiciones: la miniatura crece hasta la lámina del detalle (y vuelve al cerrarlo) y, entre
+// detalles, la página pasa hacia el lado del recorrido. Sin View Transitions, el cambio es inmediato. ----
+const LAMINA = 'lamina';
+let animarCambios = false; // la ruta con que se abre la página no se anima
+let sinAnimar = false;
+const esperar = (ms) => new Promise((listo) => setTimeout(listo, ms));
+const laminaDetalle = () => elDetalle.querySelector('.detalle-marco img');
+
+// La lámina solo crece o se encoge si se ve entera dentro del detalle (no tapada por la cabecera).
+function laminaALaVista(img) {
+  const r = img.getBoundingClientRect();
+  const marco = elDetalle.getBoundingClientRect();
+  return r.width > 0 && r.top >= marco.top - 1 && r.bottom <= marco.bottom + 1;
+}
+
+function cambiarVista(cambiar, tipo) {
+  if (animarCambios && !sinAnimar) return conTransicion(cambiar, tipo);
+  cambiar(false);
+  return null;
+}
+
 // Antes y después según el filtro activo (si el evento lo cumple) o entre todos los eventos.
 function mostrarDetalle(ev, desdeBoton) {
-  const lista = linea.visibles.includes(ev) ? linea.visibles : eventos;
-  const i = lista.indexOf(ev);
-  filtros.cerrar({ devolverFoco: false });
-  detalle.mostrar(ev, { antes: lista[i - 1] ?? null, despues: lista[i + 1] ?? null, nivel, regla: linea.regla(ev), enfocar: !desdeBoton });
-  document.body.dataset.vista = 'detalle';
-  document.title = `${ev.titulo} · ${TITULO}`;
-  actualizarInert();
-  linea.seleccionar(ev, { suave: false });
-  if (desdeBoton) anunciar(`${ev.fechaTexto}: ${ev.titulo}`);
+  const previo = detalle.actual;
+  const aplicar = () => {
+    const lista = linea.visibles.includes(ev) ? linea.visibles : eventos;
+    const i = lista.indexOf(ev);
+    filtros.cerrar({ devolverFoco: false });
+    detalle.mostrar(ev, { antes: lista[i - 1] ?? null, despues: lista[i + 1] ?? null, nivel, regla: linea.regla(ev), enfocar: !desdeBoton });
+    document.body.dataset.vista = 'detalle';
+    document.title = `${ev.titulo} · ${TITULO}`;
+    actualizarInert();
+    linea.seleccionar(ev, { suave: false });
+    marcarVisto(ev);
+    if (desdeBoton) anunciar(`${ev.fechaTexto}: ${ev.titulo}`);
+  };
+  if (previo === ev) return aplicar();
+  if (previo) return void cambiarVista(aplicar, eventos.indexOf(ev) > eventos.indexOf(previo) ? 'siguiente' : 'anterior');
+
+  const miniatura = filtros.abierto ? null : linea.miniatura(ev);
+  if (miniatura) miniatura.style.viewTransitionName = LAMINA;
+  cambiarVista(async (animado) => {
+    if (miniatura) miniatura.style.viewTransitionName = '';
+    aplicar();
+    const lamina = laminaDetalle();
+    if (!animado || !miniatura || !lamina) return;
+    // Se espera la imagen grande (precargada al presionar la tarjeta) a lo más 250 ms; si no llega, no crece.
+    const lista = await Promise.race([lamina.decode().then(() => true, () => false), esperar(250).then(() => false)]);
+    if (!lista || !laminaALaVista(lamina)) return;
+    lamina.style.transition = 'none';
+    lamina.classList.add('cargada');
+    lamina.style.viewTransitionName = LAMINA;
+  }, 'abrir')?.then(() => {
+    const lamina = laminaDetalle();
+    if (lamina) lamina.style.viewTransitionName = '';
+  });
 }
 
 function cerrarDetalle() {
-  detalle.ocultar();
-  document.body.dataset.vista = 'linea';
-  document.title = TITULO;
-  actualizarInert();
-  actualizarControles();
-  linea.enfocarActual();
+  const ev = detalle.actual;
+  const lamina = laminaDetalle();
+  const vuelve = Boolean(lamina?.classList.contains('cargada') && laminaALaVista(lamina));
+  if (vuelve) lamina.style.viewTransitionName = LAMINA;
+  let miniatura = null;
+  cambiarVista((animado) => {
+    detalle.ocultar();
+    document.body.dataset.vista = 'linea';
+    document.title = TITULO;
+    actualizarInert();
+    actualizarControles();
+    linea.enfocarActual();
+    miniatura = animado && vuelve ? linea.miniatura(ev) : null;
+    if (miniatura) miniatura.style.viewTransitionName = LAMINA;
+  }, 'cerrar')?.then(() => {
+    if (miniatura) miniatura.style.viewTransitionName = '';
+  });
 }
 
 function actualizarInert() {
@@ -215,10 +297,23 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// Entrada animada de la portada: solo en la primera visita de la sesión y si se llega a la línea de tiempo.
+function primeraVisita() {
+  try {
+    if (sessionStorage.getItem('historia-chile:entrada')) return false;
+    sessionStorage.setItem('historia-chile:entrada', 'si');
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 history.scrollRestoration = 'manual';
 document.body.dataset.vista = 'linea';
 aplicarRuta();
 actualizarControles();
+if (!detalle.abierto && primeraVisita()) linea.entrada();
+animarCambios = true;
 
 // Sin conexión: el Service Worker (plantilla en src/sw.js) solo existe en el sitio construido.
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {

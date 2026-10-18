@@ -72,9 +72,8 @@ Cada agente revisó 12 capturas del sitio publicado y el código, propuso mejora
 | Peso agregado (gzip) | — | CSS +1 KB, JS +1,2 KB |
 
 Quedan pendientes:
-- El helper de animación en JS se crea en la Ola 2, cuando haya algo que lo use. El CSS de movimiento reducido ya está reforzado.
 - Al inicio, en la prehistoria (pocos eventos en miles de años), el «+» separa los eventos y caben menos en pantalla. En los períodos densos, el primer «+» suma eventos sin perder ninguno de vista.
-- Lighthouse no se midió.
+- Lighthouse no se corrió; LCP y CLS se midieron en la Ola 2, con el protocolo de DevTools.
 
 1. **Blindar el movimiento reducido** con un solo helper, `conTransicion`/`animar`, en `util.js`. Esfuerzo S.
 2. **Portada:**
@@ -118,6 +117,24 @@ Quedan pendientes:
 - Para comprobarlo: repetir las 12 capturas, revisar con Lighthouse en celular y correr `npm test`.
 
 ## Ola 2 · Lucimiento y movimiento
+
+**Estado: hecha (18-10-2026), salvo el zoom animado.** Se verificó con capturas en Edge, con y sin movimiento reducido:
+
+| Criterio | Resultado |
+|---|---|
+| Transición de la tarjeta al detalle y de vuelta (también con Atrás) | la lámina crece y se encoge en 280 ms; espera la imagen 250 ms como máximo y, si no llega, solo hay fundido |
+| «Pasar la página» (Anterior / Siguiente y «¿Qué pasó antes / después?») | la página sale en 120 ms y la nueva entra en 200 ms por el lado del recorrido, sin textos encimados |
+| Movimiento reducido | ninguna View Transition ni animación |
+| Zoom con View Transitions, CPU frenada 4× | **23 a 58 fps** (unos 41 de promedio), con cuadros de hasta 65 ms. No llega a 50 fps: **el zoom queda instantáneo**, como se acordó, y las tarjetas nuevas conservan su fundido |
+| LCP en celular, CPU 4× y «4G lenta», con caché vacía | portada 2,2 s; segunda visita 1,0 s; escritorio 2,2 s; detalle abierto por enlace directo 4,4 s, por el peso de la imagen de Commons (960 px) |
+| CLS | 0 en la portada y 0,003 en el detalle |
+| Letra mínima | 18 px (22 px con «Texto grande») |
+| Peso agregado (gzip) | CSS +0,9 KB, JS +1,4 KB y la fuente, 21,5 KB (precargada; `font-display: optional`) |
+| Errores de consola | ninguno |
+
+Quedan pendientes:
+- La imagen grande del detalle abierto por enlace directo pesa demasiado para una red lenta. Commons no ofrece un formato más liviano para cada imagen. Se agregó `preconnect` a los dos servidores de imágenes.
+- Las 12 capturas originales de la mesa no se repitieron una por una; se revisaron las equivalentes de cada criterio.
 
 - Source Serif 4 SemiBold para los títulos.
 - **Transición de la tarjeta al detalle (View Transitions):**

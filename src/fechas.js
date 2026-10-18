@@ -23,6 +23,20 @@ const NUMERO = new Intl.NumberFormat('es-CL', { useGrouping: 'min2' });
 /** Año legible: «1879», «5000 a.C.». */
 export const formatearAnio = (anio) => (anio < 0 ? `${NUMERO.format(-anio)} a.C.` : String(anio));
 
+/**
+ * Cuánto tiempo pasó desde el inicio: «hace 147 años», «comenzó hace 146 años» (procesos) o, si la fecha
+ * es aproximada, «hace unos 14.500 años» (redondeado). null si es de este año.
+ */
+export function haceCuanto({ t, anio, anioFin, fechaAproximada }, hoy = anioDecimal(new Date())) {
+  let n = Math.floor(hoy - t - (anio < 0 ? 1 : 0)); // no hay año 0: de 1 a.C. a 1 d.C. pasa un año
+  if (fechaAproximada) {
+    const paso = n >= 1000 ? 100 : n >= 100 ? 10 : 1;
+    n = Math.round(n / paso) * paso;
+  }
+  if (n < 1) return null;
+  return `${anioFin !== anio ? 'comenzó hace' : 'hace'} ${fechaAproximada ? 'unos ' : ''}${NUMERO.format(n)} ${n === 1 ? 'año' : 'años'}`;
+}
+
 /** Fecha breve de las tarjetas, solo con años: «1879», «1879-1884», «c. 1500», «c. 5000 a.C.». */
 export function fechaCorta({ anio, anioFin, fechaAproximada }) {
   return `${fechaAproximada ? 'c. ' : ''}${formatearAnio(anio)}${anioFin !== anio ? `-${formatearAnio(anioFin)}` : ''}`;

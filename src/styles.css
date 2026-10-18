@@ -1,6 +1,18 @@
 /* Estilos: colores (claro y oscuro automático), cabecera, línea de tiempo, minimapa, detalle y búsqueda.
    Ningún texto baja de 1rem (18 px) y las medidas van en rem, así todo crece con «Texto grande».
    Paleta «papel y tinta»: fondo cálido, tinta oscura y el color de cada período como acento. */
+
+/* Source Serif 4 SemiBold (Adobe, licencia SIL OFL 1.1: public/fonts/), solo latín, solo para títulos.
+   «optional»: si no llega a tiempo en la primera visita se usa Georgia, sin saltos del texto. */
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 600;
+  font-display: optional;
+  src: url('./fonts/source-serif-4-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   color-scheme: light dark;
   --azul: #0039a6;
@@ -180,10 +192,19 @@ h2[tabindex='-1']:focus,
   border: 2px solid var(--borde-fuerte);
   border-radius: var(--radio);
   cursor: pointer;
+  transition: scale 0.12s ease;
 }
 
 .boton:hover {
   background: var(--superficie-2);
+}
+
+/* Al presionar, los botones ceden un poco (respuesta inmediata al toque). */
+.boton:active:not([aria-disabled='true']),
+.nivel-opciones label:active > span,
+.vecino:active,
+.resultado:active {
+  scale: 0.97;
 }
 
 .boton.primario,
@@ -393,6 +414,7 @@ h2[tabindex='-1']:focus,
   min-height: 2.5rem;
   padding: 0 0.75rem;
   background: var(--superficie);
+  transition: scale 0.12s ease;
 }
 
 .nivel-opciones label:hover > span {
@@ -584,7 +606,8 @@ h2[tabindex='-1']:focus,
   height: var(--tarjeta-alto);
   transition:
     opacity 0.25s ease,
-    scale 0.25s ease;
+    scale 0.25s ease,
+    translate 0.15s ease;
 }
 
 @starting-style {
@@ -594,9 +617,37 @@ h2[tabindex='-1']:focus,
   }
 }
 
+/* En la entrada de la portada las tarjetas las anima timeline.js. */
+.linea.entrando .evento {
+  transition: none;
+}
+
+.evento:hover {
+  translate: 0 -2px;
+}
+
+/* Anillo del evento actual: se asienta al elegirlo (llega un poco más grande y se ajusta). */
+.evento.actual::after {
+  position: absolute;
+  inset: -3px;
+  border: 3px solid var(--azul);
+  border-radius: calc(var(--radio) + 3px);
+  pointer-events: none;
+  content: '';
+  animation: asentar-anillo 0.2s ease-out;
+}
+
+@keyframes asentar-anillo {
+  from {
+    opacity: 0;
+    scale: 1.06;
+  }
+}
+
 /* Tarjeta como cédula de museo: imagen a sangre, filete superior del color del período. Los hitos
    (importancia 3) llevan fondo teñido, imagen más grande y la fecha en una pastilla del color del período. */
 .tarjeta {
+  position: relative;
   display: flex;
   gap: 0.625rem;
   width: 100%;
@@ -614,12 +665,27 @@ h2[tabindex='-1']:focus,
   border-radius: var(--radio);
   box-shadow: var(--sombra);
   cursor: pointer;
-  transition: translate 0.15s ease;
+  transition: scale 0.12s ease;
 }
 
 .tarjeta:hover {
   box-shadow: var(--sombra-alta);
-  translate: 0 -2px;
+}
+
+.tarjeta:active {
+  scale: 0.98;
+}
+
+/* Ya visto: un punto discreto en la esquina (el nombre accesible dice «ya visto»). */
+.evento.visto .tarjeta::after {
+  position: absolute;
+  top: 0.375rem;
+  right: 0.375rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--borde-fuerte);
+  border-radius: 50%;
+  content: '';
 }
 
 .evento.imp-3 .tarjeta {
@@ -630,22 +696,37 @@ h2[tabindex='-1']:focus,
 .evento.actual .tarjeta {
   border-color: var(--azul);
   border-top-color: var(--color);
-  box-shadow:
-    0 0 0 3px var(--azul),
-    var(--sombra-alta);
+  box-shadow: var(--sombra-alta);
 }
 
 .tarjeta:focus-visible {
   outline-offset: 5px;
 }
 
+/* Miniaturas: el marco lleva el tono del período y la imagen aparece sobre él con un fundido al cargar. */
 .tarjeta-img {
   flex: none;
   width: 4.75rem;
   height: 100%;
-  object-fit: cover;
   background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
+}
+
+.tarjeta-img > img,
+.vecino-img > img,
+.resultado-img > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   -webkit-user-drag: none;
+}
+
+img[data-periodo] {
+  transition: opacity 0.25s ease-out;
+}
+
+img[data-periodo]:not(.cargada) {
+  opacity: 0;
 }
 
 .evento.imp-3 .tarjeta-img {
@@ -710,6 +791,7 @@ h2[tabindex='-1']:focus,
   height: 4px;
   background: var(--borde-fuerte);
   border-radius: 2px;
+  transform-origin: 0 50%; /* la entrada de la portada lo dibuja de izquierda a derecha */
 }
 
 .tramo {
@@ -780,8 +862,39 @@ h2[tabindex='-1']:focus,
   border-width: 2px;
 }
 
+/* Al elegir un evento, su punto se asienta y emite una sola onda. */
 .punto.actual {
   box-shadow: 0 0 0 3px var(--azul);
+  animation: asentar-punto 0.2s ease-out;
+}
+
+.punto.actual::after {
+  position: absolute;
+  inset: -3px;
+  border: 2px solid var(--azul);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  content: '';
+  animation: onda 0.4s ease-out;
+}
+
+@keyframes asentar-punto {
+  from {
+    scale: 1.5;
+  }
+}
+
+@keyframes onda {
+  from {
+    opacity: 0.9;
+    scale: 1;
+  }
+
+  to {
+    opacity: 0;
+    scale: 2.75;
+  }
 }
 
 .anios {
@@ -1092,15 +1205,32 @@ body[data-vista='detalle'] .minimapa-fila {
   grid-area: texto;
 }
 
-/* Alto reservado (sin saltos al cargar); la imagen va montada como lámina, sin barras a los lados. */
+/* Alto reservado (sin saltos al cargar); la imagen va montada como lámina, sin barras a los lados.
+   Mientras carga, el marco muestra el tono del período, y la lámina aparece con un fundido. */
 .detalle-marco {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   height: min(32vh, 22rem);
 }
 
+.detalle-marco::before {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--color) 16%, transparent);
+  border-radius: var(--radio);
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+  content: '';
+}
+
+.detalle-marco:has(img:not(.cargada))::before {
+  opacity: 1;
+}
+
 .detalle-marco img {
+  position: relative;
   display: block;
   max-width: 100%;
   max-height: 100%;
@@ -1116,7 +1246,7 @@ body[data-vista='detalle'] .minimapa-fila {
 .regla {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.875rem; /* la marca del evento sobresale de la barra: no debe tocar los rótulos */
   margin-bottom: 0.25rem;
   color: var(--texto-suave);
   white-space: nowrap;
@@ -1175,6 +1305,10 @@ body[data-vista='detalle'] .minimapa-fila {
   margin: 0;
   font-weight: 700;
   color: var(--texto-suave);
+}
+
+.detalle-hace {
+  font-weight: 400;
 }
 
 .etiquetas {
@@ -1245,6 +1379,7 @@ body[data-vista='detalle'] .minimapa-fila {
   background: var(--superficie);
   border: 2px solid var(--borde);
   border-radius: var(--radio);
+  transition: scale 0.12s ease;
 }
 
 a.vecino:hover {
@@ -1264,7 +1399,7 @@ a.vecino:hover {
   flex: none;
   width: 4.5rem;
   height: 4.5rem;
-  object-fit: cover;
+  overflow: hidden;
   background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
   border-radius: 0.25rem;
 }
@@ -1329,6 +1464,25 @@ a.vecino:hover {
   cursor: pointer;
 }
 
+/* Apertura suave donde el navegador sabe animar hasta «auto»; en los demás se abre de inmediato. */
+@supports (interpolate-size: allow-keywords) {
+  .plegable {
+    interpolate-size: allow-keywords;
+  }
+
+  .plegable::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height 0.2s ease,
+      content-visibility 0.2s allow-discrete;
+  }
+
+  .plegable[open]::details-content {
+    height: auto;
+  }
+}
+
 .plegable p {
   margin: 0 0 1rem;
 }
@@ -1371,6 +1525,22 @@ a.vecino:hover {
   overflow-y: auto;
   overscroll-behavior: contain;
   background: var(--fondo);
+  transition:
+    opacity 0.2s ease-out,
+    translate 0.2s ease-out;
+}
+
+/* El panel entra desde abajo con un fundido; sus resultados aparecen igual al cambiar la búsqueda. */
+@starting-style {
+  .panel-filtros {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+
+  .resultado {
+    opacity: 0;
+    translate: 0 0.375rem;
+  }
 }
 
 .panel-contenido {
@@ -1447,6 +1617,10 @@ a.vecino:hover {
   border-left: 0.375rem solid var(--color);
   border-radius: var(--radio);
   cursor: pointer;
+  transition:
+    opacity 0.18s ease-out,
+    translate 0.18s ease-out,
+    scale 0.12s ease;
 }
 
 .resultado:hover {
@@ -1458,7 +1632,7 @@ a.vecino:hover {
   flex: none;
   width: 4rem;
   height: 4rem;
-  object-fit: cover;
+  overflow: hidden;
   background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
   border-radius: 0.25rem;
 }
@@ -1537,6 +1711,77 @@ a.vecino:hover {
   gap: 0.5rem;
   padding: 0.75rem 0;
   background: var(--fondo);
+}
+
+/* ---- View Transitions (main.js y timeline.js; sin soporte, los cambios son inmediatos) ----
+   Abrir y cerrar un evento: la miniatura crece hasta la lámina («lamina») y el detalle se funde.
+   Anterior / Siguiente: la página («pagina») sale hacia un lado y la nueva entra por el otro. */
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 0.28s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.detalle {
+  view-transition-name: pagina;
+}
+
+::view-transition-old(lamina),
+::view-transition-new(lamina) {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* La página vieja sale primero y la nueva entra después: los textos de las dos no se enciman. Entre
+   ambas queda el fondo (el detalle está sobre la línea de tiempo, que no debe asomarse). */
+:root[data-transicion='siguiente']::view-transition-image-pair(pagina),
+:root[data-transicion='anterior']::view-transition-image-pair(pagina) {
+  background: var(--fondo);
+}
+
+:root[data-transicion='siguiente']::view-transition-old(pagina) {
+  animation: 0.12s ease-in both salir-izquierda;
+}
+
+:root[data-transicion='siguiente']::view-transition-new(pagina) {
+  animation: 0.2s ease-out 0.08s both entrar-derecha;
+}
+
+:root[data-transicion='anterior']::view-transition-old(pagina) {
+  animation: 0.12s ease-in both salir-derecha;
+}
+
+:root[data-transicion='anterior']::view-transition-new(pagina) {
+  animation: 0.2s ease-out 0.08s both entrar-izquierda;
+}
+
+@keyframes salir-izquierda {
+  to {
+    opacity: 0;
+    translate: -2rem 0;
+  }
+}
+
+@keyframes salir-derecha {
+  to {
+    opacity: 0;
+    translate: 2rem 0;
+  }
+}
+
+@keyframes entrar-derecha {
+  from {
+    opacity: 0;
+    translate: 2.5rem 0;
+  }
+}
+
+@keyframes entrar-izquierda {
+  from {
+    opacity: 0;
+    translate: -2.5rem 0;
+  }
 }
 
 /* Alto contraste de Windows: los estados que dependen de sombras o fondos llevan un contorno del sistema;
