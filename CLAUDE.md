@@ -24,6 +24,7 @@ Esquema de datos: `data/README.md`. Comandos: `npm run dev` · `npm run build` �
 - Licencias: dominio público, CC0, CC BY o CC BY-SA. Preferir pinturas, grabados, fotos y mapas de época; nunca IA ni fotogramas de películas.
 - Guardar `archivo` (nombre exacto), `autor`, `licencia`, `urlPagina` y `pieDeFoto`.
 - Mostrar con `https://commons.wikimedia.org/wiki/Special:FilePath/<archivo>?width=800`, `loading="lazy"` y crédito + licencia siempre visibles.
+- Solo tamaños estándar de miniatura (120, 250, 330, 500, 960…; `width=800` se sirve como 960): Wikimedia limita por IP los demás. Miniaturas de la línea de tiempo: `?width=120` o `250`.
 - Si falla, usar el placeholder SVG del período (`public/placeholders/periodo-NN.svg`); nunca una imagen rota.
 
 ## Interfaz y accesibilidad

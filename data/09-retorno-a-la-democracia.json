@@ -1,0 +1,440 @@
+[
+  {
+    "id": "1990-aylwin-asume-presidencia",
+    "titulo": "Patricio Aylwin asume la presidencia",
+    "fecha": "1990-03-11",
+    "fechaAproximada": false,
+    "fechaTexto": "11 de marzo de 1990",
+    "periodoId": "09",
+    "temas": ["politica"],
+    "importancia": 3,
+    "lugar": "Valparaíso",
+    "resumenNino": "Después de la dictadura militar, los chilenos eligieron en votación a Patricio Aylwin como presidente. El 11 de marzo de 1990 recibió la banda presidencial y comenzó un nuevo gobierno democrático.",
+    "resumen": "El 14 de diciembre de 1989, Patricio Aylwin, candidato de la Concertación de Partidos por la Democracia, ganó la elección presidencial con un 55,2 % de los votos. El 11 de marzo de 1990 asumió como presidente de Chile al recibir la banda presidencial de manos de Augusto Pinochet, en una ceremonia en el Congreso Nacional. Fue el primero de cuatro gobiernos consecutivos de la Concertación y se extendió hasta 1994.",
+    "detalle": "El 14 de diciembre de 1989 se realizó la elección presidencial. Patricio Aylwin, dirigente democratacristiano, se presentó como candidato de la Concertación de Partidos por la Democracia y obtuvo la mayoría de la votación, con un 55,2 %, según Memoria Chilena.\n\nEl 11 de marzo de 1990, en el salón plenario del Congreso Nacional, Aylwin recibió de Augusto Pinochet la banda presidencial y asumió como presidente de la República. Horas más tarde se dirigió a la ciudadanía desde el balcón del Palacio de La Moneda.\n\nSegún Memoria Chilena, sus primeros proyectos de ley buscaron someter el poder militar al poder civil, y el 25 de abril de 1990 creó la Comisión Nacional de Verdad y Reconciliación para esclarecer las violaciones a los derechos humanos cometidas durante la dictadura. Su gobierno se extendió entre 1990 y 1994. Aylwin murió en Santiago el 19 de abril de 2016.",
+    "personajes": ["Patricio Aylwin", "Augusto Pinochet"],
+    "imagen": {
+      "archivo": "Patricio_Aylwin_(1990).jpg",
+      "autor": "Biblioteca del Congreso Nacional de Chile",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Patricio_Aylwin_(1990).jpg",
+      "pieDeFoto": "Retrato de Patricio Aylwin en 1990."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-100720.html",
+      "https://www.t13.cl/noticia/politica/chile-vuelve-democracia-30-anos-del-dia-patricio-aylwin-asumio-como-presidente",
+      "https://www.bcn.cl/historiapolitica/partidos_politicos/wiki/Concertaci%C3%B3n_de_Partidos_por_la_Democracia"
+    ]
+  },
+  {
+    "id": "1990-gobiernos-concertacion",
+    "titulo": "Los gobiernos de la Concertación",
+    "fecha": "1990-03-11",
+    "fechaFin": "2010-03",
+    "fechaAproximada": false,
+    "fechaTexto": "1990-2010",
+    "periodoId": "09",
+    "temas": ["politica", "economia"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "Entre 1990 y 2010, Chile tuvo cuatro presidentes de una misma alianza de partidos, llamada Concertación. En esos años la economía creció y bajó el número de personas pobres.",
+    "resumen": "La Concertación de Partidos por la Democracia, formada por el Partido Demócrata Cristiano, el Partido Socialista, el Partido por la Democracia y el Partido Radical Social Demócrata, gobernó durante cuatro períodos consecutivos: Patricio Aylwin (1990-1994), Eduardo Frei Ruiz-Tagle (1994-2000), Ricardo Lagos (2000-2006) y Michelle Bachelet (2006-2010). En esos años la economía creció y se firmaron tratados de libre comercio con Canadá, con Estados Unidos y con países de Europa. Según la encuesta Casen, la pobreza bajó de un 38,6 % en 1990 a un 13,7 % en 2006. En marzo de 2010 la coalición pasó a la oposición, tras la elección de Sebastián Piñera.",
+    "detalle": "La Concertación se formó en 1988 como Concertación de Partidos por el No y, según la Biblioteca del Congreso Nacional, se mantuvo en el poder por cuatro períodos presidenciales consecutivos, entre 1990 y 2010. El gobierno de Patricio Aylwin creó la Comisión Nacional de Verdad y Reconciliación. Eduardo Frei Ruiz-Tagle, elegido para un período de seis años (1994-2000), impulsó la reforma procesal penal, suscribió un acuerdo de libre comercio con Canadá y, según la BCN, logró un crecimiento promedio superior al 5 % e inflación de un dígito.\n\nRicardo Lagos, que asumió el 11 de marzo de 2000, logró tratados de libre comercio con países de Europa y con Estados Unidos y creó un seguro de desempleo. Michelle Bachelet, primera presidenta del país, impulsó la reforma previsional y el programa Chile Crece Contigo. Memoria Chilena destaca también el Plan AUGE (Acceso Universal con Garantías Explícitas en Salud) y la ampliación de la red de protección social.\n\nSegún Memoria Chilena, en este período el coeficiente de Gini, que mide la desigualdad, bajó de 0,57 a 0,54. La encuesta Casen de 2009 mostró un alza de la pobreza, de 13,7 % a 15,1 %. Existen distintas evaluaciones sobre el alcance de los cambios de estos gobiernos. En la elección presidencial de 2009-2010, Sebastián Piñera obtuvo un 51,61 % frente al 48,39 % del candidato de la Concertación, Eduardo Frei Ruiz-Tagle.",
+    "personajes": ["Patricio Aylwin", "Eduardo Frei Ruiz-Tagle", "Ricardo Lagos", "Michelle Bachelet"],
+    "imagen": {
+      "archivo": "Chile_Aniversario_NO-05-10-2009.jpg",
+      "autor": "Eduardo Frei Ruiz Tagle",
+      "licencia": "CC BY 2.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Chile_Aniversario_NO-05-10-2009.jpg",
+      "pieDeFoto": "Los cuatro presidentes de la Concertación (Patricio Aylwin, Michelle Bachelet, Eduardo Frei Ruiz-Tagle y Ricardo Lagos) en la celebración del aniversario del triunfo del «No», el 5 de octubre de 2009."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/historiapolitica/partidos_politicos/wiki/Concertaci%C3%B3n_de_Partidos_por_la_Democracia",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92975.html",
+      "https://www.df.cl/economia-y-politica/encuesta-casen-pobreza-sube-a-15-1-durante-gobierno-de-bachelet",
+      "https://static.cepchile.cl/uploads/cepchile/2022/09/03_Presentacion_EEngel.pdf"
+    ]
+  },
+  {
+    "id": "1991-informe-rettig",
+    "titulo": "Informe Rettig",
+    "fecha": "1991-02-08",
+    "fechaAproximada": false,
+    "fechaTexto": "8 de febrero de 1991",
+    "periodoId": "09",
+    "temas": ["derechos", "politica"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "Un grupo de personas investigó qué les pasó a quienes murieron o desaparecieron durante la dictadura y escribió un informe con lo que averiguó. El presidente pidió perdón a sus familias en nombre del Estado.",
+    "resumen": "La Comisión Nacional de Verdad y Reconciliación, creada por el presidente Patricio Aylwin y presidida por el jurista Raúl Rettig, investigó las graves violaciones a los derechos humanos ocurridas entre el 11 de septiembre de 1973 y el 11 de marzo de 1990. Su informe, conocido como Informe Rettig, fue entregado al presidente el 8 de febrero de 1991 y presentado al país en marzo de ese año. La comisión calificó como víctimas a 2.279 personas. Más tarde, las comisiones Valech reconocieron a las víctimas de prisión política y tortura.",
+    "detalle": "La comisión fue creada el 25 de abril de 1990 por medio del Decreto Supremo N.° 355. Estuvo presidida por el jurista Raúl Rettig e integrada por ocho miembros. Su misión era establecer un cuadro lo más completo posible sobre los graves hechos de violación a los derechos humanos ocurridos entre el 11 de septiembre de 1973 y el 11 de marzo de 1990.\n\nTras nueve meses de trabajo, en los que recibió poco más de 3.400 denuncias, la comisión entregó su informe al presidente el 8 de febrero de 1991 y calificó como víctimas a 2.279 personas. El 4 de marzo de 1991, Aylwin lo dio a conocer al país en cadena nacional y, en representación del Estado, pidió perdón a los familiares de las víctimas. El informe fue mal recibido por las Fuerzas Armadas y de Orden y por la Corte Suprema.\n\nEn febrero de 1992, la Ley 19.123 creó la Corporación Nacional de Reparación y Reconciliación. Años después, la Comisión Nacional sobre Prisión Política y Tortura (Comisión Valech), que funcionó entre noviembre de 2003 y junio de 2005, calificó a 28.459 víctimas, y una segunda instancia reconoció en 2010 y 2011 a otras 9.795 personas. Según el Museo de la Memoria y los Derechos Humanos, el Estado de Chile reconoce un total de 38.254 víctimas de prisión política y tortura.",
+    "personajes": ["Raúl Rettig", "Patricio Aylwin"],
+    "imagen": {
+      "archivo": "Raúl_Rettig_(1969).jpg",
+      "autor": "Desconocido",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Raúl_Rettig_(1969).jpg",
+      "pieDeFoto": "Raúl Rettig en 1969. Años después presidió la Comisión Nacional de Verdad y Reconciliación."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-94640.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-100720.html",
+      "https://www.theclinic.cl/2016/04/19/el-dia-que-aylwin-pidio-perdon-a-los-familiares-de-las-victimas-de-la-dictadura/",
+      "https://comisiones.museodelamemoria.cl/2016/11/14/comision-nacional-sobre-prision-politica-y-tortura-tambien-conocida-como-comision-valech/",
+      "https://www.bcn.cl/historiadelaley/nc/historia-de-la-ley/7085/",
+      "https://www.interior.gob.cl/transparenciaactiva/doc/MarcoNormativoAplicable/200/5636493.pdf"
+    ]
+  },
+  {
+    "id": "1998-detencion-pinochet-londres",
+    "titulo": "Detención de Pinochet en Londres",
+    "fecha": "1998-10-16",
+    "fechaFin": "2000-03-02",
+    "fechaAproximada": false,
+    "fechaTexto": "16 de octubre de 1998 - 2 de marzo de 2000",
+    "periodoId": "09",
+    "temas": ["derechos", "politica"],
+    "importancia": 2,
+    "lugar": "Londres (Reino Unido)",
+    "resumenNino": "En 1998, Augusto Pinochet fue detenido en Londres porque un juez de España quería juzgarlo. En el año 2000 lo dejaron volver a Chile por razones de salud.",
+    "resumen": "El 16 de octubre de 1998, mientras estaba de viaje en Londres, Augusto Pinochet fue detenido por una orden de captura del juez español Baltasar Garzón, que lo investigaba por los asesinatos de ciudadanos españoles ocurridos durante la dictadura. El 2 de marzo de 2000, el ministro del Interior británico resolvió liberarlo por razones humanitarias, debido a su estado de salud, y Pinochet regresó a Chile. Ya en el país fue desaforado y enfrentó procesos judiciales.",
+    "detalle": "El 16 de octubre de 1998, mientras estaba de viaje en Londres, Augusto Pinochet fue detenido en cumplimiento de una orden de captura emitida por el juez español Baltasar Garzón, por los asesinatos de varios ciudadanos españoles ocurridos durante la dictadura militar chilena.\n\nEl caso se transformó en un largo proceso ante la justicia británica. El 2 de marzo de 2000, el ministro del Interior británico resolvió liberarlo por razones humanitarias, debido a su estado de salud, y ese mismo año Pinochet regresó a Chile.\n\nEn Chile fue desaforado y procesado. Según Memoria Chilena, ese proceso fue sobreseído en 2002 por razones de demencia; el sobreseimiento fue revocado en 2004 y el procesamiento quedó sin efecto en 2005. Ese mismo año fue procesado de nuevo, esta vez por el caso Operación Colombo.",
+    "personajes": ["Augusto Pinochet", "Baltasar Garzón"],
+    "imagen": {
+      "archivo": "Detractores_de_Pinochet_Senador_Vitalicio.jpg",
+      "autor": "Biblioteca del Congreso Nacional de Chile",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Detractores_de_Pinochet_Senador_Vitalicio.jpg",
+      "pieDeFoto": "Augusto Pinochet asume como senador vitalicio el 11 de marzo de 1998, meses antes de su detención; sus detractores levantan fotografías de víctimas de violaciones a los derechos humanos y de detenidos desaparecidos."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-92414.html"
+    ]
+  },
+  {
+    "id": "2005-reformas-constitucionales",
+    "titulo": "Reformas constitucionales de 2005",
+    "fecha": "2005-08-26",
+    "fechaAproximada": false,
+    "fechaTexto": "26 de agosto de 2005",
+    "periodoId": "09",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "En 2005 se hicieron muchos cambios a la Constitución, que es la ley más importante del país. Por ejemplo, se eliminaron los senadores que no eran elegidos por votación y el período del presidente se acortó a cuatro años.",
+    "resumen": "La Ley 20.050, de agosto de 2005, introdujo 58 reformas a la Constitución de 1980. Entre otros cambios, eliminó a los senadores designados y vitalicios, redujo el período presidencial de seis a cuatro años sin reelección inmediata y puso fin a la inamovilidad de los comandantes en jefe de las Fuerzas Armadas y del director general de Carabineros. El 17 de septiembre de 2005, el presidente Ricardo Lagos firmó el texto refundido de la Constitución, que desde entonces lleva su firma en lugar de la de Augusto Pinochet.",
+    "detalle": "Tras años de debate en el Congreso, la Ley 20.050 introdujo 58 reformas a la Constitución de 1980. El presidente Ricardo Lagos la promulgó el 18 de agosto de 2005 y fue publicada en el Diario Oficial el 26 de agosto.\n\nEntre los principales cambios estuvieron la eliminación de los senadores vitalicios y designados; la reducción del período presidencial de seis a cuatro años, sin reelección inmediata; el fin de la inamovilidad de los comandantes en jefe de las Fuerzas Armadas y del director general de Carabineros; la facultad exclusiva del presidente de la República para convocar al Consejo de Seguridad Nacional, y la atribución del Tribunal Constitucional para declarar la inaplicabilidad por inconstitucionalidad.\n\nEl 17 de septiembre de 2005, en una ceremonia en los patios de La Moneda, Lagos firmó el Decreto Supremo N.° 100 con el texto refundido de la Constitución y afirmó: «Tenemos hoy por fin una Constitución democrática, acorde con el espíritu de Chile, del alma permanente de Chile». Existen distintas opiniones sobre el alcance de estas reformas y sobre si dieron origen o no a una nueva Constitución.",
+    "personajes": ["Ricardo Lagos"],
+    "imagen": {
+      "archivo": "Senadores_designados.jpg",
+      "autor": "Biblioteca del Congreso Nacional de Chile",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Senadores_designados.jpg",
+      "pieDeFoto": "Senadores designados para el período 1990-1998 junto al entonces comandante en jefe del Ejército, Augusto Pinochet (1990). La reforma de 2005 eliminó este tipo de senadores."
+    },
+    "fuentes": [
+      "https://uchile.cl/noticias/192165/mitos-y-verdades-sobre-las-reformas-constitucionales-de-2005",
+      "https://www.bcn.cl/leychile/navegar?idNorma=241331"
+    ]
+  },
+  {
+    "id": "2006-bachelet-primera-presidenta",
+    "titulo": "Michelle Bachelet, primera presidenta de Chile",
+    "fecha": "2006-01-15",
+    "fechaAproximada": false,
+    "fechaTexto": "15 de enero de 2006",
+    "periodoId": "09",
+    "temas": ["politica"],
+    "importancia": 3,
+    "lugar": "Chile",
+    "resumenNino": "En 2006, por primera vez, una mujer fue elegida presidenta de Chile: Michelle Bachelet. Antes había sido ministra de Salud y de Defensa.",
+    "resumen": "El 15 de enero de 2006, Michelle Bachelet ganó la segunda vuelta presidencial con un 53,50 % de los votos frente a Sebastián Piñera. El 11 de marzo de 2006 asumió ante el Congreso Nacional, en Valparaíso, y se convirtió en la primera mujer en asumir la Presidencia en la historia de Chile. Antes había sido ministra de Salud y ministra de Defensa Nacional, cargo en el que fue la primera mujer en Sudamérica. Gobernó hasta 2010 y volvió a ser elegida para el período 2014-2018.",
+    "detalle": "Michelle Bachelet se presentó como candidata del bloque PS-PPD-PRSD, de la Concertación. En la primera vuelta obtuvo 3.190.691 votos (45,96 %), por lo que debió enfrentar en segunda vuelta a Sebastián Piñera, que había obtenido un 25,41 %. El 15 de enero de 2006 ganó con 3.723.019 votos, equivalentes al 53,50 % de los sufragios, según la Biblioteca del Congreso Nacional.\n\nEl 11 de marzo de 2006, ante el Congreso Nacional reunido en pleno en Valparaíso, asumió la Presidencia y se convirtió en la primera mujer en hacerlo en la historia de Chile. Antes había sido ministra de Salud (2000-2002) y de Defensa Nacional (2002-2004); en este último cargo fue la primera mujer en Sudamérica en ocuparlo.\n\nSu gobierno impulsó, entre otras medidas, la reforma previsional y el programa Chile Crece Contigo. En 2013 fue elegida nuevamente, con un 62,17 % de los votos en segunda vuelta frente a Evelyn Matthei, y el 11 de marzo de 2014 asumió su segundo mandato, para el período 2014-2018.",
+    "personajes": ["Michelle Bachelet", "Sebastián Piñera"],
+    "imagen": {
+      "archivo": "Michelle_Bachelet_Banda2.jpeg",
+      "autor": "Ricardo Stuckert",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Michelle_Bachelet_Banda2.jpeg",
+      "pieDeFoto": "Michelle Bachelet en 2006, fotografiada por Ricardo Stuckert."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Michelle_Bachelet_Jeria",
+      "https://www.bcn.cl/historiapolitica/partidos_politicos/wiki/Concertaci%C3%B3n_de_Partidos_por_la_Democracia"
+    ]
+  },
+  {
+    "id": "2006-revolucion-pinguina",
+    "titulo": "Revolución pingüina",
+    "fecha": "2006-05",
+    "fechaAproximada": false,
+    "fechaTexto": "mayo de 2006",
+    "periodoId": "09",
+    "temas": ["politica", "derechos"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 2006, miles de estudiantes de liceos salieron a las calles para pedir una mejor educación. Se les llamó «pingüinos» por los colores de su uniforme escolar.",
+    "resumen": "En mayo de 2006, miles de estudiantes secundarios salieron a las calles de Santiago y de todo Chile. Pidieron, entre otras cosas, el pase escolar gratuito, y luego la derogación de la Ley Orgánica Constitucional de Enseñanza (LOCE), publicada el último día de la dictadura. El movimiento fue llamado «revolución pingüina» por los colores del uniforme escolar. La presidenta Michelle Bachelet convocó un Consejo Asesor Presidencial y en 2009 se promulgó la Ley General de Educación (LGE), que reemplazó a la LOCE.",
+    "detalle": "En mayo de 2006, al comienzo del primer gobierno de Michelle Bachelet, miles de estudiantes de liceos públicos se manifestaron en Santiago y en todo el país, muchos con sus jumpers, pantalones grises y delantales blancos y azules. Por los colores de ese uniforme, el movimiento fue conocido popularmente como «revolución pingüina».\n\nPedían el pase escolar gratuito, la eliminación de la prueba SIMCE y el fin del lucro en la educación, pero pronto el centro del reclamo pasó a ser la derogación de la LOCE, publicada el último día de la dictadura militar.\n\nLa presidenta Bachelet convocó un Consejo Asesor Presidencial para elaborar propuestas. En agosto de 2009 promulgó la Ley General de Educación (LGE), que reemplazó a la LOCE. Según investigadores de la Universidad de Chile, el movimiento abrió paso a un sistema de aseguramiento de la calidad, con la Agencia de la Calidad de la Educación y la Superintendencia de Educación. Existen distintas evaluaciones sobre el alcance de estos cambios.",
+    "personajes": ["Michelle Bachelet"],
+    "imagen": {
+      "archivo": "Niño_pingüino_protesta.jpg",
+      "autor": "Federación de Estudiantes de la Universidad de Chile",
+      "licencia": "CC BY 2.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Niño_pingüino_protesta.jpg",
+      "pieDeFoto": "Un niño con pancartas en las protestas escolares del 29 de mayo de 2006."
+    },
+    "fuentes": [
+      "https://ciae.uchile.cl/noticia/a-20-anos-de-la-revolucion-pinguina-el-grito-que-cambio-la-educacion-chilena-y-las-deudas-que-aun-persisten",
+      "https://www.pagina12.com.ar/diario/elmundo/4-130152-2009-08-18.html"
+    ]
+  },
+  {
+    "id": "2010-terremoto-27f",
+    "titulo": "Terremoto y tsunami del 27 de febrero (27F)",
+    "fecha": "2010-02-27",
+    "fechaAproximada": false,
+    "fechaTexto": "27 de febrero de 2010",
+    "periodoId": "09",
+    "temas": ["desastres"],
+    "importancia": 3,
+    "lugar": "Zona central y sur de Chile",
+    "resumenNino": "Una madrugada de 2010, un terremoto muy fuerte sacudió el centro y el sur de Chile, y después un maremoto llegó a la costa. Muchas personas perdieron sus casas y hubo que reconstruir pueblos y ciudades.",
+    "resumen": "A las 3:34 de la madrugada del 27 de febrero de 2010, un terremoto de magnitud 8,8, con epicentro frente a Cobquecura, en la costa sur del Maule, sacudió la zona central y sur de Chile. Luego, un maremoto (tsunami) golpeó la costa y la isla Robinson Crusoe. Según Memoria Chilena, fue el segundo terremoto más grande ocurrido en Chile en los últimos dos siglos. Murieron 521 personas y hubo 56 desaparecidos según Memoria Chilena; el Ministerio de Vivienda y Urbanismo informa 525 víctimas y 52 desaparecidos.",
+    "detalle": "El sismo, de magnitud 8,8, ocurrió a las 3:34 de la madrugada del 27 de febrero de 2010, con epicentro en la costa sur del Maule, frente a Cobquecura. La región del Maule se vio severamente afectada, y también hubo grandes daños en las regiones del Biobío y de O'Higgins; en Santiago hubo 38 fallecidos.\n\nEl maremoto que siguió afectó a la isla Robinson Crusoe y a localidades costeras como Constitución, donde más de cien personas murieron, Chanco, Curanipe, Pelluhue, Iloca y Dichato. En Talcahuano dañó los astilleros de Asmar y la base naval. En varias zonas se impidió transitar por las calles después de cierta hora, medida que no se decretaba desde el fin de la dictadura militar en 1990.\n\nSegún Memoria Chilena, en total fallecieron 521 personas y hubo 56 desaparecidos; el Ministerio de Vivienda y Urbanismo informa 525 víctimas y 52 desaparecidos. Solo en la región de O'Higgins, 130 mil personas quedaron sin vivienda. Tras el desastre comenzó un largo proceso de reconstrucción.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "2010_Chile_earthquake_-_Building_destroyed_in_Concepción.jpg",
+      "autor": "Claudio Núñez",
+      "licencia": "CC BY-SA 2.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:2010_Chile_earthquake_-_Building_destroyed_in_Concepción.jpg",
+      "pieDeFoto": "El edificio Alto Río, de 20 pisos, en Concepción, que colapsó con el terremoto del 27 de febrero de 2010. Fotografía del 1 de marzo de 2010."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-93853.html",
+      "https://www.minvu.gob.cl/reconstruccion/terremoto-y-tsunami-27f-2010/"
+    ]
+  },
+  {
+    "id": "2010-rescate-33-mineros",
+    "titulo": "Rescate de los 33 mineros",
+    "fecha": "2010-10-13",
+    "fechaAproximada": false,
+    "fechaTexto": "13 de octubre de 2010",
+    "periodoId": "09",
+    "temas": ["ciencia"],
+    "importancia": 2,
+    "lugar": "Mina San José, Copiapó (Atacama)",
+    "resumenNino": "En 2010, 33 mineros quedaron atrapados muy abajo en una mina del desierto de Atacama. Después de 69 días, todos fueron rescatados, uno por uno, en una cápsula llamada Fénix.",
+    "resumen": "En agosto de 2010, un derrumbe en la mina San José, cerca de Copiapó, en la región de Atacama, dejó atrapados a 33 mineros a más de 600 metros de profundidad. Se supo que estaban vivos gracias a un mensaje escrito que decía «Estamos bien en el refugio los 33». El 13 de octubre de 2010, tras 69 días bajo tierra, los 33 fueron rescatados uno a uno en la cápsula Fénix II, en un operativo de cerca de 23 horas. El rescate fue transmitido en vivo a todo el mundo.",
+    "detalle": "En agosto de 2010, un derrumbe en la mina San José, cerca de Copiapó, dejó atrapados a 33 mineros. Durante más de dos meses las autoridades trabajaron en un plan para sacarlos. Que estaban con vida se supo por un mensaje escrito, atribuido al minero José Ojeda, que decía: «Estamos bien en el refugio los 33».\n\nPara el rescate se usó la cápsula Fénix II, que recorrió los 622 metros que separaban a los mineros de la superficie. Florencio Ávalos fue el primero en salir, a las 00:10 del 13 de octubre de 2010, y el último fue el jefe de turno, Luis Urzúa, a las 21:55 de ese día, en un operativo que se extendió por cerca de 23 horas. Entre los rescatados estaba el boliviano Carlos Mamani.\n\nEl presidente Sebastián Piñera y el ministro de Minería, Laurence Golborne, recibieron a los mineros en la superficie. Según BioBioChile, el rescate fue seguido en vivo por más de 1.000 millones de espectadores en el mundo.",
+    "personajes": ["Florencio Ávalos", "Luis Urzúa", "José Ojeda", "Laurence Golborne", "Sebastián Piñera"],
+    "imagen": {
+      "archivo": "Fénix-2_en_exhibición_en_Santiago.jpg",
+      "autor": "Diode",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Fénix-2_en_exhibición_en_Santiago.jpg",
+      "pieDeFoto": "La cápsula Fénix 2, usada en el rescate de los mineros de la mina San José, en exhibición en Santiago en octubre de 2010."
+    },
+    "fuentes": [
+      "https://www.emol.com/noticias/nacional/2010/10/13/441011/reviva-el-rescate-de-cada-uno-de-los-33-mineros-la-emocion-y-sus-primeras-palabras.html",
+      "https://www.biobiochile.cl/noticias/nacional/chile/2020/10/10/el-rescate-de-los-33-mineros-en-chile-cumple-10-anos-de-haber-sorprendido-al-mundo.shtml",
+      "https://www.latercera.com/nacional/noticia/8-anos-del-rescate-los-33-mineros-fue-rescate-los-mineros-atrapados-la-mina-san-jose/360337/",
+      "https://www.biobiochile.cl/noticias/2010/08/06/se-confirman-las-identidades-de-mineros-atrapados-en-mina-san-jose-en-region-de-atacama.shtml"
+    ]
+  },
+  {
+    "id": "2011-movimiento-estudiantil",
+    "titulo": "Movimiento estudiantil de 2011",
+    "fecha": "2011",
+    "fechaAproximada": false,
+    "fechaTexto": "2011",
+    "periodoId": "09",
+    "temas": ["politica", "derechos"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 2011, estudiantes de universidades y de liceos marcharon durante meses para pedir una educación gratuita y de calidad. Sus ideas influyeron en cambios a la educación en los años siguientes.",
+    "resumen": "En 2011, durante el primer gobierno de Sebastián Piñera, estudiantes universitarios y secundarios realizaron marchas masivas bajo la consigna «Educación gratuita y de calidad». Pedían el fin del lucro, el fortalecimiento de la educación pública y la gratuidad. Entre sus dirigentes estuvo Camila Vallejo, presidenta de la Federación de Estudiantes de la Universidad de Chile (FECh). El movimiento influyó en reformas posteriores, como el fin del copago, del lucro y de la selección escolar, y una política de gratuidad creciente en la educación superior.",
+    "detalle": "Según académicos de la Universidad de Chile, el movimiento de 2011 unió a dos sectores estudiantiles muy fuertes, el universitario y el secundario, y tuvo como antecedentes el «mochilazo» de 2001 y la «revolución pingüina» de 2006. Hubo marchas masivas y tomas de liceos; la consigna «Educación gratuita y de calidad» se repetía en los carteles.\n\nLas demandas incluían el fin del lucro, el fortalecimiento de la educación pública, la gratuidad y la democratización de los gobiernos universitarios. El gobierno de Sebastián Piñera defendió la institucionalidad existente. Entre los dirigentes estuvo Camila Vallejo, presidenta de la FECh entre 2010 y 2011, quien en las elecciones parlamentarias de 2013 fue elegida diputada.\n\nSegún académicos de la Universidad de Chile, el movimiento cuestionó el modelo de mercado en la educación e influyó en reformas posteriores, como el fin del copago, del lucro y de la selección escolar, y una política de gratuidad creciente, aunque no universal, en la educación superior. Hay distintas visiones sobre su alcance: algunos lo relacionan con el estallido social de 2019 y el proceso constituyente, y otros señalan que la educación pública gratuita y de calidad no se ha cumplido a cabalidad.",
+    "personajes": ["Camila Vallejo", "Sebastián Piñera"],
+    "imagen": {
+      "archivo": "Estudiantes_marchando_2011.jpg",
+      "autor": "simenon simenon",
+      "licencia": "CC BY-SA 2.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Estudiantes_marchando_2011.jpg",
+      "pieDeFoto": "Estudiantes en la marcha del 30 de junio de 2011, en Chile."
+    },
+    "fuentes": [
+      "https://uchile.cl/noticias/176399/especialistas-analizan-el-movimiento-estudiantil-de-2011-y-sus-efectos",
+      "https://uchile.cl/noticias/178464/efectos-del-movimiento-estudiantil-que-cuestiono-el-modelo-educacional",
+      "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Camila_Antonia_Amaranta_Vallejo_Dowling"
+    ]
+  },
+  {
+    "id": "2019-estallido-social",
+    "titulo": "Estallido social y Acuerdo por la Paz Social y la Nueva Constitución",
+    "fecha": "2019-10-18",
+    "fechaAproximada": false,
+    "fechaTexto": "18 de octubre de 2019",
+    "periodoId": "09",
+    "temas": ["politica", "derechos"],
+    "importancia": 3,
+    "lugar": "Santiago y otras ciudades de Chile",
+    "resumenNino": "En octubre de 2019, miles de personas salieron a las calles en todo Chile para pedir cambios. Hubo grandes marchas pacíficas y también hechos de violencia, y los partidos políticos acordaron preguntar a la gente si quería una nueva Constitución.",
+    "resumen": "Desde el 18 de octubre de 2019, tras las evasiones masivas del pasaje del Metro de Santiago en protesta por un alza de 30 pesos, hubo manifestaciones masivas en Santiago y en regiones. Hubo grandes marchas pacíficas, como la del 25 de octubre, y también hechos de violencia, incendios de estaciones del Metro y saqueos; el gobierno decretó estado de emergencia. El Instituto Nacional de Derechos Humanos (INDH) y la Oficina de la ONU para los Derechos Humanos documentaron violaciones a los derechos humanos. El 15 de noviembre, diversas fuerzas políticas firmaron el Acuerdo por la Paz Social y la Nueva Constitución.",
+    "detalle": "En octubre de 2019, debido a un alza de 30 pesos en el pasaje del Metro de Santiago, estudiantes secundarios y universitarios convocaron a evadir masivamente el pago en distintas estaciones. El 18 de octubre las manifestaciones aumentaron: miles de personas salieron a protestar en Santiago y en regiones, y en la noche hubo enfrentamientos con la policía, saqueos e incendios de estaciones del Metro. El gobierno del presidente Sebastián Piñera decretó estado de emergencia y toque de queda en Santiago y otras ciudades.\n\nLas movilizaciones continuaron durante semanas. El 25 de octubre, la llamada «marcha del millón de personas» tuvo, según la Biblioteca del Congreso Nacional, la convocatoria más grande de una marcha en la historia del país; se reunió en Plaza Baquedano, a la que los manifestantes llamaron «Plaza de la Dignidad» (no es su nombre oficial). Según el INDH, entre el 17 de octubre y el 30 de diciembre de 2019 se registraron 3.583 personas lesionadas y 359 con daños oculares. En diciembre de 2019, la Oficina del Alto Comisionado de las Naciones Unidas para los Derechos Humanos (ACNUDH) concluyó que se produjo un elevado número de violaciones graves a los derechos humanos, con uso excesivo o innecesario de la fuerza por parte de agentes del Estado.\n\nEl 15 de noviembre de 2019, diversas fuerzas políticas firmaron el Acuerdo por la Paz Social y la Nueva Constitución, que propuso un plebiscito para abril de 2020 en el que la ciudadanía decidiría si quería o no una nueva Constitución y qué órgano debía redactarla. Existen distintas interpretaciones sobre las causas y las consecuencias del estallido social.",
+    "personajes": ["Sebastián Piñera"],
+    "imagen": {
+      "archivo": "Marcha_Mas_Grande_De_Chile_2019_Plaza_Baquedano_Drone.jpg",
+      "autor": "Hugo Morales",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Marcha_Mas_Grande_De_Chile_2019_Plaza_Baquedano_Drone.jpg",
+      "pieDeFoto": "Vista aérea de la marcha hacia Plaza Baquedano, en Santiago, el 25 de octubre de 2019."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/historiapolitica/efemerides/index.html?dia=18&mes=Octubre",
+      "https://www.bcn.cl/historiapolitica/efemerides/index.html?dia=19&mes=Octubre",
+      "https://www.bcn.cl/historiapolitica/efemerides/index.html?dia=25&mes=Octubre",
+      "https://www.bcn.cl/historiapolitica/efemerides/index.html?dia=15&mes=Noviembre",
+      "https://www.cnnchile.com/pais/informe-indh-lesionados-heridas-oculares-estallido-social/",
+      "https://www.biobiochile.cl/noticias/nacional/chile/2019/12/13/onu-concluye-que-se-han-producido-un-elevado-numero-de-violaciones-graves-a-los-ddhh-en-chile.shtml",
+      "https://www.cnnchile.com/pais/informe-onu-violaciones-dd-hh-incumplimiento-estandares-carabineros-ff-aa/"
+    ]
+  },
+  {
+    "id": "2020-pandemia-covid-19",
+    "titulo": "Pandemia de COVID-19 en Chile",
+    "fecha": "2020-03-03",
+    "fechaAproximada": false,
+    "fechaTexto": "3 de marzo de 2020",
+    "periodoId": "09",
+    "temas": ["desastres", "ciencia"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 2020 llegó a Chile el coronavirus, que causa la enfermedad COVID-19. Para cuidarse hubo reglas especiales durante mucho tiempo y, más tarde, millones de personas se vacunaron.",
+    "resumen": "El 3 de marzo de 2020 se confirmó el primer caso de coronavirus (COVID-19) en Chile, en Talca. El 18 de marzo, el presidente Sebastián Piñera declaró el estado de excepción constitucional de catástrofe en todo el territorio nacional, que se prorrogó varias veces y terminó el 30 de septiembre de 2021. Según el Ministerio de Salud, al 27 de septiembre de 2021, 13.417.332 personas habían completado su esquema de vacunación.",
+    "detalle": "La enfermedad COVID-19, causada por un nuevo coronavirus, se expandió por el mundo a comienzos de 2020. En Chile, el primer caso fue confirmado el 3 de marzo de 2020 en Talca, en la región del Maule.\n\nEl 18 de marzo de 2020, el presidente Sebastián Piñera declaró el estado de excepción constitucional de catástrofe en todo el territorio nacional, por 90 días. La medida se prorrogó varias veces y, según el Ministerio de Salud, terminó el 30 de septiembre de 2021.\n\nSegún el Ministerio de Salud, al 27 de septiembre de 2021, 13.417.332 personas habían completado su esquema de vacunación y 3.014.399 se habían vacunado con la dosis de refuerzo. Ese mes también comenzó la vacunación escolar de niños y niñas de 6 a 11 años.",
+    "personajes": ["Sebastián Piñera"],
+    "imagen": {
+      "archivo": "Campaña_de_Vacunacion_Covid_2021_en_Chile_01.jpg",
+      "autor": "Ciberprofe",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Campaña_de_Vacunacion_Covid_2021_en_Chile_01.jpg",
+      "pieDeFoto": "El Estadio Bicentenario habilitado como centro de vacunación contra el COVID-19, el 16 de marzo de 2021."
+    },
+    "fuentes": [
+      "https://radio.uchile.cl/2020/03/03/gobierno-confirma-primer-caso-de-coronavirus-en-chile/",
+      "https://www.emol.com/noticias/Nacional/2020/03/03/978544/minsal-coronavirus-talca.html",
+      "https://msgg.gob.cl/wp/2020/03/18/presidente-declara-estado-de-excepcion-constitucional-de-catastrofe-en-todo-el-territorio-nacional/",
+      "https://www.minsal.cl/covid-19-gobierno-anuncia-fin-del-estado-de-excepcion/"
+    ]
+  },
+  {
+    "id": "2020-plebiscito-nacional",
+    "titulo": "Plebiscito nacional de 2020",
+    "fecha": "2020-10-25",
+    "fechaAproximada": false,
+    "fechaTexto": "25 de octubre de 2020",
+    "periodoId": "09",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 2020, los chilenos votaron si querían una nueva Constitución. Ganó la opción «Apruebo», es decir, que sí querían una nueva.",
+    "resumen": "El 25 de octubre de 2020 se realizó el plebiscito de entrada al proceso constituyente, acordado en noviembre de 2019. Según la Biblioteca del Congreso Nacional, la opción «Apruebo» a una nueva Constitución obtuvo un 78,27 % y la opción «Rechazo», un 21,73 %. Para redactarla, la «Convención Constitucional» obtuvo un 78,99 % y la «Convención Mixta Constitucional», un 21,01 %. Votó el 50,9 % del padrón, la mayor participación desde que el voto es voluntario.",
+    "detalle": "El Acuerdo por la Paz Social y la Nueva Constitución, del 15 de noviembre de 2019, propuso un plebiscito para abril de 2020 con dos preguntas: si se quería o no una nueva Constitución y qué órgano debía redactarla, una Convención Constitucional o una Convención Mixta Constitucional. La votación se realizó finalmente el 25 de octubre de 2020, con medidas especiales por la pandemia de COVID-19.\n\nSegún la BCN, el «Apruebo» obtuvo un 78,27 % y el «Rechazo», un 21,73 %. En la segunda papeleta, la Convención Constitucional obtuvo un 78,99 % y la Convención Mixta, un 21,01 %. La participación llegó al 50,9 % del padrón, la mayor desde que el voto es voluntario.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Fila_votación_plebiscito_nacional_2020_en_Macul,_Chile.jpg",
+      "autor": "Sgonzalezb",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Fila_votación_plebiscito_nacional_2020_en_Macul,_Chile.jpg",
+      "pieDeFoto": "Filas de votantes en un local de votación de la comuna de Macul, en Santiago, el 25 de octubre de 2020."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/procesoconstituyente/plebiscito2020",
+      "https://www.bcn.cl/historiapolitica/efemerides/index.html?dia=25&mes=Octubre",
+      "https://www.bcn.cl/historiapolitica/efemerides/index.html?dia=15&mes=Noviembre"
+    ]
+  },
+  {
+    "id": "2022-plebiscito-constitucional",
+    "titulo": "Plebiscito constitucional de 2022",
+    "fecha": "2022-09-04",
+    "fechaAproximada": false,
+    "fechaTexto": "4 de septiembre de 2022",
+    "periodoId": "09",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 2022, los chilenos votaron si aceptaban la nueva Constitución escrita por una convención. La mayoría votó «Rechazo», así que siguió la Constitución que ya existía.",
+    "resumen": "El 4 de septiembre de 2022 se votó la propuesta de nueva Constitución redactada por la Convención Constitucional. Según el cómputo con el 99,97 % de las mesas escrutadas, difundido por la Biblioteca del Congreso Nacional, la opción «Rechazo» obtuvo un 61,86 % de los votos (7.882.238) y la opción «Apruebo», un 38,14 % (4.859.039). Votó el 85,7 % del padrón, una participación histórica. Con este resultado se mantuvo la Constitución vigente.",
+    "detalle": "La propuesta de nueva Constitución fue redactada por la Convención Constitucional, elegida después del plebiscito de 2020. El plebiscito para aprobarla o rechazarla se realizó el 4 de septiembre de 2022.\n\nCon el 99,97 % de las mesas escrutadas (38.747 de un total de 38.757), la opción «Rechazo» obtuvo un 61,86 % de los votos (7.882.238 votos) y la opción «Apruebo», un 38,14 % (4.859.039 votos). Según el balance del Servel citado por la BCN, votaron 13.019.278 personas, un 85,7 % del padrón. Con este resultado, la propuesta fue rechazada y se mantuvo la Constitución vigente.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Voto_plebiscito_2022.png",
+      "autor": "Servicio Electoral",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Voto_plebiscito_2022.png",
+      "pieDeFoto": "Reproducción de la cédula de votación del plebiscito constitucional de 2022, del Servicio Electoral."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/procesoconstituyente/plebiscito2022",
+      "https://www.bcn.cl/procesoconstituyente/detalle_cronograma?id=f_copy19_of_chilenas-y-chilenos-eligieron-a-los-155-representantes-de-la-nueva-convencion-constitucional",
+      "https://www.bcn.cl/portal/api-servicios/servicio/ObtenerNoticiaPorIdNoticiaHTML?id=historica-participacion-plebiscito-2022"
+    ]
+  },
+  {
+    "id": "2023-plebiscito-constitucional",
+    "titulo": "Plebiscito constitucional de 2023",
+    "fecha": "2023-12-17",
+    "fechaAproximada": false,
+    "fechaTexto": "17 de diciembre de 2023",
+    "periodoId": "09",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 2023, los chilenos votaron otra propuesta de nueva Constitución. Esta vez ganó la opción «En contra» y siguió la Constitución que ya existía.",
+    "resumen": "El 17 de diciembre de 2023 se votó una segunda propuesta de nueva Constitución, elaborada en un proceso en el que participaron una Comisión Experta y un Consejo Constitucional. Según el boletín del Servel con el 99,97 % de las mesas escrutadas, difundido por la Biblioteca del Congreso Nacional, la opción «En contra» obtuvo un 55,76 % (6.894.287 votos) y la opción «A favor», un 44,24 % (5.470.025 votos). En total se emitieron 13.014.963 sufragios. Así, por segunda vez fue rechazada una propuesta de nueva Constitución.",
+    "detalle": "Después del rechazo de 2022 se inició un nuevo proceso constitucional, en el que participaron una Comisión Experta y un Consejo Constitucional. La propuesta resultante se sometió a plebiscito el domingo 17 de diciembre de 2023.\n\nSegún el boletín de resultados preliminares del Servel, entregado a la 01:30 del lunes 18 de diciembre con 39.716 mesas escrutadas (99,97 %), la opción «En contra» obtuvo 6.894.287 votos (55,76 %) y la opción «A favor», 5.470.025 votos (44,24 %). Hubo 480.730 votos nulos y 169.921 blancos, para un total de 13.014.963 sufragios. Con este resultado se mantuvo la Constitución vigente.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Juglares_promueve_participación_informada_en_el_Plebiscito_Constitucional_del_17_de_diciembre_(53356358265).jpg",
+      "autor": "Asociación Juglares from Chile",
+      "licencia": "CC BY 2.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Juglares_promueve_participación_informada_en_el_Plebiscito_Constitucional_del_17_de_diciembre_(53356358265).jpg",
+      "pieDeFoto": "La Asociación Juglares de Pichilemu llama a una participación informada en el plebiscito del 17 de diciembre de 2023 (fotografía del 25 de noviembre de 2023)."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/procesoconstitucional/detalle_cronograma.html?id=f_mas-de-13-millones-de-personas-sufragaron-el-domingo-17-de-diciembre-en-el-plebiscito-constitucional-2023",
+      "https://www.bcn.cl/procesoconstitucional/"
+    ]
+  },
+  {
+    "id": "2025-eleccion-presidencial",
+    "titulo": "Elección presidencial de 2025",
+    "fecha": "2025-12-14",
+    "fechaAproximada": false,
+    "fechaTexto": "14 de diciembre de 2025",
+    "periodoId": "09",
+    "temas": ["politica"],
+    "importancia": 1,
+    "lugar": "Chile",
+    "resumenNino": "En diciembre de 2025, los chilenos eligieron presidente a José Antonio Kast en una segunda votación. Asumió el cargo en marzo de 2026.",
+    "resumen": "En la primera vuelta presidencial, el 16 de noviembre de 2025, José Antonio Kast, del Partido Republicano, obtuvo el segundo lugar y pasó a la segunda vuelta junto a Jeannette Jara, candidata de Unidad por Chile. El 14 de diciembre de 2025, Kast ganó con 7.263.236 votos, el 58,17 % de las preferencias, según la proclamación del Tribunal Calificador de Elecciones (Tricel). Asumió como presidente de la República el 11 de marzo de 2026, para el período 2026-2030.",
+    "detalle": "En la primera vuelta, el 16 de noviembre de 2025, José Antonio Kast, candidato del Partido Republicano, obtuvo el segundo lugar con 3.097.717 votos (23,92 %) y pasó a la segunda vuelta junto a Jeannette Jara, candidata del pacto Unidad por Chile.\n\nEn la segunda vuelta, el 14 de diciembre de 2025, Kast derrotó a Jara. Según la proclamación del Tribunal Calificador de Elecciones (Tricel), del 5 de enero de 2026, obtuvo 7.263.236 votos, equivalentes al 58,17 % de las preferencias. El 11 de marzo de 2026 asumió como presidente de la República para el período 2026-2030.",
+    "personajes": ["José Antonio Kast", "Jeannette Jara"],
+    "imagen": {
+      "archivo": "José_Antonio_Kast_(2025).jpg",
+      "autor": "Gobierno de Chile",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:José_Antonio_Kast_(2025).jpg",
+      "pieDeFoto": "Retrato de José Antonio Kast en 2025."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Jos%C3%A9_Antonio_Kast_Rist",
+      "https://www.bcn.cl/historiapolitica/partidos_politicos/wiki/Partido_Republicano_de_Chile",
+      "https://www.biobiochile.cl/noticias/nacional/chile/2026/01/05/tricel-proclama-oficialmente-a-jose-antonio-kast-como-presidente-electo.shtml",
+      "https://www.pjud.cl/prensa-y-comunicaciones/noticias-del-poder-judicial/139136"
+    ]
+  }
+]

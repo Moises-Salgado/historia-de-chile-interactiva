@@ -67,7 +67,7 @@
     "lugar": "Norte y centro de Chile",
     "resumenNino": "El gran imperio de los incas, el Tawantinsuyu, extendió su dominio hasta el centro de Chile. Construyeron caminos, fortalezas y lugares para trabajar los metales.",
     "resumen": "Según las crónicas españolas, hacia 1471 el inca Túpac Yupanqui llegó al sur del río Aconcagua, y más tarde Huayna Cápac fijó la frontera al sur del Maipo. Sin embargo, las dataciones por radiocarbono y termoluminiscencia indican que la presencia inca en el norte y centro de Chile comenzó casi cien años antes. Los incas construyeron caminos, tambos (lugares de descanso) y pucarás (fortalezas), y explotaron minas de metales. El Qhapaq Ñan, su red de caminos, es Patrimonio Mundial desde 2014.",
-    "detalle": "Los incas incorporaron a pueblos como los atacameños y los diaguitas, que pasaron a tributar al imperio con trabajo y productos. En Viña del Cerro, cerca de Copiapó, funcionó el mayor centro metalúrgico inca conocido, según Memoria Chilena. Al sur de Santiago, los pucarás de Chena, Chada y el Cerro Grande de La Compañía marcaban la frontera.\n\nEl límite sur del Tawantinsuyu se discute: algunos lo sitúan en el río Maule, siguiendo al cronista Garcilaso de la Vega, y otros en el Maipo o el Cachapoal. El tramo chileno del Qhapaq Ñan, compartido con otros cinco países, abarca casi 113 kilómetros y 138 sitios arqueológicos.",
+    "detalle": "Los incas incorporaron a pueblos como los atacameños y los diaguitas, que pasaron a tributar al imperio con trabajo y productos. En Viña del Cerro, en el valle de Copiapó, los incas instalaron un centro metalúrgico donde se fundían oro, plata y cobre. Al sur de Santiago, los pucarás de Chena, Chada y el Cerro Grande de La Compañía marcaban la frontera.\n\nEl límite sur del Tawantinsuyu se discute: hay evidencias arqueológicas de presencia inca hasta el río Mataquito, y algunas fuentes escritas la extienden hasta el río Maule. El tramo chileno del Qhapaq Ñan, compartido con otros cinco países, abarca casi 113 kilómetros y 138 sitios arqueológicos.",
     "personajes": ["Túpac Yupanqui", "Huayna Cápac"],
     "imagen": {
       "archivo": "Zapahuira_Tambo_Uno_Colcas.jpg",
@@ -79,7 +79,9 @@
     "fuentes": [
       "https://precolombino.cl/wp/culturas-americanas/culturas-precolombinas/chile/el-inka-en-chile/",
       "https://www.monumentos.gob.cl/patrimonio-mundial/actual/qhapaq-nan-sistema-vial-andino",
-      "https://doaj.org/article/8266528ed37344e5b2eb2dab96a01eaa"
+      "https://estudiosatacamenos.ucn.cl/index.php/estudios-atacamenos/article/download/41/36/109",
+      "https://www.museodeatacama.gob.cl/sites/www.museodeatacama.gob.cl/files/images/articles-88574_archivo_01.pdf",
+      "https://revistas.udec.cl/index.php/historia/article/download/7029/6358/14955"
     ]
   },
   {
@@ -121,7 +123,7 @@
     "lugar": "Oasis del salar de Atacama y río Loa",
     "resumenNino": "En los oasis del desierto de Atacama vivía el pueblo lickanantay, o atacameño. Cultivaban la tierra junto a los ríos y viajaban en caravanas de llamas para intercambiar productos con otros pueblos.",
     "resumen": "El pueblo atacameño o lickanantay habitaba los oasis y quebradas del río Loa y del salar de Atacama, donde vivía en comunidades llamadas ayllus. Sus antepasados formaron la cultura San Pedro, cuya aldea de Tulor data de hacia el 400 a.C. Las caravanas de llamas permitían intercambiar productos a corta y larga distancia, y convirtieron a San Pedro de Atacama en un centro de contacto entre pueblos. Hacia el año 1300 construyeron el Pukará de Quitor, una fortaleza de piedra, y hacia 1450 su territorio fue incorporado al Tawantinsuyu.",
-    "detalle": "La agricultura en el desierto dependía del manejo cuidadoso del agua de ríos y vertientes. Los lickanantay cultivaban maíz, quinoa y otros productos, criaban llamas y recolectaban frutos como el algarrobo y el chañar.\n\nEn 1540 el español Francisco de Aguirre tomó el Pukará de Quitor, defendido por unos mil atacameños según el cronista Gerónimo de Bibar. Hoy el pueblo atacameño-lickanantay mantiene sus comunidades en la zona de San Pedro de Atacama y el Loa, y trabaja por recuperar su lengua ancestral, el kunza.",
+    "detalle": "La agricultura en el desierto dependía del manejo cuidadoso del agua de ríos y vertientes. Los lickanantay cultivaban maíz, quinoa y otros productos, criaban llamas y recolectaban frutos como el algarrobo y el chañar.\n\nEn 1540 el español Francisco de Aguirre, con unos treinta soldados, tomó el Pukará de Quitor tras una tenaz resistencia de sus defensores, según relató el cronista Gerónimo de Bibar. Hoy el pueblo atacameño-lickanantay mantiene sus comunidades en la zona de San Pedro de Atacama y el Loa, y trabaja por recuperar su lengua ancestral, el kunza.",
     "personajes": [],
     "imagen": {
       "archivo": "Pukará_de_Quitor_1.jpg",
@@ -133,7 +135,9 @@
     "fuentes": [
       "https://www.memoriachilena.gob.cl/602/w3-article-722.html",
       "https://precolombino.cl/wp/culturas-americanas/culturas-precolombinas/chile/san-pedro/",
-      "https://estudiosatacamenos.ucn.cl/index.php/estudios-atacamenos/article/download/187/176/397"
+      "https://estudiosatacamenos.ucn.cl/index.php/estudios-atacamenos/article/download/187/176/397",
+      "https://estudiosatacamenos.ucn.cl/index.php/estudios-atacamenos/article/download/439/424/893",
+      "https://www.redalyc.org/pdf/3713/371336248005.pdf"
     ]
   },
   {
@@ -160,6 +164,7 @@
     "fuentes": [
       "https://www.memoriachilena.gob.cl/602/w3-article-93148.html",
       "https://www.bcn.cl/leychile/navegar?idNorma=253035",
+      "https://www.bcn.cl/leychile/navegar?idNorma=30620",
       "https://es.wikipedia.org/wiki/Pueblo_diaguita"
     ]
   },
@@ -229,7 +234,7 @@
     "lugar": "Canales de la Patagonia occidental",
     "resumenNino": "Los kawésqar son un pueblo de navegantes de los canales de la Patagonia. Durante miles de años vivieron casi siempre en sus canoas, recorriendo los fiordos en busca de alimento.",
     "resumen": "El pueblo kawésqar habitaba los canales y fiordos de la Patagonia occidental, entre la península de Taitao y el estrecho de Magallanes. Vivían en pequeños grupos familiares que pasaban gran parte de su vida a bordo de sus canoas, cazando lobos marinos y recolectando mariscos. Los arqueólogos han encontrado en la zona restos de cazadores-recolectores marinos de hace unos 6.000 años, que serían sus antepasados. Hoy hay familias kawésqar en Puerto Edén, Puerto Natales y Punta Arenas.",
-    "detalle": "En sus canoas llevaban siempre un fuego encendido sobre una base de tierra, para calentarse y cocinar. En el siglo XIX y comienzos del XX, el contacto con loberos, colonos y navegantes trajo enfermedades y violencia que redujeron mucho su población.\n\nLa instalación de un puesto de la Armada en Puerto Edén, a fines de la década de 1930, aceleró el abandono de la vida nómada. Hoy el pueblo kawésqar trabaja por preservar su lengua y su identidad, y es uno de los pueblos indígenas reconocidos por la ley chilena.",
+    "detalle": "En sus canoas llevaban siempre un fuego encendido sobre una base de tierra, para calentarse y cocinar. En el siglo XIX y comienzos del XX, el contacto con loberos, colonos y navegantes trajo enfermedades y violencia que redujeron mucho su población.\n\nLa instalación de un puesto del Estado chileno en Puerto Edén, a fines de la década de 1930, aceleró el abandono de la vida nómada. Hoy el pueblo kawésqar trabaja por preservar su lengua y su identidad, y es uno de los pueblos indígenas reconocidos por la ley chilena.",
     "personajes": [],
     "imagen": {
       "archivo": "Grupo_kaweshkar_navegando_en_una_dalca_1895.png",
@@ -240,7 +245,7 @@
     },
     "fuentes": [
       "https://www.memoriachilena.gob.cl/602/w3-article-93784.html",
-      "https://doaj.org/article/fcf48b3e430c4da4b63a6da55d3869e4",
+      "https://www.redalyc.org/pdf/506/50633212.pdf",
       "https://es.wikipedia.org/wiki/Pueblo_kaw%C3%A9sqar"
     ]
   },
@@ -296,6 +301,7 @@
       "https://www.memoriachilena.gob.cl/602/w3-article-93793.html",
       "https://cooperativa.cl/noticias/pais/pueblos-originarios/a-los-93-anos-fallecio-cristina-calderon-la-ultima-hablante-nativa-del/2022-02-16/133828.html",
       "https://revistaschilenas.uchile.cl/handle/2250/42164",
+      "https://www.cultura.gob.cl/actualidad/libro-repasa-las-memorias-de-abuela-yagan-reconocida-como-tesoro-humano-vivo-de-chile/",
       "https://es.wikipedia.org/wiki/Pueblo_yag%C3%A1n"
     ]
   },
@@ -310,7 +316,7 @@
     "importancia": 2,
     "lugar": "Rapa Nui (Isla de Pascua)",
     "resumenNino": "Navegantes de Polinesia llegaron en canoas a Rapa Nui, una isla en medio del océano Pacífico. Allí tallaron los moái, enormes estatuas de piedra que representan a sus antepasados.",
-    "resumen": "Rapa Nui fue poblada por navegantes polinesios que, según los estudios de radiocarbono más recientes, llegaron entre los años 1150 y 1290 d.C. La tradición atribuye la primera migración al jefe Hotu Matu'a. Sus habitantes construyeron unas 900 estatuas de piedra, los moái, y más de 300 plataformas ceremoniales, los ahu, para honrar a sus antepasados. También desarrollaron el rongorongo, un sistema de signos que todavía no ha sido descifrado.",
+    "resumen": "Rapa Nui fue poblada por navegantes polinesios que, según estudios de radiocarbono, llegaron entre los años 1190 y 1290 d.C. La tradición atribuye la primera migración al jefe Hotu Matu'a. Sus habitantes construyeron unas 900 estatuas de piedra, los moái, y más de 300 plataformas ceremoniales, los ahu, para honrar a sus antepasados. También desarrollaron el rongorongo, un sistema de signos que todavía no ha sido descifrado.",
     "detalle": "La construcción de ahu y moái comenzó poco después del poblamiento y alcanzó su apogeo en los siglos XIV y XV. La población de la isla pudo llegar a unas 10.000 personas, según Memoria Chilena. Un estudio de 2024 fechó la madera de una tablilla rongorongo entre 1493 y 1509, antes de la llegada de los europeos.\n\nEl primer europeo en llegar a la isla fue el holandés Jacob Roggeveen, en 1722. En 1995, el Parque Nacional Rapa Nui fue el primer sitio de Chile inscrito en la Lista del Patrimonio Mundial de la UNESCO.",
     "personajes": ["Hotu Matu'a"],
     "imagen": {
@@ -323,6 +329,8 @@
     "fuentes": [
       "https://www.monumentos.gob.cl/patrimonio-mundial/actual/parque-nacional-rapa-nui",
       "https://manoa.hawaii.edu/news/article.php?aId=4097",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3524.html",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC10837134/",
       "https://es.wikipedia.org/wiki/Rapanui_(etnia)"
     ]
   },

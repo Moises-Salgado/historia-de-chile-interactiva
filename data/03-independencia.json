@@ -159,6 +159,7 @@
     "fuentes": [
       "https://www.memoriachilena.gob.cl/602/w3-article-3671.html",
       "https://www.memoriachilena.gob.cl/602/w3-article-97327.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-740.html",
       "https://es.wikipedia.org/wiki/Reconquista_(Chile)"
     ]
   },
@@ -294,6 +295,7 @@
     "fuentes": [
       "https://www.memoriachilena.gob.cl/602/w3-article-93423.html",
       "https://www.memoriachilena.gob.cl/602/w3-article-92285.html",
+      "https://revistas.pucp.edu.pe/index.php/historica/article/download/13/18",
       "https://es.wikipedia.org/wiki/Expedici%C3%B3n_Libertadora_del_Per%C3%BA"
     ]
   },
@@ -336,7 +338,7 @@
     "lugar": "Chile",
     "resumenNino": "Chile prohibió la esclavitud: desde entonces ninguna persona podía ser dueña de otra. Fue uno de los primeros países de América en hacerlo.",
     "resumen": "El 24 de julio de 1823 se promulgó la ley que abolió por completo la esclavitud en Chile, propuesta por José Miguel Infante. Antes, en 1811, el Primer Congreso Nacional había aprobado la libertad de vientres, que declaró libres a los hijos de esclavas y prohibió traer nuevos esclavos al país. La ley de 1823 dio la libertad a todas las personas esclavizadas que quedaban en Chile. Así, Chile fue uno de los primeros países de América en abolir la esclavitud.",
-    "detalle": "La libertad de vientres, impulsada por Manuel de Salas, fue aprobada en octubre de 1811, pero quienes ya eran esclavos siguieron en esa condición. En 1823, José Miguel Infante presentó el proyecto de abolición total, que también declaraba libre a toda persona esclavizada que llegara al territorio. El Senado lo aprobó el 23 de junio y fue promulgado el 24 de julio, pese a la oposición inicial del ministro Mariano Egaña.\n\nSegún el historiador Guillermo Feliú Cruz, citado por Memoria Chilena, unas 5.000 personas se beneficiaron con la abolición. La Constitución de 1823 ratificó que en Chile no había esclavos. Investigaciones posteriores señalan que algunas aclaraciones a la ley limitaron su alcance en la práctica.",
+    "detalle": "La libertad de vientres, impulsada por Manuel de Salas, fue aprobada en octubre de 1811, pero quienes ya eran esclavos siguieron en esa condición. En 1823, José Miguel Infante presentó el proyecto de abolición total, que también declaraba libre a toda persona esclavizada que llegara al territorio. El Senado lo aprobó el 23 de junio y fue promulgado el 24 de julio, pese a la oposición del ministro Mariano Egaña.\n\nSegún el historiador Guillermo Feliú Cruz, citado por Memoria Chilena, unas 5.000 personas se beneficiaron con la abolición. La Constitución de 1823 ratificó que en Chile no había esclavos. Investigaciones posteriores señalan que algunas aclaraciones a la ley limitaron su alcance en la práctica.",
     "personajes": ["José Miguel Infante", "Manuel de Salas"],
     "imagen": {
       "archivo": "José_Miguel_Infante_en_Galería_nacional_(cropped).png",
@@ -348,6 +350,8 @@
     "fuentes": [
       "https://www.memoriachilena.gob.cl/602/w3-article-95115.html",
       "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Jos%C3%A9_Miguel_Infante_y_Rojas",
+      "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Mariano_Ega%C3%B1a_Fabres",
+      "https://www.memoriachilena.gob.cl/archivos2/pdfs/MC0027418.pdf",
       "https://es.wikipedia.org/wiki/Libertad_de_vientres"
     ]
   }

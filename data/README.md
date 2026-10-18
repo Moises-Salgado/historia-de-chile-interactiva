@@ -86,4 +86,4 @@ La app la carga desde `https://commons.wikimedia.org/wiki/Special:FilePath/<arch
 ## Validación
 
 - `npm test`: **errores** (bloquean: campos faltantes, ids repetidos, fechas inválidas, temas o licencias no permitidos, sin fuentes) y **avisos** (revisar: largo de los textos, fechas fuera del período, solo Wikipedia como fuente).
-- `npm run verificar-imagenes`: consulta Commons y lista solo las imágenes que no existen, cambiaron de nombre, tienen otra licencia o no cargan.
+- `npm run verificar-imagenes`: consulta la API de Commons y lista solo las imágenes que no existen, cambiaron de nombre, tienen otra licencia o cuya miniatura Commons no genera. Con `-- --descargar` también descarga cada miniatura (lento: Wikimedia limita las descargas por IP).

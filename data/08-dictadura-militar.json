@@ -1,0 +1,344 @@
+[
+  {
+    "id": "1973-golpe-de-estado",
+    "titulo": "Golpe de Estado",
+    "fecha": "1973-09-11",
+    "fechaAproximada": false,
+    "fechaTexto": "11 de septiembre de 1973",
+    "periodoId": "08",
+    "temas": ["politica"],
+    "importancia": 3,
+    "lugar": "Santiago",
+    "resumenNino": "El 11 de septiembre de 1973, las Fuerzas Armadas y Carabineros sacaron del poder al presidente Salvador Allende, que murió ese día en el palacio de La Moneda. Desde entonces, y por casi 17 años, Chile fue gobernado por militares.",
+    "resumen": "El 11 de septiembre de 1973, las Fuerzas Armadas y Carabineros derrocaron al gobierno del presidente Salvador Allende. Cerca del mediodía, aviones de la Fuerza Aérea bombardearon el palacio de La Moneda, donde Allende murió ese mismo día. El poder quedó en manos de una Junta Militar presidida por el general Augusto Pinochet, que asumió los poderes del Estado y disolvió el Congreso Nacional. Existen distintas interpretaciones sobre las causas del golpe, que dio inicio a la dictadura militar.",
+    "detalle": "En los meses previos al golpe, el país vivía una profunda crisis económica y política, con escasez de productos, presión de los gremios empresariales y división dentro de las Fuerzas Armadas entre «constitucionalistas» y «golpistas». Según Memoria Chilena, tras la asunción de Allende, Estados Unidos financió a diversos sectores que se oponían al gobierno de la Unidad Popular. El 29 de junio de 1973 se produjo el «Tanquetazo» o «Tancazo», un primer intento de levantamiento militar que fue sofocado por los comandantes leales al gobierno, dirigidos por el general Carlos Prats. El 22 de agosto de 1973, la Cámara de Diputados aprobó un acuerdo que acusaba al gobierno de Allende de un «grave quebrantamiento del orden constitucional y legal de la República».\n\nEl 11 de septiembre, Allende llegó a La Moneda a las 7:30 de la mañana. Cerca del mediodía, aviones Hawker Hunter de la Fuerza Aérea bombardearon el palacio durante unos quince minutos. Ese día el presidente murió en La Moneda: según Memoria Chilena, fue encontrado muerto junto al arma con la que se suicidó. La investigación judicial de Mario Carroza, realizada entre 2011 y 2012, descartó la participación de terceros, y en 2014 un fallo definitivo de la Corte Suprema ratificó que se trató de un suicidio.\n\nEl poder quedó en manos de una Junta Militar formada por el comandante en jefe del Ejército, Augusto Pinochet, quien la presidió; el de la Armada, José Toribio Merino; el de la Fuerza Aérea, Gustavo Leigh, y el general director de Carabineros, César Mendoza. Pinochet concentró el Poder Ejecutivo, la Junta asumió los poderes Constituyente y Legislativo, y en septiembre de 1973 el Decreto Ley N° 27 disolvió el Congreso Nacional. Así comenzó la dictadura militar. Existen distintas interpretaciones sobre las causas del golpe.",
+    "personajes": ["Salvador Allende", "Augusto Pinochet", "José Toribio Merino", "Gustavo Leigh", "César Mendoza", "Carlos Prats"],
+    "imagen": {
+      "archivo": "BNC-Junta_Militar_Chile_1973.jpg",
+      "autor": "Desconocido",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:BNC-Junta_Militar_Chile_1973.jpg",
+      "pieDeFoto": "Integrantes de la Junta Militar que tomó el poder el 11 de septiembre de 1973. Fotografía de la década de 1970."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-92405.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92407.html",
+      "https://www.bcn.cl/historiapolitica/efemerides/index.html?dia=22&mes=Agosto&orden=fecha_asc",
+      "https://www.bcn.cl/conmemoracion50-septiembre-1973/golpe_estado.html",
+      "https://www.cooperativa.cl/noticias/pais/salvador-allende/justicia-chilena-resolvio-en-fallo-definitivo-que-allende-se-suici/2014-01-07/115142.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-94600.html"
+    ]
+  },
+  {
+    "id": "1973-violaciones-derechos-humanos",
+    "titulo": "Violaciones a los derechos humanos",
+    "fecha": "1973-09-11",
+    "fechaFin": "1990-03-11",
+    "fechaAproximada": false,
+    "fechaTexto": "1973-1990",
+    "periodoId": "08",
+    "temas": ["derechos"],
+    "importancia": 3,
+    "lugar": "Chile",
+    "resumenNino": "Durante la dictadura, miles de personas fueron detenidas y maltratadas por razones políticas, muchas murieron y algunas siguen desaparecidas. Años después, el Estado de Chile investigó estos hechos y los reconoció oficialmente.",
+    "resumen": "Durante la dictadura militar se cometieron violaciones sistemáticas a los derechos humanos a través de organismos del Estado, como ejecuciones, desapariciones forzadas, prisión política y tortura. Según Memoria Chilena, la Comisión Nacional de Verdad y Reconciliación (Informe Rettig, 1991) calificó como víctimas a 2.279 personas, y la Corporación Nacional de Reparación y Reconciliación (1996) calificó a otras 899. Las comisiones Valech (2004-2005 y 2011) reconocieron en total a 38.254 víctimas de prisión política y tortura. Estos hechos son reconocidos oficialmente por el Estado de Chile y, durante la dictadura, fueron denunciados por organismos como el Comité Pro Paz y la Vicaría de la Solidaridad.",
+    "detalle": "Según Memoria Chilena, la violación sistemática de los derechos humanos se llevó a cabo a través de órganos estatales ya existentes, como las Fuerzas Armadas, Carabineros y la Policía de Investigaciones, y de otros creados especialmente para ese fin, como la DINA (1974-1977), el Comando Conjunto (1975-1977) y la CNI (1977-1990). Entre los lugares emblemáticos de la represión estuvieron el Estadio Nacional, el Estadio Chile, Londres 38 y Villa Grimaldi.\n\nTras el retorno a la democracia, el Estado creó comisiones para identificar a las víctimas. La Comisión Nacional de Verdad y Reconciliación (Comisión Rettig) entregó su informe el 8 de febrero de 1991 y, según Memoria Chilena, calificó como víctimas a 2.279 personas; el Museo de la Memoria y los Derechos Humanos cuenta 3.550 denuncias y 2.296 casos calificados. La Corporación Nacional de Reparación y Reconciliación calificó otras 899 víctimas en su informe de 1996, y en 2010-2011 se reconocieron 30 casos más; según el Museo de la Memoria y los Derechos Humanos, al 2011 el total de víctimas de desaparición forzada o ejecutadas era de 3.216 personas. La Comisión Nacional sobre Prisión Política y Tortura (Comisión Valech) calificó a 28.459 víctimas en su informe, entregado en 2004 y completado en 2005, y una segunda instancia (Valech II) reconoció en 2011 a otras 9.795: en total, el Estado reconoce 38.254 víctimas de prisión política y tortura.\n\nDurante la dictadura, las iglesias organizaron la defensa de los perseguidos. El Comité de Cooperación para la Paz en Chile (Comité Pro Paz), de carácter ecuménico, funcionó entre 1973 y 1975, cuando fue disuelto por órdenes de Augusto Pinochet. El 1 de enero de 1976, el arzobispo de Santiago, Raúl Silva Henríquez, creó la Vicaría de la Solidaridad, que dio asistencia jurídica, económica y espiritual a las personas perseguidas y a sus familias, y recopiló y denunció casos de tortura, muerte y desaparición hasta 1992.",
+    "personajes": ["Raúl Silva Henríquez"],
+    "imagen": {
+      "archivo": "Memorial_Detenidos_Desaparecidos_Régimen_Militar_Chile.jpg",
+      "autor": "Paul Lowry",
+      "licencia": "CC BY 2.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Memorial_Detenidos_Desaparecidos_Régimen_Militar_Chile.jpg",
+      "pieDeFoto": "Memorial a los detenidos desaparecidos en el Cementerio General de Santiago, en 2009."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-92415.html",
+      "https://comisiones.museodelamemoria.cl/2016/10/07/comision-nacional-de-verdad-y-reconciliacion-tambien-conocida-como-comision-rettig/",
+      "https://comisiones.museodelamemoria.cl/2016/10/27/corporacion-nacional-de-reparacion-y-reconciliacion/",
+      "https://comisiones.museodelamemoria.cl/2016/11/14/comision-nacional-sobre-prision-politica-y-tortura-tambien-conocida-como-comision-valech/",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3547.html",
+      "https://www.bcn.cl/conmemoracion50-septiembre-1973/golpe_estado.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-94640.html"
+    ]
+  },
+  {
+    "id": "1973-exilio",
+    "titulo": "El exilio",
+    "fecha": "1973-09-11",
+    "fechaFin": "1990",
+    "fechaAproximada": false,
+    "fechaTexto": "1973-1990",
+    "periodoId": "08",
+    "temas": ["derechos", "politica"],
+    "importancia": 2,
+    "lugar": "Chile y el extranjero",
+    "resumenNino": "Después del golpe, miles de chilenos tuvieron que irse a vivir a otros países por sus ideas políticas, y a muchos no se les dejaba volver. En 1988 se anunció el fin del exilio.",
+    "resumen": "Tras el golpe de Estado, miles de chilenos y chilenas salieron del país por motivos políticos: algunos pidieron asilo en embajadas, otros fueron expulsados y a muchos se les prohibió volver. La cifra total de exiliados es incierta; según la Comisión Chilena de Derechos Humanos, citada por el Archivo Nacional, superó las 200 mil personas. En el extranjero, muchos exiliados se organizaron para apoyarse y denunciar la situación de Chile. En 1982 el gobierno comenzó a autorizar algunos regresos mediante listas, y en septiembre de 1988 se anunció el fin del exilio.",
+    "detalle": "Según el Archivo Nacional, el exilio y el desarraigo de miles de personas fue otra herramienta del régimen para violar los derechos humanos. Tras el golpe, muchas personas pidieron asilo en embajadas de diversos países, otras fueron expulsadas y a muchas se les prohibió volver: desde agosto de 1974, el Decreto Ley N° 604 permitió al gobierno prohibir el ingreso al país aunque no rigiera un estado de excepción constitucional. Según Memoria Chilena, en esos años salió de Chile el mayor número de exiliados políticos de su historia.\n\nLa cifra total de exiliados entre 1973 y 1990 es incierta y las estimaciones varían mucho. Según cifras de organismos como la Comisión Chilena de Derechos Humanos, citadas por el Archivo Nacional, superó las 200 mil personas. En el extranjero, muchos exiliados formaron organizaciones culturales, políticas y laborales para apoyarse mutuamente, denunciar la situación de Chile y organizar el retorno.\n\nEn 1982 el gobierno dio la primera señal de apertura hacia el retorno, autorizando el regreso de algunas personas mediante listas limitadas. Según el Museo de la Memoria y los Derechos Humanos, en septiembre de 1988, poco antes del plebiscito, se anunció el fin del exilio.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Araneda,_Ernesto_-al_salir_del_exilio.jpg",
+      "autor": "Desconocido",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Araneda,_Ernesto_-al_salir_del_exilio.jpg",
+      "pieDeFoto": "El dirigente comunista Ernesto Araneda al salir del exilio, en 1988."
+    },
+    "fuentes": [
+      "https://www.archivonacional.gob.cl/galeria/exilio-chileno-durante-la-dictadura-civil-militar-archivos-de-la-represion-y-de-la",
+      "https://educamemoria.museodelamemoria.cl/wp-content/uploads/2023/11/Guia-de-bolsillo-para-la-visita.pdf",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3413.html",
+      "https://www.memoriachilena.gob.cl/archivos2/pdfs/MC0000300.pdf"
+    ]
+  },
+  {
+    "id": "1974-dina-y-cni",
+    "titulo": "La DINA y la CNI",
+    "fecha": "1974",
+    "fechaFin": "1990",
+    "fechaAproximada": false,
+    "fechaTexto": "1974-1990",
+    "periodoId": "08",
+    "temas": ["derechos", "politica"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "La dictadura creó organismos secretos, la DINA y luego la CNI, que vigilaban y detenían a quienes se oponían al gobierno. Muchas de esas personas fueron maltratadas, y algunas murieron o siguen desaparecidas.",
+    "resumen": "La Dirección de Inteligencia Nacional (DINA), una policía secreta creada por la dictadura, actuó entre 1974 y 1977 al mando del coronel Manuel Contreras. Persiguió en forma sistemática a dirigentes de partidos de izquierda, y sus agentes cometieron crímenes también en el extranjero, como los asesinatos del general Carlos Prats en Buenos Aires (1974) y de Orlando Letelier en Washington (1976). En 1977 fue reemplazada por la Central Nacional de Informaciones (CNI), que funcionó hasta 1990.",
+    "detalle": "Tras el golpe, la Junta Militar organizó nuevos servicios de inteligencia, entre ellos la DINA, que Memoria Chilena describe, citando a Eugenio Tironi, como un «órgano paraestatal y policía secreta» que violó sistemáticamente los derechos humanos. Entre 1974 y 1977, al mando del coronel Manuel Contreras, la DINA actuó en forma selectiva y sistemática contra los dirigentes de los partidos de izquierda que estaban en la clandestinidad. En esos años también actuó el Comando Conjunto (1975-1977).\n\nSus agentes actuaron también fuera de Chile. En 1974 asesinaron en Buenos Aires al general Carlos Prats, excomandante en jefe del Ejército, y a su esposa. El 21 de septiembre de 1976, en Washington, una bomba activada a control remoto hizo estallar el automóvil en que viajaban el exministro Orlando Letelier y su asistente, Ronni Moffitt, quienes murieron. La investigación judicial estableció que agentes de la DINA participaron en la planificación y ejecución del atentado, y en 1995 la Corte Suprema condenó a Manuel Contreras y a Pedro Espinoza como autores intelectuales.\n\nSegún Memoria Chilena, a raíz del asesinato de Letelier el Congreso de Estados Unidos aplicó sanciones al gobierno chileno, cuyo resultado más inmediato fue la disolución de la DINA y su reemplazo por la Central Nacional de Informaciones (CNI). La CNI fue creada por el Decreto Ley N° 1.878, publicado en el Diario Oficial el 13 de agosto de 1977, y funcionó hasta 1990.",
+    "personajes": ["Manuel Contreras", "Carlos Prats", "Orlando Letelier", "Ronni Moffitt", "Pedro Espinoza"],
+    "imagen": {
+      "archivo": "Londres_38,_Santiago_20190718_15.jpg",
+      "autor": "Carlos Figueroa Rojas",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Londres_38,_Santiago_20190718_15.jpg",
+      "pieDeFoto": "Inmueble de calle Londres 38, en Santiago, uno de los lugares de represión de la dictadura. Fotografía de 2019."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-92415.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92407.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-763.html",
+      "https://www.bcn.cl/conmemoracion50-septiembre-1973/golpe_estado.html"
+    ]
+  },
+  {
+    "id": "1975-reformas-economicas",
+    "titulo": "Reformas económicas de libre mercado",
+    "fecha": "1975",
+    "fechaFin": "1981",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1975-1981",
+    "periodoId": "08",
+    "temas": ["economia"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "El gobierno militar cambió la forma en que funcionaba la economía: muchas empresas del Estado pasaron a manos privadas y se abrió el comercio con otros países. También cambiaron las reglas del trabajo y de las jubilaciones.",
+    "resumen": "Desde 1975, la dictadura aplicó un modelo económico de libre mercado impulsado por economistas conocidos como «Chicago boys», muchos de ellos formados en la Universidad de Chicago. El «Programa de Recuperación Económica» de 1975, coordinado por el ministro de Hacienda Jorge Cauas, buscó reducir la inflación con políticas de «shock». Desde 1979, las llamadas «siete modernizaciones» incluyeron la Reforma Laboral y un nuevo sistema de pensiones basado en las AFP, creado en 1980, además de privatizaciones y la liberalización del comercio. Existen distintas interpretaciones sobre los resultados y los costos sociales de estas reformas.",
+    "detalle": "Los llamados «Chicago boys» fueron economistas chilenos, en su mayoría egresados de la Universidad Católica, que estudiaron en la Universidad de Chicago gracias a un convenio firmado en marzo de 1956; entre ellos estaba Sergio de Castro. En 1975, con Jorge Cauas como ministro de Hacienda, se publicó el «Programa de Recuperación Económica», que buscaba reducir la inflación, liberalizar el mercado y equilibrar el presupuesto fiscal; Memoria Chilena llama «políticas de shock» a las aplicadas entre 1974 y 1976. Ese año visitó Chile el economista Milton Friedman, cuyas orientaciones influyeron en el nuevo modelo.\n\nDesde 1979 el gobierno impulsó las llamadas «siete modernizaciones», reformas estructurales que alcanzaron a los servicios sociales (salud, educación y previsión), la administración del Estado (la «regionalización») y el trabajo. El ministro del Trabajo José Piñera, que asumió en 1978, encabezó la Reforma Laboral (1979) y la Reforma Previsional (1980). Con el Decreto Ley N° 3.500, publicado en 1980, el sistema de reparto, administrado mayoritariamente por el Estado, fue reemplazado por uno de capitalización en cuentas individuales gestionadas por Administradoras de Fondos de Pensiones (AFP), obligatorio para los trabajadores con contrato. En salud, los cotizantes pudieron elegir entre el Fondo Nacional de Salud (FONASA) y las Instituciones de Salud Previsional (ISAPRE).\n\nEl modelo incluyó además la privatización de empresas estatales y la liberalización del comercio. Según Memoria Chilena, su primera etapa, entre 1974 y 1982, se caracterizó por una férrea ortodoxia de los postulados liberales de los Chicago boys. Existen distintas interpretaciones sobre los resultados económicos y los costos sociales de estas reformas.",
+    "personajes": ["Sergio de Castro", "Jorge Cauas", "José Piñera", "Milton Friedman"],
+    "imagen": {
+      "archivo": "José_Piñera_Echenique.jpg",
+      "autor": "Biblioteca del Congreso Nacional",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:José_Piñera_Echenique.jpg",
+      "pieDeFoto": "José Piñera Echenique como ministro del Trabajo y Previsión Social, en 1979."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-98015.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-93003.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-31415.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-93006.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-98033.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-719.html"
+    ]
+  },
+  {
+    "id": "1978-crisis-del-beagle",
+    "titulo": "Crisis del Beagle y mediación papal",
+    "fecha": "1978-12",
+    "fechaAproximada": false,
+    "fechaTexto": "diciembre de 1978",
+    "periodoId": "08",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Canal Beagle",
+    "resumenNino": "Chile y Argentina no se ponían de acuerdo sobre a quién pertenecían unas islas del extremo sur, y en 1978 estuvieron a punto de entrar en guerra. El papa Juan Pablo II ayudó a que ambos países resolvieran el conflicto conversando.",
+    "resumen": "Chile y Argentina mantenían una disputa por las islas y aguas del canal Beagle, en el extremo sur. En 1977 se dio a conocer un laudo arbitral que dejó a Chile con la mayor parte de las islas, pero el gobierno argentino lo declaró «insubsanablemente nulo» y ambos países hicieron preparativos de guerra. En diciembre de 1978 la tensión llegó a su punto más alto y se recurrió a la mediación del papa Juan Pablo II. La mediación, oficializada en enero de 1979, evitó un enfrentamiento bélico.",
+    "detalle": "El 22 de julio de 1971, los presidentes Salvador Allende y Alejandro Agustín Lanusse firmaron un compromiso por el cual Chile y Argentina se sometieron al arbitraje de la reina Isabel II por la disputa del canal Beagle. El 2 de mayo de 1977 se dio a conocer el laudo arbitral, que otorgó derechos de navegación en el canal a ambos países y dejó a Chile con la mayor parte de las islas. El gobierno argentino declaró el fallo «insubsanablemente nulo» y ordenó movimientos de tropas, a lo que Chile respondió con preparativos similares.\n\nLa tensión llegó a su punto más alto en los días cercanos a la Navidad de 1978. Ese mes se acordó recurrir a la mediación del papa Juan Pablo II, quien designó como su representante personal al cardenal Antonio Samoré; este partió desde Roma el 25 de diciembre. El 8 de enero de 1979, los cancilleres de ambos países firmaron el Acta de Montevideo, que oficializó la mediación.\n\nSegún Memoria Chilena, el Papa debió interceder para evitar un enfrentamiento bélico entre Chile y Argentina. La mediación se extendió por varios años y culminó con el Tratado de Paz y Amistad, firmado en 1984.",
+    "personajes": ["Juan Pablo II", "Antonio Samoré"],
+    "imagen": {
+      "archivo": "Conflicto_del_Beagle_entre_Argentina_y_Chile.svg",
+      "autor": "Janitoalevic",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Conflicto_del_Beagle_entre_Argentina_y_Chile.svg",
+      "pieDeFoto": "Mapa de la zona del conflicto del Beagle entre Argentina y Chile (Janitoalevic, 2023)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-92401.html",
+      "https://www.memoriachilena.gob.cl/602/w3-printer-100589.html",
+      "https://www.bcn.cl/laborparlamentaria/participacion?idParticipacion=2182079"
+    ]
+  },
+  {
+    "id": "1980-constitucion",
+    "titulo": "Plebiscito y Constitución de 1980",
+    "fecha": "1980-09-11",
+    "fechaAproximada": false,
+    "fechaTexto": "11 de septiembre de 1980",
+    "periodoId": "08",
+    "temas": ["politica"],
+    "importancia": 3,
+    "lugar": "Chile",
+    "resumenNino": "En 1980 se votó una nueva Constitución, que es la ley más importante de un país. Fue aprobada, pero no existían registros de votantes y las personas no podían expresarse con libertad.",
+    "resumen": "La Constitución de 1980 fue preparada por la Comisión Ortúzar, revisada por el Consejo de Estado que presidía Jorge Alessandri y redactada en su versión final por la Junta Militar. Se aprobó en un plebiscito realizado el 11 de septiembre de 1980, sin padrón electoral y bajo severas restricciones a la libertad de expresión, información y reunión, según Memoria Chilena. Comenzó a regir el 11 de marzo de 1981, cuando Augusto Pinochet inició un período presidencial de ocho años. Además, establecía que en 1988 se haría un plebiscito sobre el candidato propuesto por las Fuerzas Armadas para el período siguiente.",
+    "detalle": "El anteproyecto fue elaborado por la Comisión de Estudios de la Nueva Constitución Política, conocida como Comisión Ortúzar por estar presidida por Enrique Ortúzar. Entre 1978 y 1980, el Consejo de Estado, presidido por Jorge Alessandri Rodríguez, le introdujo modificaciones, y luego la Junta de Gobierno le dio su redacción final. El plebiscito fue convocado por el Decreto Ley N° 3.465, del 12 de agosto de 1980.\n\nLa votación se realizó sin padrón electoral, ya que en noviembre de 1973 el Decreto Ley N° 130 había declarado la caducidad de los registros electorales, y bajo severas restricciones a la libertad de expresión, información y reunión. Según la Biblioteca del Congreso Nacional, los alcaldes, designados por la autoridad política, tuvieron un rol fundamental en el control de la votación, lo que hizo cuestionable tanto el proceso como sus resultados. Según Memoria Chilena, la Constitución fue aprobada con el 67 % de los votos a favor y el 30,2 % en contra.\n\nFue promulgada por el Decreto Supremo N° 1.150 y publicada en el Diario Oficial el 24 de octubre de 1980. Comenzó a regir en forma transitoria el 11 de marzo de 1981, día en que Augusto Pinochet asumió la presidencia por un período de ocho años, y en forma plena el 11 de marzo de 1990, con la vuelta de la democracia. Establecía, además, que en 1988 se realizaría un plebiscito para aprobar o rechazar al candidato que propusieran las Fuerzas Armadas para el período 1989-1997.",
+    "personajes": ["Augusto Pinochet", "Enrique Ortúzar", "Jorge Alessandri"],
+    "imagen": {
+      "archivo": "Cubierta_Constitución_de_1980_Chile.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Cubierta_Constitución_de_1980_Chile.jpg",
+      "pieDeFoto": "Cubierta de un ejemplar manuscrito de la Constitución de 1980."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-92403.html",
+      "https://www.bcn.cl/historiapolitica/elecciones/detalle_eleccion?handle=10221.1%2F63186&periodo=1973-1990",
+      "https://www.bcn.cl/historiapolitica/elecciones/index.html?periodo=1973-1990",
+      "https://www.bcn.cl/historiapolitica/efemerides/index.html?dia=11&mes=Marzo",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92412.html"
+    ]
+  },
+  {
+    "id": "1982-crisis-economica",
+    "titulo": "Crisis económica de 1982",
+    "fecha": "1982",
+    "fechaAproximada": false,
+    "fechaTexto": "1982",
+    "periodoId": "08",
+    "temas": ["economia"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 1982 Chile vivió una crisis económica muy grave: el país produjo mucho menos que antes y muchas personas se quedaron sin trabajo.",
+    "resumen": "Según Memoria Chilena, en 1982 comenzó la mayor crisis económica de Chile desde 1930. El Producto Interno Bruto cayó un 14,3 % y el desempleo llegó al 23,7 %. El gobierno devaluó el peso, intervino bancos y licitó empresas estatales. El descontento por la situación económica fue el motivo inicial de las protestas nacionales que comenzaron en 1983.",
+    "detalle": "Según Memoria Chilena, en 1982 comenzó la mayor crisis económica nacional desde 1930. El Producto Interno Bruto (PIB) disminuyó un 14,3 % y el desempleo alcanzó al 23,7 %. Para enfrentarla, el gobierno devaluó el peso en un 18 %, intervino más de cinco bancos y licitó empresas estatales como Chilectra y la Compañía de Teléfonos.\n\nLas protestas nacionales que comenzaron en mayo de 1983 tuvieron como objetivo inicial protestar contra la situación económica, aunque pronto pasaron a exigir la renuncia de Pinochet y la convocatoria a elecciones.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Gdp_per_capita_growth,_1961_to_2024,_CHL.svg",
+      "autor": "Our World In Data",
+      "licencia": "CC BY 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Gdp_per_capita_growth,_1961_to_2024,_CHL.svg",
+      "pieDeFoto": "Gráfico del crecimiento anual del PIB per cápita de Chile entre 1961 y 2024, elaborado por Our World in Data."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-98012.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92408.html"
+    ]
+  },
+  {
+    "id": "1983-protestas-nacionales",
+    "titulo": "Jornadas de Protesta Nacional",
+    "fecha": "1983-05-11",
+    "fechaAproximada": false,
+    "fechaTexto": "11 de mayo de 1983",
+    "periodoId": "08",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 1983, los trabajadores del cobre llamaron a una gran protesta contra el gobierno militar y mucha gente se sumó. Las protestas siguieron durante varios años para pedir elecciones y el regreso de la democracia.",
+    "resumen": "El 11 de mayo de 1983 se realizó la primera Jornada de Protesta Nacional, convocada por la Confederación de Trabajadores del Cobre; según la Biblioteca del Congreso Nacional, fue la movilización social más importante y multitudinaria en diez años de régimen autoritario. Aunque comenzó como una protesta por la situación económica, pronto sus demandas se centraron en la renuncia de Pinochet y la convocatoria a elecciones. Las protestas continuaron en 1984 y 1985, lideradas también por coaliciones opositoras. En noviembre de 1984 el gobierno declaró el estado de sitio.",
+    "detalle": "En mayo de 1983, los trabajadores del cobre llamaron a un paro y a una protesta contra la dictadura; uno de los organizadores fue Rodolfo Seguel, quien presidió la Confederación de Trabajadores del Cobre hasta 1986. Según Memoria Chilena, aunque se pensó como una acción limitada, sus efectos fueron sorprendentes: no solo protestaron los mineros, sino que se sumaron en forma espontánea amplios sectores de la sociedad civil.\n\nPronto el liderazgo de las protestas pasó a coaliciones opositoras: la Alianza Democrática, de centroizquierda, formada el 6 de agosto de 1983, y el Movimiento Democrático Popular (MDP), creado el 20 de septiembre. Aunque el objetivo inicial fue protestar contra la situación económica, las demandas se concentraron en la renuncia inmediata de Pinochet y la convocatoria a elecciones generales. Las protestas y las propuestas de apertura política del gobierno continuaron en 1984.\n\nEn noviembre de 1984 el gobierno declaró el estado de sitio, junto con otras medidas represivas como el toque de queda, la censura de prensa, allanamientos masivos en poblaciones, detenciones y relegaciones. Pese a ello, las protestas continuaron en 1985. El 25 de agosto de ese año, representantes de la Alianza Democrática y dirigentes políticos partidarios del gobierno firmaron el Acuerdo Nacional para la Transición a la Plena Democracia.",
+    "personajes": ["Rodolfo Seguel"],
+    "imagen": {
+      "archivo": "Panfleto_Tercera_Jornada_Protesta_Nacional.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Panfleto_Tercera_Jornada_Protesta_Nacional.jpg",
+      "pieDeFoto": "Panfleto que llamaba a participar en la Tercera Jornada de Protesta Nacional, realizada el 12 de julio de 1983."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/historiapolitica/efemerides/index.html?dia=11&mes=Mayo",
+      "https://www.memoriachilena.gob.cl/602/w3-article-96595.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92408.html",
+      "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Rodolfo_Seguel_Molina"
+    ]
+  },
+  {
+    "id": "1984-tratado-paz-amistad",
+    "titulo": "Tratado de Paz y Amistad con Argentina",
+    "fecha": "1984-11-29",
+    "fechaAproximada": false,
+    "fechaTexto": "29 de noviembre de 1984",
+    "periodoId": "08",
+    "temas": ["politica"],
+    "importancia": 1,
+    "lugar": "Ciudad del Vaticano",
+    "resumenNino": "Con la ayuda del papa Juan Pablo II, Chile y Argentina firmaron un tratado de paz y amistad que resolvió su disputa por el canal Beagle.",
+    "resumen": "Tras varios años de mediación del papa Juan Pablo II, el 4 de octubre de 1984 la Oficina de la Mediación pontificia anunció que Chile y Argentina habían logrado plena coincidencia. El 29 de noviembre de 1984 ambos países firmaron en el Vaticano el Tratado de Paz y Amistad, que puso fin al diferendo austral. Según Memoria Chilena, el tratado otorgó derechos de navegación a ambos países, la mayor parte de las islas a Chile y la mayor parte del territorio marítimo a Argentina.",
+    "detalle": "La mediación papal se había oficializado con el Acta de Montevideo, firmada el 8 de enero de 1979, y se desarrolló durante varios años con la participación del cardenal Antonio Samoré como representante del Papa. El 4 de octubre de 1984, la Oficina de la Mediación pontificia anunció que se había logrado plena coincidencia, y el 29 de noviembre siguiente se firmó en el Vaticano el Tratado de Paz y Amistad, que puso fin al diferendo austral.\n\nEl tratado otorgó derechos de navegación a ambos países, la mayor parte de las islas a Chile y la mayor parte del territorio marítimo a Argentina. Chile lo promulgó mediante el Decreto N° 401 del Ministerio de Relaciones Exteriores, de 1985.",
+    "personajes": ["Juan Pablo II", "Antonio Samoré"],
+    "imagen": {
+      "archivo": "Tratado_Argentina_Chile_1984.jpg",
+      "autor": "Biblioteca del Congreso Nacional de Chile",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Tratado_Argentina_Chile_1984.jpg",
+      "pieDeFoto": "Firma del Tratado de Paz y Amistad entre Argentina y Chile, el 29 de noviembre de 1984."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/laborparlamentaria/participacion?idParticipacion=2182079",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92401.html",
+      "https://www.bcn.cl/leychile/Navegar?idNorma=13036"
+    ]
+  },
+  {
+    "id": "1988-plebiscito",
+    "titulo": "Plebiscito de 1988: triunfo del No",
+    "fecha": "1988-10-05",
+    "fechaAproximada": false,
+    "fechaTexto": "5 de octubre de 1988",
+    "periodoId": "08",
+    "temas": ["politica"],
+    "importancia": 3,
+    "lugar": "Chile",
+    "resumenNino": "En 1988 los chilenos votaron para decidir si Augusto Pinochet seguía gobernando. Ganó la opción «No», y así se abrió el camino para volver a elegir presidente.",
+    "resumen": "La Constitución de 1980 establecía que en 1988 se haría un plebiscito para aprobar o rechazar al candidato propuesto por las Fuerzas Armadas para un nuevo período presidencial, y el candidato fue Augusto Pinochet. La oposición se organizó en torno a la opción No, principalmente en la Concertación de Partidos por la Democracia. El 5 de octubre de 1988 ganó el No, con el 54,7 % de los votos, frente al 43 % del Sí. Tras vacilaciones iniciales, el gobierno reconoció el resultado, y en diciembre de 1989 se realizaron elecciones presidenciales y parlamentarias.",
+    "detalle": "En febrero de 1987 se abrieron los registros electorales, que el Decreto Ley N° 130 había declarado caducados en 1973. Para el plebiscito se inscribieron 7.435.913 ciudadanos, el 97,53 % de quienes estaban habilitados para hacerlo, un porcentaje nunca antes alcanzado en la historia electoral de Chile, según la Biblioteca del Congreso Nacional.\n\nDesignado Pinochet como candidato del Sí, el plebiscito se fijó para el 5 de octubre. La campaña duró legalmente 30 días; la oposición, agrupada principalmente en la Concertación de Partidos por la Democracia, aprovechó las concentraciones públicas, la prensa, la radio y, en especial, la franja televisiva de campaña.\n\nSegún la Biblioteca del Congreso Nacional, el No obtuvo el 54,70 % de los votos y el Sí, el 43 %. Gracias a un sistema de cómputo paralelo organizado por la oposición, y tras vacilaciones iniciales, el gobierno reconoció el triunfo del No. El 14 de diciembre de 1989 se realizaron elecciones presidenciales y parlamentarias.",
+    "personajes": ["Augusto Pinochet"],
+    "imagen": {
+      "archivo": "Voto_1988_plebiscito_1.JPG",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Voto_1988_plebiscito_1.JPG",
+      "pieDeFoto": "Voto del plebiscito de 1988."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-92412.html",
+      "https://www.bcn.cl/historiapolitica/elecciones/detalle_eleccion?handle=10221.1%2F63196&periodo=1973-1990",
+      "https://www.bcn.cl/historiapolitica/elecciones/index.html?periodo=1973-1990"
+    ]
+  },
+  {
+    "id": "1989-eleccion-aylwin",
+    "titulo": "Elección presidencial de Patricio Aylwin",
+    "fecha": "1989-12-14",
+    "fechaAproximada": false,
+    "fechaTexto": "14 de diciembre de 1989",
+    "periodoId": "08",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 1989 los chilenos volvieron a elegir presidente y ganó Patricio Aylwin. Ese mismo día también eligieron a diputados y senadores.",
+    "resumen": "El 30 de julio de 1989, un plebiscito aprobó 54 reformas a la Constitución de 1980 con el 91,25 % de los votos. El 14 de diciembre de 1989 se realizaron elecciones presidenciales y parlamentarias. Patricio Aylwin, candidato de la Concertación de Partidos por la Democracia, ganó con mayoría absoluta, con el 55,17 % de los votos, frente a Hernán Büchi y Francisco Javier Errázuriz. Su triunfo, para el período 1990-1994, marcó el retorno de los gobiernos democráticos.",
+    "detalle": "El 30 de julio de 1989, un plebiscito ratificó un conjunto de 54 reformas a la Constitución, aprobadas con el 91,25 % de los votos. Modificaron aspectos fundamentales, como el procedimiento de reforma, el pluralismo político, los derechos constitucionales y los estados de excepción, y aumentaron de 13 a 19 las circunscripciones senatoriales. Fueron publicadas como Ley N° 18.825, el 17 de agosto de 1989. Ese mismo año, la Ley N° 18.799 creó el sistema electoral binominal.\n\nEn las elecciones presidenciales del 14 de diciembre de 1989 se presentaron Patricio Aylwin Azócar (Concertación de Partidos por la Democracia, centroizquierda), Hernán Büchi Buc (Democracia y Progreso, derecha) y Francisco Javier Errázuriz Talavera (independiente). Aylwin obtuvo la mayoría absoluta, con el 55,17 % de los votos; votaron 7.157.725 ciudadanos. Ese mismo día se realizaron las elecciones parlamentarias.\n\nSegún la Biblioteca del Congreso Nacional, el triunfo de Aylwin marcó el retorno de los gobiernos democráticos. Fue elegido para el período 1990-1994.",
+    "personajes": ["Patricio Aylwin", "Hernán Büchi", "Francisco Javier Errázuriz"],
+    "imagen": {
+      "archivo": "Patricio_Aylwin_y_candidatos_elección_Parlamentaria_1989.jpg",
+      "autor": "Biblioteca del Congreso Nacional de Chile",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Patricio_Aylwin_y_candidatos_elección_Parlamentaria_1989.jpg",
+      "pieDeFoto": "Patricio Aylwin (al centro, sentado) junto a su esposa, Leonor Oyarzún, en un acto de las elecciones presidencial y parlamentaria de 1989."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/historiapolitica/elecciones/detalle_eleccion?handle=10221.1%2F63764&periodo=1973-1990",
+      "https://www.bcn.cl/historiapolitica/elecciones/detalle_eleccion?handle=10221.1%2F63209&periodo=1973-1990",
+      "https://www.bcn.cl/historiapolitica/elecciones/index.html?periodo=1973-1990"
+    ]
+  }
+]

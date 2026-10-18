@@ -1,10 +1,14 @@
 // Verifica en Wikimedia Commons todas las imágenes de /data y reporta solo las que fallan:
-// archivo inexistente, nombre que redirige, licencia distinta o no permitida, o miniatura que no carga.
-// Uso: node scripts/verificar-imagenes.mjs [carpeta]   (por defecto ./data). Sale con código 1 si hay fallas.
+// archivo inexistente, nombre que redirige, licencia distinta o no permitida, o miniatura que Commons no genera.
+// Uso: node scripts/verificar-imagenes.mjs [carpeta] [--descargar]   (por defecto ./data). Sale con código 1 si hay fallas.
+// Todo se consulta en la API de Commons; con --descargar además se descarga cada miniatura (lento: Wikimedia
+// limita por IP la generación de miniaturas y responde 429 si se piden muchas seguidas).
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-const DIR = resolve(process.argv[2] ?? 'data');
+const args = process.argv.slice(2);
+const DIR = resolve(args.find((a) => !a.startsWith('--')) ?? 'data');
+const DESCARGAR = args.includes('--descargar');
 const API = 'https://commons.wikimedia.org/w/api.php';
 const MINIATURA = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
 const ANCHO = 800;
@@ -52,8 +56,9 @@ async function consultar(lote) {
     formatversion: '2',
     redirects: '1',
     prop: 'imageinfo',
-    iiprop: 'extmetadata',
+    iiprop: 'extmetadata|url',
     iiextmetadatafilter: 'LicenseShortName',
+    iiurlwidth: String(ANCHO),
     titles: lote.map((img) => `File:${img.archivo}`).join('|'),
   });
   const res = await pedir(`${API}?${params}`);
@@ -81,6 +86,7 @@ async function consultar(lote) {
     } else if (c.familia !== d.familia || (c.version && d.version && c.version !== d.version)) {
       falla(img, `licencia en Commons "${enCommons}" distinta de la de los datos "${img.licencia}"`);
     }
+    if (!info.thumburl || info.thumberror) falla(img, `Commons no genera la miniatura${info.thumberror ? ` (${info.thumberror})` : ''}`);
     img.existe = true;
   }
 }
@@ -111,7 +117,7 @@ try {
   console.error(`No se pudo consultar Commons: ${e.cause?.code ?? e.message}`);
   process.exit(2);
 }
-await enParalelo(imagenes.filter((img) => img.existe), SIMULTANEAS, revisarMiniatura);
+if (DESCARGAR) await enParalelo(imagenes.filter((img) => img.existe), SIMULTANEAS, revisarMiniatura);
 
 if (limitadas.length) {
   console.log(`SIN VERIFICAR (${limitadas.length}): Wikimedia limitó las peticiones (HTTP 429). Existen y su licencia está bien; reintentar más tarde.`);
@@ -121,7 +127,6 @@ if (fallas.length) {
   console.log(`FALLAS (${fallas.length}):\n${fallas.map((f) => `  - ${f}`).join('\n')}`);
   process.exitCode = 1;
 } else {
-  console.log(limitadas.length
-    ? 'OK: todas las imágenes existen y tienen licencia permitida (algunas miniaturas quedaron sin verificar).'
-    : 'OK: todas las imágenes existen, tienen licencia permitida y su miniatura carga.');
+  const nota = limitadas.length ? '; algunas descargas quedaron sin verificar' : DESCARGAR ? '; todas se descargaron sin problemas' : '';
+  console.log(`OK: todas las imágenes existen, tienen licencia permitida y Commons genera su miniatura${nota}.`);
 }

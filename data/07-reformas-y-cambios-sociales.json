@@ -1,0 +1,401 @@
+[
+  {
+    "id": "1927-primer-gobierno-ibanez",
+    "titulo": "Primer gobierno de Carlos Ibáñez del Campo",
+    "fecha": "1927-07-21",
+    "fechaFin": "1931-07-26",
+    "fechaAproximada": false,
+    "fechaTexto": "21 de julio de 1927 - 26 de julio de 1931",
+    "periodoId": "07",
+    "temas": ["politica", "economia", "derechos"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "Carlos Ibáñez del Campo fue un militar que gobernó Chile entre 1927 y 1931. Hizo muchas obras públicas y creó Carabineros de Chile, pero no permitía que la prensa ni sus opositores lo criticaran con libertad.",
+    "resumen": "Carlos Ibáñez del Campo, militar y ministro del Interior, asumió la vicepresidencia en abril de 1927 tras la renuncia del presidente Emiliano Figueroa. Fue el único candidato en la elección del 22 de mayo de 1927 y asumió la presidencia el 21 de julio de ese año. Su gobierno realizó un vasto plan de obras públicas y creó instituciones como Carabineros de Chile y la Contraloría General de la República, pero también censuró a la prensa y persiguió a sus opositores. La crisis mundial de 1929 provocó un fuerte descontento e Ibáñez renunció el 26 de julio de 1931.",
+    "detalle": "Durante el gobierno de Emiliano Figueroa, Carlos Ibáñez del Campo fue ministro del Interior y, según Memoria Chilena, se convirtió en «el verdadero poder tras las sombras». Tras la renuncia de Figueroa, asumió la vicepresidencia el 7 de abril de 1927 y llamó a elecciones presidenciales para el 22 de mayo. Fue el único candidato y obtuvo más del 98% de los votos; asumió la presidencia el 21 de julio de 1927.\n\nSu gobierno, que la Biblioteca del Congreso Nacional (BCN) describe como autoritario, concretó un vasto plan de obras públicas: se construyeron hospitales y se ampliaron los servicios de agua potable y alcantarillado. Fomentó la producción con apoyo crediticio y aranceles proteccionistas, y racionalizó la administración pública. Se crearon Carabineros de Chile (1927), la Fuerza Aérea de Chile, la Contraloría General de la República y las superintendencias de Bancos y de Seguros y Sociedades Anónimas.\n\nAl mismo tiempo, estableció la censura a la prensa, sometió al movimiento sindical al control del Estado y persiguió a sus opositores, que fueron deportados o encarcelados; el Partido Comunista fue reprimido. Con la crisis mundial de 1929 bajaron los precios del cobre y del salitre, se desplomaron las exportaciones y aumentó la cesantía. En 1931, tras protestas callejeras y una gran huelga de estudiantes universitarios y profesionales, Ibáñez renunció el 26 de julio y partió al exilio. Existen distintas interpretaciones históricas sobre su gobierno.",
+    "personajes": ["Carlos Ibáñez del Campo", "Emiliano Figueroa"],
+    "imagen": {
+      "archivo": "Carlos_Ibañez_del_Campo_1927.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Carlos_Ibañez_del_Campo_1927.jpg",
+      "pieDeFoto": "El general Carlos Ibáñez del Campo durante su primera presidencia (c. 1927-1928)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3323.html",
+      "https://www.bcn.cl/historiapolitica/resenas_biograficas/wiki/Carlos_Ib%C3%A1%C3%B1ez_del_Campo"
+    ]
+  },
+  {
+    "id": "1929-gran-depresion-crisis-salitre",
+    "titulo": "La Gran Depresión y la crisis del salitre",
+    "fecha": "1929",
+    "fechaFin": "1932",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1929-1932",
+    "periodoId": "07",
+    "temas": ["economia"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "Hace casi cien años hubo una gran crisis económica en el mundo. Chile casi dejó de vender salitre y cobre, mucha gente quedó sin trabajo y en los barrios se organizaron ollas comunes para alimentar a las familias.",
+    "resumen": "La crisis económica mundial que comenzó en 1929 golpeó con fuerza a Chile: las exportaciones de salitre y cobre se derrumbaron y los ingresos del Estado cayeron. Según un informe de la Sociedad de las Naciones citado por Memoria Chilena, Chile fue el país más devastado por la Gran Depresión. A mediados de 1931 el país suspendió por primera vez el pago de su deuda externa, y la cesantía creció hasta alcanzar su punto más alto en 1932. La crisis también provocó una grave inestabilidad política, que incluyó la caída de Carlos Ibáñez en 1931.",
+    "detalle": "La caída de la Bolsa de Nueva York, en octubre de 1929, dio inicio a la crisis económica mundial conocida como la Gran Depresión. En Chile, las exportaciones comenzaron a decaer en 1930 y luego las de salitre y cobre se derrumbaron, lo que afectó gravemente los ingresos fiscales. Según un informe de la Sociedad de las Naciones, Chile fue el país más devastado por la crisis. A mediados de 1931 suspendió por primera vez en su historia el pago de su deuda externa.\n\nCientos de obreros salitreros volvieron sin recursos desde el norte. Según Memoria Chilena, en octubre de 1932 la cesantía llegó a su índice más alto, con 128.153 personas registradas oficialmente. En Santiago, comités de ayuda a los cesantes debieron alimentar y albergar a miles de familias, las ollas comunes proliferaron en los barrios y muchas familias terminaron viviendo en las calles, en parques y en cuevas de los cerros cercanos a la ciudad.\n\nLa crisis económica dio paso a una grave crisis política: en julio de 1931 renunció el presidente Carlos Ibáñez y, en poco más de un año, se sucedieron varios gobiernos, entre ellos la breve República Socialista de 1932.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Ollas_comunes_en_1932.jpg",
+      "autor": "Desconocido (publicada por la editorial Zig-Zag, Santiago)",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Ollas_comunes_en_1932.jpg",
+      "pieDeFoto": "Ollas comunes para alimentar a los cesantes, 1932. Fotografía publicada por la editorial Zig-Zag."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-601.html"
+    ]
+  },
+  {
+    "id": "1932-republica-socialista",
+    "titulo": "República Socialista",
+    "fecha": "1932-06-04",
+    "fechaAproximada": false,
+    "fechaTexto": "4 de junio de 1932",
+    "periodoId": "07",
+    "temas": ["politica"],
+    "importancia": 1,
+    "lugar": "Santiago",
+    "resumenNino": "En 1932, un grupo de militares y civiles tomó el gobierno y anunció que Chile sería una «república socialista». Ese gobierno duró muy poco, porque pronto hubo divisiones entre sus integrantes.",
+    "resumen": "El 4 de junio de 1932, un movimiento iniciado en la base aérea de El Bosque exigió la renuncia del presidente Juan Esteban Montero y proclamó la República Socialista. La Junta de Gobierno quedó integrada por el general Arturo Puga, Eugenio Matte Hurtado y Carlos Dávila, y Marmaduke Grove asumió como ministro de Defensa. El 16 de junio, Grove y Matte fueron expulsados del gobierno y enviados a Isla de Pascua. Dávila siguió gobernando hasta el 13 de septiembre de 1932.",
+    "detalle": "La crisis económica y la caída de Carlos Ibáñez, en 1931, abrieron un período de inestabilidad política. El 4 de junio de 1932, un grupo de militares se atrincheró en la base aérea de El Bosque y exigió la renuncia del presidente Juan Esteban Montero. Esa noche, una Junta de Gobierno integrada por el general Arturo Puga, Eugenio Matte Hurtado y Carlos Dávila entró a La Moneda y proclamó la República Socialista; Marmaduke Grove asumió como ministro de Defensa.\n\nSegún la cronología de Memoria Chilena, la Junta ordenó la disolución del Congreso Nacional y la devolución de las prendas empeñadas en la Caja de Crédito Prendario. Pronto hubo divisiones: el 16 de junio, Grove y Matte fueron expulsados del gobierno y enviados a Isla de Pascua, por lo que se habla de los «doce días» de la República Socialista. Dávila se autoproclamó presidente provisional, declaró el estado de sitio, introdujo la censura a la prensa y aplicó medidas económicas estatistas, hasta su caída el 13 de septiembre de 1932.\n\nLo sucedió el general Bartolomé Blanche, quien tuvo que renunciar ante la sublevación de quienes pedían un gobierno civil, y luego asumió Abraham Oyanedel, que llamó a elecciones presidenciales y parlamentarias. Grove fue candidato en la elección presidencial de octubre de 1932 y quedó en segundo lugar, detrás de Arturo Alessandri. Existen distintas interpretaciones sobre el alcance de este breve gobierno.",
+    "personajes": ["Marmaduke Grove", "Eugenio Matte Hurtado", "Carlos Dávila", "Arturo Puga", "Juan Esteban Montero"],
+    "imagen": {
+      "archivo": "Cdte._Marmaduke_Grove_.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Cdte._Marmaduke_Grove_.jpg",
+      "pieDeFoto": "Marmaduke Grove, c. 1932."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3538.html",
+      "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Marmaduke_Grove_Vallejo"
+    ]
+  },
+  {
+    "id": "1938-matanza-seguro-obrero",
+    "titulo": "Matanza del Seguro Obrero",
+    "fecha": "1938-09-05",
+    "fechaAproximada": false,
+    "fechaTexto": "5 de septiembre de 1938",
+    "periodoId": "07",
+    "temas": ["politica", "derechos"],
+    "importancia": 1,
+    "lugar": "Santiago",
+    "resumenNino": "En 1938, un grupo de jóvenes intentó tomar el poder por la fuerza en Santiago. Después de rendirse, muchos de ellos murieron a manos de policías y militares, un hecho que conmovió a todo el país.",
+    "resumen": "El 5 de septiembre de 1938, jóvenes del Movimiento Nacional Socialista intentaron un golpe de Estado en apoyo a Carlos Ibáñez del Campo, entonces candidato presidencial. Un grupo se atrincheró en el edificio de la Caja de Seguro Obrero, frente al Palacio de La Moneda. Según Memoria Chilena, después de rendirse fueron muertos por la policía y los militares, y fallecieron 59 jóvenes; la BCN señala que fueron 61. El hecho conmovió fuertemente a la opinión pública e influyó en la elección presidencial de ese año.",
+    "detalle": "En 1938, el Movimiento Nacional Socialista, liderado por Jorge González von Marées, formaba parte de la Alianza Popular Libertadora, que apoyaba la candidatura presidencial de Carlos Ibáñez del Campo. Las otras candidaturas eran las de Gustavo Ross, continuador de las políticas del presidente Arturo Alessandri Palma, y de Pedro Aguirre Cerda, del Frente Popular.\n\nEl 5 de septiembre, estudiantes del movimiento intentaron un golpe de Estado y un grupo se atrincheró en el edificio de la Caja de Seguro Obrero, frente a La Moneda. Según Memoria Chilena, después de rendirse fueron muertos por la policía y los militares, y el hecho dejó 59 jóvenes nacionalsocialistas fallecidos. La BCN indica que fueron 61 jóvenes, especialmente universitarios. Las cifras varían según las fuentes.\n\nLa matanza desprestigió al gobierno. Ibáñez, quien según Memoria Chilena fue uno de los impulsores del intento de golpe, retiró su candidatura y respaldó públicamente a Aguirre Cerda; luego partió nuevamente al exilio. El apoyo de sus partidarios y de los nacistas fue determinante en el triunfo de Pedro Aguirre Cerda en la elección del 25 de octubre de 1938.",
+    "personajes": ["Jorge González von Marées", "Carlos Ibáñez del Campo"],
+    "imagen": {
+      "archivo": "Masacre_seguro_obrero.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Masacre_seguro_obrero.jpg",
+      "pieDeFoto": "Jóvenes detenidos en la Universidad de Chile son conducidos al edificio de la Caja de Seguro Obligatorio, 5 de septiembre de 1938."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-94573.html",
+      "https://www.bcn.cl/historiapolitica/partidos_politicos/wiki/Movimiento_Nacional_Socialista_de_Chile",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3427.html"
+    ]
+  },
+  {
+    "id": "1938-eleccion-aguirre-cerda",
+    "titulo": "Pedro Aguirre Cerda y el Frente Popular ganan la elección",
+    "fecha": "1938-10-25",
+    "fechaAproximada": false,
+    "fechaTexto": "25 de octubre de 1938",
+    "periodoId": "07",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 1938, Pedro Aguirre Cerda ganó la elección presidencial con el apoyo de varios partidos y organizaciones unidos en el Frente Popular. Su lema era «Gobernar es educar» y durante su gobierno se construyeron muchas escuelas.",
+    "resumen": "El Frente Popular, creado en 1936, reunió a los partidos Radical, Socialista, Comunista, Demócrata y Radical Socialista, entre otros, junto con la Central de Trabajadores de Chile (CTCH), la Federación de Estudiantes de la Universidad de Chile (FECH) y el Frente Único Araucano. Su candidato, el radical Pedro Aguirre Cerda, se enfrentó a Gustavo Ross, candidato de los partidos de derecha. En la elección del 25 de octubre de 1938, Aguirre Cerda obtuvo 222.720 votos, el 50,1% de las preferencias. Asumió la presidencia en diciembre de 1938.",
+    "detalle": "El Frente Popular se formó en 1936. Lo integraron los partidos Comunista, Socialista, Radical, Demócrata y Radical Socialista y la Izquierda Comunista, y se sumaron la Central de Trabajadores de Chile (CTCH), la Federación de Estudiantes de la Universidad de Chile (FECH) y el Frente Único Araucano. Para la elección de 1938 proclamó como candidato a Pedro Aguirre Cerda, dirigente del Partido Radical. Sus rivales fueron Gustavo Ross, candidato de los partidos de derecha, y Carlos Ibáñez del Campo, quien retiró su candidatura poco antes de la elección, tras el fracaso del intento de golpe de un grupo de jóvenes nacistas, y respaldó públicamente a Aguirre Cerda.\n\nEl 25 de octubre de 1938, Aguirre Cerda ganó con 222.720 votos, el 50,1% de las preferencias. Su lema fue «Gobernar es educar»: según Memoria Chilena, su gobierno construyó más de 1.000 escuelas básicas y abrió 3.000 plazas para nuevos maestros. En 1939 se creó la Corporación de Fomento de la Producción (CORFO) y se aplicó una política arancelaria y cambiaria para sustituir importaciones, con créditos para la industria y el impulso de industrias básicas como la energía eléctrica, el refinado de combustibles y la producción de acero.",
+    "personajes": ["Pedro Aguirre Cerda", "Gustavo Ross", "Carlos Ibáñez del Campo"],
+    "imagen": {
+      "archivo": "Pedro_Aguirre_Cerda_1938.jpg",
+      "autor": "Verdugo S., Oscar. Impr. Casa Amarilla",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Pedro_Aguirre_Cerda_1938.jpg",
+      "pieDeFoto": "Retrato de Pedro Aguirre Cerda, presidente de Chile, 1938."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3427.html"
+    ]
+  },
+  {
+    "id": "1939-terremoto-chillan-corfo",
+    "titulo": "Terremoto de Chillán y creación de la CORFO",
+    "fecha": "1939-01-24",
+    "fechaFin": "1939-04-29",
+    "fechaAproximada": false,
+    "fechaTexto": "24 de enero y 29 de abril de 1939",
+    "periodoId": "07",
+    "temas": ["desastres", "economia"],
+    "importancia": 2,
+    "lugar": "Chillán y Concepción",
+    "resumenNino": "En 1939, un gran terremoto causó enormes daños en Chillán, Concepción y otras ciudades. Para ayudar a la reconstrucción y al desarrollo del país, el gobierno creó la CORFO.",
+    "resumen": "A las 23:32 horas del 24 de enero de 1939, un terremoto de magnitud 8,3 (Ms), con epicentro cerca de Quirihue, causó su mayor daño entre Concepción y Chillán. Según el Centro Sismológico Nacional (CSN), la cifra oficial de víctimas fue de 24.000, aunque algunos calculan que los fallecidos llegaron a 30.000. Para socorrer a los damnificados, el gobierno de Pedro Aguirre Cerda impulsó la creación de nuevos organismos. La Ley N° 6.334, dictada el 29 de abril de 1939, creó la Corporación de Reconstrucción y Auxilio y la Corporación de Fomento de la Producción (CORFO).",
+    "detalle": "El terremoto de Chillán ocurrió a las 23:32 horas del 24 de enero de 1939. Según el CSN, tuvo una magnitud de 8,3 (Ms), su epicentro se localizó en las cercanías de Quirihue y se percibió desde Valparaíso hasta Temuco; fue un sismo intraplaca, es decir, ocurrido al interior de la placa de Nazca. Las cifras de víctimas varían: el CSN señala que la cifra oficial fue de 24.000, que algunos calculan que los fallecidos llegaron a 30.000 y que solo 5.685 fueron identificados.\n\nLa fundación de la CORFO estuvo relacionada con las iniciativas del gobierno de Pedro Aguirre Cerda para socorrer a los damnificados. La Ley N° 6.334, dictada el 29 de abril de 1939, creó dos corporaciones: la Corporación de Reconstrucción y Auxilio y la Corporación de Fomento de la Producción, que debía «formular un plan general de fomento de la producción, destinado a elevar el nivel de vida de la población». Además, según el CSN, tras el terremoto el gobierno comenzó a exigir nuevas normas de ingeniería, para que casas y edificios tuvieran estructura antisísmica.\n\nLa CORFO impulsó la creación de grandes empresas, como la Empresa Nacional de Electricidad S.A. (1944), la Compañía de Acero del Pacífico (CAP, 1946), con su planta siderúrgica en Huachipato, y la Empresa Nacional de Petróleos (ENAP, 1950).",
+    "personajes": ["Pedro Aguirre Cerda"],
+    "imagen": {
+      "archivo": "Catedral_de_Chillán_-_Terremoto_de_1939.jpg",
+      "autor": "Desconocido - Diario La Nación (Chile)",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Catedral_de_Chillán_-_Terremoto_de_1939.jpg",
+      "pieDeFoto": "Ruinas de la catedral de Chillán tras el terremoto, en una fotografía publicada por el diario La Nación el 27 de enero de 1939."
+    },
+    "fuentes": [
+      "https://www.csn.uchile.cl/efemerides-sismicas-terremoto-de-chillan-de-1939/",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3508.html"
+    ]
+  },
+  {
+    "id": "1945-nobel-gabriela-mistral",
+    "titulo": "Gabriela Mistral recibe el Premio Nobel de Literatura",
+    "fecha": "1945-12-10",
+    "fechaAproximada": false,
+    "fechaTexto": "10 de diciembre de 1945",
+    "periodoId": "07",
+    "temas": ["cultura"],
+    "importancia": 3,
+    "lugar": "Suecia",
+    "resumenNino": "Gabriela Mistral fue una profesora y poeta chilena. En 1945 ganó el Premio Nobel de Literatura y fue la primera persona de América Latina en recibirlo.",
+    "resumen": "Gabriela Mistral nació en Vicuña en 1889, fue profesora y luego cónsul de Chile en varios países. En 1945 recibió el Premio Nobel de Literatura, según el sitio oficial del premio, por su poesía lírica que, inspirada por poderosas emociones, ha hecho de su nombre un símbolo de las aspiraciones idealistas de todo el mundo latinoamericano. Nunca antes el galardón se había otorgado a una persona latinoamericana. Lo recibió el 10 de diciembre de 1945, de manos del rey Gustavo V de Suecia.",
+    "detalle": "Gabriela Mistral nació el 7 de abril de 1889 en Vicuña, en el valle del Elqui. Fue profesora en distintas ciudades de Chile y más tarde cónsul en países como España, Portugal, Brasil, Estados Unidos y México. Entre sus libros destacan Desolación (1922), Ternura (1924) y Tala (1938).\n\nSu candidatura al Premio Nobel contó con una campaña internacional que la respaldaba desde la década de 1930. El premio llegó en 1945, una vez derrotado el régimen nazi, y lo recibió el 10 de diciembre de ese año de manos del rey Gustavo V. Según Memoria Chilena, nunca antes el galardón había sido otorgado a una persona latinoamericana.\n\nEn 1951 recibió en Chile el Premio Nacional de Literatura. Murió el 10 de enero de 1957 en Hempstead, Nueva York, y en 1960 sus restos fueron trasladados a Montegrande.",
+    "personajes": ["Gabriela Mistral"],
+    "imagen": {
+      "archivo": "Gabriela_Mistral_1945_(cropped).jpg",
+      "autor": "Jewish Daily Forward",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Gabriela_Mistral_1945_(cropped).jpg",
+      "pieDeFoto": "Gabriela Mistral en una fotografía publicada en noviembre de 1945 junto a la noticia de su Premio Nobel."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-96132.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3429.html",
+      "https://www.nobelprize.org/prizes/literature/1945/mistral/facts/"
+    ]
+  },
+  {
+    "id": "1949-voto-femenino",
+    "titulo": "Voto femenino: ley de 1949 y elección presidencial de 1952",
+    "fecha": "1949-01-08",
+    "fechaFin": "1952-09-04",
+    "fechaAproximada": false,
+    "fechaTexto": "8 de enero de 1949 y 4 de septiembre de 1952",
+    "periodoId": "07",
+    "temas": ["derechos", "politica"],
+    "importancia": 3,
+    "lugar": "Chile",
+    "resumenNino": "Antes, en Chile las mujeres no podían votar para elegir presidente ni parlamentarios. Gracias al esfuerzo de muchas mujeres organizadas, en 1949 se aprobó una ley que les dio ese derecho, y en 1952 votaron por primera vez para elegir presidente.",
+    "resumen": "Desde 1934, la Ley N° 5.357 permitió a las mujeres inscribirse para las elecciones municipales, y el 7 de abril de 1935 votaron y fueron candidatas por primera vez en ellas. Tras años de campañas de organizaciones como el Movimiento Pro Emancipación de la Mujer Chilena (MEMCh) y la Federación Chilena de Instituciones Femeninas (FECHIF), el 8 de enero de 1949 se promulgó la Ley N° 9.292, que otorgó el sufragio universal a las mujeres. La ley se promulgó durante el gobierno de Gabriel González Videla. El 4 de septiembre de 1952, las mujeres votaron por primera vez en una elección presidencial, en la que resultó electo Carlos Ibáñez del Campo.",
+    "detalle": "Las mujeres chilenas lucharon durante décadas por el derecho a voto, a través de organizaciones como el Consejo Nacional de Mujeres, el Partido Cívico Femenino, la Unión Femenina de Chile, el Movimiento Pro Emancipación de la Mujer Chilena (MEMCh) y la Federación Chilena de Instituciones Femeninas (FECHIF). Un primer paso fue la Ley N° 5.357, de enero de 1934, que les permitió inscribirse para las elecciones municipales; el 7 de abril de 1935 participaron por primera vez en ellas como votantes y candidatas.\n\nLa Ley N° 9.292, promulgada el 8 de enero de 1949 durante el gobierno de Gabriel González Videla, otorgó a las mujeres el sufragio universal, lo que les permitió votar también en las elecciones parlamentarias y presidenciales. Entre las mujeres que impulsaron esta causa, Memoria Chilena menciona a Amanda Labarca, Irma Salas, Ana Figueroa (presidenta de la FECHIF), Felisa Vergara, Isabel Morel y Clotilde Garretón de Soffia. Las mujeres votaron por primera vez en una elección presidencial el 4 de septiembre de 1952, en la que resultó electo Carlos Ibáñez del Campo.",
+    "personajes": ["Amanda Labarca", "Ana Figueroa", "Gabriel González Videla"],
+    "imagen": {
+      "archivo": "Amanda_Labarca,_promulgación_voto_femenino.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Amanda_Labarca,_promulgación_voto_femenino.jpg",
+      "pieDeFoto": "Amanda Labarca en la ceremonia de promulgación del derecho a sufragio femenino, enero de 1949."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-686839.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-96054.html"
+    ]
+  },
+  {
+    "id": "1960-terremoto-valdivia",
+    "titulo": "Terremoto de Valdivia",
+    "fecha": "1960-05-22",
+    "fechaAproximada": false,
+    "fechaTexto": "22 de mayo de 1960",
+    "periodoId": "07",
+    "temas": ["desastres"],
+    "importancia": 3,
+    "lugar": "Valdivia y zona centro-sur de Chile",
+    "resumenNino": "En 1960 ocurrió en el sur de Chile el terremoto más fuerte que se ha medido en el mundo. Causó grandes daños en muchas ciudades y un maremoto que llegó hasta países muy lejanos.",
+    "resumen": "A las 15:11 horas del 22 de mayo de 1960, un terremoto de magnitud Mw 9,5 afectó el centro-sur de Chile. Según el Centro Sismológico Nacional (CSN), es el evento sísmico de mayor magnitud registrado en el mundo desde que existe registro instrumental. La ruptura alcanzó cerca de 1.000 kilómetros de longitud y el área de daño comprendió prácticamente toda la zona centro-sur del país. El tsunami que provocó causó víctimas incluso en Hawái, Japón y Filipinas.",
+    "detalle": "El 21 de mayo de 1960, un sismo de magnitud Mw 8,1 ocurrió en la península de Arauco. Al día siguiente, a las 15:11 horas, se produjo el terremoto principal, a unos 25 kilómetros de profundidad; según el CSN, quince minutos antes había ocurrido un sismo de magnitud 7,8. El terremoto de Valdivia alcanzó una magnitud Mw 9,5 y es el evento sísmico de mayor magnitud registrado en el mundo desde que existe registro instrumental.\n\nLa ruptura se extendió por cerca de 1.000 kilómetros a lo largo de la interfaz de subducción, y el área de daño comprendió prácticamente toda la zona centro-sur del país, en las actuales regiones de Ñuble, Biobío, La Araucanía, Los Ríos, Los Lagos y Aysén. Según el CSN, causó un alto número de víctimas fatales, desaparecidos y lesionados, y el tsunami provocó víctimas fatales en Hawái, Japón y Filipinas. Las cifras de fallecidos varían según las fuentes.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Valdivia_after_earthquake,_1960.jpg",
+      "autor": "Pierre St. Amand",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Valdivia_after_earthquake,_1960.jpg",
+      "pieDeFoto": "Casas de madera dañadas por el terremoto en Valdivia, 1960. Fotografía de Pierre St. Amand."
+    },
+    "fuentes": [
+      "https://www.csn.uchile.cl/efemerides-sismicas-gran-terremoto-de-valdivia-de-1960/",
+      "https://www.csn.uchile.cl/valdivia-1960-aprendizajes-cientificos-y-resiliencia-sismica-en-chile/"
+    ]
+  },
+  {
+    "id": "1962-reforma-agraria",
+    "titulo": "Reforma agraria",
+    "fecha": "1962",
+    "fechaFin": "1973",
+    "fechaAproximada": false,
+    "fechaTexto": "1962-1973",
+    "periodoId": "07",
+    "temas": ["economia", "politica"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "Antes, gran parte del campo chileno estaba en manos de unos pocos dueños de grandes fundos. Con la reforma agraria, el Estado expropió muchos de esos terrenos para que los trabajaran familias campesinas.",
+    "resumen": "La reforma agraria buscó cambiar una estructura agraria marcada por el predominio del gran latifundio. Comenzó en 1962 con la Ley N° 15.020, del gobierno de Jorge Alessandri, y ese año se crearon la Corporación de Reforma Agraria (CORA) y el INDAP. En 1967, durante el gobierno de Eduardo Frei Montalva, la Ley N° 16.640 facilitó la expropiación masiva de predios agrícolas, y el gobierno de Salvador Allende continuó el proceso con las mismas leyes. Hubo huelgas y tomas de predios que polarizaron a la sociedad rural, y existen distintas interpretaciones sobre sus resultados.",
+    "detalle": "A mediados del siglo XX, la estructura agraria chilena se caracterizaba por el predominio del gran latifundio. En 1962, el gobierno de Jorge Alessandri promulgó la Ley N° 15.020, la primera ley de reforma agraria, que permitió redistribuir tierras estatales entre campesinos y expropiar predios agrícolas. En noviembre de ese año se crearon la Corporación de Reforma Agraria (CORA) y el INDAP.\n\nEl gobierno de Eduardo Frei Montalva impulsó una ley más amplia: la Ley N° 16.640, promulgada en julio de 1967, facilitó la expropiación masiva de predios agrícolas. Ese mismo año, la Ley N° 16.625 permitió la sindicalización campesina y se organizaron más de 400 sindicatos, que sumaron más de 100 mil campesinos. Las tierras expropiadas pasaban a la administración del Estado, a cooperativas agrícolas o a asentamientos campesinos. Según Memoria Chilena, durante el gobierno de Frei se expropiaron alrededor de 1.400 predios agrícolas, con 3,5 millones de hectáreas.\n\nEl gobierno de Salvador Allende continuó la reforma con las mismas leyes y, hasta 1973, había expropiado cerca de 4.400 predios agrícolas, que sumaban más de 6,4 millones de hectáreas. En esos años aumentaron las tomas masivas de predios, que polarizaron a la sociedad agraria. Existen distintas interpretaciones sobre los alcances y las consecuencias de la reforma agraria.",
+    "personajes": ["Jorge Alessandri", "Eduardo Frei Montalva", "Salvador Allende"],
+    "imagen": {
+      "archivo": "Hugo_Trivelli_Ministro_de_Agricultura_de_Chile_(1967).jpg",
+      "autor": "Gobierno de Chile",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Hugo_Trivelli_Ministro_de_Agricultura_de_Chile_(1967).jpg",
+      "pieDeFoto": "El presidente Eduardo Frei Montalva, acompañado del ministro de Agricultura Hugo Trivelli, firma el decreto promulgatorio de la Ley de Reforma Agraria, 1967."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3536.html",
+      "https://www.bcn.cl/historiapolitica/resenas_biograficas/wiki/Eduardo_Frei_Montalva"
+    ]
+  },
+  {
+    "id": "1962-mundial-de-futbol",
+    "titulo": "Mundial de Fútbol de 1962",
+    "fecha": "1962-05-30",
+    "fechaFin": "1962-06-17",
+    "fechaAproximada": false,
+    "fechaTexto": "30 de mayo - 17 de junio de 1962",
+    "periodoId": "07",
+    "temas": ["cultura"],
+    "importancia": 2,
+    "lugar": "Santiago, Viña del Mar, Rancagua y Arica",
+    "resumenNino": "En 1962, Chile organizó el Campeonato Mundial de Fútbol. La selección chilena logró el tercer lugar y Brasil fue el campeón.",
+    "resumen": "Entre el 30 de mayo y el 17 de junio de 1962, Chile fue sede del Campeonato Mundial de Fútbol, con partidos en Santiago, Viña del Mar, Rancagua y Arica. El país obtuvo la sede gracias a la candidatura que Carlos Dittborn presentó en el congreso de la FIFA de Lisboa, en 1956. A pesar de los daños del terremoto de 1960, se prepararon cuatro sedes con sus estadios. Chile obtuvo el tercer lugar al vencer 1-0 a Yugoslavia en el Estadio Nacional, y Brasil fue campeón al ganar 3-1 a Checoslovaquia en la final.",
+    "detalle": "En el congreso de la FIFA realizado en Lisboa en 1956, Carlos Dittborn presentó la candidatura de Chile, que fue elegida como sede del campeonato. El terremoto de Valdivia de 1960, que según Memoria Chilena «arrasó con todas las ciudades al sur», afectó los planes de modernización de la infraestructura, pero el país logró preparar cuatro sedes: Santiago, Viña del Mar, Rancagua y Arica.\n\nParticiparon 16 selecciones. Chile obtuvo el tercer puesto al vencer por 1-0 a Yugoslavia, ante un Estadio Nacional repleto. Brasil se coronó campeón al vencer a Checoslovaquia por tres goles a uno en la final.",
+    "personajes": ["Carlos Dittborn"],
+    "imagen": {
+      "archivo": "Estadio_Nacional_Julio_Martínez_Prádanos_1962.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Estadio_Nacional_Julio_Martínez_Prádanos_1962.jpg",
+      "pieDeFoto": "El Estadio Nacional de Santiago en 1962."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3618.html"
+    ]
+  },
+  {
+    "id": "1964-gobierno-frei-montalva",
+    "titulo": "Gobierno de Eduardo Frei Montalva",
+    "fecha": "1964-11-03",
+    "fechaFin": "1970-11-03",
+    "fechaAproximada": false,
+    "fechaTexto": "3 de noviembre de 1964 - 3 de noviembre de 1970",
+    "periodoId": "07",
+    "temas": ["politica", "economia"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "Eduardo Frei Montalva fue presidente de Chile entre 1964 y 1970. Durante su gobierno se construyeron miles de escuelas, se expropiaron tierras para los campesinos y el Estado pasó a ser socio de grandes minas de cobre.",
+    "resumen": "Eduardo Frei Montalva, apoyado por la Democracia Cristiana, ganó la elección presidencial del 4 de septiembre de 1964 por mayoría absoluta, frente a Salvador Allende y Julio Durán, y gobernó entre el 3 de noviembre de 1964 y el 3 de noviembre de 1970. Su programa, llamado «Revolución en Libertad», buscaba transformar las estructuras sociales, culturales, políticas y económicas del país, respetando la Constitución, las leyes y las libertades públicas. Entre sus principales medidas estuvieron la reforma agraria, la chilenización del cobre, la Promoción Popular y una reforma educacional. Según Memoria Chilena, para unos el avance de las reformas fue demasiado lento y para otros demasiado rápido.",
+    "detalle": "Frei Montalva llegó a la presidencia con el apoyo de la Democracia Cristiana y del Frente Democrático. Su programa, expuesto en junio de 1964, definía tareas como el desarrollo económico, la educación y la enseñanza técnica, la solidaridad y la justicia social, y la participación política.\n\nEn enero de 1966, el Congreso aprobó la chilenización del cobre (Ley N° 16.425), que aumentó la participación del Estado mediante la compra gradual del 51% de El Teniente, Andina y Exótica; en 1969 se acordó con la empresa Anaconda la llamada «nacionalización pactada». Con la Promoción Popular y la Ley N° 16.880 se fomentaron las juntas de vecinos, los centros juveniles y los centros de madres. La reforma educacional buscó abrir el acceso a la educación y, según la BCN, se construyeron tres mil nuevas escuelas. En el campo, el gobierno impulsó la reforma agraria (Ley N° 16.640, de 1967) y la sindicalización campesina (Ley N° 16.625).\n\nSegún Memoria Chilena, el gobierno dejó como legado la reforma agraria y la chilenización del cobre, aunque para unos el avance fue demasiado lento y para otros demasiado rápido. Existen distintas interpretaciones sobre su gobierno.",
+    "personajes": ["Eduardo Frei Montalva"],
+    "imagen": {
+      "archivo": "Eduardo_Frei_Montalva_(1964).jpg",
+      "autor": "Revista argentina Primera Plana Año 1964 N° 97",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Eduardo_Frei_Montalva_(1964).jpg",
+      "pieDeFoto": "Eduardo Frei Montalva en la revista argentina Primera Plana (n.° 97), 1964."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/historiapolitica/resenas_biograficas/wiki/Eduardo_Frei_Montalva",
+      "https://www.memoriachilena.gob.cl/602/w3-article-94055.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3622.html"
+    ]
+  },
+  {
+    "id": "1970-eleccion-salvador-allende",
+    "titulo": "Elección de Salvador Allende",
+    "fecha": "1970-09-04",
+    "fechaFin": "1970-10-24",
+    "fechaAproximada": false,
+    "fechaTexto": "4 de septiembre y 24 de octubre de 1970",
+    "periodoId": "07",
+    "temas": ["politica"],
+    "importancia": 3,
+    "lugar": "Chile",
+    "resumenNino": "En 1970, Salvador Allende, un médico y político socialista, ganó la elección presidencial con el apoyo de la Unidad Popular. Como no obtuvo más de la mitad de los votos, el Congreso debió elegir entre los dos candidatos más votados, y lo eligió a él.",
+    "resumen": "El 4 de septiembre de 1970, Salvador Allende, candidato de la Unidad Popular, obtuvo la primera mayoría en la elección presidencial con el 36% de los votos, seguido por Jorge Alessandri, con el 34,9%. Como nadie alcanzó la mayoría absoluta, el Congreso Pleno debía elegir entre las dos más altas mayorías, y en ese contexto se acordó un Estatuto de Garantías Democráticas, que luego se incorporó a la Constitución mediante una reforma. El 24 de octubre de 1970, el Congreso Pleno lo proclamó presidente con 153 votos, contra 35 de Alessandri y 7 en blanco. Allende asumió el 3 de noviembre de 1970.",
+    "detalle": "Salvador Allende nació en Valparaíso en 1908, estudió medicina y fue uno de los fundadores del Partido Socialista, en 1933. Fue diputado, ministro de Salubridad del gobierno de Pedro Aguirre Cerda y senador entre 1945 y 1970, y fue candidato presidencial en 1952, 1958, 1964 y 1970. En 1970 encabezó la Unidad Popular, una alianza que, según la BCN, reunió a toda la izquierda más fuerzas de centro, y que proponía una vía democrática hacia el socialismo.\n\nEn la elección del 4 de septiembre de 1970, Allende obtuvo el 36% de los votos y Jorge Alessandri, el 34,9%. Como ningún candidato alcanzó la mayoría absoluta, correspondió al Congreso Pleno elegir entre ambos. Se acordó entonces un Estatuto de Garantías Democráticas, incorporado a la Constitución mediante una reforma. Según Memoria Chilena, Estados Unidos buscó impedir que el Congreso ratificara el triunfo de Allende y, el 22 de octubre, un grupo de militares y civiles apoyado inicialmente por la CIA intentó secuestrar al comandante en jefe del Ejército, general René Schneider, quien resultó herido de muerte. El 24 de octubre, el Congreso Pleno proclamó a Allende con 153 votos, contra 35 de Alessandri y 7 en blanco, y el 3 de noviembre asumió la presidencia.\n\nSu programa de grandes transformaciones despertó una fuerte oposición dentro y fuera del país. Existen distintas interpretaciones sobre la Unidad Popular y sobre su gobierno, que terminó con el golpe de Estado del 11 de septiembre de 1973.",
+    "personajes": ["Salvador Allende", "Jorge Alessandri", "René Schneider"],
+    "imagen": {
+      "archivo": "Salvador_Allende_es_elegido_Presidente_de_la_República.jpg",
+      "autor": "Biblioteca del Congreso Nacional de Chile",
+      "licencia": "CC BY 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Salvador_Allende_es_elegido_Presidente_de_la_República.jpg",
+      "pieDeFoto": "El presidente del Senado, Tomás Pablo, coloca la banda presidencial a Salvador Allende; a su espalda, Eduardo Frei Montalva (1970)."
+    },
+    "fuentes": [
+      "https://www.bcn.cl/historiapolitica/resenas_biograficas/wiki/Salvador_Allende_Gossens",
+      "https://www.memoriachilena.gob.cl/602/w3-article-799.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-94600.html"
+    ]
+  },
+  {
+    "id": "1971-nacionalizacion-del-cobre",
+    "titulo": "Nacionalización del cobre",
+    "fecha": "1971-07-11",
+    "fechaAproximada": false,
+    "fechaTexto": "11 de julio de 1971",
+    "periodoId": "07",
+    "temas": ["economia", "politica"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "En 1971, el Congreso aprobó por unanimidad, es decir, sin votos en contra, que las grandes minas de cobre, que eran de empresas de Estados Unidos, pasaran a ser del Estado de Chile.",
+    "resumen": "El 11 de julio de 1971, el Congreso Nacional aprobó por votación unánime la Ley N° 17.450, una reforma constitucional que hizo posible la nacionalización total de la gran minería del cobre. Así culminó un proceso iniciado durante el gobierno de Eduardo Frei Montalva con la chilenización del cobre, que había creado sociedades mixtas en las grandes minas. La medida, impulsada por el gobierno de Salvador Allende, traspasó al Estado las minas que estaban en manos de corporaciones norteamericanas. Ese mismo año se dictó un decreto sobre indemnizaciones y utilidades excesivas.",
+    "detalle": "Durante el gobierno de Eduardo Frei Montalva se inició la llamada chilenización del cobre: la Ley N° 16.425, de 1966, le dio su marco legal. Surgieron empresas mixtas como la Sociedad Minera El Teniente S.A. y la Compañía Minera Andina S.A. (1966) y, tras la «nacionalización pactada» con la empresa Anaconda en 1969, la Compañía de Cobre Chuquicamata S.A. y la Sociedad Minera El Salvador S.A.\n\nEl gobierno de Salvador Allende propuso completar el proceso. El 11 de julio de 1971, el Congreso aprobó por votación unánime la Ley N° 17.450, una enmienda constitucional que hizo posible la nacionalización total del cobre. Ese mismo año se dictó el Decreto Supremo N° 92, sobre indemnizaciones y utilidades excesivas. Según Memoria Chilena, la nacionalización de la gran minería del cobre fue una de las pocas leyes aprobadas durante el gobierno de Allende.",
+    "personajes": ["Salvador Allende", "Eduardo Frei Montalva"],
+    "imagen": {
+      "archivo": "Billete_chileno_de_quinientos_escudos.jpg",
+      "autor": "Museo Histórico Nacional",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Billete_chileno_de_quinientos_escudos.jpg",
+      "pieDeFoto": "Billete de quinientos escudos emitido para conmemorar la nacionalización del cobre (colección del Museo Histórico Nacional)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3622.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-799.html"
+    ]
+  },
+  {
+    "id": "1971-nobel-pablo-neruda",
+    "titulo": "Pablo Neruda recibe el Premio Nobel de Literatura",
+    "fecha": "1971-12-10",
+    "fechaAproximada": false,
+    "fechaTexto": "10 de diciembre de 1971",
+    "periodoId": "07",
+    "temas": ["cultura"],
+    "importancia": 2,
+    "lugar": "Estocolmo (Suecia)",
+    "resumenNino": "Pablo Neruda fue un poeta chileno. En 1971 ganó el Premio Nobel de Literatura, el mismo premio que antes había recibido Gabriela Mistral.",
+    "resumen": "El 21 de octubre de 1971 se dio a conocer que el poeta Pablo Neruda, entonces embajador de Chile en Francia, había obtenido el Premio Nobel de Literatura. Según el sitio oficial del premio, fue distinguido por una poesía que, con la acción de una fuerza elemental, da vida al destino y los sueños de un continente. Lo recibió el 10 de diciembre de 1971, de manos del rey Gustavo Adolfo de Suecia. Antes, el premio había sido otorgado a Gabriela Mistral.",
+    "detalle": "Pablo Neruda era embajador de Chile en Francia cuando, el 21 de octubre de 1971, se dio a conocer que había obtenido el Premio Nobel de Literatura. Según el sitio oficial del Premio Nobel, fue distinguido por una poesía que, con la acción de una fuerza elemental, da vida al destino y los sueños de un continente.\n\nRecibió el premio el 10 de diciembre de 1971, de manos del rey Gustavo Adolfo. En su Discurso de Estocolmo, según Memoria Chilena, defendió una poesía comprometida con la humanidad y planteó que «el mejor poeta es el hombre que nos entrega el pan de cada día». El galardón había sido recibido antes por Gabriela Mistral, en 1945.",
+    "personajes": ["Pablo Neruda"],
+    "imagen": {
+      "archivo": "Neruda_1971.png",
+      "autor": "Svenska Akademien Archives",
+      "licencia": "CC BY 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Neruda_1971.png",
+      "pieDeFoto": "Pablo Neruda recibe la medalla y el diploma del Premio Nobel en Estocolmo, 10 de diciembre de 1971."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-96373.html",
+      "https://www.nobelprize.org/prizes/literature/1971/summary/"
+    ]
+  }
+]
