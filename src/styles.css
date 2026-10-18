@@ -1,0 +1,42 @@
+/* Estilos globales: variables de color, modo claro/oscuro y alto contraste (se completa en la fase 4). */
+:root {
+  color-scheme: light dark;
+  --azul: #0039a6;
+  --rojo: #d52b1e;
+  --fondo: #faf9f6;
+  --superficie: #ffffff;
+  --texto: #1c1c1e;
+  --texto-suave: #4a4a4f;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 112.5%; /* 18 px como mínimo */
+  line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --azul: #7aa7ff;
+    --rojo: #ff7a6e;
+    --fondo: #121417;
+    --superficie: #1c1f24;
+    --texto: #ececee;
+    --texto-suave: #b5b5bb;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+.contenedor {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 1rem;
+}

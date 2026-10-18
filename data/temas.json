@@ -1,0 +1,10 @@
+[
+  { "id": "guerra", "nombre": "Guerra" },
+  { "id": "politica", "nombre": "Política" },
+  { "id": "cultura", "nombre": "Cultura" },
+  { "id": "ciencia", "nombre": "Ciencia" },
+  { "id": "desastres", "nombre": "Desastres naturales" },
+  { "id": "pueblos-originarios", "nombre": "Pueblos originarios" },
+  { "id": "economia", "nombre": "Economía" },
+  { "id": "derechos", "nombre": "Derechos" }
+]

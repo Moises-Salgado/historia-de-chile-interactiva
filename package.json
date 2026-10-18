@@ -1,0 +1,17 @@
+{
+  "name": "historia-de-chile-interactiva",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node scripts/validar-datos.mjs",
+    "verificar-imagenes": "node scripts/verificar-imagenes.mjs"
+  },
+  "devDependencies": {
+    "vite": "^8.3.0"
+  },
+  "description": "Línea de tiempo interactiva de la historia de Chile"
+}
