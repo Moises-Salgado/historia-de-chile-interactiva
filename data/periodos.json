@@ -1,0 +1,83 @@
+[
+  {
+    "id": "01",
+    "nombre": "Pueblos originarios",
+    "inicio": -13000,
+    "fin": 1535,
+    "fechasTexto": "Hasta 1535",
+    "color": "#7a5c3a",
+    "descripcion": "Miles de años antes de la llegada de los europeos, el territorio que hoy es Chile ya estaba habitado por muchos pueblos, desde el desierto de Atacama hasta el cabo de Hornos y Rapa Nui. Cada uno desarrolló su propia forma de vida, su lengua y su cultura."
+  },
+  {
+    "id": "02",
+    "nombre": "Conquista y Colonia",
+    "inicio": 1536,
+    "fin": 1809,
+    "fechasTexto": "1536-1809",
+    "color": "#8e4f3a",
+    "descripcion": "Desde 1536 los españoles exploraron y conquistaron el territorio, que pasó a ser el Reino de Chile, parte del Imperio español. La resistencia mapuche hizo que el río Biobío se convirtiera en una frontera durante siglos."
+  },
+  {
+    "id": "03",
+    "nombre": "Independencia",
+    "inicio": 1810,
+    "fin": 1823,
+    "fechasTexto": "1810-1823",
+    "color": "#2e5a87",
+    "descripcion": "Entre 1810 y 1823 Chile dejó de ser una colonia española y se convirtió en un país independiente, tras años de guerra entre patriotas y realistas."
+  },
+  {
+    "id": "04",
+    "nombre": "Organización de la República",
+    "inicio": 1823,
+    "fin": 1860,
+    "fechasTexto": "1823-1860",
+    "color": "#4b5d7a",
+    "descripcion": "Después de la independencia, Chile buscó cómo organizarse como república: hubo guerras civiles, se dictó la Constitución de 1833 y se crearon instituciones como la Universidad de Chile."
+  },
+  {
+    "id": "05",
+    "nombre": "Expansión y Guerra del Pacífico",
+    "inicio": 1861,
+    "fin": 1891,
+    "fechasTexto": "1861-1891",
+    "color": "#7d6528",
+    "descripcion": "Entre 1861 y 1891 el Estado chileno extendió su territorio hacia el norte y el sur, con la Guerra del Pacífico, la ocupación de la Araucanía y la anexión de Rapa Nui. El período terminó con la guerra civil de 1891."
+  },
+  {
+    "id": "06",
+    "nombre": "Parlamentarismo y cuestión social",
+    "inicio": 1891,
+    "fin": 1925,
+    "fechasTexto": "1891-1925",
+    "color": "#6a527f",
+    "descripcion": "La exportación de salitre trajo grandes ingresos al país mientras el Congreso tenía un fuerte poder sobre los gobiernos. Al mismo tiempo, muchos trabajadores vivían en condiciones muy duras y exigían mejoras: la llamada «cuestión social»."
+  },
+  {
+    "id": "07",
+    "nombre": "Siglo XX: reformas y cambios sociales",
+    "inicio": 1925,
+    "fin": 1973,
+    "fechasTexto": "1925-1973",
+    "color": "#2f6f62",
+    "descripcion": "Con la Constitución de 1925 el Estado asumió un papel más activo en la economía y la sociedad. Tras años de inestabilidad, desde 1932 se sucedieron gobiernos elegidos, con grandes cambios como el voto femenino y la reforma agraria, hasta la profunda crisis política de 1973."
+  },
+  {
+    "id": "08",
+    "nombre": "Dictadura militar",
+    "inicio": 1973,
+    "fin": 1990,
+    "fechasTexto": "1973-1990",
+    "color": "#565a63",
+    "descripcion": "Tras el golpe de Estado del 11 de septiembre de 1973, una junta militar encabezada por Augusto Pinochet gobernó el país durante casi 17 años. Fue un período de graves violaciones a los derechos humanos, documentadas por los informes Rettig y Valech, y de profundas reformas económicas."
+  },
+  {
+    "id": "09",
+    "nombre": "Retorno a la democracia y siglo XXI",
+    "inicio": 1990,
+    "fin": null,
+    "fechasTexto": "1990-hoy",
+    "color": "#8a3b55",
+    "descripcion": "Desde 1990 Chile volvió a tener gobiernos elegidos democráticamente. En estas décadas ha vivido crecimiento económico, reformas, grandes terremotos, movilizaciones sociales y dos propuestas de nueva Constitución rechazadas en plebiscito (2022 y 2023)."
+  }
+]

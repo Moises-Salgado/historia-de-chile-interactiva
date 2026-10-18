@@ -1,0 +1,357 @@
+[
+  {
+    "id": "ac12500-monte-verde",
+    "titulo": "Monte Verde, uno de los sitios más antiguos de América",
+    "fecha": "-12500",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 14.500 años atrás",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "ciencia"],
+    "importancia": 3,
+    "lugar": "Monte Verde, cerca de Puerto Montt",
+    "resumenNino": "Hace muchísimo tiempo, un grupo de personas vivió junto a un estero en el sur de Chile. Los restos de sus casas, fogatas y alimentos nos muestran que América estaba habitada desde hace miles de años.",
+    "resumen": "Cerca de Puerto Montt se encuentra Monte Verde, un sitio arqueológico donde vivió un grupo humano hace unos 14.500 años, según sus investigadores. Allí se encontraron bases de viviendas, fogones, restos de mastodontes y numerosas plantas que se usaban como alimento y medicina. Las excavaciones dirigidas por el arqueólogo Tom Dillehay desde la década de 1970 indicaron que América fue poblada antes de lo que se creía. En 1997 un grupo de especialistas aceptó esa antigüedad, lo que cambió las teorías sobre la llegada de los seres humanos al continente.",
+    "detalle": "Los restos se conservaron muy bien porque quedaron cubiertos por una capa de turba, que impidió su descomposición. Según Memoria Chilena, se identificaron 73 tipos de plantas, unas 23 de ellas medicinales, lo que indica que la alimentación de este grupo era sobre todo vegetal, aunque también aprovechaba animales como el mastodonte.\n\nHasta entonces, muchos investigadores pensaban que los primeros habitantes de América eran los cazadores de la cultura Clovis, de América del Norte. Monte Verde, mucho más al sur y más antiguo, cuestionó esa idea.\n\nEn marzo de 2026, un estudio publicado en la revista Science propuso que el sitio es mucho más reciente, de entre unos 4.200 y 8.200 años. Dillehay y otros investigadores rechazaron esa conclusión y defendieron la antigüedad de 14.500 años. El debate científico sigue abierto.",
+    "personajes": ["Tom Dillehay (arqueólogo)"],
+    "imagen": {
+      "archivo": "Monte_Verde_2012.jpg",
+      "autor": "Geología Valdivia",
+      "licencia": "CC BY 2.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Monte_Verde_2012.jpg",
+      "pieDeFoto": "El sitio arqueológico Monte Verde, junto al estero Chinchihuapi (foto de 2012)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-100801.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-97666.html",
+      "https://www.nationalgeographic.com/history/article/monte-verde-redated",
+      "https://www.internazionale.it/ultime-notizie-reuters/2026/08/31/researchers-defend-older-age-of-key-archaeological-site-in-chile",
+      "https://es.wikipedia.org/wiki/Monte_Verde"
+    ]
+  },
+  {
+    "id": "ac5000-cultura-chinchorro",
+    "titulo": "Cultura chinchorro y sus momias",
+    "fecha": "-5000",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 5000 a.C.",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "cultura"],
+    "importancia": 3,
+    "lugar": "Costa de Arica y Camarones",
+    "resumenNino": "En la costa de Arica vivían pescadores que preparaban momias de sus muertos para recordarlos. Son las momias hechas por personas más antiguas que se conocen en el mundo.",
+    "resumen": "Los chinchorro fueron pescadores y recolectores que vivieron en la costa del desierto, entre el sur del Perú y Antofagasta, aproximadamente entre el 7000 y el 1500 a.C. Hacia el 5000 a.C. comenzaron a momificar artificialmente a algunos de sus muertos, primero fetos y recién nacidos y más tarde personas de todas las edades. Son las evidencias de momificación artificial más antiguas que se conocen en el mundo. En 2021 la UNESCO declaró Patrimonio Mundial el «Asentamiento y momificación artificial de la cultura Chinchorro en la región de Arica y Parinacota».",
+    "detalle": "Para preparar las momias, desarmaban el cuerpo, retiraban los órganos y lo volvían a armar con palos, fibras vegetales y arcilla. Luego lo cubrían con una pasta que pintaban de negro o de rojo, y le ponían una máscara. Esta práctica muestra el fuerte vínculo que mantenían con sus muertos.\n\nEl sitio de Patrimonio Mundial, inscrito el 27 de julio de 2021, incluye tres lugares: el Faldeo Norte del Morro de Arica, Colón 10 y la Desembocadura de Camarones. Muchas momias se conservan en el Museo Arqueológico San Miguel de Azapa, de la Universidad de Tarapacá.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Momificación_Chinchorro.jpg",
+      "autor": "Andrea021",
+      "licencia": "CC BY-SA 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Momificación_Chinchorro.jpg",
+      "pieDeFoto": "Recreación del proceso de momificación chinchorro en el Museo Arqueológico San Miguel de Azapa, Arica (foto de 2014)."
+    },
+    "fuentes": [
+      "https://www.monumentos.gob.cl/patrimonio-mundial/actual/asentamiento-y-momificacion-artificial-de-la-cultura-chinchorro",
+      "https://precolombino.cl/wp/culturas-americanas/culturas-precolombinas/chile/chinchorro/",
+      "https://es.wikipedia.org/wiki/Cultura_chinchorro"
+    ]
+  },
+  {
+    "id": "1470-tawantinsuyu-en-chile",
+    "titulo": "El Tawantinsuyu llega a Chile",
+    "fecha": "1470",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1470, según las crónicas",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "politica"],
+    "importancia": 2,
+    "lugar": "Norte y centro de Chile",
+    "resumenNino": "El gran imperio de los incas, el Tawantinsuyu, extendió su dominio hasta el centro de Chile. Construyeron caminos, fortalezas y lugares para trabajar los metales.",
+    "resumen": "Según las crónicas españolas, hacia 1471 el inca Túpac Yupanqui llegó al sur del río Aconcagua, y más tarde Huayna Cápac fijó la frontera al sur del Maipo. Sin embargo, las dataciones por radiocarbono y termoluminiscencia indican que la presencia inca en el norte y centro de Chile comenzó casi cien años antes. Los incas construyeron caminos, tambos (lugares de descanso) y pucarás (fortalezas), y explotaron minas de metales. El Qhapaq Ñan, su red de caminos, es Patrimonio Mundial desde 2014.",
+    "detalle": "Los incas incorporaron a pueblos como los atacameños y los diaguitas, que pasaron a tributar al imperio con trabajo y productos. En Viña del Cerro, cerca de Copiapó, funcionó el mayor centro metalúrgico inca conocido, según Memoria Chilena. Al sur de Santiago, los pucarás de Chena, Chada y el Cerro Grande de La Compañía marcaban la frontera.\n\nEl límite sur del Tawantinsuyu se discute: algunos lo sitúan en el río Maule, siguiendo al cronista Garcilaso de la Vega, y otros en el Maipo o el Cachapoal. El tramo chileno del Qhapaq Ñan, compartido con otros cinco países, abarca casi 113 kilómetros y 138 sitios arqueológicos.",
+    "personajes": ["Túpac Yupanqui", "Huayna Cápac"],
+    "imagen": {
+      "archivo": "Zapahuira_Tambo_Uno_Colcas.jpg",
+      "autor": "Alefotos",
+      "licencia": "CC BY-SA 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Zapahuira_Tambo_Uno_Colcas.jpg",
+      "pieDeFoto": "Tambo de Zapahuira, cerca de Putre, junto al camino inca (foto de 2013)."
+    },
+    "fuentes": [
+      "https://precolombino.cl/wp/culturas-americanas/culturas-precolombinas/chile/el-inka-en-chile/",
+      "https://www.monumentos.gob.cl/patrimonio-mundial/actual/qhapaq-nan-sistema-vial-andino",
+      "https://doaj.org/article/8266528ed37344e5b2eb2dab96a01eaa"
+    ]
+  },
+  {
+    "id": "1500-pueblo-aymara",
+    "titulo": "Pueblo aymara",
+    "fecha": "1500",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1500, antes de la llegada europea",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "cultura"],
+    "importancia": 2,
+    "lugar": "Altiplano y valles de Arica y Tarapacá",
+    "resumenNino": "En el altiplano del norte de Chile, a gran altura, vivía y vive hasta hoy el pueblo aymara. Criaban llamas y alpacas y cultivaban papas y quinoa en terrazas construidas en los cerros.",
+    "resumen": "Los pueblos de lengua aymara se establecieron en el altiplano desde el siglo XII, después de la decadencia de Tiwanaku, una gran cultura andina que había influido en los valles de Arica. Se organizaron en señoríos, como los lupaqa y los pacajes, que ocupaban tierras a distintas alturas para obtener productos variados. Criaban llamas y alpacas y cultivaban papa, quinoa y maíz en terrazas. A mediados del siglo XV quedaron bajo el dominio del Tawantinsuyu, el imperio inca.",
+    "detalle": "Esta forma de aprovechar distintos pisos ecológicos permitía a las comunidades reunir alimentos de los valles, las quebradas y el altiplano. Las llamas servían también para transportar carga, y su lana, como la de las alpacas, se usaba para tejer.\n\nEl pueblo aymara mantiene hasta hoy su lengua y muchas de sus tradiciones en las regiones de Arica y Parinacota y de Tarapacá, y también en Bolivia y el Perú. Es uno de los pueblos indígenas reconocidos por la ley chilena.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Parinacota_volcano.jpg",
+      "autor": "mtchm",
+      "licencia": "CC BY-SA 2.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Parinacota_volcano.jpg",
+      "pieDeFoto": "Llamas y alpacas en el Parque Nacional Lauca, con el volcán Parinacota al fondo (foto de 2005)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-605.html",
+      "https://www.fao.org/giahs/giahs-around-the-world/chile-high-andean-camelids-system/en",
+      "https://es.wikipedia.org/wiki/Aimaras"
+    ]
+  },
+  {
+    "id": "1500-pueblo-atacameno",
+    "titulo": "Pueblo atacameño (lickanantay)",
+    "fecha": "1500",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1500, antes de la llegada europea",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "cultura"],
+    "importancia": 2,
+    "lugar": "Oasis del salar de Atacama y río Loa",
+    "resumenNino": "En los oasis del desierto de Atacama vivía el pueblo lickanantay, o atacameño. Cultivaban la tierra junto a los ríos y viajaban en caravanas de llamas para intercambiar productos con otros pueblos.",
+    "resumen": "El pueblo atacameño o lickanantay habitaba los oasis y quebradas del río Loa y del salar de Atacama, donde vivía en comunidades llamadas ayllus. Sus antepasados formaron la cultura San Pedro, cuya aldea de Tulor data de hacia el 400 a.C. Las caravanas de llamas permitían intercambiar productos a corta y larga distancia, y convirtieron a San Pedro de Atacama en un centro de contacto entre pueblos. Hacia el año 1300 construyeron el Pukará de Quitor, una fortaleza de piedra, y hacia 1450 su territorio fue incorporado al Tawantinsuyu.",
+    "detalle": "La agricultura en el desierto dependía del manejo cuidadoso del agua de ríos y vertientes. Los lickanantay cultivaban maíz, quinoa y otros productos, criaban llamas y recolectaban frutos como el algarrobo y el chañar.\n\nEn 1540 el español Francisco de Aguirre tomó el Pukará de Quitor, defendido por unos mil atacameños según el cronista Gerónimo de Bibar. Hoy el pueblo atacameño-lickanantay mantiene sus comunidades en la zona de San Pedro de Atacama y el Loa, y trabaja por recuperar su lengua ancestral, el kunza.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Pukará_de_Quitor_1.jpg",
+      "autor": "Daniel Gutiérrez P.",
+      "licencia": "CC BY-SA 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Pukará_de_Quitor_1.jpg",
+      "pieDeFoto": "Muros del Pukará de Quitor, en San Pedro de Atacama (foto de 2007)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-722.html",
+      "https://precolombino.cl/wp/culturas-americanas/culturas-precolombinas/chile/san-pedro/",
+      "https://estudiosatacamenos.ucn.cl/index.php/estudios-atacamenos/article/download/187/176/397"
+    ]
+  },
+  {
+    "id": "1500-pueblo-diaguita",
+    "titulo": "Pueblo diaguita",
+    "fecha": "1500",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1500, antes de la llegada europea",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "cultura"],
+    "importancia": 2,
+    "lugar": "Valles del Norte Chico",
+    "resumenNino": "En los valles del Norte Chico vivía el pueblo diaguita, famoso por su hermosa cerámica pintada de rojo, blanco y negro. Cultivaban la tierra y también aprovechaban los alimentos del mar.",
+    "resumen": "La cultura diaguita se desarrolló en los valles del Norte Chico, sobre todo entre los ríos Elqui y Choapa, desde alrededor del año 900 d.C. Sus comunidades cultivaban quinoa, porotos y zapallos y obtenían alimentos del mar. Son conocidos por su cerámica de colores rojo, blanco y negro, con diseños geométricos y formas como el «jarro pato». Desde 2006, la ley chilena reconoce al pueblo diaguita como uno de los pueblos indígenas del país.",
+    "detalle": "Los arqueólogos distinguen tres fases: una primera entre los años 900 y 1200, una segunda entre 1200 y 1470, y una tercera, diaguita-inca, entre 1470 y 1536, cuando estuvieron bajo el dominio del Tawantinsuyu. En esta última etapa su cultura se extendió desde Copiapó hasta el Aconcagua.\n\nLa Ley 20.117, publicada en septiembre de 2006, agregó al pueblo diaguita a la lista de pueblos indígenas reconocidos por la Ley Indígena de 1993.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Jarro_pato.jpg",
+      "autor": "Warko",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Jarro_pato.jpg",
+      "pieDeFoto": "Jarro pato diaguita pintado en rojo, blanco y negro (Museo Chileno de Arte Precolombino)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-93148.html",
+      "https://www.bcn.cl/leychile/navegar?idNorma=253035",
+      "https://es.wikipedia.org/wiki/Pueblo_diaguita"
+    ]
+  },
+  {
+    "id": "1500-pueblo-mapuche",
+    "titulo": "Pueblo mapuche",
+    "fecha": "1500",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1500, antes de la llegada europea",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "cultura"],
+    "importancia": 2,
+    "lugar": "Del río Choapa a Chiloé",
+    "resumenNino": "El pueblo mapuche vivía en los valles y bosques del centro y sur de Chile y hablaba mapudungun. Sus familias formaban comunidades guiadas por un lonko, cultivaban la tierra y hacían tejidos y cerámica.",
+    "resumen": "A la llegada de los españoles, el mapudungun se hablaba desde el río Choapa hasta Chiloé. El núcleo del pueblo mapuche estaba entre los ríos Itata y Toltén, y estaba emparentado con los picunches, al norte, y los huilliches, al sur. Vivían en comunidades llamadas lof, cada una dirigida por un lonko, sin un gobierno central único. Combinaban la caza, la recolección y la horticultura con la crianza de camélidos como el chilihueque, y las mujeres elaboraban cerámica y tejidos.",
+    "detalle": "Sus antecedentes arqueológicos son el complejo Pitrén, entre los años 100 y 1100 d.C., y el complejo El Vergel, entre 1100 y 1450 d.C., según el Museo Chileno de Arte Precolombino, aunque otras fuentes proponen fechas distintas. La organización en comunidades autónomas, que podían aliarse en caso de guerra, les permitió resistir durante siglos la conquista española.\n\nHoy el mapuche es el pueblo indígena más numeroso de Chile y mantiene su lengua, su espiritualidad y ceremonias como el nguillatun.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Cerámica_estilo_El_Vergel_Museo_Arte_Precolombino_01.jpg",
+      "autor": "Yastay",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Cerámica_estilo_El_Vergel_Museo_Arte_Precolombino_01.jpg",
+      "pieDeFoto": "Vasija de estilo El Vergel (c. 1100-1450 d.C.), antecedente del pueblo mapuche (Museo Chileno de Arte Precolombino)."
+    },
+    "fuentes": [
+      "https://chileprecolombino.cl/pueblos-originarios/mapuche/historia/",
+      "https://www.memoriachilena.gob.cl/602/w3-article-781.html",
+      "https://es.wikipedia.org/wiki/Pueblo_mapuche"
+    ]
+  },
+  {
+    "id": "1500-pueblo-chono",
+    "titulo": "Pueblo chono",
+    "fecha": "1500",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1500, antes de la llegada europea",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "cultura"],
+    "importancia": 2,
+    "lugar": "Archipiélagos de Chiloé, Guaitecas y Chonos",
+    "resumenNino": "Los chonos eran navegantes que vivían en los canales e islas al sur de Chiloé. Viajaban en dalcas, unas canoas hechas con tablas cosidas, y se alimentaban de lo que obtenían del mar.",
+    "resumen": "Los chonos eran nómadas del mar que recorrían los archipiélagos entre Chiloé y la península de Taitao, incluidas las Guaitecas y el archipiélago de los Chonos. Cazaban lobos marinos, peces y aves, y las mujeres buceaban para recoger mariscos. Navegaban en dalcas, canoas de tres tablas curvadas al fuego y cosidas, que podían llevar hasta diez personas. El primer contacto con los españoles ocurrió hacia 1553.",
+    "detalle": "Durante la Colonia, muchos chonos fueron capturados y obligados a trabajar para los españoles, y otros se trasladaron a Chiloé, donde se mezclaron con la población local. A fines del siglo XVIII ya no existían como un pueblo diferenciado, y la última noticia de ellos es de comienzos del siglo XIX.\n\nLa dalca fue adoptada por los habitantes de Chiloé y se siguió usando por mucho tiempo, como parte del legado chono en la cultura chilota.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Dalca_-_Museum_of_Ethnography,_Sweden.tif",
+      "autor": "Etnografiska museet (Estocolmo)",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Dalca_-_Museum_of_Ethnography,_Sweden.tif",
+      "pieDeFoto": "Dalca de tablas cosidas, la embarcación de los chonos, reunida por Carl Skottsberg en la Patagonia chilena (Museo de Etnografía de Estocolmo)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-93773.html",
+      "https://precolombino.cl/wp/culturas-americanas/pueblos-originarios-de-chile/chonos/",
+      "https://es.wikipedia.org/wiki/Chonos"
+    ]
+  },
+  {
+    "id": "1500-pueblo-kawesqar",
+    "titulo": "Pueblo kawésqar",
+    "fecha": "1500",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1500, antes de la llegada europea",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "cultura"],
+    "importancia": 2,
+    "lugar": "Canales de la Patagonia occidental",
+    "resumenNino": "Los kawésqar son un pueblo de navegantes de los canales de la Patagonia. Durante miles de años vivieron casi siempre en sus canoas, recorriendo los fiordos en busca de alimento.",
+    "resumen": "El pueblo kawésqar habitaba los canales y fiordos de la Patagonia occidental, entre la península de Taitao y el estrecho de Magallanes. Vivían en pequeños grupos familiares que pasaban gran parte de su vida a bordo de sus canoas, cazando lobos marinos y recolectando mariscos. Los arqueólogos han encontrado en la zona restos de cazadores-recolectores marinos de hace unos 6.000 años, que serían sus antepasados. Hoy hay familias kawésqar en Puerto Edén, Puerto Natales y Punta Arenas.",
+    "detalle": "En sus canoas llevaban siempre un fuego encendido sobre una base de tierra, para calentarse y cocinar. En el siglo XIX y comienzos del XX, el contacto con loberos, colonos y navegantes trajo enfermedades y violencia que redujeron mucho su población.\n\nLa instalación de un puesto de la Armada en Puerto Edén, a fines de la década de 1930, aceleró el abandono de la vida nómada. Hoy el pueblo kawésqar trabaja por preservar su lengua y su identidad, y es uno de los pueblos indígenas reconocidos por la ley chilena.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Grupo_kaweshkar_navegando_en_una_dalca_1895.png",
+      "autor": "Ingeniero Bauer (Colección Universidad Austral de Chile)",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Grupo_kaweshkar_navegando_en_una_dalca_1895.png",
+      "pieDeFoto": "Grupo kawésqar navegando en su canoa, fotografiado en 1895 desde el vapor Bianca."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-93784.html",
+      "https://doaj.org/article/fcf48b3e430c4da4b63a6da55d3869e4",
+      "https://es.wikipedia.org/wiki/Pueblo_kaw%C3%A9sqar"
+    ]
+  },
+  {
+    "id": "1500-pueblo-selknam",
+    "titulo": "Pueblo selk'nam",
+    "fecha": "1500",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1500, antes de la llegada europea",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "cultura"],
+    "importancia": 2,
+    "lugar": "Tierra del Fuego",
+    "resumenNino": "Los selk'nam vivían en la isla grande de Tierra del Fuego y cazaban guanacos, con cuyas pieles se abrigaban del frío. Celebraban una gran ceremonia llamada Hain para que los jóvenes se convirtieran en adultos.",
+    "resumen": "Los selk'nam eran cazadores y recolectores que recorrían el norte y el centro de la isla grande de Tierra del Fuego, adonde sus antepasados llegaron varios milenios antes de Cristo. Cazaban guanacos con arco y flecha, y con sus pieles hacían vestimentas y toldos. Su ceremonia más importante, el Hain, iniciaba a los jóvenes en la vida adulta y podía durar meses. A fines del siglo XIX sufrieron una violenta reducción de su población tras la llegada de buscadores de oro y estancias ovejeras.",
+    "detalle": "Según Memoria Chilena, desde 1880 los buscadores de oro cometieron las primeras matanzas, y desde 1883 las estancias ovejeras impulsaron una campaña de exterminio para apoderarse de sus tierras. Desde 1889, cientos de selk'nam fueron trasladados a la misión salesiana de isla Dawson, donde muchos murieron por enfermedades.\n\nSus descendientes han mantenido su identidad. En octubre de 2023, la Ley 21.606 reconoció a los selk'nam como pueblo indígena de Chile.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Selknam_bow.JPG",
+      "autor": "WereSpielChequers",
+      "licencia": "CC BY-SA 3.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Selknam_bow.JPG",
+      "pieDeFoto": "Arco, flechas con punta de piedra y otros objetos selk'nam (Museo Etnográfico Juan B. Ambrosetti, Buenos Aires)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3687.html",
+      "https://www.pueblosoriginarios.gob.cl/sites/www.pueblosoriginarios.gob.cl/files/2024-02/SUBPO-Recomendaciones_digital.pdf",
+      "https://es.wikipedia.org/wiki/Pueblo_selknam"
+    ]
+  },
+  {
+    "id": "1500-pueblo-yagan",
+    "titulo": "Pueblo yagán",
+    "fecha": "1500",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1500, antes de la llegada europea",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "cultura"],
+    "importancia": 2,
+    "lugar": "Canal Beagle y cabo de Hornos",
+    "resumenNino": "Los yaganes vivían en los canales más australes del mundo, cerca del cabo de Hornos, y se movían en canoas de corteza. Las mujeres buceaban en el agua helada para recoger mariscos.",
+    "resumen": "El pueblo yagán habitaba los canales al sur de Tierra del Fuego, en torno al canal Beagle y el cabo de Hornos, donde sus antepasados vivieron de forma continua durante unos 7.000 años. Viajaban en canoas de corteza, en las que mantenían un fuego encendido. Las mujeres buceaban para recoger mariscos y cuidaban el fuego, y los hombres cazaban lobos marinos y aves. En el siglo XIX, la llegada de misioneros, colonos y buscadores de oro, junto con las epidemias, redujo drásticamente su población.",
+    "detalle": "Hoy la comunidad yagán vive principalmente en Villa Ukika, en la isla Navarino, cerca de Puerto Williams. Cristina Calderón, la última hablante nativa de la lengua yagán, fue reconocida como Tesoro Humano Vivo en 2009 y murió en Punta Arenas el 16 de febrero de 2022, a los 93 años.\n\nLa comunidad prefiere ser llamada yagán y trabaja en la recuperación de su lengua y sus tradiciones.",
+    "personajes": ["Cristina Calderón"],
+    "imagen": {
+      "archivo": "Fuegians_and_canoe.png",
+      "autor": "J. Drayton (dibujo) y W. H. Dougal (grabado)",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Fuegians_and_canoe.png",
+      "pieDeFoto": "Familia fueguina, probablemente yagán, con un fuego encendido en su canoa; grabado de la expedición estadounidense de Wilkes (1839)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-93793.html",
+      "https://cooperativa.cl/noticias/pais/pueblos-originarios/a-los-93-anos-fallecio-cristina-calderon-la-ultima-hablante-nativa-del/2022-02-16/133828.html",
+      "https://revistaschilenas.uchile.cl/handle/2250/42164",
+      "https://es.wikipedia.org/wiki/Pueblo_yag%C3%A1n"
+    ]
+  },
+  {
+    "id": "1500-pueblo-rapanui",
+    "titulo": "Pueblo rapanui",
+    "fecha": "1500",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 1500, antes de la llegada europea",
+    "periodoId": "01",
+    "temas": ["pueblos-originarios", "cultura"],
+    "importancia": 2,
+    "lugar": "Rapa Nui (Isla de Pascua)",
+    "resumenNino": "Navegantes de Polinesia llegaron en canoas a Rapa Nui, una isla en medio del océano Pacífico. Allí tallaron los moái, enormes estatuas de piedra que representan a sus antepasados.",
+    "resumen": "Rapa Nui fue poblada por navegantes polinesios que, según los estudios de radiocarbono más recientes, llegaron entre los años 1150 y 1290 d.C. La tradición atribuye la primera migración al jefe Hotu Matu'a. Sus habitantes construyeron unas 900 estatuas de piedra, los moái, y más de 300 plataformas ceremoniales, los ahu, para honrar a sus antepasados. También desarrollaron el rongorongo, un sistema de signos que todavía no ha sido descifrado.",
+    "detalle": "La construcción de ahu y moái comenzó poco después del poblamiento y alcanzó su apogeo en los siglos XIV y XV. La población de la isla pudo llegar a unas 10.000 personas, según Memoria Chilena. Un estudio de 2024 fechó la madera de una tablilla rongorongo entre 1493 y 1509, antes de la llegada de los europeos.\n\nEl primer europeo en llegar a la isla fue el holandés Jacob Roggeveen, en 1722. En 1995, el Parque Nacional Rapa Nui fue el primer sitio de Chile inscrito en la Lista del Patrimonio Mundial de la UNESCO.",
+    "personajes": ["Hotu Matu'a"],
+    "imagen": {
+      "archivo": "Hodges_easter-island.jpg",
+      "autor": "William Hodges",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Hodges_easter-island.jpg",
+      "pieDeFoto": "Moái de Rapa Nui pintados por William Hodges, artista de la expedición de James Cook, que visitó la isla en 1774."
+    },
+    "fuentes": [
+      "https://www.monumentos.gob.cl/patrimonio-mundial/actual/parque-nacional-rapa-nui",
+      "https://manoa.hawaii.edu/news/article.php?aId=4097",
+      "https://es.wikipedia.org/wiki/Rapanui_(etnia)"
+    ]
+  },
+  {
+    "id": "1520-magallanes-en-el-estrecho",
+    "titulo": "Magallanes cruza el estrecho",
+    "fecha": "1520-11-01",
+    "fechaAproximada": false,
+    "fechaTexto": "1 de noviembre de 1520",
+    "periodoId": "01",
+    "temas": ["ciencia", "economia"],
+    "importancia": 3,
+    "lugar": "Estrecho de Magallanes",
+    "resumenNino": "El navegante Hernando de Magallanes encontró un paso entre dos océanos en el extremo sur de América. Su expedición fue la primera de europeos en llegar al territorio que hoy es Chile.",
+    "resumen": "El 21 de octubre de 1520, la expedición de Hernando de Magallanes, al servicio de España, llegó a la entrada oriental de un estrecho en el extremo sur de América. El 1 de noviembre, día de Todos los Santos, comenzó a navegarlo y lo bautizó con ese nombre; hoy lleva el nombre de Magallanes. El 28 de noviembre salió al océano que llamaron Pacífico. Fue la primera vez que europeos llegaron al territorio que hoy es Chile.",
+    "detalle": "La expedición había partido de España en 1519 con cinco naves, en busca de una ruta hacia las islas de las especias. Como la nao Santiago ya se había perdido, entraron al estrecho cuatro naves: Trinidad, San Antonio, Concepción y Victoria. La tripulación de la San Antonio se sublevó y regresó a España, por lo que solo tres naves salieron al Pacífico.\n\nMagallanes murió en Filipinas en 1521, y la expedición, al mando de Juan Sebastián Elcano, completó la primera vuelta al mundo en 1522. Memoria Chilena considera el 1 de noviembre de 1520 como la fecha del descubrimiento del estrecho, que durante siglos fue una ruta clave entre ambos océanos.",
+    "personajes": ["Hernando de Magallanes", "Antonio Pigafetta", "Juan Sebastián Elcano"],
+    "imagen": {
+      "archivo": "The_First_Map_of_the_Strait_of_Magellan,_1520_WDL3972.png",
+      "autor": "Carlo Amoretti, según Antonio Pigafetta",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:The_First_Map_of_the_Strait_of_Magellan,_1520_WDL3972.png",
+      "pieDeFoto": "Mapa del estrecho según Antonio Pigafetta, cronista de la expedición (edición de Carlo Amoretti, 1800); el sur está hacia arriba."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-641.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-94468.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-95895.html",
+      "https://es.wikipedia.org/wiki/Expedici%C3%B3n_de_Magallanes_y_Elcano"
+    ]
+  }
+]

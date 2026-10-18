@@ -1,0 +1,354 @@
+[
+  {
+    "id": "1810-primera-junta-de-gobierno",
+    "titulo": "Primera Junta Nacional de Gobierno",
+    "fecha": "1810-09-18",
+    "fechaAproximada": false,
+    "fechaTexto": "18 de septiembre de 1810",
+    "periodoId": "03",
+    "temas": ["politica"],
+    "importancia": 3,
+    "lugar": "Santiago",
+    "resumenNino": "Un grupo de vecinos de Santiago se reunió y decidió formar una junta para gobernar Chile mientras el rey de España estaba preso. Por eso cada 18 de septiembre celebramos las Fiestas Patrias.",
+    "resumen": "El 18 de septiembre de 1810, unos 400 vecinos se reunieron en un cabildo abierto en el edificio del Real Tribunal del Consulado, en Santiago. Allí se formó una junta de gobierno presidida por Mateo de Toro y Zambrano, que gobernaría en nombre del rey Fernando VII, prisionero de Napoleón. Aunque no declaró la independencia, fue el primer paso de Chile hacia el autogobierno. Por eso el 18 de septiembre es la principal fiesta patria del país.",
+    "detalle": "En 1808 Napoleón invadió España y mantuvo prisionero al rey Fernando VII. En América, varias ciudades formaron juntas para gobernar mientras el rey estuviera ausente. En Chile, el gobernador Francisco Antonio García Carrasco debió renunciar en julio de 1810 y lo reemplazó el anciano criollo Mateo de Toro y Zambrano.\n\nEn el cabildo abierto, José Miguel Infante defendió la formación de una junta y los asistentes la apoyaron con el grito de «¡Junta queremos!». Su nombre oficial fue Junta Provisional Gubernativa del Reino. La presidió Toro y Zambrano, con el obispo José Antonio Martínez de Aldunate como vicepresidente y, entre sus vocales, Juan Martínez de Rozas. La junta convocó a elecciones para un Congreso Nacional y en 1811 abrió los puertos al comercio con otras naciones.\n\nLos historiadores discuten el sentido de este paso: para algunos fue un gesto de lealtad al rey cautivo y para otros, el comienzo deliberado del camino hacia la independencia.",
+    "personajes": ["Mateo de Toro y Zambrano", "José Miguel Infante", "Juan Martínez de Rozas"],
+    "imagen": {
+      "archivo": "Primera_Junta_de_Gobierno_Chile.jpg",
+      "autor": "Nicolás Guzmán Bustamante",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Primera_Junta_de_Gobierno_Chile.jpg",
+      "pieDeFoto": "Formación de la Primera Junta de Gobierno en 1810, óleo de Nicolás Guzmán Bustamante (1889)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-593.html",
+      "https://www.mhn.gob.cl/sites/www.mhn.gob.cl/files/images/articles-9435_archivo_01.pdf",
+      "https://es.wikipedia.org/wiki/Primera_Junta_de_Gobierno_de_Chile"
+    ]
+  },
+  {
+    "id": "1811-primer-congreso-nacional",
+    "titulo": "Primer Congreso Nacional",
+    "fecha": "1811-07-04",
+    "fechaAproximada": false,
+    "fechaTexto": "4 de julio de 1811",
+    "periodoId": "03",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "Por primera vez, representantes elegidos en distintas ciudades se reunieron en Santiago para hacer leyes para Chile: fue el Primer Congreso Nacional.",
+    "resumen": "El 4 de julio de 1811 se instaló en Santiago el Primer Congreso Nacional, con diputados elegidos en las distintas ciudades del país. Sesionó en el edificio de la Real Audiencia, que hoy alberga el Museo Histórico Nacional. Entre sus medidas destaca la libertad de vientres, que declaró libres a los hijos de esclavas nacidos en Chile. Su trabajo se vio interrumpido por José Miguel Carrera, que lo disolvió el 2 de diciembre de 1811.",
+    "detalle": "La Junta de 1810 convocó a elecciones de diputados, que se realizaron en 1811. El Congreso se instaló el 4 de julio, después de una misa en la Catedral con un sermón de fray Camilo Henríquez. Las fuentes no coinciden en el número exacto de diputados, que fue de alrededor de cuarenta, además de los suplentes.\n\nEn el Congreso convivían grupos moderados, partidarios de mantener los lazos con la monarquía, y otros que buscaban cambios más profundos. Además de la libertad de vientres, creó la Intendencia de Coquimbo y un Tribunal Supremo Judicial. José Miguel Carrera encabezó golpes de fuerza el 4 de septiembre y el 15 de noviembre de 1811, y finalmente clausuró el Congreso el 2 de diciembre.",
+    "personajes": ["Juan Martínez de Rozas", "José Miguel Carrera", "Camilo Henríquez"],
+    "imagen": {
+      "archivo": "Palacio_de_la_Real_Audiencia,_Santiago_20220619_02.jpg",
+      "autor": "Carlos Figueroa Rojas",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Palacio_de_la_Real_Audiencia,_Santiago_20220619_02.jpg",
+      "pieDeFoto": "Edificio de la antigua Real Audiencia, donde se instaló el Primer Congreso Nacional; hoy es el Museo Histórico Nacional (foto de 2022)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-93013.html",
+      "https://www.senado.cl/ciudadania/historia-y-patrimonio/la-primeras-elecciones-y-el-cuerpo-constitucional",
+      "https://es.wikipedia.org/wiki/Primer_Congreso_Nacional_de_Chile"
+    ]
+  },
+  {
+    "id": "1812-aurora-de-chile",
+    "titulo": "Aurora de Chile, el primer periódico",
+    "fecha": "1812-02-13",
+    "fechaAproximada": false,
+    "fechaTexto": "13 de febrero de 1812",
+    "periodoId": "03",
+    "temas": ["cultura", "politica"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "Salió el primer periódico de Chile, la Aurora de Chile. En sus páginas se escribían ideas sobre la libertad y sobre cómo gobernar el país.",
+    "resumen": "El 13 de febrero de 1812 apareció el primer número de la Aurora de Chile, el primer periódico del país. Se imprimió con una imprenta encargada a Nueva York, que había llegado a Valparaíso a fines de 1811. Su redactor fue fray Camilo Henríquez, quien difundió ideas sobre la soberanía del pueblo y la independencia. Se publicaron 58 números, hasta abril de 1813.",
+    "detalle": "La imprenta fue encargada a Nueva York por el comerciante Mateo Arnaldo Hoevel y llegó a Valparaíso en noviembre de 1811 en la fragata Galloway, junto a tres tipógrafos estadounidenses: Samuel B. Johnston, William Burbidge y Simon Garrison. Un decreto del 16 de enero de 1812 nombró a Camilo Henríquez redactor del periódico.\n\nLa Aurora era semanal y tenía cuatro páginas. Además de noticias, publicaba artículos que defendían los derechos del pueblo y criticaban el sistema colonial, por lo que influyó mucho en los partidarios de la independencia. En abril de 1813 fue reemplazada por El Monitor Araucano.",
+    "personajes": ["Camilo Henríquez", "Mateo Arnaldo Hoevel"],
+    "imagen": {
+      "archivo": "Aurora_de_Chile_(1812).jpeg",
+      "autor": "Camilo Henríquez",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Aurora_de_Chile_(1812).jpeg",
+      "pieDeFoto": "Portada del primer tomo de la Aurora de Chile, impreso en Santiago en 1812."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3500.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3532.html",
+      "https://es.wikipedia.org/wiki/Aurora_de_Chile"
+    ]
+  },
+  {
+    "id": "1813-instituto-nacional-y-biblioteca",
+    "titulo": "Nacen el Instituto Nacional y la Biblioteca Nacional",
+    "fecha": "1813-08-10",
+    "fechaAproximada": false,
+    "fechaTexto": "10 de agosto de 1813",
+    "periodoId": "03",
+    "temas": ["cultura"],
+    "importancia": 1,
+    "lugar": "Santiago",
+    "resumenNino": "Se abrió el Instituto Nacional, un colegio para educar a los jóvenes del nuevo país. Pocos días después se creó la Biblioteca Nacional, para reunir libros que todos pudieran consultar.",
+    "resumen": "El 10 de agosto de 1813 se inauguró en Santiago el Instituto Nacional, un establecimiento de enseñanza creado para formar a los ciudadanos del nuevo país. Pocos días después, un decreto del 19 de agosto creó la Biblioteca Nacional y pidió a la población donar libros. Ambas instituciones fueron cerradas durante la Reconquista española y reabiertas tras el triunfo patriota de 1817. Las dos siguen funcionando hasta hoy.",
+    "detalle": "El Instituto Nacional fue creado por un decreto del 27 de julio de 1813 y se inauguró el 10 de agosto en el edificio de la Real Universidad de San Felipe. Surgió de proyectos de Juan Egaña, Camilo Henríquez y Manuel de Salas, que querían formar a los profesionales y funcionarios que necesitaba el país.\n\nEn la ceremonia de inauguración, Mariano Egaña anunció la creación de una biblioteca pública. Su decreto, del 19 de agosto de 1813, se publicó en El Monitor Araucano con un llamado a donar libros. Durante la Reconquista (1814-1817) ambas instituciones fueron cerradas. La Biblioteca reabrió en 1817, dirigida por Manuel de Salas, y el Instituto volvió a funcionar pocos años después.",
+    "personajes": ["Juan Egaña", "Camilo Henríquez", "Manuel de Salas", "Mariano Egaña"],
+    "imagen": {
+      "archivo": "Juan_Egaña-Galeria_Nacional.jpg",
+      "autor": "Narcisse Edmond Joseph Desmadryl",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Juan_Egaña-Galeria_Nacional.jpg",
+      "pieDeFoto": "Retrato litográfico de Juan Egaña, uno de los impulsores del Instituto Nacional, publicado en la «Galería nacional» (1854)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-92509.html",
+      "https://es.wikipedia.org/wiki/Instituto_Nacional_General_Jos%C3%A9_Miguel_Carrera",
+      "https://es.wikipedia.org/wiki/Biblioteca_Nacional_de_Chile"
+    ]
+  },
+  {
+    "id": "1814-desastre-de-rancagua",
+    "titulo": "Desastre de Rancagua",
+    "fecha": "1814-10-01",
+    "fechaFin": "1814-10-02",
+    "fechaAproximada": false,
+    "fechaTexto": "1 y 2 de octubre de 1814",
+    "periodoId": "03",
+    "temas": ["guerra"],
+    "importancia": 2,
+    "lugar": "Rancagua",
+    "resumenNino": "En la ciudad de Rancagua, el ejército patriota de Bernardo O'Higgins fue rodeado y vencido por los realistas, que eran muchos más. Los patriotas tuvieron que huir a Mendoza, al otro lado de la cordillera.",
+    "resumen": "El 1 y 2 de octubre de 1814, las tropas patriotas comandadas por Bernardo O'Higgins quedaron sitiadas en Rancagua por el ejército realista de Mariano Osorio. Tras más de un día de combate, O'Higgins logró romper el cerco con un grupo de sobrevivientes. La derrota puso fin al período conocido como Patria Vieja y obligó a muchos patriotas a emigrar a Mendoza. Comenzó así la Reconquista española.",
+    "detalle": "El ejército realista, enviado desde el virreinato del Perú, avanzaba hacia Santiago. O'Higgins decidió resistir en Rancagua, mientras José Miguel Carrera prefería defender la Angostura de Paine. Según el naturalista e historiador Claudio Gay, citado por Memoria Chilena, Osorio contaba con unos 5.000 hombres y los sitiados eran cerca de 1.700.\n\nLos realistas cortaron el agua a la ciudad y el combate se prolongó por unas 33 horas. La escasa ayuda de la división de Carrera ha sido muy discutida por los historiadores y profundizó la rivalidad entre ambos líderes. Tras la derrota, los patriotas cruzaron la cordillera hacia Mendoza, donde más tarde se organizó el Ejército de los Andes.",
+    "personajes": ["Bernardo O'Higgins", "José Miguel Carrera", "Mariano Osorio"],
+    "imagen": {
+      "archivo": "Batalla_de_Rancagua-Giulio_Nanetti.jpg",
+      "autor": "Giulio Nanetti",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Batalla_de_Rancagua-Giulio_Nanetti.jpg",
+      "pieDeFoto": "Representación posterior de la batalla de Rancagua, óleo de Giulio Nanetti."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-94412.html",
+      "https://es.wikipedia.org/wiki/Batalla_de_Rancagua"
+    ]
+  },
+  {
+    "id": "1814-reconquista-espanola",
+    "titulo": "La Reconquista española",
+    "fecha": "1814-10",
+    "fechaFin": "1817-02",
+    "fechaAproximada": false,
+    "fechaTexto": "1814-1817",
+    "periodoId": "03",
+    "temas": ["guerra", "politica"],
+    "importancia": 2,
+    "lugar": "Chile central y archipiélago Juan Fernández",
+    "resumenNino": "Después de Rancagua, los españoles volvieron a gobernar Chile y castigaron a muchos patriotas. Un patriota llamado Manuel Rodríguez organizó grupos que atacaban por sorpresa a las tropas realistas.",
+    "resumen": "Entre 1814 y 1817, las autoridades españolas recuperaron el control de Chile, primero con Mariano Osorio y desde diciembre de 1815 con Casimiro Marcó del Pont. Muchos patriotas fueron perseguidos y un grupo de ellos fue deportado al presidio de la isla Juan Fernández. También se cerraron el Instituto Nacional y la Biblioteca Nacional. Mientras tanto, Manuel Rodríguez organizaba guerrillas y enviaba información al ejército que se preparaba en Mendoza.",
+    "detalle": "Osorio entró en Santiago a comienzos de octubre de 1814 y restableció las instituciones coloniales. El 9 de noviembre de 1814 fueron detenidos varios patriotas destacados, entre ellos Juan Egaña y Manuel de Salas, que fueron enviados a la isla Juan Fernández, donde permanecieron hasta 1817. El número de deportados varía según la fuente.\n\nEl gobierno de Marcó del Pont aplicó una política más dura contra los sospechosos de apoyar a los patriotas, lo que aumentó el rechazo a la autoridad realista. Manuel Rodríguez, agente de José de San Martín, animó guerrillas en el campo y en enero de 1817 tomó por sorpresa Melipilla, lo que distrajo a las tropas realistas antes del cruce de los Andes. Muchas historias populares sobre sus disfraces y engaños provienen de la tradición oral.",
+    "personajes": ["Mariano Osorio", "Casimiro Marcó del Pont", "Manuel Rodríguez"],
+    "imagen": {
+      "archivo": "Manuel_Rodríguez_p0141.png",
+      "autor": "Narcisse Edmond Joseph Desmadryl",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Manuel_Rodríguez_p0141.png",
+      "pieDeFoto": "Retrato litográfico del guerrillero Manuel Rodríguez, publicado en la «Galería nacional» (1854)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3671.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-97327.html",
+      "https://es.wikipedia.org/wiki/Reconquista_(Chile)"
+    ]
+  },
+  {
+    "id": "1817-cruce-de-los-andes",
+    "titulo": "Cruce de los Andes",
+    "fecha": "1817-01",
+    "fechaFin": "1817-02",
+    "fechaAproximada": false,
+    "fechaTexto": "Enero y febrero de 1817",
+    "periodoId": "03",
+    "temas": ["guerra"],
+    "importancia": 2,
+    "lugar": "Cordillera de los Andes",
+    "resumenNino": "Un gran ejército cruzó la cordillera de los Andes desde Argentina hacia Chile, con miles de soldados, mulas y caballos, por pasos altísimos y fríos. Su objetivo era terminar con el gobierno español en Chile.",
+    "resumen": "A comienzos de 1817, el Ejército de los Andes, organizado en Mendoza por José de San Martín con la participación de Bernardo O'Higgins, cruzó la cordillera hacia Chile. Estaba formado por soldados rioplatenses y chilenos emigrados: unos 4.000 combatientes y 1.200 milicianos, según las cifras más citadas. El grueso del ejército avanzó por el paso de Los Patos y otra columna por Uspallata, mientras grupos menores usaron otros pasos para confundir a los realistas. Las columnas se reunieron en el valle del Aconcagua el 9 de febrero.",
+    "detalle": "Durante 1815 y 1816, San Martín, gobernador de Cuyo, preparó el ejército en Mendoza con apoyo de las Provincias Unidas del Río de la Plata. Según Memoria Chilena, partieron 9.821 mulas y 1.600 caballos para transportar a los hombres, la artillería y los víveres por pasos de más de 3.000 metros de altura.\n\nSan Martín cruzó por Los Patos, con O'Higgins al mando de una de las divisiones, y Juan Gregorio de Las Heras lo hizo por Uspallata. Otras columnas menores pasaron por Come Caballos, Guana, El Portillo y El Planchón. Las cifras de soldados y las fechas exactas de salida varían según la fuente.",
+    "personajes": ["José de San Martín", "Bernardo O'Higgins", "Juan Gregorio de Las Heras"],
+    "imagen": {
+      "archivo": "El_cruce_de_los_Andes_por_el_Gral._San_Martín.JPG",
+      "autor": "Julio Vila y Prades",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:El_cruce_de_los_Andes_por_el_Gral._San_Martín.JPG",
+      "pieDeFoto": "Interpretación del cruce de los Andes encabezado por San Martín y O'Higgins, óleo de Julio Vila y Prades (1909)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-96742.html",
+      "https://es.wikipedia.org/wiki/Cruce_de_los_Andes"
+    ]
+  },
+  {
+    "id": "1817-batalla-de-chacabuco",
+    "titulo": "Batalla de Chacabuco",
+    "fecha": "1817-02-12",
+    "fechaAproximada": false,
+    "fechaTexto": "12 de febrero de 1817",
+    "periodoId": "03",
+    "temas": ["guerra"],
+    "importancia": 3,
+    "lugar": "Chacabuco, al norte de Santiago",
+    "resumenNino": "El Ejército de los Andes venció a los realistas en Chacabuco, cerca de Santiago. Después de esta victoria, Bernardo O'Higgins pasó a gobernar Chile.",
+    "resumen": "El 12 de febrero de 1817, el Ejército de los Andes derrotó a las tropas realistas en la hacienda de Chacabuco, unos 55 kilómetros al norte de Santiago. Las divisiones de Miguel Estanislao Soler y Bernardo O'Higgins atacaron por dos frentes al ejército realista dirigido por Rafael Maroto. Dos días después, los patriotas entraron en Santiago. El 16 de febrero, un cabildo abierto nombró Director Supremo a O'Higgins, luego de que San Martín rechazara el cargo.",
+    "detalle": "Tras cruzar la cordillera, los patriotas avanzaron desde el valle del Aconcagua hacia Santiago. Los realistas, repartidos para vigilar distintos pasos, no alcanzaron a reunir todas sus fuerzas. El ataque combinado de las dos divisiones patriotas decidió la batalla.\n\nLa victoria dio inicio al período conocido como Patria Nueva. San Martín no aceptó gobernar Chile y un cabildo abierto aclamó a O'Higgins como Director Supremo. Un año después, el aniversario de esta batalla fue la fecha elegida para proclamar la independencia.",
+    "personajes": ["Bernardo O'Higgins", "José de San Martín", "Miguel Estanislao Soler", "Rafael Maroto"],
+    "imagen": {
+      "archivo": "Batalla_de_Chacabuco_-_Vandorse.JPG",
+      "autor": "José Tomás Vandorse",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Batalla_de_Chacabuco_-_Vandorse.JPG",
+      "pieDeFoto": "«Batalla de Chacabuco», pintura de José Tomás Vandorse (1852)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-562.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3671.html",
+      "https://es.wikipedia.org/wiki/Batalla_de_Chacabuco"
+    ]
+  },
+  {
+    "id": "1818-proclamacion-de-la-independencia",
+    "titulo": "Proclamación de la Independencia",
+    "fecha": "1818-02-12",
+    "fechaAproximada": false,
+    "fechaTexto": "12 de febrero de 1818",
+    "periodoId": "03",
+    "temas": ["politica"],
+    "importancia": 3,
+    "lugar": "Santiago, Talca y otras ciudades",
+    "resumenNino": "Chile anunció oficialmente que era un país libre e independiente de España. Ese día se leyó en público el Acta de la Independencia.",
+    "resumen": "El 12 de febrero de 1818, primer aniversario de la batalla de Chacabuco, se proclamó y juró solemnemente la independencia de Chile. El Acta de Independencia, fechada en Concepción el 1 de enero de 1818, fue leída frente al Palacio Directorial, en Santiago. También hubo ceremonias en otras ciudades, como Talca, donde se encontraba O'Higgins. La guerra contra los realistas aún no terminaba: el triunfo de Maipú, dos meses después, consolidó la independencia.",
+    "detalle": "Desde noviembre de 1817, los ciudadanos firmaron registros para pronunciarse a favor o en contra de la independencia. Una comisión, en la que participó Miguel Zañartu, redactó el Acta, que se imprimió en Santiago con fecha de Concepción del 1 de enero de 1818. Las fuentes no coinciden sobre el día exacto en que O'Higgins la firmó.\n\nEl 12 de febrero, Zañartu leyó el Acta en la plaza de Santiago y juraron la independencia el director supremo delegado Luis de la Cruz, el sacerdote José Ignacio Cienfuegos y José de San Martín. El documento original no se conserva: una copia firmada por O'Higgins en 1832 se guardaba en La Moneda y se habría perdido en el bombardeo del 11 de septiembre de 1973.",
+    "personajes": ["Bernardo O'Higgins", "Miguel Zañartu", "Luis de la Cruz", "José de San Martín"],
+    "imagen": {
+      "archivo": "Jura_Independencia_Chile-Cosme_San_Martín.jpg",
+      "autor": "Cosme San Martín",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Jura_Independencia_Chile-Cosme_San_Martín.jpg",
+      "pieDeFoto": "«Jura de la Independencia de Chile», óleo de Cosme San Martín (fines del siglo XIX)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-96486.html",
+      "https://www.uc.cl/noticias/historiadora-uc-reivindica-el-12-de-febrero-como-dia-de-la-independencia-y-revela-el-rol-ciudadano-en-el-proceso/",
+      "https://es.wikipedia.org/wiki/Acta_de_Independencia_de_Chile"
+    ]
+  },
+  {
+    "id": "1818-batalla-de-maipu",
+    "titulo": "Batalla de Maipú",
+    "fecha": "1818-04-05",
+    "fechaAproximada": false,
+    "fechaTexto": "5 de abril de 1818",
+    "periodoId": "03",
+    "temas": ["guerra"],
+    "importancia": 3,
+    "lugar": "Llanos del Maipo, Santiago",
+    "resumenNino": "En Maipú, cerca de Santiago, el ejército patriota venció a los realistas en una gran batalla que aseguró la libertad de la zona central de Chile. Al terminar, O'Higgins y San Martín se dieron un famoso abrazo.",
+    "resumen": "El 5 de abril de 1818, el Ejército Unido, al mando de José de San Martín, derrotó al ejército realista de Mariano Osorio en los llanos del Maipo, al poniente de Santiago. Semanas antes, el 19 de marzo, los patriotas habían sufrido una sorpresa nocturna en Cancha Rayada, cerca de Talca, donde O'Higgins resultó herido. La victoria de Maipú aseguró la independencia de la zona central de Chile. Al final de la batalla ocurrió el conocido «abrazo de Maipú» entre O'Higgins, que llegó herido, y San Martín.",
+    "detalle": "Tras la sorpresa de Cancha Rayada, el ejército patriota quedó desorganizado y en Santiago se temió una nueva derrota. San Martín logró reunir unos 5.400 hombres y 21 cañones, según el gobierno argentino, y esperó a los realistas en los Cerrillos del Maipo.\n\nLa batalla fue decisiva: los restos del ejército realista se retiraron hacia el sur, donde la guerra continuó algunos años más. O'Higgins, con el brazo herido, llegó al final del combate y abrazó a San Martín. Cada 5 de abril se celebra el Día de la Amistad Argentino-Chilena.",
+    "personajes": ["José de San Martín", "Bernardo O'Higgins", "Mariano Osorio"],
+    "imagen": {
+      "archivo": "Batalla_de_Maipú,_por_Rugendas.jpg",
+      "autor": "Johann Moritz Rugendas",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Batalla_de_Maipú,_por_Rugendas.jpg",
+      "pieDeFoto": "La batalla de Maipú, pintada por Johann Moritz Rugendas hacia 1837."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-100852.html",
+      "https://www.argentina.gob.ar/ejercito/maipu",
+      "https://es.wikipedia.org/wiki/Batalla_de_Maip%C3%BA"
+    ]
+  },
+  {
+    "id": "1820-expedicion-libertadora-del-peru",
+    "titulo": "Zarpa la Expedición Libertadora del Perú",
+    "fecha": "1820-08-20",
+    "fechaAproximada": false,
+    "fechaTexto": "20 de agosto de 1820",
+    "periodoId": "03",
+    "temas": ["guerra"],
+    "importancia": 2,
+    "lugar": "Valparaíso",
+    "resumenNino": "Desde Valparaíso partieron muchos barcos con soldados hacia el Perú, para ayudar a terminar con el dominio español en América del Sur. Los llevó la primera escuadra de la Armada de Chile.",
+    "resumen": "El 20 de agosto de 1820 zarpó desde Valparaíso la Expedición Libertadora del Perú, con más de 4.000 soldados. La escuadra estaba al mando de Lord Thomas Cochrane y el ejército, de José de San Martín. Su objetivo era atacar el principal centro del poder español en América del Sur, el virreinato del Perú. Para lograrlo, Chile había formado desde 1818 su primera escuadra nacional.",
+    "detalle": "La Primera Escuadra Nacional zarpó el 9 de octubre de 1818 al mando de Manuel Blanco Encalada y poco después capturó en Talcahuano la fragata española Reina María Isabel. A fines de 1818 llegó el marino británico Thomas Cochrane, que asumió el mando, y en febrero de 1820 tomó los fuertes de Corral y Valdivia, uno de los principales bastiones realistas en el sur.\n\nLa expedición partió el 20 de agosto de 1820, día del cumpleaños de O'Higgins, y desembarcó en Paracas, al sur de Lima, el 8 de septiembre. El 28 de julio de 1821, San Martín proclamó en Lima la independencia del Perú.",
+    "personajes": ["Thomas Cochrane", "José de San Martín", "Bernardo O'Higgins", "Manuel Blanco Encalada"],
+    "imagen": {
+      "archivo": "Armada_Chile_1era_Escuadra_nacional.jpg",
+      "autor": "Thomas Somerscales",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Armada_Chile_1era_Escuadra_nacional.jpg",
+      "pieDeFoto": "La Primera Escuadra Nacional, óleo de Thomas Somerscales."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-93423.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92285.html",
+      "https://es.wikipedia.org/wiki/Expedici%C3%B3n_Libertadora_del_Per%C3%BA"
+    ]
+  },
+  {
+    "id": "1823-abdicacion-de-ohiggins",
+    "titulo": "Abdicación de O'Higgins",
+    "fecha": "1823-01-28",
+    "fechaAproximada": false,
+    "fechaTexto": "28 de enero de 1823",
+    "periodoId": "03",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "Bernardo O'Higgins dejó el gobierno de Chile para evitar una guerra entre chilenos. Después se fue a vivir al Perú, donde murió muchos años más tarde.",
+    "resumen": "El 28 de enero de 1823, Bernardo O'Higgins renunció al cargo de Director Supremo ante un cabildo abierto reunido en Santiago. Lo hizo cuando tropas sublevadas en Concepción y Coquimbo se oponían a su gobierno, para evitar una guerra civil. El mando pasó a una junta formada por Agustín Eyzaguirre, José Miguel Infante y Fernando Errázuriz. O'Higgins partió al Perú en julio de 1823 y murió en Lima el 24 de octubre de 1842.",
+    "detalle": "Durante su gobierno (1817-1823), O'Higgins consolidó la independencia, formó la escuadra, organizó la expedición al Perú y suprimió los títulos de nobleza, entre otras reformas. Sin embargo, enfrentó una oposición creciente a su forma de gobernar, considerada autoritaria por sus críticos, y a la Constitución de 1822, que prolongaba su mandato.\n\nAnte el levantamiento del general Ramón Freire en Concepción y de las tropas de Coquimbo, se reunió un cabildo abierto en el edificio del Consulado, donde O'Higgins entregó el mando. El 17 de julio de 1823 zarpó hacia el Callao y vivió el resto de su vida en el Perú. Sus restos fueron trasladados a Chile en 1869.",
+    "personajes": ["Bernardo O'Higgins", "Ramón Freire", "Agustín Eyzaguirre", "José Miguel Infante"],
+    "imagen": {
+      "archivo": "Abdicación_de_O´higgins.jpg",
+      "autor": "Manuel Antonio Caro",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Abdicación_de_O´higgins.jpg",
+      "pieDeFoto": "«La abdicación de O'Higgins», óleo de Manuel Antonio Caro (1875)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-562.html",
+      "https://www.surdoc.cl/registro/3-143/pdf",
+      "https://es.wikipedia.org/wiki/Bernardo_O%27Higgins"
+    ]
+  },
+  {
+    "id": "1823-abolicion-de-la-esclavitud",
+    "titulo": "Abolición de la esclavitud",
+    "fecha": "1823-07-24",
+    "fechaAproximada": false,
+    "fechaTexto": "24 de julio de 1823",
+    "periodoId": "03",
+    "temas": ["derechos"],
+    "importancia": 2,
+    "lugar": "Chile",
+    "resumenNino": "Chile prohibió la esclavitud: desde entonces ninguna persona podía ser dueña de otra. Fue uno de los primeros países de América en hacerlo.",
+    "resumen": "El 24 de julio de 1823 se promulgó la ley que abolió por completo la esclavitud en Chile, propuesta por José Miguel Infante. Antes, en 1811, el Primer Congreso Nacional había aprobado la libertad de vientres, que declaró libres a los hijos de esclavas y prohibió traer nuevos esclavos al país. La ley de 1823 dio la libertad a todas las personas esclavizadas que quedaban en Chile. Así, Chile fue uno de los primeros países de América en abolir la esclavitud.",
+    "detalle": "La libertad de vientres, impulsada por Manuel de Salas, fue aprobada en octubre de 1811, pero quienes ya eran esclavos siguieron en esa condición. En 1823, José Miguel Infante presentó el proyecto de abolición total, que también declaraba libre a toda persona esclavizada que llegara al territorio. El Senado lo aprobó el 23 de junio y fue promulgado el 24 de julio, pese a la oposición inicial del ministro Mariano Egaña.\n\nSegún el historiador Guillermo Feliú Cruz, citado por Memoria Chilena, unas 5.000 personas se beneficiaron con la abolición. La Constitución de 1823 ratificó que en Chile no había esclavos. Investigaciones posteriores señalan que algunas aclaraciones a la ley limitaron su alcance en la práctica.",
+    "personajes": ["José Miguel Infante", "Manuel de Salas"],
+    "imagen": {
+      "archivo": "José_Miguel_Infante_en_Galería_nacional_(cropped).png",
+      "autor": "Narcisse Edmond Joseph Desmadryl",
+      "licencia": "CC0 1.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:José_Miguel_Infante_en_Galería_nacional_(cropped).png",
+      "pieDeFoto": "Retrato litográfico de José Miguel Infante, impulsor de la abolición de 1823, publicado en la «Galería nacional» (1854)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-95115.html",
+      "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Jos%C3%A9_Miguel_Infante_y_Rojas",
+      "https://es.wikipedia.org/wiki/Libertad_de_vientres"
+    ]
+  }
+]

@@ -1,0 +1,377 @@
+[
+  {
+    "id": "1536-expedicion-de-almagro",
+    "titulo": "Expedición de Diego de Almagro",
+    "fecha": "1536",
+    "fechaFin": "1537",
+    "fechaAproximada": false,
+    "fechaTexto": "1536-1537",
+    "periodoId": "02",
+    "temas": ["politica", "pueblos-originarios"],
+    "importancia": 3,
+    "lugar": "Copiapó y valle del Aconcagua",
+    "resumenNino": "El español Diego de Almagro llegó desde el Perú con un gran grupo de personas, cruzando la cordillera, para conquistar estas tierras. Como no encontró el oro que buscaba, volvió al Perú.",
+    "resumen": "En 1535, Diego de Almagro salió del Cuzco, en el Perú, con casi 500 españoles y un gran número de indígenas auxiliares, llamados yanaconas, para conquistar las tierras del sur. En 1536 cruzó la cordillera de los Andes y llegó al valle de Copiapó y luego al del Aconcagua. Una avanzada al mando de Gómez de Alvarado tuvo el primer enfrentamiento con los mapuche, junto al río Itata. Al no encontrar las riquezas que esperaba, Almagro regresó al Perú en 1537 por el desierto de Atacama.",
+    "detalle": "Diego de Almagro era socio de Francisco Pizarro en la conquista del Perú. Partió del Cuzco a mediados de 1535, siguiendo en parte los caminos del Inca, y en marzo de 1536 cruzó los Andes por un paso que la tradición identifica con el actual paso San Francisco. El frío y la altura causaron muchas muertes, sobre todo entre los yanaconas.\n\nEn el invierno de 1536, Gómez de Alvarado avanzó hacia el sur con unos 90 hombres y combatió con los mapuche en Reinohuelén, cerca del río Itata. Sin oro ni ciudades ricas como las del Perú, la expedición regresó por el desierto de Atacama. Por haber sido el primer europeo en recorrer por tierra este territorio, a Almagro se le llama tradicionalmente «descubridor de Chile», aunque estas tierras estaban habitadas desde hacía miles de años.",
+    "personajes": ["Diego de Almagro", "Gómez de Alvarado"],
+    "imagen": {
+      "archivo": "Retrato_hipotetico_de_Diego_de_Almagro,_mandante_de_enviar_a_fundar_Puerto_Viejo_-_AHG.jpg",
+      "autor": "Domingo Mesa",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Retrato_hipotetico_de_Diego_de_Almagro,_mandante_de_enviar_a_fundar_Puerto_Viejo_-_AHG.jpg",
+      "pieDeFoto": "Retrato imaginado de Diego de Almagro, pintado por Domingo Mesa en 1873."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-584.html",
+      "https://es.wikipedia.org/wiki/Descubrimiento_de_Chile"
+    ]
+  },
+  {
+    "id": "1541-fundacion-de-santiago",
+    "titulo": "Fundación de Santiago",
+    "fecha": "1541-02-12",
+    "fechaAproximada": false,
+    "fechaTexto": "12 de febrero de 1541",
+    "periodoId": "02",
+    "temas": ["politica"],
+    "importancia": 3,
+    "lugar": "Valle del Mapocho, actual Santiago",
+    "resumenNino": "El conquistador Pedro de Valdivia fundó la ciudad de Santiago junto a un cerro que los indígenas llamaban Huelén. Hoy es la capital de Chile.",
+    "resumen": "El 12 de febrero de 1541, Pedro de Valdivia fundó la ciudad de Santiago del Nuevo Extremo en el valle del río Mapocho. La ubicó junto al cerro Huelén, al que llamó Santa Lucía. Valdivia había salido del Cuzco en enero de 1540 con un grupo de españoles y yanaconas. Santiago se convirtió en el centro de la conquista española de Chile y es hoy la capital del país.",
+    "detalle": "Valdivia recorrió el desierto de Atacama y avanzó hasta el valle del Mapocho, un lugar con agua, buenas tierras y población indígena. El acta de fundación, conservada en el llamado Libro Becerro del Cabildo, nombra a la ciudad Santiago del Nuevo Extremo y a la gobernación, Nueva Extremadura, en recuerdo de la región natal de Valdivia en España.\n\nLa ciudad se trazó en forma de damero, con manzanas cuadradas alrededor de una plaza, la actual Plaza de Armas. En 1552 la Corona le concedió el título de ciudad y un escudo de armas. En una carta al rey Carlos V escrita en 1545, Valdivia dio otra fecha de fundación (el 24 de febrero), pero se acepta la del 12 de febrero, que consta en el acta.",
+    "personajes": ["Pedro de Valdivia", "Inés de Suárez"],
+    "imagen": {
+      "archivo": "Fundacion_de_Santiago.jpg",
+      "autor": "Pedro Lira Rencoret",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Fundacion_de_Santiago.jpg",
+      "pieDeFoto": "«Fundación de Santiago», óleo de Pedro Lira (1888)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-634.html",
+      "https://es.wikipedia.org/wiki/Pedro_de_Valdivia"
+    ]
+  },
+  {
+    "id": "1541-ataque-de-michimalonco",
+    "titulo": "Ataque de Michimalonco a Santiago",
+    "fecha": "1541-09-11",
+    "fechaAproximada": false,
+    "fechaTexto": "11 de septiembre de 1541",
+    "periodoId": "02",
+    "temas": ["guerra", "pueblos-originarios"],
+    "importancia": 1,
+    "lugar": "Santiago",
+    "resumenNino": "Pocos meses después de su fundación, Santiago fue atacada y quemada por guerreros indígenas dirigidos por el cacique Michimalonco, que defendían sus tierras. Los españoles resistieron y reconstruyeron la ciudad.",
+    "resumen": "El 11 de septiembre de 1541, guerreros indígenas encabezados por el cacique Michimalonco atacaron Santiago mientras Pedro de Valdivia estaba fuera de la ciudad. El asalto, que buscaba expulsar a los conquistadores y recuperar sus tierras, destruyó casi por completo el poblado. Según las crónicas, Inés de Suárez tuvo un papel decisivo en la defensa. Los españoles sobrevivieron, pero pasaron una larga época de escasez mientras reconstruían la ciudad.",
+    "detalle": "Michimalonco era un líder de los pueblos del valle del Aconcagua y su ataque fue parte de la resistencia indígena a la ocupación española. Los atacantes incendiaron las viviendas y destruyeron gran parte de los alimentos y animales de los conquistadores.\n\nLos cronistas relatan que, cuando los españoles estaban a punto de ser derrotados, Inés de Suárez ordenó dar muerte a los caciques que tenían prisioneros, y que entonces los atacantes se retiraron. Este episodio solo se conoce por esas crónicas, escritas desde el punto de vista español. Tras el ataque, Valdivia envió a buscar ayuda al Perú, que llegó recién en 1543.",
+    "personajes": ["Michimalonco", "Inés de Suárez", "Pedro de Valdivia"],
+    "imagen": {
+      "archivo": "ApostolSantiagoMichimalonco.JPG",
+      "autor": "Mmansilla (reproducción de un grabado de 1646)",
+      "licencia": "CC BY-SA 4.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:ApostolSantiagoMichimalonco.JPG",
+      "pieDeFoto": "Grabado publicado por Alonso de Ovalle en 1646 que representa la leyenda colonial según la cual el apóstol Santiago ayudó a defender la ciudad."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-93111.html",
+      "https://es.wikipedia.org/wiki/Destrucci%C3%B3n_de_Santiago"
+    ]
+  },
+  {
+    "id": "1553-batalla-de-tucapel",
+    "titulo": "Batalla de Tucapel y muerte de Pedro de Valdivia",
+    "fecha": "1553-12-25",
+    "fechaAproximada": true,
+    "fechaTexto": "c. 25 de diciembre de 1553",
+    "periodoId": "02",
+    "temas": ["guerra", "pueblos-originarios"],
+    "importancia": 3,
+    "lugar": "Tucapel, actual Región del Biobío",
+    "resumenNino": "Los mapuche, dirigidos por el joven Lautaro, vencieron a los españoles en Tucapel. En esa batalla murió el conquistador Pedro de Valdivia.",
+    "resumen": "A fines de 1553, guerreros mapuche dirigidos por Lautaro atacaron y destruyeron el fuerte español de Tucapel. Pedro de Valdivia acudió con unos cincuenta jinetes y fue rodeado por los mapuche, que lo atacaron con grupos sucesivos de guerreros hasta agotar a los españoles. Valdivia fue capturado y muerto. La victoria mostró la fuerza de la resistencia mapuche en la llamada Guerra de Arauco, que se prolongaría por mucho tiempo.",
+    "detalle": "Lautaro había sido elegido toqui, o jefe de guerra, por una alianza de linajes mapuche, con el apoyo de Colocolo. Conocía bien las tácticas españolas porque había servido a Valdivia, y organizó a sus guerreros en grupos que entraban al combate uno tras otro para cansar a los jinetes.\n\nLas fuentes no coinciden en el día exacto de la batalla: la tradición la sitúa el 25 de diciembre de 1553 y algunos historiadores, el 1 de enero de 1554. Tampoco hay certeza sobre cómo murió Valdivia, que las crónicas relatan de distintas maneras.",
+    "personajes": ["Lautaro", "Pedro de Valdivia", "Colocolo"],
+    "imagen": {
+      "archivo": "Lautaro_-_1910.jpg",
+      "autor": "Sociedad Imprenta y Litografía Universo",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Lautaro_-_1910.jpg",
+      "pieDeFoto": "Lautaro a caballo, ilustración del libro escolar «Historia de Chile para la enseñanza primaria» (1910)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-95492.html",
+      "https://es.wikipedia.org/wiki/Batalla_de_Tucapel"
+    ]
+  },
+  {
+    "id": "1557-lautaro",
+    "titulo": "Lautaro, el estratega mapuche",
+    "fecha": "1557-04",
+    "fechaAproximada": false,
+    "fechaTexto": "Abril de 1557",
+    "periodoId": "02",
+    "temas": ["guerra", "pueblos-originarios"],
+    "importancia": 2,
+    "lugar": "Río Mataquito, actual Región del Maule",
+    "resumenNino": "Lautaro fue un joven mapuche que aprendió cómo luchaban los españoles y luego dirigió a su pueblo en varias victorias. Murió en una batalla junto al río Mataquito y hoy es recordado como un gran líder.",
+    "resumen": "Lautaro nació hacia 1534 y de joven fue yanacona, es decir, sirviente, en la caballeriza de Pedro de Valdivia, donde conoció las armas, los caballos y las tácticas españolas. De regreso con su pueblo, dirigió a los mapuche en la victoria de Tucapel (1553) y derrotó a Francisco de Villagra en Marihueñu (1554). Luego avanzó hacia el norte con la intención de llegar a Santiago. En abril de 1557 fue sorprendido junto al río Mataquito y murió en el ataque.",
+    "detalle": "Según Memoria Chilena, Lautaro habría nacido cerca de Tirúa. Enseñó a su pueblo a enfrentar a la caballería española y a aprovechar los caballos, que los mapuche comenzaron a usar en la guerra. Tras la victoria de Marihueñu, en febrero de 1554, los españoles abandonaron Concepción.\n\nEn 1556 y 1557 encabezó campañas hacia el norte del río Maule. Junto al Mataquito fue sorprendido por las tropas de Francisco de Villagra. Las fuentes dan como fecha de su muerte el 29 o el 30 de abril de 1557, y el lugar exacto de la batalla es incierto. Su figura inspiró a muchos, desde el poema La Araucana hasta la Logia Lautaro de la época de la Independencia.",
+    "personajes": ["Lautaro", "Pedro de Valdivia", "Francisco de Villagra"],
+    "imagen": {
+      "archivo": "Lautaro_La_Araucana.jpg",
+      "autor": "Desconocido (edición de Gaspar y Roig)",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Lautaro_La_Araucana.jpg",
+      "pieDeFoto": "Imagen idealizada de Lautaro al frente de su ejército, de una edición de La Araucana publicada en Madrid en 1852."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-721.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-95496.html",
+      "https://es.wikipedia.org/wiki/Lautaro"
+    ]
+  },
+  {
+    "id": "1569-la-araucana",
+    "titulo": "Se publica La Araucana",
+    "fecha": "1569",
+    "fechaAproximada": false,
+    "fechaTexto": "1569",
+    "periodoId": "02",
+    "temas": ["cultura", "pueblos-originarios"],
+    "importancia": 2,
+    "lugar": "Madrid, sobre hechos ocurridos en Chile",
+    "resumenNino": "Un soldado y poeta español, Alonso de Ercilla, escribió un largo poema sobre la guerra entre españoles y mapuche. Se llama La Araucana y es una de las primeras obras literarias sobre Chile.",
+    "resumen": "En 1569 se publicó en Madrid la primera parte de La Araucana, un poema épico de Alonso de Ercilla sobre la Guerra de Arauco. Ercilla llegó a Chile en 1557 con el gobernador García Hurtado de Mendoza y participó en la guerra. La obra, completada con una segunda parte en 1578 y una tercera en 1589, describe con admiración el valor de guerreros mapuche como Lautaro, Caupolicán y Colocolo. Es considerada una de las obras fundadoras de la literatura sobre Chile.",
+    "detalle": "La Araucana está escrita en octavas reales y tiene 37 cantos. La primera parte relata hechos anteriores a la llegada de Ercilla, como la muerte de Valdivia, y las siguientes incluyen episodios que él mismo presenció. Según el propio autor, escribió algunos versos en Chile sobre cortezas, cueros y trozos de cartas, por falta de papel.\n\nEl poema dio a conocer en Europa el nombre de Chile y la resistencia mapuche, y su mirada ha influido en la imagen que se tuvo de los mapuche durante siglos. Los historiadores advierten que mezcla hechos reales con elementos literarios, por lo que no debe leerse como una crónica exacta.",
+    "personajes": ["Alonso de Ercilla", "García Hurtado de Mendoza", "Caupolicán", "Lautaro"],
+    "imagen": {
+      "archivo": "Alonso_de_Ercilla_y_Zúñiga_(1578).jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Alonso_de_Ercilla_y_Zúñiga_(1578).jpg",
+      "pieDeFoto": "Retrato grabado de Alonso de Ercilla, publicado en 1578."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-3285.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-3286.html",
+      "https://es.wikipedia.org/wiki/La_Araucana"
+    ]
+  },
+  {
+    "id": "1598-batalla-de-curalaba",
+    "titulo": "Batalla de Curalaba",
+    "fecha": "1598-12-23",
+    "fechaAproximada": false,
+    "fechaTexto": "23 de diciembre de 1598",
+    "periodoId": "02",
+    "temas": ["guerra", "pueblos-originarios"],
+    "importancia": 3,
+    "lugar": "Curalaba, junto al río Lumaco, actual Región de La Araucanía",
+    "resumenNino": "Guerreros mapuche sorprendieron y vencieron al gobernador español en Curalaba. Después, los españoles tuvieron que abandonar sus ciudades al sur del río Biobío.",
+    "resumen": "El 23 de diciembre de 1598, guerreros mapuche dirigidos por Pelantaro sorprendieron al gobernador Martín García Óñez de Loyola y a sus hombres junto al río Lumaco, en Curalaba. El gobernador murió en el ataque. La victoria dio paso a un alzamiento general que destruyó o hizo abandonar las ciudades españolas al sur del río Biobío. Desde entonces, el Biobío se convirtió en la frontera entre el territorio español y el mapuche.",
+    "detalle": "Pelantaro actuó junto a otros líderes, como Anganamón y Huaiquimilla. Tras Curalaba, el alzamiento se extendió por todo el sur: entre 1599 y 1604 cayeron o fueron abandonadas ciudades como Valdivia, La Imperial, Angol, Villarrica, Osorno y Arauco. Las cifras de combatientes y los años de caída de cada ciudad varían según las fuentes.\n\nPara los españoles fue el «desastre de Curalaba»; para el pueblo mapuche, una gran victoria que aseguró su autonomía al sur del Biobío por más de dos siglos y medio. La Corona organizó un ejército permanente en la frontera y, con el tiempo, buscó acuerdos mediante los parlamentos.",
+    "personajes": ["Pelantaro", "Anganamón", "Martín García Óñez de Loyola"],
+    "imagen": {
+      "archivo": "Anganamón_vs._Martín_García_de_Loyola.JPG",
+      "autor": "Diego de Ocaña",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Anganamón_vs._Martín_García_de_Loyola.JPG",
+      "pieDeFoto": "Dibujo de fray Diego de Ocaña (c. 1605) que muestra a Anganamón frente al gobernador Óñez de Loyola."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-691.html",
+      "https://es.wikipedia.org/wiki/Batalla_de_Curalaba"
+    ]
+  },
+  {
+    "id": "1641-parlamento-de-quilin",
+    "titulo": "Parlamento de Quilín (Quillín)",
+    "fecha": "1641-01",
+    "fechaAproximada": false,
+    "fechaTexto": "Enero de 1641",
+    "periodoId": "02",
+    "temas": ["politica", "pueblos-originarios"],
+    "importancia": 2,
+    "lugar": "Quilín, junto al río Quillén, actual Región de La Araucanía",
+    "resumenNino": "Los españoles y los mapuche se reunieron para hacer las paces en un gran encuentro llamado parlamento. Acordaron que el río Biobío sería la frontera entre ambos.",
+    "resumen": "En enero de 1641, el gobernador Francisco López de Zúñiga, marqués de Baides, se reunió con caciques mapuche en Quilín para acordar la paz. Según el cronista Diego de Rosales, se acordó que el río Biobío sería el límite entre ambos territorios y que los mapuche serían libres, sin esclavitud ni encomienda. A cambio, debían liberar a los cautivos españoles, permitir la entrada de misioneros y reconocer al rey. Es considerado uno de los parlamentos más importantes entre la Corona y el pueblo mapuche.",
+    "detalle": "En octubre de 1640, cerca de cuarenta caciques ofrecieron la paz al gobernador y le pidieron que no se talaran sus cultivos; según un manuscrito de la época, en ese encuentro el cacique Lincopichón llevó una llama para sacrificarla, como parte de un rito mapuche. Los acuerdos de Quilín fueron orales, y el rey Felipe IV los ratificó en 1643.\n\nLos historiadores discuten su significado: algunos ven en Quilín el reconocimiento de la autonomía mapuche y otros, un pacto de subordinación a la Corona. La paz no fue duradera, pues hubo nuevos conflictos y un gran alzamiento en 1655, pero los parlamentos se convirtieron en una forma habitual de negociar en la frontera.",
+    "personajes": ["Francisco López de Zúñiga, marqués de Baides", "Lincopichón"],
+    "imagen": {
+      "archivo": "Parlamento_de_Quilin_1641_-_Alonso_de_Ovalle.JPG",
+      "autor": "Alonso de Ovalle",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Parlamento_de_Quilin_1641_-_Alonso_de_Ovalle.JPG",
+      "pieDeFoto": "Grabado de la obra de Alonso de Ovalle (1646) sobre las paces de Quilín: el marqués de Baides frente a un cacique que lleva una rama."
+    },
+    "fuentes": [
+      "https://dialnet.unirioja.es/descarga/articulo/4766746.pdf",
+      "https://www.memoriachilena.gob.cl/602/w3-article-691.html",
+      "https://es.wikipedia.org/wiki/Parlamento_de_Quil%C3%ADn_(1641)"
+    ]
+  },
+  {
+    "id": "1647-terremoto-de-santiago",
+    "titulo": "Terremoto de Santiago y el Señor de Mayo",
+    "fecha": "1647-05-13",
+    "fechaAproximada": false,
+    "fechaTexto": "13 de mayo de 1647",
+    "periodoId": "02",
+    "temas": ["desastres", "cultura"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "Un terremoto muy fuerte destruyó gran parte de Santiago durante la noche. Una imagen de Cristo que no se destruyó pasó a llamarse Señor de Mayo, y hasta hoy sale en procesión.",
+    "resumen": "En la noche del 13 de mayo de 1647, un gran terremoto destruyó buena parte de Santiago, incluida la Catedral. La Real Audiencia calculó que una quinta parte de la población había muerto o resultado herida, aunque las cifras varían según la fuente. En la iglesia de San Agustín, un crucifijo llamado Cristo de la Agonía no se destruyó y su corona de espinas quedó caída sobre el cuello. Desde entonces se le llama Señor de Mayo y cada 13 de mayo sale en procesión por el centro de Santiago.",
+    "detalle": "El sismo ocurrió de noche, cuando la mayoría de la gente estaba en sus casas, lo que aumentó el número de víctimas. Las estimaciones van desde unos 600 muertos, según el Cabildo, hasta más de mil, según otros cálculos citados por Memoria Chilena.\n\nEl terremoto obligó a reconstruir la ciudad y dejó una huella en la religiosidad popular. Los fieles interpretaron como un signo milagroso que el Cristo de la Agonía sobreviviera, y su procesión anual se mantiene hasta hoy.",
+    "personajes": [],
+    "imagen": {
+      "archivo": "Señor_de_Mayo_-_terremoto_1647.jpg",
+      "autor": "Luis Fernando Rojas",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Señor_de_Mayo_-_terremoto_1647.jpg",
+      "pieDeFoto": "Ilustración de Luis Fernando Rojas: el Cristo de la Agonía entre las ruinas de la iglesia de San Agustín tras el terremoto de 1647."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-97952.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-546558.html",
+      "https://es.wikipedia.org/wiki/Terremoto_de_Santiago_de_1647"
+    ]
+  },
+  {
+    "id": "1738-universidad-de-san-felipe",
+    "titulo": "Real Universidad de San Felipe",
+    "fecha": "1738-07",
+    "fechaAproximada": false,
+    "fechaTexto": "Julio de 1738",
+    "periodoId": "02",
+    "temas": ["cultura", "ciencia"],
+    "importancia": 2,
+    "lugar": "Santiago",
+    "resumenNino": "El rey de España ordenó crear en Santiago la Real Universidad de San Felipe, donde se estudiaba teología, leyes, medicina y matemáticas. Fue la antecesora de la Universidad de Chile.",
+    "resumen": "En julio de 1738, una real cédula del rey Felipe V autorizó la creación de la Real Universidad de San Felipe, en Santiago. Fue instalada en 1747 y su primer rector fue Tomás de Azúa. Ofrecía estudios de Teología, Filosofía, Derecho, Medicina y Matemáticas, y se ubicaba donde hoy está el Teatro Municipal de Santiago. En 1839 un decreto la transformó en la Universidad de Chile, que comenzó a funcionar en 1843.",
+    "detalle": "Antes de su creación, los estudios superiores en Chile estaban en manos de órdenes religiosas, como los dominicos y los jesuitas. La nueva universidad, impulsada desde Santiago por Tomás de Azúa, permitió obtener grados en leyes y medicina sin tener que viajar a Lima. Las fuentes difieren sobre cuándo comenzaron las clases regulares, entre 1747 y 1758.\n\nEn sus aulas estudiaron muchos de los protagonistas de la Independencia, y su edificio acogió en 1813 la inauguración del Instituto Nacional.",
+    "personajes": ["Felipe V", "Tomás de Azúa"],
+    "imagen": {
+      "archivo": "Frontis_de_la_Real_Universidad_de_San_Felipe.jpg",
+      "autor": "Desconocido",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Frontis_de_la_Real_Universidad_de_San_Felipe.jpg",
+      "pieDeFoto": "Frontis del edificio de la Real Universidad de San Felipe, según un grabado anterior a 1872."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-716.html",
+      "https://es.wikipedia.org/wiki/Real_Universidad_de_San_Felipe"
+    ]
+  },
+  {
+    "id": "1739-fundacion-de-villas",
+    "titulo": "Fundación de villas en el siglo XVIII",
+    "fecha": "1739",
+    "fechaFin": "1744",
+    "fechaAproximada": false,
+    "fechaTexto": "1739-1744",
+    "periodoId": "02",
+    "temas": ["politica", "economia"],
+    "importancia": 1,
+    "lugar": "Chile central y Norte Chico",
+    "resumenNino": "En el siglo XVIII los gobernadores fundaron muchos pueblos nuevos, como Talca, Rancagua y San Felipe, para que la gente del campo viviera en ciudades. Muchos de ellos son hoy ciudades importantes.",
+    "resumen": "Durante el siglo XVIII, las autoridades coloniales fundaron villas para reunir a la población rural, que vivía dispersa en el campo. Entre 1739 y 1744, el gobernador José Antonio Manso de Velasco fundó Los Ángeles, San Felipe, Cauquenes, San Fernando, Talca, Melipilla, Curicó, Rancagua y Copiapó. La Junta de Poblaciones, que asesoraba al gobernador y elegía los sitios, tuvo un papel central desde 1745. A fines de siglo, el gobernador Ambrosio O'Higgins fundó otras, como Vallenar, Los Andes, Linares y Parral.",
+    "detalle": "Las villas se trazaron en damero, con una plaza central donde se ubicaban la iglesia, el cabildo y las autoridades. Con ellas se buscaba facilitar la administración de justicia, el cobro de impuestos, la evangelización y el control del territorio.\n\nVarias de estas fundaciones son hoy capitales regionales o provinciales, como Talca, Rancagua y Copiapó.",
+    "personajes": ["José Antonio Manso de Velasco", "Ambrosio O'Higgins"],
+    "imagen": {
+      "archivo": "Conde_de_Superunda.jpg",
+      "autor": "Cristóbal Lozano",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Conde_de_Superunda.jpg",
+      "pieDeFoto": "Retrato de José Antonio Manso de Velasco, conde de Superunda, como virrey del Perú, por Cristóbal Lozano (1758)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-94064.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-94065.html",
+      "https://es.wikipedia.org/wiki/Jos%C3%A9_Antonio_Manso_de_Velasco"
+    ]
+  },
+  {
+    "id": "1767-expulsion-de-los-jesuitas",
+    "titulo": "Expulsión de los jesuitas",
+    "fecha": "1767-08",
+    "fechaAproximada": false,
+    "fechaTexto": "Agosto de 1767",
+    "periodoId": "02",
+    "temas": ["cultura", "politica"],
+    "importancia": 1,
+    "lugar": "Chile",
+    "resumenNino": "El rey de España ordenó expulsar a los sacerdotes jesuitas de todos sus territorios, incluido Chile. Ellos tenían colegios y grandes haciendas, que pasaron a manos del rey.",
+    "resumen": "En 1767, el rey Carlos III ordenó expulsar a la Compañía de Jesús de España y de todos sus dominios. En Chile, la orden se cumplió en agosto de 1767, y unos 360 jesuitas fueron embarcados con destino a Italia. La Compañía tenía cerca de una docena de colegios y escuelas, además de grandes haciendas, como la de Calera de Tango. Sus bienes pasaron a la Corona, que durante décadas los arrendó y vendió.",
+    "detalle": "La expulsión formó parte de las reformas de los reyes Borbones, que buscaban fortalecer el poder de la Corona frente a instituciones como la Iglesia. En Chile, el gobernador Antonio de Guill y Gonzaga dirigió el arresto de los religiosos y el inventario de sus bienes.\n\nLos jesuitas habían tenido un papel importante en la educación y en las misiones entre los pueblos indígenas, y administraban haciendas dedicadas a la agricultura, la ganadería y la producción de vino. Tras su salida, su colegio de Santiago, el Convictorio de San Francisco Javier, dio origen al Convictorio Carolino.",
+    "personajes": ["Carlos III", "Antonio de Guill y Gonzaga"],
+    "imagen": {
+      "archivo": "Iglesia_de_los_Jesuitas.jpg",
+      "autor": "Paul Lowry",
+      "licencia": "CC BY 2.0",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Iglesia_de_los_Jesuitas.jpg",
+      "pieDeFoto": "Iglesia de la antigua hacienda jesuita de Calera de Tango, cerca de Santiago (foto de 2009)."
+    },
+    "fuentes": [
+      "https://www.redalyc.org/pdf/650/65027761019.pdf",
+      "https://diposit.ub.edu/dspace/handle/2445/185173",
+      "https://rededucacionalignaciana.cl/wp-content/uploads/2023/01/Una-buqueda-incesante-de-educacion-inclusiva..pdf",
+      "https://es.wikipedia.org/wiki/Expulsi%C3%B3n_de_los_jesuitas_de_Espa%C3%B1a_de_1767"
+    ]
+  },
+  {
+    "id": "1793-parlamento-de-negrete",
+    "titulo": "Los parlamentos y el Parlamento de Negrete",
+    "fecha": "1793-03",
+    "fechaAproximada": false,
+    "fechaTexto": "Marzo de 1793",
+    "periodoId": "02",
+    "temas": ["politica", "pueblos-originarios"],
+    "importancia": 2,
+    "lugar": "Negrete, junto al río Biobío",
+    "resumenNino": "Durante la Colonia, las autoridades españolas y los líderes mapuche se reunían en grandes encuentros llamados parlamentos para conversar y llegar a acuerdos. Uno de los más grandes fue el de Negrete, en 1793.",
+    "resumen": "Desde el siglo XVII y hasta comienzos del XIX, autoridades españolas y líderes mapuche se reunieron en numerosos parlamentos, encuentros en los que negociaban la paz, el comercio y el paso por la frontera del Biobío. Se celebraron en lugares como Yumbel, Nacimiento, Tapihue y Negrete. En marzo de 1793, el gobernador Ambrosio O'Higgins convocó en Negrete uno de los más grandes del siglo XVIII. Según las actas, asistieron 161 caciques y unos 2.600 mapuche.",
+    "detalle": "Los parlamentos combinaban costumbres mapuche y españolas: había discursos, intercambio de regalos, comidas y juramentos. En ellos se reconocía a los caciques como interlocutores y se fijaban reglas sobre el comercio, los misioneros y las alianzas con el rey. Para los mapuche, eran también una forma de mantener su autonomía al sur del Biobío.\n\nEl parlamento de Negrete de 1793 fue uno de los más grandes y costosos del siglo XVIII. El último gran parlamento colonial se celebró también en Negrete, en 1803, y ya en tiempos de la república hubo otro en Tapihue, en 1825.",
+    "personajes": ["Ambrosio O'Higgins"],
+    "imagen": {
+      "archivo": "Parlamento_de_Negrete-1793.jpg",
+      "autor": "F. Lehmert",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Parlamento_de_Negrete-1793.jpg",
+      "pieDeFoto": "El parlamento de Negrete de 1793, litografía de F. Lehmert para el Atlas de Claudio Gay (1854)."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-7681.html",
+      "https://www.memoriachilena.gob.cl/602/w3-article-92253.html",
+      "https://es.wikipedia.org/wiki/Parlamento_de_Negrete_(1793)"
+    ]
+  },
+  {
+    "id": "1808-crisis-de-la-monarquia",
+    "titulo": "Crisis de la monarquía española",
+    "fecha": "1808",
+    "fechaAproximada": false,
+    "fechaTexto": "1808",
+    "periodoId": "02",
+    "temas": ["politica"],
+    "importancia": 2,
+    "lugar": "España y Chile",
+    "resumenNino": "El emperador francés Napoleón invadió España y tomó prisionero al rey. En Chile, la gente comenzó a preguntarse quién debía gobernar mientras el rey no estaba.",
+    "resumen": "En 1808, Napoleón Bonaparte invadió España y en mayo obligó a los reyes Carlos IV y Fernando VII a renunciar al trono en Bayona. Fernando VII quedó prisionero en Francia, y en los territorios americanos surgió la pregunta de quién debía gobernar en su ausencia. En Chile, la noticia provocó muestras de lealtad al rey cautivo, mientras crecía el descontento con el gobernador Francisco Antonio García Carrasco. Esta crisis abrió el camino a la formación de la Primera Junta de Gobierno en 1810.",
+    "detalle": "García Carrasco asumió como gobernador en abril de 1808. Ese mismo año quedó involucrado en el llamado escándalo de la fragata Scorpion: en la costa de Topocalma se asaltó un barco británico que traía contrabando y murieron su capitán y varios marineros. La participación que se le atribuyó en el hecho dañó gravemente su prestigio.\n\nEn mayo de 1810, el gobernador ordenó apresar a los vecinos Juan Antonio Ovalle, José Antonio de Rojas y Bernardo de Vera, acusados de conspirar. Las protestas que siguieron lo obligaron a dejar el mando el 16 de julio de 1810 en manos de Mateo de Toro y Zambrano, lo que preparó el cabildo abierto del 18 de septiembre.",
+    "personajes": ["Napoleón Bonaparte", "Fernando VII", "Francisco Antonio García Carrasco"],
+    "imagen": {
+      "archivo": "Abdications_of_Bayonne_(F._Peréz,_c._1846).jpg",
+      "autor": "Francisco Pérez",
+      "licencia": "Dominio público",
+      "urlPagina": "https://commons.wikimedia.org/wiki/File:Abdications_of_Bayonne_(F._Peréz,_c._1846).jpg",
+      "pieDeFoto": "«Las renuncias de Bayona», grabado de Francisco Pérez (c. 1846) sobre las abdicaciones de 1808."
+    },
+    "fuentes": [
+      "https://www.memoriachilena.gob.cl/602/w3-article-593.html",
+      "https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Jos%C3%A9_De_Fuenzalida_y_Villela",
+      "https://es.wikipedia.org/wiki/Esc%C3%A1ndalo_Escorpi%C3%B3n"
+    ]
+  }
+]
