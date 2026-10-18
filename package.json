@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node scripts/validar-datos.mjs",
-    "verificar-imagenes": "node scripts/verificar-imagenes.mjs"
+    "verificar-imagenes": "node scripts/verificar-imagenes.mjs",
+    "docs": "node scripts/generar-docs.mjs"
   },
   "devDependencies": {
     "vite": "^8.3.0"

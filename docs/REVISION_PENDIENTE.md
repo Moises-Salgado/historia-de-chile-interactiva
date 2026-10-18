@@ -1,6 +1,6 @@
 # Revisión pendiente
 
-Datos con menor certeza o con fuentes que no coinciden. En la app se eligió la versión más respaldada o una redacción prudente; conviene revisarlos a mano. Se completa por fase.
+Datos con menor certeza o con fuentes que no coinciden. En la app se eligió la versión más respaldada o una redacción prudente; conviene revisarlos a mano antes de usar el sitio en clases. Las notas por período se escribieron a mano durante las fases 1 a 3; las listas del final se regeneran con `npm run docs`, y las fuentes de cada evento están en [FUENTES.md](FUENTES.md).
 
 ## Criterios generales
 
@@ -133,3 +133,35 @@ Datos con menor certeza o con fuentes que no coinciden. En la app se eligió la 
 - **Aylwin**: Memoria Chilena dice que murió «a los 98 años», pero tenía 97; se omitió la edad.
 - **Estallido social y pandemia**: se omitieron el número de muertos del estallido y las cifras de contagios y fallecidos de la pandemia, por falta de una fuente oficial estable; tampoco se confirmó la fecha de inicio de la vacunación.
 - **Revolución pingüina**: se omitieron el paro del 30-05-2006 y el número de participantes; las demandas iniciales se ajustaron a la fuente (pase escolar gratuito, fin del SIMCE y del lucro).
+
+<!-- generado con npm run docs: inicio -->
+## Listas automáticas
+
+### Fechas aproximadas (17)
+
+- c. 14.500 años atrás · Monte Verde, uno de los sitios más antiguos de América (`ac12500-monte-verde`)
+- c. 5000 a.C. · Cultura chinchorro y sus momias (`ac5000-cultura-chinchorro`)
+- c. 1470, según las crónicas · El Tawantinsuyu llega a Chile (`1470-tawantinsuyu-en-chile`)
+- c. 1500, antes de la llegada europea · Pueblo aymara (`1500-pueblo-aymara`)
+- c. 1500, antes de la llegada europea · Pueblo atacameño (lickanantay) (`1500-pueblo-atacameno`)
+- c. 1500, antes de la llegada europea · Pueblo diaguita (`1500-pueblo-diaguita`)
+- c. 1500, antes de la llegada europea · Pueblo mapuche (`1500-pueblo-mapuche`)
+- c. 1500, antes de la llegada europea · Pueblo chono (`1500-pueblo-chono`)
+- c. 1500, antes de la llegada europea · Pueblo kawésqar (`1500-pueblo-kawesqar`)
+- c. 1500, antes de la llegada europea · Pueblo selk'nam (`1500-pueblo-selknam`)
+- c. 1500, antes de la llegada europea · Pueblo yagán (`1500-pueblo-yagan`)
+- c. 1500, antes de la llegada europea · Pueblo rapanui (`1500-pueblo-rapanui`)
+- c. 25 de diciembre de 1553 · Batalla de Tucapel y muerte de Pedro de Valdivia (`1553-batalla-de-tucapel`)
+- c. 1880-1930 · Auge del salitre (`1880-auge-del-salitre`)
+- c. 1880-1920 · La cuestión social (`1880-cuestion-social`)
+- c. 1929-1932 · La Gran Depresión y la crisis del salitre (`1929-gran-depresion-crisis-salitre`)
+- c. 1975-1981 · Reformas económicas de libre mercado (`1975-reformas-economicas`)
+
+### Pendientes de verificación (no se muestran en la app) (0)
+
+Ninguno.
+
+### Con Wikipedia como única fuente (0)
+
+Ninguno.
+<!-- generado con npm run docs: fin -->

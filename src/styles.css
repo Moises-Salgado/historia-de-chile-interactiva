@@ -898,6 +898,11 @@ body[data-vista='detalle'] .minimapa-fila {
   margin-top: 0.5rem;
 }
 
+.sin-imagen {
+  font-style: italic;
+  color: var(--texto-suave);
+}
+
 .credito {
   color: var(--texto-suave);
 }

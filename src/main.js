@@ -35,6 +35,11 @@ document.addEventListener(
     }
     img.dataset.respaldo = 'si';
     img.src = urlPlaceholder(img.dataset.periodo);
+    // En el detalle, el pie describe la imagen que no cargó: se aclara qué se ve en su lugar.
+    img
+      .closest('figure')
+      ?.querySelector('figcaption')
+      ?.insertAdjacentHTML('afterbegin', '<span class="sin-imagen">No se pudo cargar la imagen; en su lugar se ve un dibujo del período.</span>');
   },
   true,
 );
@@ -215,3 +220,10 @@ history.scrollRestoration = 'manual';
 document.body.dataset.vista = 'linea';
 aplicarRuta();
 actualizarControles();
+
+// Sin conexión: el Service Worker (plantilla en src/sw.js) solo existe en el sitio construido.
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  addEventListener('load', () => {
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
+  });
+}
