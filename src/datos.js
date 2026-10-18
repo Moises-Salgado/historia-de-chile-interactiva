@@ -3,7 +3,10 @@ import { parseFecha } from './fechas.js';
 
 const archivos = import.meta.glob('../data/*.json', { eager: true, import: 'default' });
 
-/** Devuelve { periodos, temas, eventos } con los eventos visibles ordenados por fecha (t = año decimal). */
+/**
+ * Devuelve { periodos, temas, eventos } con los eventos visibles ordenados por fecha.
+ * Cada evento suma t y tFin (año decimal de inicio y fin) y anio y anioFin (años enteros).
+ */
 export function cargarDatos() {
   const periodos = archivos['../data/periodos.json'] ?? [];
   const temas = archivos['../data/temas.json'] ?? [];
@@ -11,7 +14,11 @@ export function cargarDatos() {
     .filter(([ruta]) => /\/\d{2}-[^/]+\.json$/.test(ruta))
     .flatMap(([, lista]) => lista)
     .filter((ev) => !ev.pendienteVerificacion)
-    .map((ev) => ({ ...ev, t: parseFecha(ev.fecha).valor, tFin: ev.fechaFin ? parseFecha(ev.fechaFin).valor : null }))
+    .map((ev) => {
+      const inicio = parseFecha(ev.fecha);
+      const fin = ev.fechaFin ? parseFecha(ev.fechaFin) : null;
+      return { ...ev, t: inicio.valor, tFin: fin?.valor ?? null, anio: inicio.anio, anioFin: fin?.anio ?? inicio.anio };
+    })
     .sort((a, b) => a.t - b.t);
   return { periodos, temas, eventos };
 }

@@ -2,15 +2,66 @@
 <html lang="es-CL">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="Línea de tiempo interactiva de la historia de Chile, con imágenes históricas y textos para niños, público general y lectores que quieren profundizar." />
     <meta name="theme-color" content="#0039a6" />
+    <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Historia de Chile Interactiva</title>
   </head>
   <body>
-    <div id="app"></div>
-    <noscript>Esta línea de tiempo necesita JavaScript activado para funcionar.</noscript>
+    <a class="saltar" href="#linea">Saltar a la línea de tiempo</a>
+
+    <header class="cabecera">
+      <h1 class="marca">
+        <svg class="marca-icono" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" fill="#0039a6" /><path fill="#fff" d="M32 11l4.94 15.2h15.98L40 35.6l4.93 15.2L32 41.4l-12.93 9.4 4.94-15.2-12.93-9.4h15.98z" /></svg>
+        Historia de Chile
+      </h1>
+      <div class="lectura">
+        <fieldset class="nivel">
+          <legend class="nivel-titulo solo-ancho">Nivel de lectura</legend>
+          <div class="nivel-opciones">
+            <label><input type="radio" name="nivel" value="nino" /><span><span class="solo-ancho">Para niños</span><span class="solo-angosto" aria-hidden="true">Niños</span></span></label>
+            <label><input type="radio" name="nivel" value="general" checked /><span>General</span></label>
+            <label><input type="radio" name="nivel" value="detallado" /><span>Detallado</span></label>
+          </div>
+        </fieldset>
+        <button type="button" id="btn-texto" class="boton" aria-pressed="false">
+          <span aria-hidden="true">A+</span><span class="solo-ancho"> Texto grande</span>
+        </button>
+      </div>
+      <button type="button" id="btn-buscar" class="boton buscar" aria-expanded="false" aria-controls="panel-filtros">
+        <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" /></svg>
+        <span class="texto-buscar">Buscar</span>
+      </button>
+    </header>
+
+    <main id="principal" class="principal">
+      <section id="linea" class="linea" aria-label="Línea de tiempo" aria-describedby="ayuda-linea" tabindex="-1">
+        <p id="ayuda-linea" class="solo-lector">
+          Usa las flechas izquierda y derecha para recorrer los eventos, Enter para abrir uno, y las teclas más y menos para ver más o menos eventos.
+        </p>
+        <div class="linea-info">
+          <p class="estado-vista"></p>
+          <p id="estado-filtros" class="estado-filtros" hidden>
+            <span></span>
+            <button type="button" id="btn-quitar" class="boton chico">Quitar filtros</button>
+          </p>
+        </div>
+      </section>
+      <article id="detalle" class="detalle" aria-labelledby="detalle-titulo" hidden></article>
+      <section id="panel-filtros" class="panel-filtros" aria-labelledby="panel-titulo" hidden></section>
+    </main>
+
+    <nav class="controles" aria-label="Recorrer la línea de tiempo">
+      <button type="button" id="btn-anterior" class="boton grande nav-anterior"><span aria-hidden="true">◀</span> Anterior</button>
+      <button type="button" id="btn-inicio" class="boton grande nav-inicio">Inicio</button>
+      <div id="minimapa" class="minimapa-fila"></div>
+      <button type="button" id="btn-siguiente" class="boton grande nav-siguiente">Siguiente <span aria-hidden="true">▶</span></button>
+    </nav>
+
+    <p id="avisos" class="solo-lector" role="status" aria-live="polite"></p>
+    <noscript><p class="sin-js">Esta línea de tiempo necesita JavaScript activado para funcionar.</p></noscript>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
