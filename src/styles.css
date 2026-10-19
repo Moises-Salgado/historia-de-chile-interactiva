@@ -3707,6 +3707,288 @@ body[data-vista='detalle'] .minimapa-fila {
   border-radius: var(--radio);
 }
 
+/* ---- Portada (mvp 6): la puerta de la línea de tiempo pesa el doble (es la entrada principal), una franja de
+   cifras, la escala de eventos de cada período y la barra de «Tu recorrido». ---- */
+@media (min-width: 62em) {
+  .puertas {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
+
+.cifras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  margin: clamp(1.25rem, 3vw, 2rem) 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--texto-suave);
+}
+
+.cifras b {
+  margin-right: 0.375rem;
+  font-family: var(--rotulo);
+  font-size: var(--t-4);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--cobre-claro);
+}
+
+/* Escala de cada período: una marca por evento, en su año (sin fotos: ningún período se ve más lúgubre o más
+   épico que otro). */
+.epoca-escala {
+  position: relative;
+  grid-column: 2;
+  height: 0.75rem;
+  margin-top: 0.625rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.5);
+}
+
+.epoca-escala i {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: 100%;
+  margin-left: -1px;
+  background: #fff;
+  opacity: 0.85;
+}
+
+/* «Tu recorrido»: una barra por período con lo visto en él (un dato, no un logro; el nombre y «5 de 12» van
+   para lectores de pantalla y en el globo del puntero). */
+.seguir-barra {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  flex-basis: 100%;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.seguir-barra li {
+  position: relative;
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: var(--pildora);
+}
+
+.seguir-barra li::before {
+  position: absolute;
+  inset: 0;
+  background: var(--color);
+  opacity: 0.25;
+  content: '';
+}
+
+.seguir-barra i {
+  position: absolute;
+  inset: 0;
+  background: var(--color);
+  transform-origin: left;
+  scale: var(--lleno, 0) 1;
+  transition: scale var(--dur-larga) var(--curva-estandar);
+}
+
+.seguir-dato {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Lo que está bajo el pliegue aparece al entrar en pantalla, una vez (inicio.js; sin JS se ve quieto). */
+.por-asomar {
+  opacity: 0;
+  translate: 0 1rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cifras,
+  .inicio-cuerpo > section {
+    transition:
+      opacity var(--dur-media) var(--curva-entrada),
+      translate var(--dur-media) var(--curva-entrada);
+  }
+
+  /* Llegada a la portada, la primera vez en la sesión (index.html pone data-llegada antes de pintar): Chile se
+     descubre de norte a sur, las puertas suben (sin fundido: una de ellas es lo más grande de la pantalla) y
+     las ciudades y latitudes de la puerta del mapa se encienden de norte a sur. */
+  :root[data-llegada] .inicio-silueta {
+    animation: silueta-llega var(--dur-larga) var(--curva-entrada) 120ms both;
+  }
+
+  :root[data-llegada] .puertas > li {
+    animation: puerta-sube var(--dur-media) var(--curva-entrada) both;
+  }
+
+  :root[data-llegada] .puertas > li:nth-child(2) {
+    animation-delay: 60ms;
+  }
+
+  :root[data-llegada] .puertas > li:nth-child(3) {
+    animation-delay: 120ms;
+  }
+
+  :root[data-llegada] :is(.puerta-ciudades circle, .puerta-latitudes > span) {
+    animation: encender var(--dur-corta) ease-out 160ms both;
+  }
+
+  :root[data-llegada] :is(.puerta-ciudades circle:nth-child(2), .puerta-latitudes > span:nth-child(2)) {
+    animation-delay: 200ms;
+  }
+
+  :root[data-llegada] :is(.puerta-ciudades circle:nth-child(3), .puerta-latitudes > span:nth-child(3)) {
+    animation-delay: 240ms;
+  }
+
+  :root[data-llegada] :is(.puerta-ciudades circle:nth-child(n + 4), .puerta-latitudes > span:nth-child(4)) {
+    animation-delay: 280ms;
+  }
+}
+
+@keyframes silueta-llega {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+@keyframes puerta-sube {
+  from {
+    translate: 0 1rem;
+  }
+}
+
+@keyframes encender {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---- Detalle (mvp 6): la ficha lleva el filete del color del período; los vecinos, la imagen arriba (como
+   pasar la página); «Sobre el período», como un portal. ---- */
+.detalle-ficha {
+  border-top: 3px solid var(--color, var(--borde));
+}
+
+.vecino,
+.vecino.despues {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.vecino-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 0;
+}
+
+.vecino-texto {
+  padding: 0.625rem 0.875rem 0.875rem;
+}
+
+.sobre-periodo {
+  --texto-suave: #e3ece9;
+  color: #fff;
+  background: var(--curvas-portal) center / 100% 100% no-repeat, var(--color);
+  border-left: 0;
+}
+
+.sobre-periodo-fechas {
+  color: var(--texto-suave);
+}
+
+/* ---- «Para niños» (C4): el mismo diseño y la misma sobriedad, con letra más grande, la imagen primero en el
+   celular, la ficha sin rótulos técnicos y «¿Cómo lo sabemos?» en vez de «Fuentes». ---- */
+.para-nino,
+.detalle[data-nivel='nino'] .no-nino {
+  display: none;
+}
+
+.detalle[data-nivel='nino'] .para-nino {
+  display: revert;
+}
+
+.detalle-leyendo {
+  margin: 0 0 0.75rem;
+  font-family: var(--rotulo);
+  font-size: var(--t-1);
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+}
+
+.detalle-cuerpo[data-nivel='nino'] {
+  font-size: 1.375rem;
+  line-height: 1.7;
+}
+
+.detalle[data-nivel='nino'] .etiquetas {
+  display: none;
+}
+
+@media (max-width: 60em) {
+  .detalle[data-nivel='nino'] .detalle-figura {
+    order: -1;
+  }
+}
+
+/* ---- Modo clase (C5): la cabecera en una fila desde 75em (la marca queda como estrella y el nivel con
+   rótulos cortos), «Pantalla completa», la imagen más grande y nada personal a la vista. ---- */
+.solo-clase {
+  display: none;
+}
+
+:root[data-clase] .solo-clase:not([hidden]) {
+  display: inline-flex;
+}
+
+:root[data-clase] :is(.edad, .edad-abrir, .seguir) {
+  display: none !important;
+}
+
+:root[data-clase] .detalle-marco {
+  height: min(56vh, 34rem);
+}
+
+@media (min-width: 75em) {
+  :root[data-clase] .cabecera {
+    grid-template-areas: 'marca pestanas lectura buscar';
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    column-gap: 0.75rem;
+  }
+
+  :root[data-clase] :is(.marca-texto, .nivel-opciones .solo-ancho, .pestana-larga) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  :root[data-clase] .cabecera .nivel-opciones .solo-angosto {
+    display: inline;
+  }
+}
+
+/* «Pantalla completa» queda como ícono hasta que hay espacio para su nombre (el nombre accesible no cambia). */
+@media (min-width: 75em) and (max-width: 99.99em) {
+  :root[data-clase] #btn-pantalla > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
 /* ---- Listas que aparecen (historias, fichas de un personaje o de un grupo, regiones y eventos del mapa): sus
    elementos entran escalonados, 30 ms entre uno y otro y a lo más 6 escalones (400 ms en total). Con
    movimiento reducido, aparecen de inmediato. ---- */
@@ -4006,10 +4288,6 @@ body[data-vista='detalle'] .minimapa-fila {
 
   .detalle-marco::before {
     background: transparent;
-  }
-
-  .sobre-periodo {
-    background: var(--superficie);
   }
 
   @media (prefers-color-scheme: dark) {

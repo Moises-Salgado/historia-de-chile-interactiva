@@ -112,12 +112,25 @@ function ponerTextoGrande(grande) {
   else delete raiz.dataset.texto;
   botonTexto.setAttribute('aria-pressed', String(grande));
 }
-// En clase: letra más grande, colores claros (se ven mejor proyectados) y Av Pág / Re Pág para avanzar.
+// En clase: letra más grande, colores claros (se ven mejor proyectados), Av Pág / Re Pág para avanzar y
+// «Pantalla completa» (si el navegador lo permite). Lo personal («¿Qué edad tenías?», «Tu recorrido») no se
+// proyecta (styles.css).
+const botonPantalla = $('#btn-pantalla');
 function ponerModoClase(activo) {
   if (activo) raiz.dataset.clase = '';
   else delete raiz.dataset.clase;
   botonClase.setAttribute('aria-pressed', String(activo));
+  botonPantalla.hidden = !activo || !document.fullscreenEnabled;
+  if (!activo && document.fullscreenElement) document.exitFullscreen().catch(() => {});
 }
+botonPantalla.addEventListener('click', () => {
+  const pedido = document.fullscreenElement ? document.exitFullscreen() : raiz.requestFullscreen();
+  pedido.catch(() => anunciar('El navegador no permitió la pantalla completa.'));
+});
+document.addEventListener('fullscreenchange', () => {
+  botonPantalla.setAttribute('aria-pressed', String(Boolean(document.fullscreenElement)));
+  linea.redistribuir();
+});
 ponerTextoGrande(leerPreferencia('texto') === 'grande');
 ponerModoClase(leerPreferencia('clase') === 'si');
 
@@ -184,6 +197,7 @@ const inicio = crearInicio(seccionInicio, {
   eventos,
   periodos,
   recorridos,
+  lugares: datosMapa.lugares,
   alElegirPeriodo: (id) => {
     periodoPedido = id;
     ir('#linea');

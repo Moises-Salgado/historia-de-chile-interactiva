@@ -21,6 +21,14 @@
         const base = /^#?(?:inicio)?$/.test(h) ? 'inicio' : /^#(?:mapa|lugar)(?:\/|$)/.test(h) ? 'mapa' : 'linea';
         document.documentElement.dataset.base = base;
         if (base !== 'inicio') return;
+        // La llegada a la portada se anima solo la primera vez en la sesión (styles.css, [data-llegada]); se
+        // marca aquí, antes de pintar, para que las puertas no aparezcan quietas y luego salten.
+        try {
+          if (!sessionStorage.getItem('historia-chile:llegada')) {
+            sessionStorage.setItem('historia-chile:llegada', 'si');
+            document.documentElement.dataset.llegada = '';
+          }
+        } catch {}
         for (const archivo of ['Hodges_easter-island.jpg']) {
           const l = document.createElement('link');
           Object.assign(l, { rel: 'preload', as: 'image', fetchPriority: 'high' });
@@ -121,6 +129,10 @@
           <svg class="icono" aria-hidden="true" focusable="false"><use href="#i-proyectar" /></svg>
           <span>Proyectar<span class="clase-extra"> en clase</span></span>
         </button>
+        <button type="button" id="btn-pantalla" class="boton solo-clase" aria-pressed="false" hidden>
+          <svg class="icono" aria-hidden="true" focusable="false"><use href="#i-pantalla" /></svg>
+          <span>Pantalla completa</span>
+        </button>
       </div>
     </header>
 
@@ -185,6 +197,12 @@
                 </span>
               </a>
             </li>
+          </ul>
+          <ul class="cifras" aria-label="La historia en cifras">
+            <li><b data-cifra="eventos">121</b> eventos con imagen y fuentes</li>
+            <li><b data-cifra="periodos">9</b> períodos</li>
+            <li><b data-cifra="lugares">34</b> lugares en el mapa</li>
+            <li><b data-cifra="historias">4</b> historias guiadas</li>
           </ul>
         </div>
         <div class="inicio-cuerpo">

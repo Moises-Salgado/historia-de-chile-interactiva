@@ -3,10 +3,10 @@
 // del día y los períodos (cada uno lleva a su tramo de la línea de tiempo).
 import { curvasDeNivel } from './curvas.js';
 import { haceCuanto } from './fechas.js';
-import { creditoImagen, esc, icono, urlImagen, urlPlaceholder } from './util.js';
+import { creditoImagen, esc, icono, movimientoReducido, urlImagen, urlPlaceholder } from './util.js';
 
 /** alElegirPeriodo(id) se llama al elegir un período (en vez de seguir el enlace #linea). */
-export function crearInicio(seccion, { eventos, periodos, recorridos, alElegirPeriodo }) {
+export function crearInicio(seccion, { eventos, periodos, recorridos, lugares = [], alElegirPeriodo }) {
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   seccion.querySelectorAll('.curvas').forEach(curvasDeNivel);
@@ -16,6 +16,7 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, alElegirPe
     eventos: String(eventos.length),
     periodos: String(periodos.length),
     historias: String(recorridos.length),
+    lugares: String(lugares.length),
     antiguedad: haceCuanto(eventos[0]),
   };
   for (const el of seccion.querySelectorAll('[data-cifra]')) {
@@ -71,7 +72,16 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, alElegirPe
     destacado.hidden = false;
   }
 
-  const cuantos = (id) => eventos.filter((ev) => ev.periodoId === id).length;
+  const delPeriodo = (id) => eventos.filter((ev) => ev.periodoId === id);
+  // Cada período lleva una escala con una marca por evento, en su año (sin fotos: así ningún período se ve
+  // más lúgubre o más épico que otro en la portada).
+  const hoy = new Date().getFullYear();
+  const escala = (p, i) => {
+    const fin = periodos[i + 1]?.inicio ?? hoy;
+    const lista = delPeriodo(p.id);
+    const inicio = Math.min(p.inicio, ...lista.map((ev) => ev.anio));
+    return lista.map((ev) => `<i style="left:${(((ev.anio - inicio) / Math.max(1, fin - inicio)) * 100).toFixed(1)}%"></i>`).join('');
+  };
   const lista = seccion.querySelector('.epocas-lista');
   lista.innerHTML = periodos
     .map(
@@ -79,7 +89,8 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, alElegirPe
       <li><a class="epoca" href="#linea" data-periodo="${p.id}" style="--color:${p.color}">
         <span class="epoca-num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
         <span class="epoca-nombre">${esc(p.nombre)}</span>
-        <span class="epoca-fechas">${esc(p.fechasTexto)} · ${cuantos(p.id)} eventos</span>
+        <span class="epoca-fechas">${esc(p.fechasTexto)} · ${delPeriodo(p.id).length} eventos</span>
+        <span class="epoca-escala" aria-hidden="true">${escala(p, i)}</span>
       </a></li>`,
     )
     .join('');
@@ -99,9 +110,15 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, alElegirPe
   seguir.innerHTML = `
     <h2 class="ceja" id="seguir-titulo">Tu recorrido</h2>
     <p class="seguir-cuenta"></p>
-    <a class="boton primario seguir-enlace" href="#linea"><span class="seguir-texto"></span>${icono('siguiente')}</a>`;
+    <a class="boton primario seguir-enlace" href="#linea"><span class="seguir-texto"></span>${icono('siguiente')}</a>
+    <ol class="seguir-barra">${periodos
+      .map((p) => `<li style="--color:${p.color}" title="${esc(p.nombre)}"><span class="solo-lector">${esc(p.nombre)}: </span><span class="seguir-dato"></span><i aria-hidden="true"></i></li>`)
+      .join('')}</ol>`;
   const cuenta = seguir.querySelector('.seguir-cuenta');
   const enlace = seguir.querySelector('.seguir-enlace');
+  const tramos = [...seguir.querySelectorAll('.seguir-barra li')];
+  // Una barra por período con lo visto en él, como dato («5 de 12»): sin «completado» ni porcentajes, porque
+  // «completaste la dictadura» no corresponde.
   function mostrarAvance(vistos, ultimoId) {
     seguir.hidden = !vistos.size;
     if (!vistos.size) return;
@@ -112,6 +129,32 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, alElegirPe
     if (proximo) {
       enlace.href = `#evento/${proximo.id}`;
       enlace.querySelector('.seguir-texto').textContent = `Seguir con: ${proximo.titulo}`;
+    }
+    periodos.forEach((p, j) => {
+      const del = delPeriodo(p.id);
+      const n = del.filter((ev) => vistos.has(ev.id)).length;
+      tramos[j].querySelector('.seguir-dato').textContent = `${n} de ${del.length}`;
+      tramos[j].style.setProperty('--lleno', (n / del.length).toFixed(3));
+    });
+  }
+
+  // Lo que está bajo el pliegue aparece al entrar en pantalla, una sola vez (sin JavaScript, o con movimiento
+  // reducido, se ve quieto desde el comienzo).
+  if (!movimientoReducido() && 'IntersectionObserver' in window) {
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const e of entradas) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.remove('por-asomar');
+          observador.unobserve(e.target);
+        }
+      },
+      { threshold: 0.15 },
+    );
+    for (const el of seccion.querySelectorAll('.cifras, .inicio-cuerpo > section')) {
+      if (el.getBoundingClientRect().top < innerHeight) continue;
+      el.classList.add('por-asomar');
+      observador.observe(el);
     }
   }
 

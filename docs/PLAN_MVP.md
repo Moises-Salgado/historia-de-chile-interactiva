@@ -222,3 +222,25 @@ Pedido del dueño (2026-10-19): dejar la app «bonita», con más animación y a
     - El panel entra desde la derecha si se va más adentro y desde la izquierda al volver; en el celular, la hoja sube.
     - Una sola onda de cobre en el alfiler elegido.
   - **Peso:** las reglas que solo usa el mapa pasaron a `src/mapa.css`, que se carga con su módulo (1,9 KB gzip), y la carga inicial bajó 0,8 KB.
+- **M6 · Portada y detalle (hecha).**
+  - **Portada:**
+    - La puerta de la línea de tiempo pesa el doble.
+    - Franja de cifras sacadas de los datos: eventos, períodos, lugares e historias.
+    - Cada período lleva una escala con una marca por evento en su año. No lleva fotos, para que ningún período se vea distinto.
+    - «Tu recorrido» suma una barra por período: el dato «3 de 13» va para lectores de pantalla y en el globo del puntero, sin «completado» ni porcentajes.
+  - **Llegada, la primera vez en la sesión** (`data-llegada`, puesto antes de pintar):
+    - Chile se descubre de norte a sur (`clip-path`, solo aquí).
+    - Las puertas suben, sin fundido.
+    - Las ciudades y latitudes de la puerta del mapa se encienden de norte a sur.
+    - Lo que está bajo el pliegue aparece una vez, con IntersectionObserver.
+  - **Detalle:**
+    - Ficha con filete del color del período.
+    - «¿Qué pasó antes/después?» con la imagen 16:9 arriba; la miniatura ahora ofrece 330 y 500 px.
+    - «Sobre el período» como un portal.
+  - **«Para niños»:** «Leyendo: Para niños», letra de 1,375 rem con interlineado 1,7, la imagen primero en el celular, la ficha sin temas y «¿Cómo lo sabemos?» en vez de «Fuentes».
+  - **Modo clase:**
+    - Cabecera de una fila desde 75em: de 157 a 87 px a 1366 × 768, con lo que «Lo elegido» vuelve a caber.
+    - «Pantalla completa».
+    - Imagen más alta.
+    - Sin «¿Qué edad tenías?» ni «Tu recorrido».
+  - **Pendiente:** el paspartú según la orientación de la imagen queda para cuando la proporción esté en los datos, porque calcularla al cargar movería la página (CLS).

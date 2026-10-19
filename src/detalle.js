@@ -30,7 +30,7 @@ function listaFuentes(urls) {
 }
 
 const miniatura = (ev, tamano) =>
-  `<img src="${urlImagen(ev.imagen.archivo, 120)}" srcset="${urlImagen(ev.imagen.archivo, 120)} 120w, ${urlImagen(ev.imagen.archivo, 250)} 250w"
+  `<img src="${urlImagen(ev.imagen.archivo, 120)}" srcset="${[120, 250, 330, 500].map((a) => `${urlImagen(ev.imagen.archivo, a)} ${a}w`).join(', ')}"
     sizes="${tamano}" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}">`;
 const mosaico = (eventos) =>
   `<span class="ficha-img mosaico">${eventos
@@ -45,7 +45,7 @@ function vecino(ev, lado, colorDe, { href = `#evento/${ev?.id}`, rotulo, vacio }
   // Un grupo (por ejemplo, los pueblos de c. 1500) se muestra con la imagen de su primer evento.
   if (ev.esGrupo) href = `#grupo/${ev.id}`;
   return `<a class="vecino ${lado}" href="${href}" style="--color:${colorDe(ev)}">
-      <span class="vecino-img">${miniatura(ev.eventos?.[0] ?? ev, '4.5rem')}</span>
+      <span class="vecino-img">${miniatura(ev.eventos?.[0] ?? ev, '(max-width: 40em) 90vw, 20rem')}</span>
       <span class="vecino-texto">
         <span class="vecino-rotulo">${lado === 'antes' ? `${icono('anterior')} ${texto}` : `${texto} ${icono('siguiente')}`}</span>
         <span class="vecino-fecha">${esc(ev.fechaTexto)}</span>
@@ -296,6 +296,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
         })}
         <div class="detalle-columnas">
           <div class="detalle-texto">
+            <p class="detalle-leyendo para-nino">Leyendo: <b>Para niños</b></p>
             <div class="detalle-cuerpo" data-nivel="${nivel}">${cuerpo()}</div>
             ${
               ev.sabiasQue
@@ -322,7 +323,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
             ${vecinos}
             ${sobrePeriodo(p)}
             <details class="plegable">
-              <summary>Fuentes (${ev.fuentes.length})</summary>
+              <summary><span class="para-nino">¿Cómo lo sabemos?</span><span class="no-nino">Fuentes</span> (${ev.fuentes.length})</summary>
               <ul class="fuentes">${listaFuentes(ev.fuentes)}</ul>
             </details>
           </div>
