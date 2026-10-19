@@ -111,12 +111,18 @@ function miniMapa(ev, lugarDe, zonaDe) {
   const nacional = ev.ubicaciones.includes('chile');
   if (!puntos.length && !franjas.length && !nacional) return '';
   const rapa = ev.ubicaciones.includes('rapa-nui') ? `<rect class="minimapa-recuadro" x="${RAPA[0] - 30}" y="${RAPA[1] - 26}" width="60" height="52" rx="6"/>` : '';
-  return `<svg class="minimapa-chile${nacional ? ' nacional' : ''}" viewBox="-40 -10 382 1026" aria-hidden="true" focusable="false">
+  // El primer lugar va como un punto HTML sobre el mapa (no dentro del SVG): al pasar con Anterior y Siguiente
+  // viaja de un lugar al otro (View Transition, main.js). Los demás van como círculos.
+  const [primero, ...resto] = puntos;
+  const viajero = primero
+    ? `<span class="minimapa-viajero" style="left:${(((primero[0] + 40) / 382) * 100).toFixed(1)}%;top:${(((primero[1] + 10) / 1026) * 100).toFixed(1)}%"></span>`
+    : '';
+  return `<div class="minimapa-caja"><svg class="minimapa-chile${nacional ? ' nacional' : ''}" viewBox="-40 -10 382 1026" aria-hidden="true" focusable="false">
     ${franjas.length ? `<clipPath id="minimapa-zona">${franjas.map(([a, b]) => `<rect x="-40" y="${a}" width="382" height="${b - a}"/>`).join('')}</clipPath>` : ''}
     <use href="#silueta-chile" width="302" height="1006" class="minimapa-tierra"/>
     ${franjas.length ? '<use href="#silueta-chile" width="302" height="1006" class="minimapa-zona" clip-path="url(#minimapa-zona)"/>' : ''}
-    ${rapa}${puntos.map(([x, y]) => `<circle class="minimapa-punto" cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="22"/>`).join('')}
-  </svg>`;
+    ${rapa}${resto.map(([x, y]) => `<circle class="minimapa-punto" cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="22"/>`).join('')}
+  </svg>${viajero}</div>`;
 }
 
 // Año de nacimiento de quien lee (opcional, solo en este navegador) para mostrar su edad desde 1900.
@@ -359,7 +365,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
         })}
         <div class="detalle-contenido vista-lista">
           <div class="detalle-texto">
-            <ol class="fichas">${lista()}</ol>
+            <ol class="fichas escalonar">${lista()}</ol>
             <nav class="vecinos" aria-label="Eventos anterior y siguiente">${vecino(antes, 'antes', colorDe)}${vecino(despues, 'despues', colorDe)}</nav>
             ${sobrePeriodo(p)}
           </div>
@@ -386,7 +392,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
       })}
       <div class="detalle-contenido vista-lista">
         <div class="detalle-texto">
-          <ul class="historias-lista">${recorridos
+          <ul class="historias-lista escalonar">${recorridos
             .map((r) => {
               // Avance: cuántos pasos ya se vieron; la historia sigue en el primero que falta.
               const vistosAqui = r.eventos.filter(visto).length;
@@ -432,7 +438,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
         })}
         <div class="detalle-contenido vista-lista">
           <div class="detalle-texto">
-            <ol class="fichas">${lista()}</ol>
+            <ol class="fichas escalonar">${lista()}</ol>
             <p class="ayuda">Esta ficha reúne los eventos donde se nombra a ${esc(persona.nombre)}; no es una biografía.</p>
           </div>
         </div>

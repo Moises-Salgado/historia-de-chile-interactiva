@@ -353,7 +353,8 @@ function cambiarBase(nueva, { enfocar = true } = {}) {
     aplicar();
     linea.entrada();
   } else {
-    cambiarVista(aplicar, 'seccion');
+    // La sección nueva entra por su eje: la línea de tiempo de lado, el mapa de norte a sur (styles.css).
+    cambiarVista(aplicar, `seccion-${nueva}`);
   }
 }
 
@@ -509,19 +510,74 @@ function pintarVista(vista, desdeBoton) {
   actualizarControles();
 }
 
+// Al pasar con Anterior y Siguiente, lo que sigue en pantalla viaja en vez de irse con la página: el punto del
+// mini-mapa va de un lugar al otro (si el evento nuevo es de una zona, de todo Chile o de fuera, solo se
+// funde), la marca de la regla corre y, en una historia, avanza el paso. La ficha y la barra de la historia
+// quedan quietas. Se nombra solo lo que está a la vista, a lo más cuatro (styles.css, View Transitions).
+const VIAJEROS = [
+  ['.historia-barra', 'barra'],
+  ['.historia-pasos .actual', 'paso'],
+  ['.detalle-ficha', 'ficha'],
+  ['.minimapa-viajero', 'lugar'],
+  ['.regla-marca', 'marca'],
+];
+function nombrarViajeros(activo) {
+  const marco = elDetalle.getBoundingClientRect();
+  let nombrados = 0;
+  for (const [selector, nombre] of VIAJEROS) {
+    const el = elDetalle.querySelector(selector);
+    if (!el) continue;
+    const r = el.getBoundingClientRect();
+    const aLaVista = activo && nombrados < 4 && r.height > 0 && r.bottom > marco.top && r.top < marco.bottom;
+    el.style.viewTransitionName = aLaVista ? nombre : '';
+    if (aLaVista) nombrados++;
+  }
+}
+
+// La lámina crece desde cualquier miniatura que lleve al evento (resultados, el mapa, fichas, el destacado de la
+// portada), no solo desde la línea de tiempo. Al presionarla se recuerda cuál fue y se pide la imagen grande.
+let origen = null;
+document.addEventListener(
+  'pointerdown',
+  (e) => {
+    const enlace = e.target.closest('a[href^="#evento/"], button.resultado[data-id]');
+    const img = enlace?.querySelector('img');
+    const id = enlace?.dataset.id ?? enlace?.getAttribute('href')?.slice('#evento/'.length);
+    const ev = porId.get(id);
+    origen = img && ev ? { img, id } : null;
+    if (ev && e.pointerType !== 'touch') {
+      // sizes y srcset antes que src: así se pide solo la versión que usará el detalle.
+      const { src, srcset, sizes } = imagenDetalle(ev.imagen.archivo);
+      Object.assign(new Image(), { sizes, srcset, src });
+    }
+  },
+  true,
+);
+const origenDe = (ev) => {
+  if (!ev || origen?.id !== ev.id || !origen.img.isConnected) return null;
+  const r = origen.img.getBoundingClientRect();
+  return r.width > 0 && r.bottom > 0 && r.top < innerHeight ? origen.img : null;
+};
+
 function mostrarVista(vista, desdeBoton) {
   const previa = vistaActual;
   const aplicar = () => pintarVista(vista, desdeBoton);
   if (detalle.abierto) {
     const [a, b] = [posicion(previa), posicion(vista)];
     const tipo = a === null || b === null || a === b ? '' : b > a ? 'siguiente' : 'anterior';
-    return void cambiarVista(aplicar, tipo);
+    if (!tipo) return void cambiarVista(aplicar, tipo);
+    nombrarViajeros(true);
+    return void cambiarVista((animado) => {
+      aplicar();
+      if (animado) nombrarViajeros(true);
+    }, tipo)?.then(() => nombrarViajeros(false));
   }
 
-  // Al abrir desde la línea de tiempo, la miniatura del evento crece hasta la lámina del detalle. Desde otra
-  // sección, se recuerda qué tenía el foco para devolverlo al cerrar.
+  // Al abrir desde una miniatura (de la línea de tiempo o de una lista), crece hasta la lámina del detalle. Desde
+  // otra sección, se recuerda qué tenía el foco para devolverlo al cerrar.
   focoPrevio = base !== 'linea' && $(`#${base}`).contains(document.activeElement) ? document.activeElement : null;
-  const miniatura = base === 'linea' && vista.ev && !filtros.abierto ? linea.miniatura(vista.ev) : null;
+  const miniatura = origenDe(vista.ev) ?? (base === 'linea' && vista.ev && !filtros.abierto ? linea.miniatura(vista.ev) : null);
+  origen = null;
   if (miniatura) miniatura.style.viewTransitionName = LAMINA;
   cambiarVista(async (animado) => {
     if (miniatura) miniatura.style.viewTransitionName = '';

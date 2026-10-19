@@ -157,10 +157,9 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
       alVerLinea();
     }
     else if (b?.dataset.accion === 'limpiar') limpiar();
-    else if (b?.dataset.id) {
-      cerrar({ devolverFoco: false });
-      alElegir(porId.get(b.dataset.id));
-    }
+    // El panel se cierra al abrir el evento (main.js, dentro de la transición): así su miniatura crece hasta la
+    // lámina del detalle.
+    else if (b?.dataset.id) alElegir(porId.get(b.dataset.id));
   });
   boton.addEventListener('click', () => (panel.hidden ? abrir() : cerrar()));
 

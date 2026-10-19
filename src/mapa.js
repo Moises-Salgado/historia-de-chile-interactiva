@@ -142,7 +142,7 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
   // ---- Panel: lo elegido y sus eventos (con miniatura, fecha y el lugar que dice cada evento) ----
   const listaEventos = (lista, vacio = 'No hay eventos de este período aquí.') =>
     lista.length
-      ? `<ol class="mapa-eventos">${lista
+      ? `<ol class="mapa-eventos escalonar">${lista
           .map(
             (ev) => `<li><a class="mapa-evento" href="#evento/${ev.id}" style="--color:${periodoDe.get(ev.periodoId).color}">
               <span class="mapa-evento-img"><img src="${urlImagen(ev.imagen.archivo, 120)}" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}"></span>
@@ -163,7 +163,7 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
       html = `${encabezado('Todo el mapa', plural(enEpoca().length, 'evento', 'eventos'))}
         <p class="mapa-resumen">Elige una región o un lugar en el mapa, o en esta lista, de norte a sur.</p>
         <div class="mapa-accesos"><a class="boton chico" href="#mapa/chile">Todo Chile (${de.chile().length})</a><a class="boton chico" href="#mapa/fuera">Fuera de Chile (${de.fuera().length})</a></div>
-        <ol class="mapa-regiones">${mapa.regiones
+        <ol class="mapa-regiones escalonar">${mapa.regiones
           .map((r) => `<li><a class="mapa-region" href="${rutaRegion(r.codigo)}"><span>${esc(r.corto)}</span><b>${de.region(r.codigo).length}</b></a></li>`)
           .join('')}</ol>`;
     } else if (tipo === 'region') {

@@ -515,7 +515,6 @@ h2[tabindex='-1']:focus,
   border-radius: var(--radio);
   box-shadow: inset 0 -3px 0 #9c5526;
   translate: var(--x, 0) 0;
-  view-transition-name: pestana-marca;
   pointer-events: none;
 }
 
@@ -792,7 +791,6 @@ h2[tabindex='-1']:focus,
   background: var(--texto);
   box-shadow: inset 0 -3px 0 var(--acento);
   translate: var(--x, 0) 0;
-  view-transition-name: nivel-marca;
   pointer-events: none;
 }
 
@@ -3075,9 +3073,26 @@ body[data-vista='detalle'] .minimapa-fila {
   gap: 0.75rem;
 }
 
-.minimapa-chile {
+.minimapa-caja {
+  position: relative;
   width: 4.5rem;
+}
+
+.minimapa-chile {
+  display: block;
+  width: 100%;
   height: auto;
+}
+
+/* El lugar principal del evento: un punto HTML sobre el mapa, para que pueda viajar entre eventos. */
+.minimapa-viajero {
+  position: absolute;
+  width: 0.625rem;
+  height: 0.625rem;
+  background: var(--cobre-vivo);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--superficie);
+  translate: -50% -50%;
 }
 
 .minimapa-tierra {
@@ -3922,6 +3937,49 @@ a.vecino:hover {
   border-radius: var(--radio);
 }
 
+/* ---- Listas que aparecen (historias, fichas de un personaje o de un grupo, regiones y eventos del mapa): sus
+   elementos entran escalonados, 30 ms entre uno y otro y a lo más 6 escalones (400 ms en total). Con
+   movimiento reducido, aparecen de inmediato. ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .escalonar > li {
+    transition:
+      opacity var(--dur-corta) var(--curva-entrada),
+      translate var(--dur-corta) var(--curva-entrada);
+    transition-delay: calc(var(--i, 0) * var(--escalon));
+  }
+
+  .escalonar > li:nth-child(2) {
+    --i: 1;
+  }
+
+  .escalonar > li:nth-child(3) {
+    --i: 2;
+  }
+
+  .escalonar > li:nth-child(4) {
+    --i: 3;
+  }
+
+  .escalonar > li:nth-child(5) {
+    --i: 4;
+  }
+
+  .escalonar > li:nth-child(6) {
+    --i: 5;
+  }
+
+  .escalonar > li:nth-child(n + 7) {
+    --i: 6;
+  }
+
+  @starting-style {
+    .escalonar > li {
+      opacity: 0;
+      translate: 0 0.5rem;
+    }
+  }
+}
+
 /* ---- View Transitions (main.js y timeline.js; sin soporte, los cambios son inmediatos) ----
    Abrir y cerrar un evento: la miniatura crece hasta la lámina («lamina») y el detalle se funde.
    Anterior / Siguiente: la página («pagina») sale hacia un lado y la nueva entra por el otro. */
@@ -3996,6 +4054,116 @@ a.vecino:hover {
 /* Mientras dura una transición, los toques pasan a la página (un segundo toque en «Siguiente» no se pierde). */
 ::view-transition {
   pointer-events: none;
+}
+
+/* Cambio de sección (main.js, cambiarBase): la vieja se funde y la nueva entra por su eje: la línea de tiempo
+   de lado, el mapa de norte a sur y la portada en su lugar (260 ms en total). La barra inferior sube al
+   aparecer y baja al irse; la marca de la pestaña se desliza (.pestanas-marca). */
+:root[data-transicion^='seccion'] .principal {
+  view-transition-name: seccion;
+}
+
+:root[data-transicion^='seccion'] .controles {
+  view-transition-name: controles;
+}
+
+/* Las marcas de la pestaña y del nivel se nombran solo en las transiciones donde se mueven (abrir o cerrar
+   «Historias» también cambia de pestaña). */
+:root:is([data-transicion^='seccion'], [data-transicion='abrir'], [data-transicion='cerrar']) .pestanas-marca {
+  view-transition-name: pestana-marca;
+}
+
+:root[data-transicion='nivel'] .nivel-marca {
+  view-transition-name: nivel-marca;
+}
+
+:root[data-transicion='seccion-linea'] {
+  --entra: 1.5rem 0;
+}
+
+:root[data-transicion='seccion-mapa'] {
+  --entra: 0 -1.5rem;
+}
+
+::view-transition-old(seccion) {
+  animation: var(--dur-micro) var(--curva-salida) both desvanecer;
+}
+
+::view-transition-new(seccion) {
+  animation: 200ms var(--curva-entrada) 60ms both entrar-seccion;
+}
+
+::view-transition-new(controles):only-child {
+  animation: 200ms var(--curva-entrada) both subir;
+}
+
+::view-transition-old(controles):only-child {
+  animation: var(--dur-micro) var(--curva-salida) both bajar;
+}
+
+/* Anterior y Siguiente (main.js, nombrarViajeros): lo que sigue en pantalla viaja; la ficha y la barra de la
+   historia quedan quietas y su contenido cambia con un fundido, sin estirarse. Sin lugar en el evento nuevo
+   (una zona, todo Chile o el extranjero), el punto solo se funde: no hay estela ni trazo. */
+::view-transition-group(lugar),
+::view-transition-group(marca),
+::view-transition-group(paso) {
+  animation-duration: var(--dur-larga);
+  animation-timing-function: var(--curva-estandar);
+}
+
+::view-transition-old(ficha),
+::view-transition-new(ficha),
+::view-transition-old(barra),
+::view-transition-new(barra) {
+  height: 100%;
+  object-fit: none;
+  object-position: top left;
+}
+
+::view-transition-old(ficha),
+::view-transition-old(barra),
+::view-transition-old(lugar):only-child {
+  animation: var(--dur-micro) var(--curva-salida) both desvanecer;
+}
+
+::view-transition-new(ficha),
+::view-transition-new(barra) {
+  animation: var(--dur-corta) var(--curva-entrada) 80ms both aparecer;
+}
+
+::view-transition-new(lugar):only-child {
+  animation: var(--dur-corta) var(--curva-entrada) both aparecer;
+}
+
+@keyframes desvanecer {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes entrar-seccion {
+  from {
+    opacity: 0;
+    translate: var(--entra, 0 0);
+  }
+}
+
+@keyframes subir {
+  from {
+    translate: 0 100%;
+  }
+}
+
+@keyframes bajar {
+  to {
+    translate: 0 100%;
+  }
 }
 
 /* ---- Aviso a la vista (main.js): un enlace que no existe o la falta de conexión. Va arriba del contenido,

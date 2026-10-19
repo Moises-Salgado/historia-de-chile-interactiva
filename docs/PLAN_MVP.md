@@ -201,3 +201,10 @@ Pedido del dueño (2026-10-19): dejar la app «bonita», con más animación y a
   - **Títulos:** con el ancho nuevo ocupan 279 líneas (antes 330), con 3 cortes y ninguno truncado en ningún modo; `balance` y `pretty` dan lo mismo.
   - **Zoom con + y −:** FLIP de 280 ms. Con la CPU 4× más lenta, la animación pasa de 60 cps de media; los cuadros largos (`distribuir()` y la decodificación de imágenes nuevas) también ocurren sin animación.
   - **Pruebas:** el script de capturas emula movimiento reducido salvo que se pida lo contrario; las pruebas de animación deben pedirlo.
+- **M4 · Transiciones entre vistas (hecha).**
+  - **Cambio de sección:** la sección vieja se funde (120 ms) y la nueva entra por su eje en 200 ms (la línea de lado, el mapa de norte a sur). La barra inferior sube o baja, y la marca de la pestaña se desliza.
+  - **Anterior y Siguiente:** el punto del mini-mapa (ahora un elemento HTML) viaja de un lugar al otro en 400 ms, sin estela; si el evento nuevo es de una zona, se funde. La marca de la regla corre y, en las historias, avanza el paso. La ficha y la barra de la historia quedan quietas.
+  - **Nombres de transición:** las marcas de pestaña y de nivel tienen nombre solo en las transiciones donde se mueven, y nunca hay más de 4 nombres puestos al vuelo.
+  - **La lámina crece desde cualquier miniatura:** resultados de búsqueda, eventos del mapa y destacado de la portada, no solo la línea. Al presionar se pide la imagen grande con el mismo `srcset` que el detalle.
+  - **Listas escalonadas:** historias, fichas, regiones y eventos del mapa; 30 ms entre elementos, 6 escalones como máximo.
+  - **Verificado** con las animaciones de la página (`getAnimations`) a los 60 ms: corren con los nombres esperados y, al terminar, no queda ningún nombre ni `data-transicion`.
