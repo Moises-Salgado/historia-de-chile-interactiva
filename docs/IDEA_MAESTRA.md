@@ -72,7 +72,7 @@ Chile es una franja larga que se recorre en dos direcciones: de izquierda a dere
 - **D · Detalle tipo revista (hecha).**
   - **Portada sobre el océano:** el titular (período, título, fecha, «hace…» y lugar) y la imagen completa, sin recortar, con su pie y crédito debajo. De fondo va la misma imagen difuminada al 20 %. Los textos claros superan 5:1 aunque la imagen sea blanca.
   - **Grupos, historias y personajes** usan la misma portada, con curvas de nivel en vez de imagen.
-  - **Ficha lateral** (fija al desplazar): un mini-mapa con la silueta de Chile y los lugares del evento, las franjas de sus zonas o todo el país en cobre, más el lugar, el período, «Ver en el mapa», la regla del tiempo, los temas y los personajes. Para las zonas basta un resumen de latitudes por región, de 0,3 KB (, que también escribe ).
+  - **Ficha lateral** (fija al desplazar): un mini-mapa con la silueta de Chile y los lugares del evento, las franjas de sus zonas o todo el país en cobre, más el lugar, el período, «Ver en el mapa», la regla del tiempo, los temas y los personajes. Para las zonas basta un resumen de latitudes por región, de 0,3 KB (`src/chile-latitudes.json`, que también escribe `generar-mapa.mjs`).
   - **El «¿Sabías que…?»** va como cita con filete de cobre.
   - **Medido:** en celular (390×844), el título y la imagen caben en la primera pantalla; también en escritorio y en los pasos de historia.
 
