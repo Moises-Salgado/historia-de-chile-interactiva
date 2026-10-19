@@ -65,12 +65,22 @@ const ficha = (ev, color, nivel, dato) => `
 // Barra de una historia guiada: nombre, «Paso N de M» y una fila de marcas (la actual, resaltada).
 const barraHistoria = ({ recorrido, paso }) => `
   <nav class="historia-barra" aria-label="Historia guiada">
-    <p class="historia-nombre"><a href="#historias">Historias guiadas</a> <span aria-hidden="true">›</span> ${esc(recorrido.titulo)}</p>
+    <p class="historia-nombre"><a href="${recorrido.origen?.href ?? '#historias'}">${esc(recorrido.origen?.texto ?? 'Historias guiadas')}</a> <span aria-hidden="true">›</span> ${esc(recorrido.titulo)}</p>
     <p class="historia-paso">Paso ${paso} de ${recorrido.eventos.length}</p>
     <ol class="historia-pasos" aria-hidden="true">${recorrido.eventos
       .map((_, i) => `<li${i + 1 === paso ? ' class="actual"' : i + 1 < paso ? ' class="antes"' : ''}></li>`)
       .join('')}</ol>
   </nav>`;
+
+// Dirección para compartir y citar un evento: su página propia (e/<id>.html, la genera vite.config.js), que
+// lleva su título y su resumen a la vista previa de WhatsApp, Classroom o un correo, y abre el evento.
+export const urlCompartir = (ev) => new URL(`e/${ev.id}.html`, location.href.split('#')[0]).href;
+const hoyTexto = () => new Intl.DateTimeFormat('es-CL', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
+// «¿Encontraste un error?»: abre un aviso en el repositorio (no pide ni muestra ningún correo).
+const urlReporte = (ev) =>
+  `https://github.com/Moises-Salgado/historia-de-chile-interactiva/issues/new?title=${encodeURIComponent(`Error en «${ev.titulo}»`)}&body=${encodeURIComponent(
+    `Evento: ${ev.id}\n\nQué está mal:\n\nCuál es la fuente que lo corrige:\n`,
+  )}`;
 
 // Portada de cada vista, sobre el océano con curvas de nivel: ceja, título y, si hay, la imagen completa con
 // su pie y crédito.
@@ -254,15 +264,18 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
     const img = ev.imagen;
     const cuerpo = () => PARRAFOS[nivel](ev).map((x) => `<p>${esc(x)}</p>`).join('');
     const r = historia?.recorrido;
+    // Una secuencia armada por un docente (#secuencia/…) trae sus propias direcciones de paso y su salida.
+    const rutaPaso = (n) => r?.ruta?.(n) ?? `#historia/${r.id}/${n}`;
+    const salida = r?.salida ?? { href: '#historias', texto: 'Elegir otra historia' };
     const vecinos = historia
       ? `<nav class="vecinos" aria-label="Pasos de la historia">${vecino(antes, 'antes', colorDe, {
-          href: `#historia/${r.id}/${historia.paso - 1}`,
+          href: rutaPaso(historia.paso - 1),
           rotulo: 'Paso anterior',
           vacio: 'Este es el primer paso.',
         })}${vecino(despues, 'despues', colorDe, {
-          href: `#historia/${r.id}/${historia.paso + 1}`,
+          href: rutaPaso(historia.paso + 1),
           rotulo: 'Paso siguiente',
-          vacio: `Este es el último paso de «${esc(r.titulo)}». <a class="boton chico vecino-salida" href="#historias">Elegir otra historia</a>`,
+          vacio: `Este es el último paso de «${esc(r.titulo)}». <a class="boton chico vecino-salida" href="${salida.href}">${esc(salida.texto)}</a>`,
         })}</nav>`
       : `<nav class="vecinos" aria-label="Eventos anterior y siguiente">${vecino(antes, 'antes', colorDe)}${vecino(despues, 'despues', colorDe)}</nav>`;
 
@@ -313,7 +326,10 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
                 <div><dt>Período</dt><dd class="ficha-periodo">${esc(p.nombre)} <span class="ficha-fechas">${esc(p.fechasTexto)}</span></dd></div>
               </dl>
             </div>
-            ${ruta ? `<a class="boton chico ver-en-mapa" href="${ruta}">Ver en el mapa</a>` : ''}
+            <div class="ficha-acciones">
+              ${ruta ? `<a class="boton chico ver-en-mapa" href="${ruta}">${icono('alfiler')}<span>Ver en el mapa</span></a>` : ''}
+              <button type="button" class="boton chico" data-accion="compartir" data-id="${ev.id}">${icono('compartir')}<span>Compartir</span></button>
+            </div>
             ${regla}
             ${temasDe.length ? `<p class="etiquetas"><span class="solo-lector">Temas: </span>${temasDe.join('')}</p>` : ''}
             ${personajes(ev)}
@@ -325,6 +341,13 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
             <details class="plegable">
               <summary><span class="para-nino">¿Cómo lo sabemos?</span><span class="no-nino">Fuentes</span> (${ev.fuentes.length})</summary>
               <ul class="fuentes">${listaFuentes(ev.fuentes)}</ul>
+              <p class="reportar">${externo(urlReporte(ev), '¿Encontraste un error? Avísanos (en GitHub)')}</p>
+            </details>
+            <details class="plegable cita">
+              <summary>Cómo citar</summary>
+              <p class="cita-texto">«${esc(ev.titulo)}». <i>Historia de Chile Interactiva</i>. Consultado el ${hoyTexto()}. ${esc(urlCompartir(ev))}</p>
+              <p>Para un trabajo, cita también las fuentes originales (arriba).</p>
+              <button type="button" class="boton chico" data-accion="copiar-cita">${icono('copiar')}<span>Copiar la cita</span></button>
             </details>
           </div>
         </div>
@@ -380,6 +403,20 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
   }
 
   /** La lista de historias guiadas. */
+  // Página de texto («Acerca de», «Para docentes»: src/paginas.js) con la misma portada, sin imagen.
+  function mostrarPagina({ ceja, titulo, intro = '', html }, { enfocar = true } = {}) {
+    iniciar({ pagina: true });
+    raiz.style.removeProperty('--color');
+    pintar(
+      `
+      <div class="detalle-revista">
+      ${portada({ ceja, titulo, debajo: intro ? `<p class="vista-intro">${intro}</p>` : '' })}
+      <div class="detalle-contenido vista-lista pagina">${html}</div>
+      </div>`,
+      enfocar,
+    );
+  }
+
   function mostrarHistorias(recorridos, { enfocar = true } = {}) {
     iniciar({ historias: true });
     raiz.style.removeProperty('--color');
@@ -411,7 +448,8 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
                 <span class="puerta-bajada">${esc(r.descripcion)}</span>
                 <span class="historia-avance">${accion} ${icono('siguiente')}</span>
               </span>
-            </a></li>`;
+            </a>
+            <button type="button" class="boton chico historia-guardar" data-accion="guardar-historia" data-historia="${r.id}">${icono('copiar')}<span>Guardar para usar sin conexión</span></button></li>`;
             })
             .join('')}</ul>
         </div>
@@ -468,6 +506,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
     mostrar,
     mostrarGrupo,
     mostrarHistorias,
+    mostrarPagina,
     mostrarPersonaje,
     ocultar,
     ponerNivel,

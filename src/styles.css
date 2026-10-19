@@ -1150,31 +1150,8 @@ body[data-vista='detalle'] .linea {
   max-width: 65%;
 }
 
-/* Historias guiadas (detalle.js) como puertas: mosaico a sangre con las imágenes de sus primeros pasos y,
-   encima, el título, la descripción y el avance. El degradado va con el texto y llega a 0,85 donde empieza
-   la ceja, sea cual sea el alto de la tarjeta (en el celular la descripción ocupa más líneas). */
-.historias-lista {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
-  gap: 1rem;
-  margin: 0 0 1.5rem;
-  padding: 0;
-  list-style: none;
-}
-
-.historia-puerta {
-  min-height: 18rem;
-}
-
-.historia-puerta::after {
-  background: rgb(8 25 31 / 0.15);
-}
-
-.historia-puerta .puerta-texto {
-  padding-top: 3rem;
-  background: linear-gradient(180deg, rgb(8 25 31 / 0), rgb(8 25 31 / 0.85) 2.5rem, rgb(8 25 31 / 0.95));
-}
-
+/* Mosaico de imágenes de una puerta: la de «Historias» en la portada y las de cada historia guiada
+   (src/vistas.css). */
 .puerta-mosaico {
   position: absolute;
   inset: 0;
@@ -1187,20 +1164,6 @@ body[data-vista='detalle'] .linea {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.historia-puerta .ceja,
-.historia-avance {
-  color: var(--cobre-claro);
-}
-
-.historia-avance {
-  margin-top: 0.375rem;
-  font-family: var(--rotulo);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .inicio-cuerpo {
@@ -3469,173 +3432,6 @@ body[data-vista='detalle'] .minimapa-fila {
   background: var(--fondo);
 }
 
-/* ---- Vistas en lista: grupo, historias guiadas y ficha de personaje ---- */
-/* Las listas comparten el borde izquierdo con el titular (76rem); las fichas de texto, a lo más 54rem. */
-.detalle-contenido.vista-lista {
-  max-width: 76rem;
-  margin: 0 auto;
-  padding: 1.5rem 1rem 2rem;
-}
-
-.vista-lista :is(.fichas, .vecinos, .sobre-periodo, .ayuda) {
-  max-width: 54rem;
-}
-
-.fichas {
-  display: grid;
-  gap: 0.75rem;
-  margin: 0 0 1.5rem;
-  padding: 0;
-  list-style: none;
-}
-
-.ficha {
-  display: flex;
-  gap: 1rem;
-  padding: 0.75rem;
-  color: var(--texto);
-  text-decoration: none;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-left: 0.3125rem solid var(--color);
-  border-radius: var(--radio);
-  transition:
-    border-color var(--dur-micro) ease,
-    scale var(--dur-micro) ease;
-}
-
-@media (hover: hover) {
-  .ficha:hover {
-    border-color: var(--acento);
-    border-left-color: var(--color);
-  }
-}
-
-.ficha:active {
-  scale: 0.98;
-}
-
-.ficha-img {
-  flex: none;
-  width: 6rem;
-  height: 6rem;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
-  border-radius: 0.25rem;
-}
-
-.ficha-img > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ficha-texto {
-  display: grid;
-  align-content: start;
-  gap: 0.25rem;
-  min-width: 0;
-}
-
-.ficha-meta {
-  color: var(--texto-suave);
-}
-
-.ficha-titulo {
-  font-family: var(--serif);
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-.ficha-accion {
-  font-weight: 700;
-  color: var(--acento);
-}
-
-/* En la lista basta el comienzo del resumen: la ficha lleva al evento completo. */
-/* El resumen va completo: cortado, en un tema sensible podía perder «existen distintas interpretaciones». */
-.ficha-resumen {
-  display: block;
-}
-
-/* En celular el texto rodea la imagen (en dos columnas quedaría de cuatro palabras por línea). */
-@media (max-width: 30em) {
-  .ficha {
-    display: block;
-  }
-
-  .ficha::after {
-    display: block;
-    clear: both;
-    content: '';
-  }
-
-  .ficha-img {
-    float: left;
-    width: 4.5rem;
-    height: 4.5rem;
-    margin: 0 0.75rem 0.25rem 0;
-  }
-
-  .ficha-texto,
-  .ficha-texto > span:not(.ficha-resumen) {
-    display: block;
-  }
-}
-
-/* Paso de una historia guiada: barra con el nombre, «Paso N de M» y la posición en el recorrido (arriba de
-   la portada). */
-.historia-barra {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.25rem 1rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
-}
-
-.historia-barra p {
-  margin: 0;
-}
-
-.historia-paso {
-  font-family: var(--rotulo);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.historia-pasos {
-  display: flex;
-  flex: 1 1 8rem;
-  gap: 0.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.historia-pasos li {
-  flex: 1;
-  height: 0.5rem;
-  background: var(--superficie-2);
-  border: 1px solid var(--borde);
-  border-radius: 0.25rem;
-}
-
-.historia-pasos li.antes {
-  background: var(--borde-fuerte);
-}
-
-.historia-pasos li.actual {
-  background: var(--acento);
-  border-color: var(--acento);
-}
-
 /* «¿Sabías que…?»: una frase textual del detalle, como cita destacada con filete de cobre (en «Detallado»
    ya está en el texto). */
 .sabias-que {
@@ -3989,6 +3785,73 @@ body[data-vista='detalle'] .minimapa-fila {
   }
 }
 
+/* ---- Compartir, citar y guardar (mvp 7) ---- */
+.ficha-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ficha-acciones .icono {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.reportar {
+  margin: 0.25rem 0 1rem;
+}
+
+.cita-texto {
+  padding: 0.75rem 1rem;
+  background: var(--superficie);
+  border-left: 3px solid var(--cobre-vivo);
+  border-radius: 0 var(--radio) var(--radio) 0;
+  overflow-wrap: anywhere;
+}
+
+/* ---- Pie de la portada, tipo colofón: qué es, criterios, fuentes, código y créditos ---- */
+.colofon {
+  margin-top: 1rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem) 1rem;
+  border-top: 3px solid var(--rojo);
+}
+
+.colofon-contenido {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 76rem;
+  margin: 0 auto;
+}
+
+.colofon-marca {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: var(--t-4);
+  font-weight: 600;
+}
+
+.colofon-enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.colofon-enlaces a {
+  display: inline-block;
+  padding-block: 0.375rem;
+  color: var(--acento);
+}
+
+.colofon-creditos,
+.colofon .inicio-creditos {
+  max-width: 60rem;
+  margin: 0;
+  color: var(--texto-suave);
+}
+
 /* ---- Listas que aparecen (historias, fichas de un personaje o de un grupo, regiones y eventos del mapa): sus
    elementos entran escalonados, 30 ms entre uno y otro y a lo más 6 escalones (400 ms en total). Con
    movimiento reducido, aparecen de inmediato. ---- */
@@ -4218,6 +4081,11 @@ body[data-vista='detalle'] .minimapa-fila {
   }
 }
 
+/* Mientras llegan los textos o el CSS de una vista (main.js, la primera vez). */
+html[data-cargando] {
+  cursor: progress;
+}
+
 /* ---- Aviso a la vista (main.js): un enlace que no existe o la falta de conexión. Va arriba del contenido,
    sobre lo que esté abierto, y se cierra solo o con su botón; el lector de pantalla ya lo oyó por #avisos. ---- */
 .aviso {
@@ -4264,8 +4132,7 @@ body[data-vista='detalle'] .minimapa-fila {
 
   .destacado-marco,
   .vecino-img,
-  .resultado-img,
-  .ficha-img {
+  .resultado-img {
     background: var(--superficie-2);
   }
 

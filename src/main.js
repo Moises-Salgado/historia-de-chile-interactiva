@@ -2,12 +2,12 @@
 // hash: #inicio, #linea, #mapa (y #mapa/<región>, #mapa/zona/<id>, #mapa/chile, #mapa/fuera, #lugar/<id>),
 // #evento/<id>, #grupo/<id>, #historias, #historia/<id>/<paso> y #personaje/<nombre>.
 import './styles.css';
-import { cargarDatos } from './datos.js';
-import { crearDetalle, imagenDetalle } from './detalle.js';
+import { cargarDatos, cargarTextos } from './datos.js';
+import { crearDetalle, imagenDetalle, urlCompartir } from './detalle.js';
 import { crearFiltros } from './filtros.js';
 import { crearInicio } from './inicio.js';
 import { crearLineaDeTiempo } from './timeline.js';
-import { conTransicion, guardarPreferencia, icono, leerPreferencia, movimientoReducido, normalizar, urlPlaceholder } from './util.js';
+import { conTransicion, guardarPreferencia, icono, leerPreferencia, movimientoReducido, normalizar, urlImagen, urlPlaceholder } from './util.js';
 
 // Si se llega directo al mapa, su módulo se pide de inmediato, mientras se arma el resto de la app.
 if (document.documentElement.dataset.base === 'mapa') import('./mapa.js').catch(() => {});
@@ -71,6 +71,61 @@ function retirarAviso(clave) {
   if (aviso.dataset.clave === clave) aviso.hidden = true;
 }
 aviso.querySelector('button').addEventListener('click', () => (aviso.hidden = true));
+
+// Copiar al portapapeles (un enlace, una cita) y decirlo; si el navegador no lo permite, se explica qué hacer.
+async function copiar(texto, mensaje) {
+  try {
+    await navigator.clipboard.writeText(texto);
+    avisar(mensaje, { duracion: 4000 });
+  } catch {
+    avisar('No se pudo copiar. Selecciona el texto y cópialo con el menú del navegador.');
+  }
+}
+
+// «Compartir» un evento: con el menú del sistema si existe (celulares) o copiando su enlace. El enlace es su
+// página propia (e/<id>.html), que muestra su título y su resumen al pegarlo en un chat o en Classroom.
+async function compartir(ev) {
+  const url = urlCompartir(ev);
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: `${ev.titulo} · ${TITULO}`, url });
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+    }
+  }
+  copiar(url, 'Enlace copiado: al pegarlo se verá con el título del evento.');
+}
+
+// «Guardar para usar sin conexión»: pide las imágenes de una historia (las que usan sus láminas y su detalle) para
+// que el Service Worker las guarde; el resto del sitio ya se guarda solo. De a una, para no saturar a Commons.
+async function guardarHistoria(id) {
+  const r = recorridoPorId.get(id);
+  if (!r) return;
+  if (!navigator.serviceWorker?.controller) {
+    avisar('Guardar sin conexión funciona en el sitio publicado, con el navegador conectado a internet.');
+    return;
+  }
+  avisar(`Guardando «${r.titulo}»…`, { duracion: 0, clave: 'guardar' });
+  let fallidas = 0;
+  for (const ev of r.eventos) {
+    for (const ancho of [250, 500, 800]) {
+      const ok = await new Promise((listo) => {
+        const img = new Image();
+        img.onload = () => listo(true);
+        img.onerror = () => listo(false);
+        img.src = urlImagen(ev.imagen.archivo, ancho);
+      });
+      if (!ok) fallidas++;
+    }
+  }
+  avisar(
+    fallidas
+      ? `Se guardó una parte de «${r.titulo}»: ${fallidas} imágenes no llegaron. Prueba de nuevo con mejor conexión.`
+      : `Listo: «${r.titulo}» quedó guardada en este navegador. En iPhone, Safari la borra si no abres el sitio en 7 días, salvo que lo agregues a la pantalla de inicio.`,
+    { duracion: 10000, clave: 'guardar' },
+  );
+}
 
 // Imagen que carga: aparece con un fundido sobre el tono del período (styles.css).
 document.addEventListener(
@@ -388,9 +443,36 @@ function vistaDeRuta(hash = location.hash) {
   }
   m = /^#personaje\/([a-z0-9-]+)$/.exec(hash);
   if (m) return personajes.has(m[1]) ? { tipo: 'personaje', persona: personajes.get(m[1]) } : { tipo: 'desconocida' };
+  if (hash === '#acerca' || hash === '#docentes') return { tipo: 'pagina', id: hash.slice(1) };
+  // Secuencia armada por un docente (#docentes): eventos elegidos, en orden cronológico, como una historia.
+  m = /^#secuencia\/([a-z0-9,-]+?)(?:\/(\d+))?$/.exec(hash);
+  if (m) {
+    const ids = [...new Set(m[1].split(','))];
+    const lista = ids.map((id) => porId.get(id)).filter(Boolean).sort((a, b) => eventos.indexOf(a) - eventos.indexOf(b));
+    const paso = Number(m[2] ?? 1);
+    if (lista.length < 2 || lista.length > 20 || lista.length !== ids.length || paso < 1 || paso > lista.length) return { tipo: 'desconocida' };
+    const clave = lista.map((ev) => ev.id).join(',');
+    const recorrido = {
+      id: 'secuencia',
+      titulo: 'Secuencia para la clase',
+      eventos: lista,
+      origen: { href: '#docentes', texto: 'Para docentes' },
+      salida: { href: '#linea', texto: 'Ir a la línea de tiempo' },
+      ruta: (n) => `#secuencia/${clave}/${n}`,
+    };
+    return { tipo: 'historia', recorrido, paso, ev: lista[paso - 1] };
+  }
   return null;
 }
-const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje|mapa|lugar)\/|^#(?:historias|inicio|linea|mapa)$/.test(hash);
+const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje|mapa|lugar|secuencia)\/|^#(?:historias|inicio|linea|mapa|acerca|docentes)$/.test(hash);
+
+// Las vistas en lista, el paso de una historia y las páginas de texto traen su CSS a pedido (src/vistas.css), y
+// «Acerca de» y «Para docentes», también su contenido (src/paginas.js); si no llegan, se ofrece recargar.
+const CON_ESTILOS = new Set(['historias', 'historia', 'grupo', 'personaje', 'pagina']);
+let estilosVistas = false;
+let paginas = null;
+let pedido = 0;
+const datosPaginas = { eventos, periodos, recorridos };
 
 // Desde una sección se agrega una entrada al historial; entre vistas se reemplaza, así «Volver» (y el botón
 // Atrás del navegador) regresa a la sección. La ficha de un personaje sí se agrega: «Volver» desde ella
@@ -491,8 +573,9 @@ function pintarVista(vista, desdeBoton) {
     const antes = r.eventos[paso - 2] ?? null;
     const despues = r.eventos[paso] ?? null;
     detalle.mostrar(ev, { antes, despues, nivel, regla: linea.regla(ev), enfocar, historia: { recorrido: r, paso } });
-    // Después del último paso, «Siguiente» lleva a elegir otra historia.
-    nav = { antes: antes && `#historia/${r.id}/${paso - 1}`, despues: despues ? `#historia/${r.id}/${paso + 1}` : '#historias' };
+    // Después del último paso, «Siguiente» lleva a elegir otra historia (en una secuencia, a la línea de tiempo).
+    const rutaPaso = (n) => r.ruta?.(n) ?? `#historia/${r.id}/${n}`;
+    nav = { antes: antes && rutaPaso(paso - 1), despues: despues ? rutaPaso(paso + 1) : (r.salida?.href ?? '#historias') };
     titulo = `${ev.titulo} · ${r.titulo}`;
     anunciar(`${r.titulo}, paso ${paso} de ${r.eventos.length}${desdeBoton ? `: ${ev.fechaTexto}, ${ev.titulo}` : ''}`);
   } else if (vista.tipo === 'grupo') {
@@ -507,6 +590,12 @@ function pintarVista(vista, desdeBoton) {
     detalle.mostrarHistorias(recorridos, { enfocar });
     nav = { antes: null, despues: null };
     titulo = 'Historias guiadas';
+  } else if (vista.tipo === 'pagina') {
+    const contenido = paginas.pagina(vista.id, datosPaginas);
+    detalle.mostrarPagina(contenido, { enfocar });
+    paginas.activar(elDetalle.querySelector('.pagina'), { eventos, copiar, avisar });
+    nav = { antes: null, despues: null };
+    titulo = contenido.titulo;
   } else {
     const { persona } = vista;
     detalle.mostrarPersonaje(persona, { nivel, regla: linea.regla(persona.eventos), enfocar });
@@ -559,6 +648,10 @@ document.addEventListener(
     const id = enlace?.dataset.id ?? enlace?.getAttribute('href')?.slice('#evento/'.length);
     const ev = porId.get(id);
     origen = img && ev ? { img, id } : null;
+    // Sus textos se piden ya, también al elegir una lámina de la línea de tiempo (lo siguiente suele ser «Leer»);
+    // si fallan, mostrarVista vuelve a intentarlo.
+    const paraLeer = ev ?? porId.get(e.target.closest('li.evento')?.dataset.id);
+    if (paraLeer) cargarTextos([paraLeer])?.catch(() => {});
     if (ev && e.pointerType !== 'touch') {
       // sizes y srcset antes que src: así se pide solo la versión que usará el detalle.
       const { src, srcset, sizes } = imagenDetalle(ev.imagen.archivo);
@@ -574,6 +667,24 @@ const origenDe = (ev) => {
 };
 
 function mostrarVista(vista, desdeBoton) {
+  const faltan = [
+    CON_ESTILOS.has(vista.tipo) && !estilosVistas && import('./vistas.css').then(() => (estilosVistas = true)),
+    vista.tipo === 'pagina' && !paginas && import('./paginas.js').then((m) => (paginas = m)),
+    // El evento abierto lleva su detalle y sus fuentes; «Para docentes» calcula la duración de las historias.
+    cargarTextos(vista.ev ? [vista.ev] : vista.tipo === 'pagina' && vista.id === 'docentes' ? eventos : []),
+  ].filter(Boolean);
+  if (faltan.length) {
+    const [turno, hash] = [++pedido, location.hash];
+    raiz.dataset.cargando = '';
+    Promise.all(faltan)
+      .then(() => turno === pedido && location.hash === hash && mostrarVista(vista, desdeBoton))
+      .catch((error) => {
+        console.error(error);
+        avisar('No se pudo cargar esta vista (sin conexión o con una versión nueva del sitio). Recarga la página para intentarlo de nuevo.');
+      })
+      .finally(() => turno === pedido && delete raiz.dataset.cargando);
+    return;
+  }
   const previa = vistaActual;
   const aplicar = () => pintarVista(vista, desdeBoton);
   if (detalle.abierto) {
@@ -654,6 +765,14 @@ function actualizarInert() {
   elDetalle.inert = filtros.abierto;
   controles.hidden = filtros.abierto;
 }
+
+// Acciones del detalle: compartir un evento, copiar su cita y guardar una historia para usar sin conexión.
+elDetalle.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-accion]');
+  if (b?.dataset.accion === 'compartir') compartir(porId.get(b.dataset.id));
+  else if (b?.dataset.accion === 'copiar-cita') copiar(b.closest('.cita').querySelector('.cita-texto').textContent, 'Cita copiada.');
+  else if (b?.dataset.accion === 'guardar-historia') guardarHistoria(b.dataset.historia);
+});
 
 // Enlaces internos (#evento/…, #historias…): navegan sin recargar y sin llenar el historial.
 document.addEventListener('click', (e) => {

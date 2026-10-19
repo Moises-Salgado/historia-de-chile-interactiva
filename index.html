@@ -7,6 +7,21 @@
     <meta name="theme-color" content="#0f2c36" />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/iconos/icono-180.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <!-- Vista previa al compartir: la misma tarjeta de marca para todo el sitio (cada evento tiene su página con
+         su título y su resumen: vite.config.js, e/<id>.html). Las URL deben ser absolutas. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Historia de Chile Interactiva" />
+    <meta property="og:title" content="Historia de Chile Interactiva" />
+    <meta property="og:description" content="La historia de Chile en el tiempo y en el territorio, con imágenes de época y textos para todas las edades." />
+    <meta property="og:url" content="https://moises-salgado.github.io/historia-de-chile-interactiva/" />
+    <meta property="og:image" content="https://moises-salgado.github.io/historia-de-chile-interactiva/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Historia de Chile Interactiva: un atlas de la historia de Chile, con la silueta del país sobre el océano." />
+    <meta property="og:locale" content="es_CL" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="preload" href="/src/fonts/source-serif-4-semibold-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/src/fonts/barlow-condensed-semibold-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preconnect" href="https://commons.wikimedia.org" />
@@ -14,13 +29,15 @@
     <title>Historia de Chile Interactiva</title>
     <script>
       // Antes de pintar: sin dirección (o con #inicio) se ve la portada; con otra, la línea de tiempo (main.js
-      // decide el resto al cargar). Las fotos de las puertas (loading=lazy) se piden de inmediato solo si se
-      // ve la portada: con un enlace directo a un evento no se descargan.
+      // decide el resto al cargar). «Acerca de» y «Para docentes» se abren sobre la portada, que las enlaza en
+      // su pie. Las fotos de las puertas (loading=lazy) se piden de inmediato solo si se ve la portada: con un
+      // enlace directo a un evento no se descargan.
       (() => {
         const h = location.hash;
-        const base = /^#?(?:inicio)?$/.test(h) ? 'inicio' : /^#(?:mapa|lugar)(?:\/|$)/.test(h) ? 'mapa' : 'linea';
+        const portada = /^#?(?:inicio)?$/.test(h);
+        const base = portada || /^#(?:acerca|docentes)$/.test(h) ? 'inicio' : /^#(?:mapa|lugar)(?:\/|$)/.test(h) ? 'mapa' : 'linea';
         document.documentElement.dataset.base = base;
-        if (base !== 'inicio') return;
+        if (!portada) return;
         // La llegada a la portada se anima solo la primera vez en la sesión (styles.css, [data-llegada]); se
         // marca aquí, antes de pintar, para que las puertas no aparezcan quietas y luego salten.
         try {
@@ -213,8 +230,22 @@
             <h2 id="epocas-titulo">Los períodos de la historia</h2>
             <ol class="epocas-lista"></ol>
           </section>
-          <p class="inicio-creditos credito"></p>
         </div>
+        <footer class="colofon oceano">
+          <div class="colofon-contenido">
+            <p class="colofon-marca">Historia de Chile Interactiva</p>
+            <nav aria-label="Sobre el sitio">
+              <ul class="colofon-enlaces">
+                <li><a href="#acerca">Acerca del proyecto</a></li>
+                <li><a href="#docentes">Para docentes</a></li>
+                <li><a href="https://github.com/Moises-Salgado/historia-de-chile-interactiva/blob/main/docs/FUENTES.md" target="_blank" rel="noopener">Fuentes de cada evento<span class="solo-lector"> (se abre en otra pestaña)</span></a></li>
+                <li><a href="https://github.com/Moises-Salgado/historia-de-chile-interactiva" target="_blank" rel="noopener">Código<span class="solo-lector"> (se abre en otra pestaña)</span></a></li>
+              </ul>
+            </nav>
+            <p class="colofon-creditos">Imágenes de Wikimedia Commons, con su autor y licencia junto a cada una. Mapa: Natural Earth y Wikidata. Letras: Source Serif 4 y Barlow Condensed (SIL Open Font License).</p>
+            <p class="inicio-creditos credito"></p>
+          </div>
+        </footer>
       </section>
 
       <section id="mapa" class="mapa" aria-labelledby="mapa-titulo">

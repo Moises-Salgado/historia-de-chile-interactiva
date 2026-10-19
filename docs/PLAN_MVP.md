@@ -244,3 +244,20 @@ Pedido del dueño (2026-10-19): dejar la app «bonita», con más animación y a
     - Imagen más alta.
     - Sin «¿Qué edad tenías?» ni «Tu recorrido».
   - **Pendiente:** el paspartú según la orientación de la imagen queda para cuando la proporción esté en los datos, porque calcularla al cargar movería la página (CLS).
+- **M7 · Compartir, instalar, acerca de y docentes (hecha).**
+  - **Instalar:** `manifest.webmanifest` con íconos de 192, 512 y 512 *maskable*, `apple-touch-icon` de 180 y atajos a la línea, el mapa y las historias.
+  - **Compartir:**
+    - «Compartir» en la ficha de cada evento: el menú del sistema en el celular o, si no hay, copia el enlace.
+    - El enlace es `e/<id>.html`: 121 páginas de alrededor de 1 KB, con el título, el `resumenNino` entero y la tarjeta de marca (`og.png`, 1200 × 630). Quien la abre pasa al evento. No se guardan para usar sin conexión.
+  - **Citar y avisar de un error:** «Cómo citar», con la fecha de consulta y «Copiar»; junto a las fuentes, un enlace abre un aviso en GitHub con el evento ya escrito.
+  - **`#acerca`:** criterios, temas sensibles, licencias, qué se guarda en el navegador (con «Borrar mis datos», en dos toques), cómo avisar de un error y cómo citar el sitio.
+  - **`#docentes`:**
+    - Proyectar, enlazar e imprimir.
+    - Duración de cada historia por nivel, a 130 palabras por minuto.
+    - «Arma tu secuencia»: de 2 a 20 eventos en `#secuencia/<ids>`, que se recorre como una historia.
+    - Las dos páginas se abren sobre la portada, que las enlaza en su pie (tipo colofón).
+  - **Guardar una historia sin conexión:** desde «Historias», pide sus imágenes de a una. El aviso final explica que en iPhone Safari las borra a los 7 días sin uso.
+  - **Peso:**
+    - El detalle y las fuentes de cada evento salieron de la carga inicial: un archivo por período, de 5 a 8 KB, que se pide al abrir un evento (o antes, al presionar su lámina o su enlace). El Service Worker los guarda con el resto. La carga inicial bajó de 140,9 a 99,3 KB gzip, por debajo de los 133,6 de antes del plan.
+    - El CSS de las listas, del paso de historia y de las páginas pasó a `src/vistas.css` (1,2 KB, a pedido). Para comprobar que el orden no cambia nada, se pusieron sus reglas al principio y al final de la cascada en 24 vistas y modos: solo varía el alto mínimo de las puertas de historias, cuya regla ya ganaba antes.
+    - `npm run presupuesto` revisa también `mapa.css` y `vistas.css`, y cuenta los textos aparte.

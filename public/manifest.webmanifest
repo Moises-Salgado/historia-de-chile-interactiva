@@ -1,0 +1,22 @@
+{
+  "name": "Historia de Chile Interactiva",
+  "short_name": "Historia de Chile",
+  "description": "La historia de Chile en una línea de tiempo y un mapa, con imágenes de época y textos para niños, público general y lectores que quieren profundizar.",
+  "lang": "es-CL",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f2c36",
+  "theme_color": "#0f2c36",
+  "icons": [
+    { "src": "iconos/icono-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "iconos/icono-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "iconos/icono-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Línea de tiempo", "url": "./#linea", "icons": [{ "src": "iconos/icono-192.png", "sizes": "192x192" }] },
+    { "name": "Mapa de Chile", "url": "./#mapa", "icons": [{ "src": "iconos/icono-192.png", "sizes": "192x192" }] },
+    { "name": "Historias guiadas", "url": "./#historias", "icons": [{ "src": "iconos/icono-192.png", "sizes": "192x192" }] }
+  ]
+}

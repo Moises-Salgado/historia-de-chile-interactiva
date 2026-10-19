@@ -29,6 +29,7 @@ const pedidos = new Set([...html.matchAll(/(?:src|href)="\.?\/?(assets\/[^"]+\.(
 const activos = readdirSync(join(DIST, 'assets')).filter((a) => /\.(js|css)$/.test(a));
 let inicial = 0;
 let modulos = 0;
+let textos = 0;
 console.log('Peso gzip (KB)');
 for (const a of activos.sort()) {
   const peso = gz(join(DIST, 'assets', a));
@@ -36,6 +37,11 @@ for (const a of activos.sort()) {
   if (pedidos.has(ruta)) {
     inicial += peso;
     console.log(`  inicial  ${f(peso)}  ${a}`);
+  } else if (/^\d\d-/.test(a)) {
+    // Detalle y fuentes de los eventos de un período (mvp 7): salieron de la carga inicial, no son peso nuevo.
+    textos += peso;
+    console.log(`  textos   ${f(peso)}  ${a}`);
+    if (peso > TOPE.modulo) errores.push(`${a} pesa ${peso.toFixed(2)} KB (tope ${TOPE.modulo} por archivo).`);
   } else if (a.startsWith('mapa-')) {
     // Su CSS (src/mapa.css) salió de la carga inicial (mvp 5): tiene su propio tope.
     const tope = a.endsWith('.css') ? TOPE.mapaCss : BASE.mapa + TOPE.mapaExtra;
@@ -50,6 +56,7 @@ for (const a of activos.sort()) {
 const topeInicial = BASE.inicial + TOPE.extraInicial;
 console.log(`  Carga inicial: ${inicial.toFixed(2)} KB (antes del plan ${BASE.inicial.toFixed(2)}, tope ${topeInicial.toFixed(2)})`);
 console.log(`  Módulos nuevos a pedido: ${modulos.toFixed(2)} KB (tope ${TOPE.modulosTotal})`);
+console.log(`  Textos de los eventos, al abrir uno: ${textos.toFixed(2)} KB en total (antes, en la carga inicial)`);
 if (inicial > topeInicial) errores.push(`La carga inicial pesa ${inicial.toFixed(2)} KB (tope ${topeInicial.toFixed(2)}).`);
 if (modulos > TOPE.modulosTotal) errores.push(`Los módulos a pedido suman ${modulos.toFixed(2)} KB (tope ${TOPE.modulosTotal}).`);
 
@@ -63,23 +70,25 @@ if (existsSync(join(DIST, 'e'))) {
 
 // ---- CSS: letra de 1rem o más, duraciones de 400 ms o menos y nada en bucle ----
 // Sin comentarios, pero con sus saltos de línea: así el número de línea calza con el archivo.
-const css = readFileSync('src/styles.css', 'utf8').replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, ' '));
-const linea = (i) => css.slice(0, i).split('\n').length;
-// El primer valor fijo de la declaración (en max(), clamp() o calc(), el mínimo va primero).
-for (const m of css.matchAll(/font-size:\s*([^;}]+)/g)) {
-  const valor = m[1].trim();
-  const n = /(-?[\d.]+)(rem|px)\b/.exec(valor);
-  if (!n) continue;
-  const rem = n[2] === 'px' ? Number(n[1]) / 18 : Number(n[1]);
-  if (/^min\(/.test(valor)) avisos.push(`font-size con min() (línea ~${linea(m.index)}): revisar que no baje de 1rem.`);
-  else if (rem < 1) errores.push(`font-size bajo 1rem (línea ~${linea(m.index)}): ${valor}`);
-}
-for (const m of css.matchAll(/(transition|animation)(-duration)?:\s*([^;}]+)/g)) {
-  for (const d of m[3].matchAll(/(?<![\w-])([\d.]+)(ms|s)\b/g)) {
-    const ms = d[2] === 's' ? Number(d[1]) * 1000 : Number(d[1]);
-    if (ms > 400) errores.push(`Duración de ${ms} ms (línea ~${linea(m.index)}): el tope es 400 ms.`);
+for (const hoja of ['src/styles.css', 'src/mapa.css', 'src/vistas.css'].filter(existsSync)) {
+  const css = readFileSync(hoja, 'utf8').replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, ' '));
+  const donde = (i) => `${hoja}:${css.slice(0, i).split('\n').length}`;
+  // El primer valor fijo de la declaración (en max(), clamp() o calc(), el mínimo va primero).
+  for (const m of css.matchAll(/font-size:\s*([^;}]+)/g)) {
+    const valor = m[1].trim();
+    const n = /(-?[\d.]+)(rem|px)\b/.exec(valor);
+    if (!n) continue;
+    const rem = n[2] === 'px' ? Number(n[1]) / 18 : Number(n[1]);
+    if (/^min\(/.test(valor)) avisos.push(`font-size con min() (${donde(m.index)}): revisar que no baje de 1rem.`);
+    else if (rem < 1) errores.push(`font-size bajo 1rem (${donde(m.index)}): ${valor}`);
   }
-  if (/\binfinite\b/.test(m[3])) errores.push(`Animación en bucle (línea ~${linea(m.index)}): no se permite.`);
+  for (const m of css.matchAll(/(transition|animation)(-duration)?:\s*([^;}]+)/g)) {
+    for (const d of m[3].matchAll(/(?<![\w-])([\d.]+)(ms|s)\b/g)) {
+      const ms = d[2] === 's' ? Number(d[1]) * 1000 : Number(d[1]);
+      if (ms > 400) errores.push(`Duración de ${ms} ms (${donde(m.index)}): el tope es 400 ms.`);
+    }
+    if (/\binfinite\b/.test(m[3])) errores.push(`Animación en bucle (${donde(m.index)}): no se permite.`);
+  }
 }
 
 for (const a of avisos) console.log(`Aviso: ${a}`);
