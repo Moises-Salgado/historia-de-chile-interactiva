@@ -73,12 +73,25 @@ const INICIO = '<!-- generado con npm run docs: inicio -->';
 const FIN = '<!-- generado con npm run docs: fin -->';
 const lista = (titulo, elegidos, vacio) => ['', `### ${titulo} (${elegidos.length})`, '', ...(elegidos.length ? elegidos.map((ev) => `- ${evento(ev)}`) : [vacio])];
 const aproximadas = eventos.filter((ev) => ev.fechaAproximada);
+// Mapa: los lugares cuyo punto representa un sitio o una zona (con su nota y los eventos que lo usan).
+const { lugares } = leer('lugares.json');
+const ubicaciones = leer('ubicaciones.json');
+const lugaresAproximados = lugares.filter((l) => l.aproximado);
+const usos = (id) => eventos.filter((ev) => ubicaciones[ev.id]?.includes(id)).map((ev) => `\`${ev.id}\``);
 const seccion = [
   INICIO,
   '## Listas automáticas',
   ...lista('Fechas aproximadas', aproximadas, 'Ninguna.'),
   ...lista('Pendientes de verificación (no se muestran en la app)', eventos.filter((ev) => ev.pendienteVerificacion), 'Ninguno.'),
   ...lista('Con Wikipedia como única fuente', eventos.filter((ev) => ev.fuentes.every((url) => nombreFuente(url) === 'Wikipedia')), 'Ninguno.'),
+  '',
+  `### Lugares del mapa con ubicación aproximada (${lugaresAproximados.length})`,
+  '',
+  ...(lugaresAproximados.length
+    ? lugaresAproximados.map(
+        (l) => `- ${md(l.nombre)} (\`${l.id}\`): ${md(l.nota)}. ${enlace(`Wikidata ${l.wikidata}`, `https://www.wikidata.org/wiki/${l.wikidata}`)} · eventos: ${usos(l.id).join(', ')}`,
+      )
+    : ['Ninguno.']),
   FIN,
 ].join('\n');
 const ruta = join(RAIZ, 'docs/REVISION_PENDIENTE.md');

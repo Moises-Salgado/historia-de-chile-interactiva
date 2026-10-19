@@ -1,5 +1,6 @@
-// Arranque de la app: preferencias, secciones (portada y línea de tiempo), detalle, filtros y rutas por hash:
-// #inicio, #linea, #evento/<id>, #grupo/<id>, #historias, #historia/<id>/<paso> y #personaje/<nombre>.
+// Arranque de la app: preferencias, secciones (portada, línea de tiempo y mapa), detalle, filtros y rutas por
+// hash: #inicio, #linea, #mapa (y #mapa/<región>, #mapa/zona/<id>, #mapa/chile, #mapa/fuera, #lugar/<id>),
+// #evento/<id>, #grupo/<id>, #historias, #historia/<id>/<paso> y #personaje/<nombre>.
 import './styles.css';
 import { cargarDatos } from './datos.js';
 import { crearDetalle } from './detalle.js';
@@ -8,7 +9,10 @@ import { crearInicio } from './inicio.js';
 import { crearLineaDeTiempo } from './timeline.js';
 import { conTransicion, guardarPreferencia, leerPreferencia, movimientoReducido, normalizar, urlPlaceholder } from './util.js';
 
-const { periodos, temas, eventos, recorridos, grupos } = cargarDatos();
+// Si se llega directo al mapa, su módulo se pide de inmediato, mientras se arma el resto de la app.
+if (document.documentElement.dataset.base === 'mapa') import('./mapa.js').catch(() => {});
+
+const { periodos, temas, eventos, recorridos, grupos, mapa: datosMapa } = cargarDatos();
 const porId = new Map(eventos.map((ev) => [ev.id, ev]));
 const grupoPorId = new Map(grupos.map((g) => [g.id, g]));
 const recorridoPorId = new Map(recorridos.map((r) => [r.id, r]));
@@ -96,6 +100,19 @@ for (const radio of document.querySelectorAll('input[name="nivel"]')) radio.chec
 
 const seccionLinea = $('#linea');
 const seccionInicio = $('#inicio');
+const seccionMapa = $('#mapa');
+
+// Dónde ver un evento en el mapa: su primer lugar con alfiler; si no tiene, su zona, «Todo Chile» o «Fuera de Chile».
+const lugarIds = new Set(datosMapa.lugares.map((l) => l.id));
+const zonaIds = new Set(datosMapa.zonas.map((z) => z.id));
+function rutaEnMapa(ev) {
+  const lugar = ev.ubicaciones.find((u) => lugarIds.has(u));
+  if (lugar) return `#lugar/${lugar}`;
+  const zona = ev.ubicaciones.find((u) => zonaIds.has(u));
+  if (zona) return `#mapa/zona/${zona}`;
+  if (ev.ubicaciones.includes('chile')) return '#mapa/chile';
+  return ev.ubicaciones.some((u) => u.startsWith('fuera:')) ? '#mapa/fuera' : null;
+}
 const elDetalle = $('#detalle');
 const linea = crearLineaDeTiempo(seccionLinea, $('#minimapa'), {
   eventos,
@@ -109,6 +126,7 @@ const detalle = crearDetalle(elDetalle, {
   periodos,
   temas,
   personajeDe: (nombre) => personajes.get(slugDe(nombre)) ?? null,
+  rutaEnMapa,
 });
 const filtros = crearFiltros($('#panel-filtros'), {
   periodos,
@@ -161,12 +179,13 @@ $('.nivel').addEventListener('change', (e) => {
   detalle.ponerNivel(nivel);
 });
 
-// ---- Secciones: la portada (#inicio o sin #) y la línea de tiempo (#linea) se ven de a una; el detalle y
-// la búsqueda se abren encima de la que está. <html data-base> la indica al CSS: index.html la fija antes
-// de pintar, según la dirección, y desde ahí la cambia main.js. ----
+// ---- Secciones: la portada (#inicio o sin #), la línea de tiempo (#linea) y el mapa (#mapa…) se ven de a
+// una; el detalle y la búsqueda se abren encima de la que está. <html data-base> la indica al CSS: index.html
+// la fija antes de pintar, según la dirección, y desde ahí la cambia main.js. ----
 const BASES = {
   inicio: { hash: '#inicio', titulo: TITULO },
   linea: { hash: '#linea', titulo: `Línea de tiempo · ${TITULO}` },
+  mapa: { hash: '#mapa', titulo: `Mapa · ${TITULO}` },
 };
 const pestanas = [...document.querySelectorAll('.pestana')];
 let base = raiz.dataset.base in BASES ? raiz.dataset.base : 'linea';
@@ -174,7 +193,37 @@ let base = raiz.dataset.base in BASES ? raiz.dataset.base : 'linea';
 function baseDeRuta(hash) {
   if (hash === '' || hash === '#' || hash === '#inicio') return 'inicio';
   if (hash === '#linea') return 'linea';
+  if (/^#(?:mapa|lugar)(?:\/|$)/.test(hash)) return 'mapa';
   return null;
+}
+
+// Lo elegido en el mapa según la dirección; si no existe, todo el mapa.
+const regionIds = new Set(datosMapa.regiones.map((r) => r.codigo));
+function seleccionDeRuta(hash) {
+  let m = /^#mapa\/(chile|fuera)$/.exec(hash);
+  if (m) return { tipo: m[1] };
+  m = /^#mapa\/zona\/([a-z0-9-]+)$/.exec(hash);
+  if (m && zonaIds.has(m[1])) return { tipo: 'zona', id: m[1] };
+  m = /^#mapa\/([a-z]{2})$/.exec(hash);
+  if (m && regionIds.has(m[1].toUpperCase())) return { tipo: 'region', id: m[1].toUpperCase() };
+  m = /^#lugar\/([a-z0-9-]+)$/.exec(hash);
+  if (m && lugarIds.has(m[1])) return { tipo: 'lugar', id: m[1] };
+  return { tipo: 'todo' };
+}
+
+// El mapa (módulo y formas de las regiones) se carga la primera vez que se abre.
+let mapa = null;
+let cargaMapa = null;
+function mostrarMapa({ enfocar = false } = {}) {
+  cargaMapa ??= import('./mapa.js').then(({ crearMapa }) => {
+    mapa = crearMapa(seccionMapa, { eventos, periodos, mapa: datosMapa, anunciar, alElegir: (ruta) => ir(ruta) });
+  });
+  cargaMapa.then(() => {
+    if (base !== 'mapa') return;
+    const seleccion = seleccionDeRuta(location.hash);
+    mapa.mostrar(seleccion, { enfocar: enfocar && !detalle.abierto });
+    if (!detalle.abierto) document.title = seleccion.tipo === 'todo' ? BASES.mapa.titulo : `${mapa.titulo(seleccion)} · Mapa · ${TITULO}`;
+  });
 }
 
 function ponerBase(nueva) {
@@ -198,20 +247,23 @@ function actualizarPestanas() {
 // El foco pasa a la sección (su título o la tarjeta elegida), para el teclado y los lectores de pantalla.
 function enfocarBase() {
   if (base === 'inicio') inicio.enfocar();
+  else if (base === 'mapa') mostrarMapa({ enfocar: true });
   else linea.enfocarActual();
 }
 
 // A la línea de tiempo se llega en el período elegido en la portada o, la primera vez en la sesión, con su
-// animación de entrada; entre secciones hay un fundido breve.
+// animación de entrada; entre secciones hay un fundido breve. En el mapa, la dirección dice qué mostrar.
 function cambiarBase(nueva, { enfocar = true } = {}) {
   if (nueva === base) {
-    if (enfocar) enfocarBase();
+    if (nueva === 'mapa') mostrarMapa({ enfocar });
+    else if (enfocar) enfocarBase();
     return;
   }
   const entrada = nueva === 'linea' && !periodoPedido && primeraVisita();
   const aplicar = () => {
     ponerBase(nueva);
     if (nueva === 'linea' && periodoPedido) linea.irAPeriodo(periodoPedido, { suave: false, enfocar });
+    else if (nueva === 'mapa') mostrarMapa({ enfocar });
     else if (enfocar) enfocarBase();
     periodoPedido = null;
   };
@@ -241,14 +293,14 @@ function vistaDeRuta(hash = location.hash) {
   if (m) return personajes.has(m[1]) ? { tipo: 'personaje', persona: personajes.get(m[1]) } : { tipo: 'desconocida' };
   return null;
 }
-const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje)\/|^#(?:historias|inicio|linea)$/.test(hash);
+const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje|mapa|lugar)\/|^#(?:historias|inicio|linea|mapa)$/.test(hash);
 
 // Desde una sección se agrega una entrada al historial; entre vistas se reemplaza, así «Volver» (y el botón
 // Atrás del navegador) regresa a la sección. La ficha de un personaje sí se agrega: «Volver» desde ella
-// regresa al evento donde se eligió el nombre. Elegir la sección que ya está a la vista solo la enfoca.
+// regresa al evento donde se eligió el nombre. Elegir lo que ya está a la vista solo lo enfoca.
 function ir(url, { desdeBoton = false } = {}) {
-  const misma = !detalle.abierto && baseDeRuta(url) === base && baseDeRuta(location.hash) === base;
-  if (location.hash !== url && !misma) {
+  const misma = location.hash === url || (baseDeRuta(url) === 'inicio' && baseDeRuta(location.hash) === 'inicio');
+  if (!misma) {
     if (detalle.abierto && !url.startsWith('#personaje/')) history.replaceState(history.state, '', url);
     else history.pushState({ app: true }, '', url);
   }
@@ -381,7 +433,7 @@ function mostrarVista(vista, desdeBoton) {
 
   // Al abrir desde la línea de tiempo, la miniatura del evento crece hasta la lámina del detalle. Desde otra
   // sección, se recuerda qué tenía el foco para devolverlo al cerrar.
-  focoPrevio = base !== 'linea' && seccionInicio.contains(document.activeElement) ? document.activeElement : null;
+  focoPrevio = base !== 'linea' && $(`#${base}`).contains(document.activeElement) ? document.activeElement : null;
   const miniatura = base === 'linea' && vista.ev && !filtros.abierto ? linea.miniatura(vista.ev) : null;
   if (miniatura) miniatura.style.viewTransitionName = LAMINA;
   cambiarVista(async (animado) => {
@@ -417,7 +469,8 @@ function cerrarDetalle(hacia = base) {
     const misma = hacia === base;
     ponerBase(hacia);
     if (misma && focoPrevio?.isConnected) focoPrevio.focus({ preventScroll: true });
-    else enfocarBase();
+    else if (hacia !== 'mapa') enfocarBase();
+    if (hacia === 'mapa') mostrarMapa({ enfocar: true }); // si lo elegido no cambió, el foco devuelto se queda
     focoPrevio = null;
     miniatura = animado && vuelve ? linea.miniatura(ev) : null;
     if (miniatura) miniatura.style.viewTransitionName = LAMINA;
@@ -430,6 +483,7 @@ function actualizarInert() {
   const tapado = detalle.abierto || filtros.abierto;
   seccionLinea.inert = tapado || base !== 'linea';
   seccionInicio.inert = tapado || base !== 'inicio';
+  seccionMapa.inert = tapado || base !== 'mapa';
   elDetalle.inert = filtros.abierto;
 }
 

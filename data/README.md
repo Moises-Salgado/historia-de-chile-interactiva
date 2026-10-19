@@ -93,6 +93,15 @@ No agregan hechos nuevos: solo ordenan o citan los eventos que ya existen.
 | `grupos.json` | Eventos de una misma fecha que la línea de tiempo muestra en una sola tarjeta (`#grupo/<id>`): `{ "id", "titulo", "miembros" (plural, ej. "pueblos"), "descripcion", "eventos": [ids] }`. | Al menos 2 eventos, todos con la misma `fecha`; un evento no puede estar en dos grupos. El orden de `eventos` es el de la lista (ej. de norte a sur). |
 | `sabias-que.json` | `{ "<id del evento>": "<oración>" }`: una oración del `detalle` que se muestra como «¿Sabías que…?» en los niveles Para niños y General. | La oración debe estar copiada textualmente del `detalle` y entenderse sola (sin «él», «ese año» ni «horas más tarde»). No se usa en temas sensibles, porque una ficha de curiosidades no corresponde ahí: guerras de la Conquista y de la Araucanía, guerras del período 05 (incluida la del Pacífico), todo el período 08 (dictadura), matanzas y estallido social. `npm test` lo comprueba. |
 
+## Mapa: lugares y ubicaciones
+
+El mapa (`#mapa`) ubica cada evento según su campo `lugar`, sin agregar información. Las formas de las 16 regiones salen de Natural Earth (dominio público) con `node scripts/generar-mapa.mjs <geojson>`, que escribe `src/chile-regiones.json` y la silueta de la portada; los límites son los de las regiones actuales.
+
+| Archivo | Contenido | Reglas |
+|---|---|---|
+| `lugares.json` | `regiones` (las 16, de norte a sur: `codigo`, `nombre`, `corto`); `lugares` (`id`, `nombre`, `region`, `lat`, `lon`, `wikidata` y, si el punto representa un sitio o una zona, `aproximado: true` y una `nota` que lo explica); `zonas` (`id`, `nombre`, `regiones`): áreas sin alfiler que cuentan en sus regiones. | Coordenadas tomadas del ítem de Wikidata indicado (CC0). Los lugares aproximados se listan en `docs/REVISION_PENDIENTE.md` (`npm run docs`). |
+| `ubicaciones.json` | `{ "<id del evento>": ["<lugar o zona>", …] }`; también `"chile"` (alcance nacional) y `"fuera:<País>"` (ocurrido en todo o en parte en otro país). | Cada evento visible tiene al menos una ubicación, y cada una existe. Una zona se usa cuando el `lugar` nombra un área (ej. «Del río Choapa a Chiloé»); sus regiones salen del texto del evento. |
+
 ## Validación
 
 - `npm test`: **errores** (bloquean: campos faltantes, ids repetidos, fechas inválidas, temas o licencias no permitidos, sin fuentes) y **avisos** (revisar: largo de los textos, fechas fuera del período, solo Wikipedia como fuente).

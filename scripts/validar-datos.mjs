@@ -263,6 +263,64 @@ function validarSabiasQue(mapa, ctx) {
   }
 }
 
+// Mapa (lugares.json): las 16 regiones actuales de norte a sur, lugares con coordenadas e ítem de Wikidata
+// (si el punto representa un sitio o una zona, `aproximado` y una `nota` que lo explica) y zonas sin
+// alfiler, que cuentan en sus regiones. Devuelve los ids que puede usar ubicaciones.json.
+const REGIONES = ['AP', 'TA', 'AN', 'AT', 'CO', 'VS', 'RM', 'LI', 'ML', 'NB', 'BI', 'AR', 'LR', 'LL', 'AI', 'MA'];
+const enChile = (lat, lon) => (lat <= -17 && lat >= -56.5 && lon >= -81 && lon <= -66) || (Math.abs(lat + 27.1) < 0.5 && Math.abs(lon + 109.35) < 0.6);
+function validarLugares(datos) {
+  const ids = new Set();
+  const d = 'lugares.json';
+  if (!datos || typeof datos !== 'object' || Array.isArray(datos)) {
+    error(d, 'debe ser un objeto { regiones, lugares, zonas }');
+    return ids;
+  }
+  const regiones = Array.isArray(datos.regiones) ? datos.regiones : [];
+  if (regiones.map((r) => r?.codigo).join() !== REGIONES.join()) error(d, `"regiones" deben ser las 16 actuales, de norte a sur: ${REGIONES.join(', ')}`);
+  for (const r of regiones) if (!esTexto(r?.nombre) || !esTexto(r?.corto)) error(`${d} [${r?.codigo}]`, 'falta "nombre" o "corto"');
+  const nuevo = (x, donde) => {
+    if (!ID.test(x?.id ?? '') || x.id === 'chile') error(donde, 'id inválido (minúsculas, números y guiones; «chile» está reservado)');
+    else if (ids.has(x.id)) error(donde, 'id repetido entre lugares y zonas');
+    ids.add(x?.id);
+    if (!esTexto(x?.nombre)) error(donde, 'falta "nombre"');
+  };
+  for (const l of Array.isArray(datos.lugares) ? datos.lugares : []) {
+    const donde = `${d} [${l?.id}]`;
+    nuevo(l, donde);
+    if (!REGIONES.includes(l?.region)) error(donde, `región desconocida "${l?.region}"`);
+    if (!Number.isFinite(l?.lat) || !Number.isFinite(l?.lon) || !enChile(l.lat, l.lon)) error(donde, 'coordenadas inválidas o fuera de Chile');
+    if (!/^Q\d+$/.test(l?.wikidata ?? '')) error(donde, 'falta el ítem de Wikidata ("wikidata": "Q…") de donde salen las coordenadas');
+    if (l?.aproximado !== undefined && l.aproximado !== true) error(donde, '"aproximado" solo puede ser true');
+    if (l?.aproximado && !esTexto(l.nota)) error(donde, 'un lugar aproximado necesita una "nota" que explique qué representa el punto');
+  }
+  for (const z of Array.isArray(datos.zonas) ? datos.zonas : []) {
+    const donde = `${d} [${z?.id}]`;
+    nuevo(z, donde);
+    if (!Array.isArray(z?.regiones) || !z.regiones.length || z.regiones.some((c) => !REGIONES.includes(c))) error(donde, '"regiones" debe listar códigos de región válidos');
+  }
+  return ids;
+}
+
+// Ubicaciones (ubicaciones.json): cada evento visible tiene al menos una, que es un lugar o una zona de
+// lugares.json, «chile» (alcance nacional) o «fuera:<país>» (ocurrido total o parcialmente en otro país).
+function validarUbicaciones(mapa, ctx, lugares) {
+  const d = 'ubicaciones.json';
+  if (!mapa || typeof mapa !== 'object' || Array.isArray(mapa)) return error(d, 'debe ser un objeto { "id-del-evento": ["lugar", …] }');
+  for (const [id, lista] of Object.entries(mapa)) {
+    const donde = `${d} [${id}]`;
+    if (!ctx.eventos.has(id)) error(donde, 'el evento no existe');
+    if (!Array.isArray(lista) || !lista.length) {
+      error(donde, 'debe ser una lista con al menos una ubicación');
+      continue;
+    }
+    if (new Set(lista).size !== lista.length) error(donde, 'ubicaciones repetidas');
+    for (const u of lista) {
+      if (u !== 'chile' && !lugares.has(u) && !/^fuera:\p{Lu}[\p{L} ]+$/u.test(u)) error(donde, `ubicación desconocida "${u}" (lugar o zona de lugares.json, «chile» o «fuera:País»)`);
+    }
+  }
+  for (const [id, ev] of ctx.eventos) if (!ev.pendienteVerificacion && !mapa[id]) error(d, `falta la ubicación del evento "${id}"`);
+}
+
 if (!existsSync(DIR)) {
   console.error(`No existe la carpeta de datos: ${DIR}`);
   process.exit(1);
@@ -270,7 +328,7 @@ if (!existsSync(DIR)) {
 
 const nombres = readdirSync(DIR).filter((n) => n.endsWith('.json')).sort();
 const archivosEventos = nombres.filter((n) => ARCHIVO_EVENTOS.test(n));
-const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json'];
+const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json', 'lugares.json', 'ubicaciones.json'];
 for (const n of nombres) {
   if (!ARCHIVO_EVENTOS.test(n) && !['periodos.json', 'temas.json', ...OPCIONALES].includes(n)) aviso(n, 'archivo no reconocido (la app lo ignora)');
 }
@@ -316,9 +374,13 @@ const sabiasQue = opcional('sabias-que.json');
 if (recorridos) validarRecorridos(recorridos, ctx);
 if (grupos) validarGrupos(grupos, ctx);
 if (sabiasQue) validarSabiasQue(sabiasQue, ctx);
+const lugares = opcional('lugares.json');
+const ubicaciones = opcional('ubicaciones.json');
+if (lugares || ubicaciones) validarUbicaciones(ubicaciones, ctx, validarLugares(lugares));
 
 console.log(`Datos: ${ctx.periodos.size} períodos · ${ctx.temas.size} temas · ${total} eventos en ${archivosEventos.length} archivos`);
 console.log(`Historias: ${recorridos?.length ?? 0} · grupos: ${grupos?.length ?? 0} · «¿Sabías que?»: ${Object.keys(sabiasQue ?? {}).length}`);
+if (lugares?.lugares) console.log(`Mapa: ${lugares.lugares.length} lugares (${lugares.lugares.filter((l) => l.aproximado).length} aproximados) · ${lugares.zonas?.length ?? 0} zonas · ${Object.keys(ubicaciones ?? {}).length} eventos ubicados`);
 if (ctx.pendientes.length) console.log(`Ocultos por pendienteVerificacion (${ctx.pendientes.length}): ${ctx.pendientes.join(', ')}`);
 if (ctx.recientes.length) console.log(`Posteriores a 2023 visibles, confirmar certeza (${ctx.recientes.length}): ${ctx.recientes.join(', ')}`);
 if (avisos.length) console.log(`\nAVISOS (${avisos.length}):\n${avisos.map((a) => `  - ${a}`).join('\n')}`);

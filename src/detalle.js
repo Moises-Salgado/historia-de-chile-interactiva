@@ -77,9 +77,10 @@ const leerNacimiento = () => {
 
 /**
  * Crea el panel en `raiz` («Volver», «Anterior» y «Siguiente» están en la barra inferior).
- * personajeDe(nombre) devuelve { slug, eventos } si el personaje tiene ficha (aparece en más de un evento).
+ * personajeDe(nombre) devuelve { slug, eventos } si el personaje tiene ficha (aparece en más de un evento);
+ * rutaEnMapa(evento), la dirección donde se ve en el mapa (o null).
  */
-export function crearDetalle(raiz, { periodos, temas, personajeDe }) {
+export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = () => null }) {
   const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   const temaDe = new Map(temas.map((t) => [t.id, t.nombre]));
   const colorDe = (ev) => periodoDe.get(ev.periodoId).color;
@@ -199,7 +200,9 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe }) {
       <div class="detalle-contenido${historia ? ' con-historia' : ''}">
         ${historia ? barraHistoria(historia) : ''}
         <header class="detalle-encabezado">
-          <p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time> <span class="detalle-hace">${tiempo(ev)}</span> · ${esc(ev.lugar)}</p>
+          <p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time> <span class="detalle-hace">${tiempo(ev)}</span> · ${esc(ev.lugar)}${
+            rutaEnMapa(ev) ? ` <a class="ver-en-mapa" href="${rutaEnMapa(ev)}">Ver en el mapa</a>` : ''
+          }</p>
           <h2 id="detalle-titulo" tabindex="-1">${esc(ev.titulo)}</h2>
           <p class="etiquetas"><span class="etiqueta periodo">${esc(p.nombre)}</span>${ev.temas
             .filter((t) => temaDe.get(t) !== p.nombre)

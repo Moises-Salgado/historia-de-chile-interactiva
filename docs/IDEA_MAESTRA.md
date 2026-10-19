@@ -53,6 +53,13 @@ Chile es una franja larga que se recorre en dos direcciones: de izquierda a dere
   - Medido en el sitio construido: LCP de 1,5 s en celular con red lenta y CPU 4× más lenta, y CLS de 0.
   - Mientras otra sección o un detalle tapan la línea de tiempo, esta no se dibuja ni pide imágenes (`content-visibility: hidden`). Eso dejó en 0 el CLS de un enlace directo a un evento en celular, que era de 0,38.
   - El botón «Inicio» de la barra inferior pasó a llamarse «Al inicio», para no confundirse con la pestaña de la portada.
+- **B · Mapa de Chile (hecha).**
+  - `data/lugares.json` tiene 34 lugares (coordenadas de Wikidata, comprobadas contra los polígonos de cada región) y 10 zonas. `data/ubicaciones.json` ubica los 121 eventos: 35 de alcance nacional y 11 total o parcialmente fuera de Chile.
+  - Solo 9 lugares quedaron como aproximados (sitios de batallas y parlamentos, el valle del Aconcagua y el estrecho), porque los demás tienen su propio ítem en Wikidata. Se listan en `docs/REVISION_PENDIENTE.md`.
+  - Las zonas siguen el texto de cada evento: la presencia inca llega hasta el Maule, el terremoto de 1960 suma Aysén y el 27F abarca Chile central y Juan Fernández.
+  - Chacabuco queda en la Región Metropolitana: Wikidata ubica la batalla en Santiago, aunque su punto cae junto al límite con Valparaíso.
+  - El mapa (código y formas, 22 KB comprimidos) se carga al abrirlo. Su título y su espacio están en `index.html`: LCP de 1,0 s en celular lento y CLS de 0,002.
+  - Con el teclado, las flechas recorren las regiones de norte a sur. Los lugares de cada región están también como botones en el panel, el equivalente accesible de los alfileres chicos.
 
 ## Datos del mapa
 
@@ -63,7 +70,7 @@ Chile es una franja larga que se recorre en dos direcciones: de izquierda a dere
   - **Salas y Gómez** queda fuera.
 - **Lugares (`data/lugares.json`):** 34 ciudades y sitios, cada uno con nombre, región, coordenadas, id de Wikidata y `aproximado`.
   - Las coordenadas de las ciudades se toman de Wikidata (CC0).
-  - Los sitios históricos se ubican junto a la localidad actual más cercana y se marcan como aproximados: Curalaba, Tucapel, Quilín, río Mataquito, Loncomilla, Chacabuco, llanos del Maipo, Chañarcillo, mina San José, Monte Verde, estrecho de Magallanes, Tierra del Fuego, canal Beagle, Chiloé, lago Llanquihue y valle del Aconcagua.
+  - Un sitio histórico sin coordenadas propias se ubica en el sitio que da Wikidata o en la localidad actual más cercana, y se marca como aproximado, con una nota que lo explica. Son 9; ver «Avance».
   - **Zonas sin alfiler**, que cuentan en sus regiones: altiplano, norte y centro (Tawantinsuyu), Norte Chico, del Choapa a Chiloé (mapuche), archipiélagos de los Chonos, Patagonia occidental, Araucanía, Tarapacá y Antofagasta (salitre) y zona centro-sur (terremotos de 1960 y 2010).
 - **Eventos → lugares:** cada evento tiene una o más ubicaciones.
   - Puede ser un lugar o una zona.

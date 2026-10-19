@@ -1,0 +1,481 @@
+{
+  "regiones": [
+    {
+      "codigo": "AP",
+      "nombre": "Región de Arica y Parinacota",
+      "corto": "Arica y Parinacota"
+    },
+    {
+      "codigo": "TA",
+      "nombre": "Región de Tarapacá",
+      "corto": "Tarapacá"
+    },
+    {
+      "codigo": "AN",
+      "nombre": "Región de Antofagasta",
+      "corto": "Antofagasta"
+    },
+    {
+      "codigo": "AT",
+      "nombre": "Región de Atacama",
+      "corto": "Atacama"
+    },
+    {
+      "codigo": "CO",
+      "nombre": "Región de Coquimbo",
+      "corto": "Coquimbo"
+    },
+    {
+      "codigo": "VS",
+      "nombre": "Región de Valparaíso",
+      "corto": "Valparaíso"
+    },
+    {
+      "codigo": "RM",
+      "nombre": "Región Metropolitana de Santiago",
+      "corto": "Metropolitana"
+    },
+    {
+      "codigo": "LI",
+      "nombre": "Región del Libertador General Bernardo O'Higgins",
+      "corto": "O'Higgins"
+    },
+    {
+      "codigo": "ML",
+      "nombre": "Región del Maule",
+      "corto": "Maule"
+    },
+    {
+      "codigo": "NB",
+      "nombre": "Región de Ñuble",
+      "corto": "Ñuble"
+    },
+    {
+      "codigo": "BI",
+      "nombre": "Región del Biobío",
+      "corto": "Biobío"
+    },
+    {
+      "codigo": "AR",
+      "nombre": "Región de La Araucanía",
+      "corto": "La Araucanía"
+    },
+    {
+      "codigo": "LR",
+      "nombre": "Región de Los Ríos",
+      "corto": "Los Ríos"
+    },
+    {
+      "codigo": "LL",
+      "nombre": "Región de Los Lagos",
+      "corto": "Los Lagos"
+    },
+    {
+      "codigo": "AI",
+      "nombre": "Región de Aysén del General Carlos Ibáñez del Campo",
+      "corto": "Aysén"
+    },
+    {
+      "codigo": "MA",
+      "nombre": "Región de Magallanes y de la Antártica Chilena",
+      "corto": "Magallanes"
+    }
+  ],
+  "lugares": [
+    {
+      "id": "arica",
+      "nombre": "Arica",
+      "region": "AP",
+      "lat": -18.4784,
+      "lon": -70.3212,
+      "wikidata": "Q2203"
+    },
+    {
+      "id": "iquique",
+      "nombre": "Iquique",
+      "region": "TA",
+      "lat": -20.2141,
+      "lon": -70.1524,
+      "wikidata": "Q14440"
+    },
+    {
+      "id": "antofagasta",
+      "nombre": "Antofagasta",
+      "region": "AN",
+      "lat": -23.6464,
+      "lon": -70.3981,
+      "wikidata": "Q3612"
+    },
+    {
+      "id": "san-pedro",
+      "nombre": "San Pedro de Atacama",
+      "region": "AN",
+      "lat": -22.9108,
+      "lon": -68.2001,
+      "wikidata": "Q187893"
+    },
+    {
+      "id": "copiapo",
+      "nombre": "Copiapó",
+      "region": "AT",
+      "lat": -27.3665,
+      "lon": -70.3323,
+      "wikidata": "Q3868"
+    },
+    {
+      "id": "caldera",
+      "nombre": "Caldera",
+      "region": "AT",
+      "lat": -27.0667,
+      "lon": -70.8167,
+      "wikidata": "Q3708"
+    },
+    {
+      "id": "chanarcillo",
+      "nombre": "Chañarcillo",
+      "region": "AT",
+      "lat": -27.8117,
+      "lon": -70.4156,
+      "wikidata": "Q450443"
+    },
+    {
+      "id": "san-jose",
+      "nombre": "Mina San José",
+      "region": "AT",
+      "lat": -27.1602,
+      "lon": -70.4968,
+      "wikidata": "Q963820"
+    },
+    {
+      "id": "aconcagua",
+      "nombre": "Valle del Aconcagua",
+      "region": "VS",
+      "lat": -32.7507,
+      "lon": -70.7251,
+      "wikidata": "Q187802",
+      "aproximado": true,
+      "nota": "Punto en San Felipe, en el valle"
+    },
+    {
+      "id": "quillota",
+      "nombre": "Quillota",
+      "region": "VS",
+      "lat": -32.8799,
+      "lon": -71.2474,
+      "wikidata": "Q56108"
+    },
+    {
+      "id": "valparaiso",
+      "nombre": "Valparaíso y Viña del Mar",
+      "region": "VS",
+      "lat": -33.0461,
+      "lon": -71.6197,
+      "wikidata": "Q33986"
+    },
+    {
+      "id": "juan-fernandez",
+      "nombre": "Archipiélago Juan Fernández",
+      "region": "VS",
+      "lat": -33.6414,
+      "lon": -78.8411,
+      "wikidata": "Q156325"
+    },
+    {
+      "id": "rapa-nui",
+      "nombre": "Rapa Nui",
+      "region": "VS",
+      "lat": -27.12,
+      "lon": -109.35,
+      "wikidata": "Q14452"
+    },
+    {
+      "id": "santiago",
+      "nombre": "Santiago",
+      "region": "RM",
+      "lat": -33.4375,
+      "lon": -70.65,
+      "wikidata": "Q2887"
+    },
+    {
+      "id": "chacabuco",
+      "nombre": "Chacabuco",
+      "region": "RM",
+      "lat": -32.9931,
+      "lon": -70.6839,
+      "wikidata": "Q1425658",
+      "aproximado": true,
+      "nota": "Sitio de la batalla según Wikidata, que la ubica en Santiago; el punto queda junto al límite con la Región de Valparaíso"
+    },
+    {
+      "id": "maipu",
+      "nombre": "Llanos del Maipo",
+      "region": "RM",
+      "lat": -33.5011,
+      "lon": -70.7719,
+      "wikidata": "Q1073849",
+      "aproximado": true,
+      "nota": "Sitio de la batalla de Maipú según Wikidata"
+    },
+    {
+      "id": "rancagua",
+      "nombre": "Rancagua",
+      "region": "LI",
+      "lat": -34.1654,
+      "lon": -70.7398,
+      "wikidata": "Q4582"
+    },
+    {
+      "id": "talca",
+      "nombre": "Talca",
+      "region": "ML",
+      "lat": -35.4269,
+      "lon": -71.6656,
+      "wikidata": "Q4469"
+    },
+    {
+      "id": "loncomilla",
+      "nombre": "Loncomilla",
+      "region": "ML",
+      "lat": -35.5924,
+      "lon": -71.7353,
+      "wikidata": "Q187831",
+      "aproximado": true,
+      "nota": "Punto en San Javier de Loncomilla"
+    },
+    {
+      "id": "mataquito",
+      "nombre": "Río Mataquito",
+      "region": "ML",
+      "lat": -35.0681,
+      "lon": -71.6386,
+      "wikidata": "Q1617667",
+      "aproximado": true,
+      "nota": "Sitio de la batalla de Mataquito según Wikidata"
+    },
+    {
+      "id": "chillan",
+      "nombre": "Chillán",
+      "region": "NB",
+      "lat": -36.6067,
+      "lon": -72.1033,
+      "wikidata": "Q3774"
+    },
+    {
+      "id": "concepcion",
+      "nombre": "Concepción",
+      "region": "BI",
+      "lat": -36.8269,
+      "lon": -73.0503,
+      "wikidata": "Q1880"
+    },
+    {
+      "id": "tucapel",
+      "nombre": "Tucapel",
+      "region": "BI",
+      "lat": -37.7961,
+      "lon": -73.4008,
+      "wikidata": "Q645257",
+      "aproximado": true,
+      "nota": "Sitio de la batalla de Tucapel según Wikidata"
+    },
+    {
+      "id": "negrete",
+      "nombre": "Negrete",
+      "region": "BI",
+      "lat": -37.5833,
+      "lon": -72.5167,
+      "wikidata": "Q51046"
+    },
+    {
+      "id": "curalaba",
+      "nombre": "Curalaba",
+      "region": "AR",
+      "lat": -38.15,
+      "lon": -72.9167,
+      "wikidata": "Q16914",
+      "aproximado": true,
+      "nota": "Punto en Lumaco, junto al río del mismo nombre"
+    },
+    {
+      "id": "quilin",
+      "nombre": "Quilín",
+      "region": "AR",
+      "lat": -38.445,
+      "lon": -72.9122,
+      "wikidata": "Q6115585",
+      "aproximado": true,
+      "nota": "Punto en el río Quillén"
+    },
+    {
+      "id": "valdivia",
+      "nombre": "Valdivia",
+      "region": "LR",
+      "lat": -39.8142,
+      "lon": -73.2459,
+      "wikidata": "Q160687"
+    },
+    {
+      "id": "osorno",
+      "nombre": "Osorno",
+      "region": "LL",
+      "lat": -40.5667,
+      "lon": -73.15,
+      "wikidata": "Q51059"
+    },
+    {
+      "id": "llanquihue",
+      "nombre": "Lago Llanquihue",
+      "region": "LL",
+      "lat": -41.1333,
+      "lon": -72.7833,
+      "wikidata": "Q826464"
+    },
+    {
+      "id": "monte-verde",
+      "nombre": "Monte Verde",
+      "region": "LL",
+      "lat": -41.5047,
+      "lon": -73.2044,
+      "wikidata": "Q975775"
+    },
+    {
+      "id": "chiloe",
+      "nombre": "Chiloé",
+      "region": "LL",
+      "lat": -42.6767,
+      "lon": -73.9933,
+      "wikidata": "Q504449"
+    },
+    {
+      "id": "estrecho",
+      "nombre": "Estrecho de Magallanes",
+      "region": "MA",
+      "lat": -53.63,
+      "lon": -70.9183,
+      "wikidata": "Q2362268",
+      "aproximado": true,
+      "nota": "Punto en Fuerte Bulnes, a orillas del estrecho"
+    },
+    {
+      "id": "fuego",
+      "nombre": "Tierra del Fuego",
+      "region": "MA",
+      "lat": -53.6,
+      "lon": -69.3833,
+      "wikidata": "Q721689"
+    },
+    {
+      "id": "beagle",
+      "nombre": "Canal Beagle",
+      "region": "MA",
+      "lat": -54.8756,
+      "lon": -68.1364,
+      "wikidata": "Q202671"
+    }
+  ],
+  "zonas": [
+    {
+      "id": "altiplano",
+      "nombre": "Altiplano y valles de Arica y Tarapacá",
+      "regiones": [
+        "AP",
+        "TA"
+      ]
+    },
+    {
+      "id": "norte-y-centro",
+      "nombre": "Norte y centro de Chile, hasta el Maule",
+      "regiones": [
+        "AP",
+        "TA",
+        "AN",
+        "AT",
+        "CO",
+        "VS",
+        "RM",
+        "LI",
+        "ML"
+      ]
+    },
+    {
+      "id": "norte-chico",
+      "nombre": "Norte Chico",
+      "regiones": [
+        "AT",
+        "CO"
+      ]
+    },
+    {
+      "id": "chile-central",
+      "nombre": "Chile central",
+      "regiones": [
+        "VS",
+        "RM",
+        "LI",
+        "ML",
+        "NB",
+        "BI"
+      ]
+    },
+    {
+      "id": "choapa-chiloe",
+      "nombre": "Del río Choapa a Chiloé",
+      "regiones": [
+        "CO",
+        "VS",
+        "RM",
+        "LI",
+        "ML",
+        "NB",
+        "BI",
+        "AR",
+        "LR",
+        "LL"
+      ]
+    },
+    {
+      "id": "chonos",
+      "nombre": "Archipiélagos de Chiloé, Guaitecas y Chonos",
+      "regiones": [
+        "LL",
+        "AI"
+      ]
+    },
+    {
+      "id": "patagonia-occidental",
+      "nombre": "Canales de la Patagonia occidental",
+      "regiones": [
+        "AI",
+        "MA"
+      ]
+    },
+    {
+      "id": "araucania",
+      "nombre": "Araucanía, entre los ríos Biobío y Toltén",
+      "regiones": [
+        "BI",
+        "AR"
+      ]
+    },
+    {
+      "id": "tarapaca-antofagasta",
+      "nombre": "Tarapacá y Antofagasta",
+      "regiones": [
+        "TA",
+        "AN"
+      ]
+    },
+    {
+      "id": "centro-sur-1960",
+      "nombre": "Zona centro-sur, de Ñuble a Aysén",
+      "regiones": [
+        "NB",
+        "BI",
+        "AR",
+        "LR",
+        "LL",
+        "AI"
+      ]
+    }
+  ]
+}

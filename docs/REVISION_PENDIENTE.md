@@ -164,4 +164,16 @@ Ninguno.
 ### Con Wikipedia como única fuente (0)
 
 Ninguno.
+
+### Lugares del mapa con ubicación aproximada (9)
+
+- Valle del Aconcagua (`aconcagua`): Punto en San Felipe, en el valle. [Wikidata Q187802](<https://www.wikidata.org/wiki/Q187802>) · eventos: `1536-expedicion-de-almagro`, `1817-cruce-de-los-andes`
+- Chacabuco (`chacabuco`): Sitio de la batalla según Wikidata, que la ubica en Santiago; el punto queda junto al límite con la Región de Valparaíso. [Wikidata Q1425658](<https://www.wikidata.org/wiki/Q1425658>) · eventos: `1817-batalla-de-chacabuco`
+- Llanos del Maipo (`maipu`): Sitio de la batalla de Maipú según Wikidata. [Wikidata Q1073849](<https://www.wikidata.org/wiki/Q1073849>) · eventos: `1818-batalla-de-maipu`
+- Loncomilla (`loncomilla`): Punto en San Javier de Loncomilla. [Wikidata Q187831](<https://www.wikidata.org/wiki/Q187831>) · eventos: `1851-guerra-civil-loncomilla`
+- Río Mataquito (`mataquito`): Sitio de la batalla de Mataquito según Wikidata. [Wikidata Q1617667](<https://www.wikidata.org/wiki/Q1617667>) · eventos: `1557-lautaro`
+- Tucapel (`tucapel`): Sitio de la batalla de Tucapel según Wikidata. [Wikidata Q645257](<https://www.wikidata.org/wiki/Q645257>) · eventos: `1553-batalla-de-tucapel`
+- Curalaba (`curalaba`): Punto en Lumaco, junto al río del mismo nombre. [Wikidata Q16914](<https://www.wikidata.org/wiki/Q16914>) · eventos: `1598-batalla-de-curalaba`
+- Quilín (`quilin`): Punto en el río Quillén. [Wikidata Q6115585](<https://www.wikidata.org/wiki/Q6115585>) · eventos: `1641-parlamento-de-quilin`
+- Estrecho de Magallanes (`estrecho`): Punto en Fuerte Bulnes, a orillas del estrecho. [Wikidata Q2362268](<https://www.wikidata.org/wiki/Q2362268>) · eventos: `1520-magallanes-en-el-estrecho`, `1843-fuerte-bulnes`
 <!-- generado con npm run docs: fin -->

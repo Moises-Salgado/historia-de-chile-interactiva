@@ -6,6 +6,7 @@ La historia de Chile, desde el poblamiento hasta hoy, en una línea de tiempo in
 
 - Más de 120 eventos en 9 períodos, con fecha, lugar, personajes, imagen con su crédito y las fuentes consultadas.
 - Una portada con tres entradas (la línea de tiempo, el mapa y las historias guiadas), un «¿Sabías que…?» distinto cada día y los nueve períodos, para entrar directo a uno.
+- Un mapa de Chile con las 16 regiones y 34 lugares: al tocar una región, una ciudad o un sitio se ven sus eventos, y un filtro por período cambia el mapa entero. Los eventos de alcance nacional y los ocurridos fuera de Chile tienen su propia lista, y cada evento tiene un enlace «Ver en el mapa».
 - Línea de tiempo horizontal con franjas de color por período, minimapa y zoom según la importancia de cada evento: el zoom mínimo muestra solo los grandes hitos.
 - Búsqueda por título, personaje o año, y filtros por período y tema.
 - Historias guiadas paso a paso (la Independencia, los grandes terremotos, las constituciones y las mujeres en la vida pública), fichas de los personajes que aparecen en varios eventos y los pueblos originarios reunidos de norte a sur.
@@ -38,13 +39,14 @@ El sitio queda en `http://localhost:5173`.
 ## Estructura
 
 ```text
-data/       períodos, temas, un JSON de eventos por período, historias guiadas, grupos y
-            «¿Sabías que?» (esquema en data/README.md)
-src/        main.js (secciones y rutas: #inicio, #linea, #evento/<id>…), inicio.js (portada),
-            curvas.js (curvas de nivel), timeline.js, detalle.js, filtros.js, datos.js, fechas.js,
-            util.js, styles.css, sw.js (plantilla del Service Worker) y fonts/
+data/       períodos, temas, un JSON de eventos por período, historias guiadas, grupos,
+            «¿Sabías que?», lugares del mapa y ubicación de cada evento (esquema en data/README.md)
+src/        main.js (secciones y rutas: #inicio, #linea, #mapa, #evento/<id>…), inicio.js (portada),
+            mapa.js y chile-regiones.json (mapa, se cargan al abrirlo), curvas.js (curvas de nivel),
+            timeline.js, detalle.js, filtros.js, datos.js, fechas.js, util.js, styles.css,
+            sw.js (plantilla del Service Worker) y fonts/
 public/     favicon, dibujos de respaldo por período (placeholders/) y licencias de las fuentes (fonts/)
-scripts/    validación de datos, verificación de imágenes y generación de docs/
+scripts/    validación de datos, verificación de imágenes, generación de docs/ y del mapa (generar-mapa.mjs)
 docs/       FUENTES.md y REVISION_PENDIENTE.md
 ```
 
@@ -67,5 +69,5 @@ Sin GitHub Actions, ejecuta `npm run build` y sube el contenido de `dist/` a cua
 - [`docs/REVISION_PENDIENTE.md`](docs/REVISION_PENDIENTE.md) lista los datos de menor certeza o con fuentes que no coinciden. Conviene revisarlo antes de usar el sitio en clases.
 - Las imágenes son de [Wikimedia Commons](https://commons.wikimedia.org/), con licencias de dominio público, CC0, CC BY o CC BY-SA. El autor y la licencia se muestran junto a cada imagen. Se cargan desde Commons y no se copian al repositorio; si una no carga, se muestra un dibujo del período.
 - Los títulos usan Source Serif 4 SemiBold, de Adobe, y las fechas y rótulos, Barlow Condensed SemiBold, de Jeremy Tribby; ambas tienen la licencia SIL Open Font License 1.1 (textos en [`public/fonts/`](public/fonts/)). Se incluye solo el subconjunto latino que distribuye Google Fonts, sin modificar.
-- La silueta de Chile de la portada viene de [Natural Earth](https://www.naturalearthdata.com/) (dominio público), simplificada.
+- Las regiones del mapa y la silueta de la portada vienen de [Natural Earth](https://www.naturalearthdata.com/) (dominio público), simplificadas con `scripts/generar-mapa.mjs`; los límites son los de las regiones actuales. Las coordenadas de los lugares vienen de [Wikidata](https://www.wikidata.org/) (CC0); los que representan un sitio o una zona están marcados como aproximados y listados en `docs/REVISION_PENDIENTE.md`.
 - Para agregar o corregir eventos, edita `data/NN-*.json` según `data/README.md` y luego ejecuta `npm test`, `npm run verificar-imagenes` y `npm run docs`.
