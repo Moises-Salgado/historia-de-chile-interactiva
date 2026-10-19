@@ -60,6 +60,15 @@ Chile es una franja larga que se recorre en dos direcciones: de izquierda a dere
   - Chacabuco queda en la Región Metropolitana: Wikidata ubica la batalla en Santiago, aunque su punto cae junto al límite con Valparaíso.
   - El mapa (código y formas, 22 KB comprimidos) se carga al abrirlo. Su título y su espacio están en `index.html`: LCP de 1,0 s en celular lento y CLS de 0,002.
   - Con el teclado, las flechas recorren las regiones de norte a sur. Los lugares de cada región están también como botones en el panel, el equivalente accesible de los alfileres chicos.
+- **C · Línea de tiempo con láminas (hecha).**
+  - Cada evento es una lámina de 9,5 rem de ancho. El alto depende de la importancia (11, 12,5 y 14,5 rem). La fecha va en una pastilla del color del período y el título en serif, sobre un degradado que parte en 0,78 de opacidad: el texto blanco tiene al menos 8,9:1 aunque la imagen sea blanca.
+  - Las imágenes se piden en 250, 330 o 500 px según la pantalla.
+  - Un portal de color abre cada período: número, nombre, fechas y curvas de nivel, en un SVG de fondo sin peticiones. Tocarlo lleva al primer evento del período.
+  - El eje es una escala gráfica de tramos alternados, como adorno: los años se leen en las etiquetas.
+  - Con poca altura, láminas y portales se achican hasta un 60 % para que quepa la cartela.
+  - Medido:
+    - **Láminas a la vista:** 5 o 6 en 1366×768 en las zonas densas, porque los hitos se ubican primero y dejan huecos; 10 en 1920×1080, con dos carriles. No alcanza del todo el «≥ 6» del plan; se prefirieron láminas grandes antes que más chicas.
+    - **Rendimiento:** 54 cuadros por segundo al desplazar con la CPU 4× más lenta. LCP de 2,5 s y CLS de 0,01 al abrir `#linea` en frío en un celular lento.
 
 ## Datos del mapa
 

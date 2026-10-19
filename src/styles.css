@@ -52,8 +52,7 @@
   --serif: 'Source Serif 4', Georgia, 'Noto Serif', 'Times New Roman', serif; /* solo títulos */
   --rotulo: 'Barlow Condensed', 'Bahnschrift Condensed', 'Avenir Next Condensed', 'Roboto Condensed', sans-serif-condensed, 'Arial Narrow', sans-serif; /* fechas y rótulos */
   --radio: 0.5rem;
-  --tarjeta-ancho: 17rem; /* igual que MEDIDA en timeline.js */
-  --tarjeta-alto: 6rem;
+  --tarjeta-ancho: 10rem; /* timeline.js la ajusta en la pista (LAMINA) */
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 112.5%; /* 18 px como mínimo */
   line-height: 1.5;
@@ -1709,7 +1708,7 @@ body[data-vista='detalle'] .linea {
   top: 0;
   left: 0;
   width: var(--tarjeta-ancho);
-  height: var(--tarjeta-alto);
+  height: var(--lamina-alto-2, 12.5rem);
   transition:
     opacity 0.25s ease,
     scale 0.25s ease,
@@ -1726,6 +1725,15 @@ body[data-vista='detalle'] .linea {
 /* En la entrada de la portada las tarjetas las anima timeline.js. */
 .linea.entrando .evento {
   transition: none;
+}
+
+/* Alto de la lámina según la importancia (timeline.js fija las medidas en la pista). */
+.evento.imp-3 {
+  height: var(--lamina-alto-3, 14.5rem);
+}
+
+.evento.imp-1 {
+  height: var(--lamina-alto-1, 11rem);
 }
 
 .evento:hover {
@@ -1750,28 +1758,30 @@ body[data-vista='detalle'] .linea {
   }
 }
 
-/* Tarjeta como cédula de museo: imagen a sangre, filete superior del color del período. Los hitos
-   (importancia 3) llevan fondo teñido, imagen más grande y la fecha en una pastilla del color del período. */
+/* Lámina: la imagen ocupa toda la tarjeta y la fecha (en una pastilla del color del período) y el título
+   van encima, sobre un degradado oscuro que asegura el contraste del texto blanco con cualquier imagen
+   (a partir de 0,7 de opacidad, el texto blanco supera 4,5:1 aunque la imagen sea blanca). Mientras la
+   imagen carga, se ve el tono del período. */
 .tarjeta {
   position: relative;
-  display: flex;
-  gap: 0.625rem;
+  display: block;
   width: 100%;
   height: 100%;
   margin: 0;
-  padding: 0 0.625rem 0 0;
+  padding: 0;
   overflow: hidden;
   font: inherit;
   line-height: 1.2;
-  color: var(--texto);
+  color: #fff;
   text-align: left;
-  background: var(--superficie);
-  border: 1px solid color-mix(in srgb, var(--color) 30%, var(--borde));
-  border-top: 3px solid var(--color);
+  background: color-mix(in srgb, var(--color) 45%, #08191f);
+  border: 0;
   border-radius: var(--radio);
   box-shadow: var(--sombra);
   cursor: pointer;
-  transition: scale 0.12s ease;
+  transition:
+    scale 0.12s ease,
+    box-shadow 0.15s ease;
 }
 
 .tarjeta:hover {
@@ -1785,23 +1795,17 @@ body[data-vista='detalle'] .linea {
 /* Ya visto: un punto discreto en la esquina (el nombre accesible dice «ya visto»). */
 .evento.visto .tarjeta::after {
   position: absolute;
-  top: 0.375rem;
-  right: 0.375rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  background: var(--borde-fuerte);
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  background: #fff;
   border-radius: 50%;
+  box-shadow: 0 0 0 2px rgb(8 25 31 / 0.6);
   content: '';
 }
 
-.evento.imp-3 .tarjeta {
-  background: color-mix(in srgb, var(--color) 10%, var(--superficie));
-  border-top-width: 4px;
-}
-
 .evento.actual .tarjeta {
-  border-color: var(--acento);
-  border-top-color: var(--color);
   box-shadow: var(--sombra-alta);
 }
 
@@ -1809,12 +1813,10 @@ body[data-vista='detalle'] .linea {
   outline-offset: 5px;
 }
 
-/* Miniaturas: el marco lleva el tono del período y la imagen aparece sobre él con un fundido al cargar. */
 .tarjeta-img {
-  flex: none;
-  width: 4.75rem;
-  height: 100%;
-  background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--color) 35%, #0f2c36);
 }
 
 .tarjeta-img > img,
@@ -1828,58 +1830,68 @@ body[data-vista='detalle'] .linea {
 }
 
 img[data-periodo] {
-  transition: opacity 0.25s ease-out;
+  transition:
+    opacity 0.25s ease-out,
+    scale 0.4s ease-out;
 }
 
 img[data-periodo]:not(.cargada) {
   opacity: 0;
 }
 
-.evento.imp-3 .tarjeta-img {
-  width: 5.5rem;
+.tarjeta:hover .tarjeta-img > img {
+  scale: 1.04;
 }
 
 .tarjeta-texto {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 0.125rem;
-  min-width: 0;
-  padding-block: 0.25rem;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 2.25rem 0.75rem 0.75rem;
+  text-shadow: 0 1px 2px rgb(8 25 31 / 0.85);
+  background: linear-gradient(180deg, rgb(8 25 31 / 0) 0, rgb(8 25 31 / 0.78) 2rem, rgb(8 25 31 / 0.9) 100%);
 }
 
 .tarjeta-fecha {
+  max-width: 100%;
+  padding: 0 0.375rem;
   overflow: hidden;
   font-family: var(--rotulo);
   font-size: 1.0625rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: var(--texto-suave);
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.evento.imp-3 .tarjeta-fecha {
-  align-self: flex-start;
-  max-width: 100%;
-  padding: 0 0.375rem;
-  color: #fff;
+  text-shadow: none;
   background: var(--color);
   border-radius: 0.25rem;
-}
-
-.evento.imp-3 .tarjeta-titulo {
-  font-weight: 700;
 }
 
 .tarjeta-titulo {
   display: -webkit-box;
   overflow: hidden;
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  font-weight: 600;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-clamp: 3;
   overflow-wrap: break-word;
-  hyphens: auto;
+}
+
+.evento.imp-3 .tarjeta-titulo {
+  font-size: 1.1875rem;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+
+.evento.imp-1 .tarjeta-titulo {
+  font-size: 1rem;
 }
 
 /* Grupo (varios eventos de una misma fecha): mosaico de imágenes y cuántos reúne. */
@@ -1901,7 +1913,66 @@ img[data-periodo]:not(.cargada) {
 }
 
 .tarjeta-cuenta {
-  color: var(--texto-suave);
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #e3ece9;
+}
+
+/* Portal: abre cada período en la línea, con su número, nombre y fechas sobre el color del período y
+   curvas de nivel. Llevar el puntero lo destaca; tocarlo lleva al comienzo del período. */
+.portales {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.portal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1rem 0.75rem;
+  overflow: hidden;
+  color: #fff;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300' preserveAspectRatio='none'%3E%3Cg fill='none' stroke-width='1.2'%3E%3Cg stroke='%23fff' stroke-opacity='.16'%3E%3Cpath d='M0 30c40-14 60 14 100 2s60-16 100-4'/%3E%3Cpath d='M0 55c40-12 60 16 100 4s60-14 100-2'/%3E%3Cpath d='M0 105c40-14 60 12 100 0s60-16 100-2'/%3E%3Cpath d='M0 130c40-10 60 16 100 4s60-14 100-4'/%3E%3Cpath d='M0 180c40-14 60 14 100 2s60-14 100-2'/%3E%3Cpath d='M0 205c40-12 60 16 100 4s60-16 100-4'/%3E%3Cpath d='M0 255c40-14 60 12 100 0s60-14 100-2'/%3E%3Cpath d='M0 280c40-10 60 14 100 4s60-16 100-4'/%3E%3C/g%3E%3Cg stroke='%23e8a874' stroke-opacity='.4'%3E%3Cpath d='M0 80c40-14 60 14 100 2s60-16 100-4'/%3E%3Cpath d='M0 155c40-12 60 16 100 4s60-14 100-2'/%3E%3Cpath d='M0 230c40-14 60 12 100 0s60-16 100-2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
+      center / 100% 100% no-repeat,
+    var(--color);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+.portal:hover {
+  box-shadow: var(--sombra-alta);
+}
+
+.portal-orden,
+.portal-fechas {
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Solo las palabras largas («Parlamentarismo») se parten, con guion y al menos cuatro letras por lado. */
+.portal-nombre {
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.15;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  hyphenate-limit-chars: 10 4 4;
+}
+
+.portal-fechas {
+  margin-top: auto;
 }
 
 /* Eje, puntos y años */
@@ -1914,15 +1985,17 @@ img[data-periodo]:not(.cargada) {
   pointer-events: none;
 }
 
+/* El eje dibujado como la escala gráfica de un mapa: tramos oscuros y claros alternados. Es un adorno, no
+   una medida (el tiempo no va a escala: los años están en las etiquetas y las barras oblicuas marcan los saltos). */
 .eje-linea {
   position: absolute;
-  top: -2px;
+  top: -4px;
   right: 0;
   left: 0;
-  height: 4px;
-  background: var(--borde-fuerte);
-  border-radius: 2px;
-  transform-origin: 0 50%; /* la entrada de la portada lo dibuja de izquierda a derecha */
+  height: 8px;
+  background: repeating-linear-gradient(90deg, var(--texto) 0 2.5rem, var(--superficie) 2.5rem 5rem);
+  border: 1.5px solid var(--texto);
+  transform-origin: 0 50%; /* la entrada de la línea lo dibuja de izquierda a derecha */
 }
 
 .tramo {

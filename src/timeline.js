@@ -1,19 +1,23 @@
-// Línea de tiempo horizontal: tarjetas con miniatura en carriles, eje con años, franjas de color por
-// período y minimapa. La escala no es proporcional al tiempo: cada evento ocupa una «ranura» y los años
-// sin eventos se comprimen (logaritmo del intervalo), así caben los milenios de la prehistoria junto a
-// los años densos de la Independencia. El zoom cambia el ancho de la ranura y la importancia mínima que
-// se muestra (zoom mínimo: solo hitos); las tarjetas que no caben quedan como puntos sobre el eje.
+// Línea de tiempo horizontal: láminas (la imagen a sangre y el título encima) en carriles, eje con años
+// dibujado como escala gráfica, un portal de color al comienzo de cada período, franjas de color y
+// minimapa. La escala no es proporcional al tiempo: cada evento ocupa una «ranura» y los años sin eventos
+// se comprimen (logaritmo del intervalo), así caben los milenios de la prehistoria junto a los años densos
+// de la Independencia. El zoom cambia el ancho de la ranura y la importancia mínima que se muestra (zoom
+// mínimo: solo hitos); las láminas que no caben quedan como puntos sobre el eje.
 import { anioDecimal, fechaCorta, formatearAnio } from './fechas.js';
 import { animar, esc, movimientoReducido, urlImagen } from './util.js';
 
-// Medidas en rem (crecen con «Texto grande»); las de la tarjeta deben coincidir con styles.css.
-const MEDIDA = { tarjetaAncho: 17, tarjetaAlto: 6, hueco: 0.75, tallo: 1.5, margen: 1.25, arriba: 0.5, eje: 1.25, anios: 1.75, franjas: 2.25 };
+// Medidas en rem (crecen con «Texto grande»). Todas las láminas tienen el mismo ancho; el alto depende de
+// la importancia (los hitos, más altos) y todas se apoyan en la base de su carril. Si la pantalla es baja,
+// láminas y portales se achican (hasta `minimo`) para que quepan la más alta y la cartela corta.
+const MEDIDA = { hueco: 0.625, tallo: 1.5, margen: 1.25, eje: 1.25, anios: 1.75, franjas: 2.25 };
+const LAMINA = { ancho: 9.5, alto: { 1: 11, 2: 12.5, 3: 14.5 }, portal: 10.5, minimo: 0.6 };
 // Cartela según el alto del cielo (rem): completa (período, nombre, descripción) o corta (nombre y fechas).
 const CARTELA = { completa: 7, corta: 2.75 };
-// Zoom = fracción del ancho que necesitan todas las tarjetas para no encimarse.
-// Con `max` ya todos los eventos tienen tarjeta: acercar más solo los separaría.
+// Zoom = fracción del ancho que necesitan todas las láminas para no encimarse.
+// Con `max` ya todos los eventos tienen lámina: acercar más solo los separaría.
 const ZOOM = { min: 0.25, max: 1.64, inicial: 0.6, paso: 1.4, hitos: 0.45, todos: 0.8 };
-const MAX_CARRILES = 5;
+const MAX_CARRILES = 3;
 const CURVA = 'cubic-bezier(0.2, 0.7, 0.2, 1)';
 // Tramos sin eventos de al menos estos años se marcan en el eje: la escala ahí está comprimida.
 const SALTO_ANIOS = 1000;
@@ -167,25 +171,27 @@ function libreHasta(carril, x, ancho, hueco) {
   return x;
 }
 
+// Lámina: la imagen ocupa todo (anchos estándar de Commons: 250, 330 o 500 según la pantalla) y la fecha y
+// el título van encima, sobre un degradado oscuro.
 const tarjeta = (ev, color) => {
   const { archivo } = ev.imagen;
   return `
     <li class="evento imp-${ev.importancia}" data-id="${ev.id}" style="--color:${color}" hidden>
       <button type="button" class="tarjeta" tabindex="-1" aria-label="${esc(`${ev.fechaTexto}: ${ev.titulo}`)}">
-        <span class="tarjeta-img"><img src="${urlImagen(archivo, 120)}" srcset="${urlImagen(archivo, 120)} 120w, ${urlImagen(archivo, 250)} 250w"
-          sizes="6rem" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}"></span>
+        <span class="tarjeta-img"><img src="${urlImagen(archivo, 250)}" srcset="${[250, 330, 500].map((a) => `${urlImagen(archivo, a)} ${a}w`).join(', ')}"
+          sizes="9.5rem" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}"></span>
         <span class="tarjeta-texto"><span class="tarjeta-fecha">${esc(fechaCorta(ev))}</span><span class="tarjeta-titulo">${esc(ev.titulo)}</span></span>
       </button>
     </li>`;
 };
 
-// Tarjeta de un grupo: mosaico con las primeras cuatro imágenes y la cantidad de eventos que reúne.
+// Lámina de un grupo: mosaico con las primeras cuatro imágenes y la cantidad de eventos que reúne.
 const tarjetaGrupo = (grupo, color) => `
     <li class="evento grupo" data-id="${grupo.clave}" style="--color:${color}" hidden>
       <button type="button" class="tarjeta" tabindex="-1">
         <span class="tarjeta-img mosaico">${grupo.eventos
           .slice(0, 4)
-          .map((ev) => `<img src="${urlImagen(ev.imagen.archivo, 120)}" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}">`)
+          .map((ev) => `<img src="${urlImagen(ev.imagen.archivo, 250)}" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}">`)
           .join('')}</span>
         <span class="tarjeta-texto"><span class="tarjeta-fecha">${esc(fechaCorta(grupo.eventos[0]))}</span><span class="tarjeta-titulo">${esc(grupo.titulo)}</span><span class="tarjeta-cuenta"></span></span>
       </button>
@@ -244,6 +250,12 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     <div class="ventana">
       <div class="pista">
         <svg class="conectores" aria-hidden="true"><path /></svg>
+        <div class="portales" aria-hidden="true">${franjas
+          .map(
+            ({ periodo: p }, i) => `<div class="portal" data-periodo="${p.id}" style="--color:${p.color}"><span class="portal-orden">Período ${i + 1}</span>
+              <span class="portal-nombre">${esc(p.nombre)}</span><span class="portal-fechas">${esc(p.fechasTexto)}</span></div>`,
+          )
+          .join('')}</div>
         <div class="franjas">${franjas
           .map(
             ({ periodo: p }) => `<div class="franja" style="--color:${p.color}"><button type="button" class="franja-nombre" data-periodo="${p.id}"
@@ -289,6 +301,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   const lista = pista.querySelector('.eventos');
   const estadoVista = seccion.querySelector('.estado-vista');
   const elFranjas = [...pista.querySelectorAll('.franja')];
+  const elPortales = [...pista.querySelectorAll('.portal')];
   const elTarjeta = new Map([...lista.children].map((li) => [li.dataset.id, li]));
   const elPunto = new Map([...pista.querySelectorAll('.punto')].map((el) => [el.dataset.id, el]));
   const minimapa = contenedorMinimapa.querySelector('.minimapa');
@@ -305,7 +318,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   let filtroActivo = false;
   let actual = null;
   let enfocable = null;
-  const g = { rem: 18, w: 0, h: 0, hueco: 0, tallo: 0, z: 1, carriles: 1, margenIzq: 0, ejeY: 0, ancho: 0, minImp: 2 };
+  const g = { rem: 18, s: 1, w: 0, h: 0, hueco: 0, tallo: 0, portal: 0, z: 1, carriles: 1, margenIzq: 0, ejeY: 0, ancho: 0, minImp: 2 };
   const X = (u) => g.margenIzq + u * g.z;
   const uEn = (x) => (x - g.margenIzq) / g.z;
   const botonDe = (item) => elTarjeta.get(clave(item)).querySelector('.tarjeta');
@@ -341,35 +354,44 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   function distribuir() {
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 18;
     const alto = ventana.clientHeight;
-    Object.assign(g, {
-      rem,
-      // En pantallas angostas con texto grande, la tarjeta no puede ser más ancha que la vista.
-      w: Math.min(MEDIDA.tarjetaAncho * rem, ventana.clientWidth - 2 * MEDIDA.margen * rem),
-      h: MEDIDA.tarjetaAlto * rem,
-      hueco: MEDIDA.hueco * rem,
-      tallo: MEDIDA.tallo * rem,
-      margenIzq: 2 * MEDIDA.margen * rem,
-    });
     const yFranjas = alto - MEDIDA.franjas * rem;
     const yAnios = yFranjas - MEDIDA.anios * rem;
+    const hueco = MEDIDA.hueco * rem;
+    const base = yAnios - MEDIDA.eje * rem - hueco; // borde inferior del carril más bajo
+    // Escala de las láminas: completa si la más alta cabe con la cartela corta encima; si no, menor.
+    const libre = base - CARTELA.corta * rem;
+    const s = limitar(libre / (LAMINA.alto[3] * rem), LAMINA.minimo, 1);
+    Object.assign(g, {
+      rem,
+      s,
+      // En pantallas angostas con texto grande, la lámina no puede ser más ancha que la vista.
+      w: Math.min(LAMINA.ancho * rem * s, ventana.clientWidth - 2 * MEDIDA.margen * rem),
+      h: LAMINA.alto[3] * rem * s, // alto del carril: el de la lámina más alta
+      hueco,
+      tallo: MEDIDA.tallo * rem,
+      portal: LAMINA.portal * rem * s,
+    });
+    // El primer portal va antes del primer evento.
+    g.margenIzq = MEDIDA.margen * rem + g.portal + g.hueco + g.tallo;
     g.ejeY = yAnios - (MEDIDA.eje * rem) / 2;
-    const base = yAnios - MEDIDA.eje * rem - g.hueco; // borde inferior del carril más bajo
     const fila = g.h + g.hueco;
-    g.carriles = limitar(Math.floor((base - MEDIDA.arriba * rem + g.hueco) / fila), 1, MAX_CARRILES);
-    // Si el cielo no alcanza para la cartela y sobran carriles, se cede uno (en pantallas angostas,
-    // donde solo cabe una tarjeta a lo ancho, también con tres carriles).
-    const minimo = ventana.clientWidth < 2 * g.w ? 3 : 4;
-    if (g.carriles >= minimo && base - g.carriles * fila + g.hueco < CARTELA.completa * rem) g.carriles--;
+    g.carriles = limitar(Math.floor((libre + g.hueco) / fila), 1, MAX_CARRILES);
     g.z = (f * (g.w + g.hueco)) / g.carriles;
     ubicarCielo(base - g.carriles * fila + g.hueco, rem);
     g.minImp = filtroActivo ? 1 : f < ZOOM.hitos ? 3 : f < ZOOM.todos ? 2 : 1;
     const yCarril = (c) => base - g.h - c * (g.h + g.hueco);
 
     colocarTarjetas(yCarril);
+    const altoPortal = g.carriles * g.h + (g.carriles - 1) * g.hueco;
+    elPortales.forEach((el, i) => {
+      Object.assign(el.style, { width: `${g.portal}px`, height: `${altoPortal}px` });
+      el.style.transform = `translate(${posPortales[i].toFixed(1)}px, ${yCarril(g.carriles - 1).toFixed(1)}px)`;
+    });
     const finTarjetas = items.reduce((max, ev) => (ev.pos ? Math.max(max, ev.pos.x + g.w) : max), 0);
     g.ancho = Math.ceil(Math.max(X(escala.total) + g.w, finTarjetas) + MEDIDA.margen * rem);
     pista.style.width = `${g.ancho}px`;
     pista.style.setProperty('--tarjeta-ancho', `${g.w}px`);
+    for (const imp of [1, 2, 3]) pista.style.setProperty(`--lamina-alto-${imp}`, `${(LAMINA.alto[imp] * rem * s).toFixed(1)}px`);
     pista.style.setProperty('--y-eje', `${g.ejeY}px`);
     pista.style.setProperty('--y-anios', `${yAnios}px`);
     pista.style.setProperty('--y-franjas', `${yFranjas}px`);
@@ -395,12 +417,17 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     botonAcercar.setAttribute('aria-disabled', String(f >= ZOOM.max));
   }
 
-  // Coloca primero los hitos y luego el resto; cada tarjeta va en el carril donde menos se aleja de su
-  // fecha (poco hacia la izquierda, algo más hacia la derecha), con preferencia por los carriles bajos.
-  // Con un filtro activo quedan pocos eventos y hay espacio: pueden correrse más. Si no cabe, queda el punto.
+  // Primero se reservan los portales de los períodos (en todos los carriles), al comienzo de cada franja.
+  // Luego se colocan los hitos y después el resto: cada lámina va en el carril donde menos se aleja de su
+  // fecha (poco hacia la izquierda, algo más hacia la derecha), con preferencia por los carriles bajos, y
+  // se apoya en la base del carril. Con un filtro activo quedan pocos eventos y hay espacio: pueden correrse
+  // más. Si no cabe, queda el punto.
+  let posPortales = [];
   function colocarTarjetas(yCarril) {
     const { w, hueco, tallo } = g;
-    const carriles = Array.from({ length: g.carriles }, () => [[0, MEDIDA.margen * g.rem - hueco]]);
+    posPortales = franjas.map((fr, i) => (i === 0 ? MEDIDA.margen * g.rem : X(fr.desde)));
+    const reservados = [[0, MEDIDA.margen * g.rem - hueco], ...posPortales.map((x) => [x, x + g.portal])].sort((a, b) => a[0] - b[0]);
+    const carriles = Array.from({ length: g.carriles }, () => reservados.map((r) => [...r]));
     const maxDer = (filtroActivo ? 2.5 : 0.8) * (w + hueco);
     const maxIzq = 0.3 * (w + hueco);
     for (const item of [...eventos, ...grupos]) item.pos = null;
@@ -420,7 +447,8 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       const carril = carriles[mejor.c];
       const i = carril.findIndex(([a]) => a > mejor.x);
       carril.splice(i < 0 ? carril.length : i, 0, [mejor.x, mejor.x + w]);
-      ev.pos = { x: mejor.x, y: yCarril(mejor.c) };
+      const base = yCarril(mejor.c) + g.h;
+      ev.pos = { x: mejor.x, y: base - LAMINA.alto[ev.importancia] * g.rem * g.s, base };
     }
   }
 
@@ -442,15 +470,15 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     }
   }
 
-  // Línea de cada tarjeta a su punto: baja vertical y, si la tarjeta se corrió, termina en diagonal.
+  // Línea de cada lámina a su punto: baja vertical y, si la lámina se corrió, termina en diagonal.
   function dibujarConectores(alto) {
-    const { h, tallo, ejeY, rem } = g;
+    const { tallo, ejeY, rem } = g;
     let d = '';
     for (const ev of items) {
       if (!ev.pos) continue;
       const sx = ev.pos.x + tallo;
       const px = X(ev.u);
-      const sy = (ev.pos.y + h).toFixed(1);
+      const sy = ev.pos.base.toFixed(1);
       d += Math.abs(sx - px) < 1
         ? `M${px.toFixed(1)} ${sy}V${ejeY.toFixed(1)}`
         : `M${sx.toFixed(1)} ${sy}V${(ejeY - 0.75 * rem).toFixed(1)}L${px.toFixed(1)} ${ejeY.toFixed(1)}`;
@@ -598,9 +626,11 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
 
   // Con `enfocar` (al llegar desde la portada), queda elegida y con el foco la primera tarjeta del período.
   function irAPeriodo(id, { suave = true, enfocar = false } = {}) {
-    const fr = franjas.find((x) => x.periodo.id === id);
+    const i = franjas.findIndex((x) => x.periodo.id === id);
+    const fr = franjas[i];
     seleccionar(null);
-    ventana.scrollTo({ left: (Number.isFinite(fr.desde) ? X(fr.desde) : g.margenIzq) - g.rem, behavior: suave ? conducta() : 'auto' });
+    // El período empieza en su portal, que queda a la izquierda de la vista.
+    ventana.scrollTo({ left: (posPortales[i] ?? g.margenIzq) - g.rem, behavior: suave ? conducta() : 'auto' });
     anunciar(`Período: ${fr.periodo.nombre}, ${fr.periodo.fechasTexto}.`);
     const primera = enfocar ? items.find((ev) => ev.pos && ev.periodoId === id) : null;
     if (primera) seleccionar(primera, { centrar: false, enfocar: true });
@@ -706,6 +736,11 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     const grupo = grupoDe.get(ev);
     seleccionar(ev, { centrar: false });
     alAbrir(grupo && items.includes(grupo) ? grupo : ev);
+  });
+  // Un portal lleva al comienzo de su período, como el nombre en la franja (con el teclado, las flechas).
+  pista.querySelector('.portales').addEventListener('click', (e) => {
+    const portal = e.target.closest('.portal');
+    if (portal) irAPeriodo(portal.dataset.periodo, { enfocar: true });
   });
   pista.querySelector('.franjas').addEventListener('click', (e) => {
     const boton = e.target.closest('.franja-nombre');

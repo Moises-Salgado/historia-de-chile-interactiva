@@ -7,7 +7,7 @@ La historia de Chile, desde el poblamiento hasta hoy, en una línea de tiempo in
 - Más de 120 eventos en 9 períodos, con fecha, lugar, personajes, imagen con su crédito y las fuentes consultadas.
 - Una portada con tres entradas (la línea de tiempo, el mapa y las historias guiadas), un «¿Sabías que…?» distinto cada día y los nueve períodos, para entrar directo a uno.
 - Un mapa de Chile con las 16 regiones y 34 lugares: al tocar una región, una ciudad o un sitio se ven sus eventos, y un filtro por período cambia el mapa entero. Los eventos de alcance nacional y los ocurridos fuera de Chile tienen su propia lista, y cada evento tiene un enlace «Ver en el mapa».
-- Línea de tiempo horizontal con franjas de color por período, minimapa y zoom según la importancia de cada evento: el zoom mínimo muestra solo los grandes hitos.
+- Línea de tiempo horizontal hecha de láminas (la imagen de época a sangre, con la fecha y el título encima; más altas en los grandes hitos), con un portal de color al comienzo de cada período, el eje dibujado como escala gráfica de mapa, minimapa y zoom según la importancia de cada evento: el zoom mínimo muestra solo los grandes hitos.
 - Búsqueda por título, personaje o año, y filtros por período y tema.
 - Historias guiadas paso a paso (la Independencia, los grandes terremotos, las constituciones y las mujeres en la vida pública), fichas de los personajes que aparecen en varios eventos y los pueblos originarios reunidos de norte a sur.
 - En cada evento: cuánto tiempo pasó («hace 147 años»), un «¿Sabías que…?» tomado del texto detallado y, si quien lee guarda su año de nacimiento (solo en su navegador), qué edad tenía.
