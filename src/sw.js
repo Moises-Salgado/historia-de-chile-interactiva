@@ -8,7 +8,9 @@ const SITIO = `sitio-${VERSION}`;
 // calzarían con las copias guardadas al instalar.
 const DEL_SITIO = { cacheName: SITIO, ignoreVary: true };
 const IMAGENES = 'imagenes';
-const MAX_IMAGENES = 200;
+// Las imágenes de Commons llegan como respuestas opacas y Chrome descuenta unos 7 MB de cuota por cada una:
+// con muchas, el guardado falla en silencio o el navegador borra el sitio entero.
+const MAX_IMAGENES = 60;
 const ESPERA_RED = 4000; // ms: si la red no responde antes, se muestra la copia guardada
 
 self.addEventListener('install', (evento) => {

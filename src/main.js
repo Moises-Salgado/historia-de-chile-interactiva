@@ -55,6 +55,23 @@ function anunciar(texto) {
   }, 100);
 }
 
+// Avisos a la vista (además del lector): un enlace que no existe o la falta de conexión. Se van solos a los
+// `duracion` ms (0: hasta cerrarlo); `clave` permite retirar uno en particular (el de sin conexión).
+const aviso = $('#aviso');
+let avisoTiempo;
+function avisar(texto, { duracion = 7000, clave = '' } = {}) {
+  anunciar(texto);
+  aviso.querySelector('.aviso-texto').textContent = texto;
+  aviso.dataset.clave = clave;
+  aviso.hidden = false;
+  clearTimeout(avisoTiempo);
+  if (duracion) avisoTiempo = setTimeout(() => (aviso.hidden = true), duracion);
+}
+function retirarAviso(clave) {
+  if (aviso.dataset.clave === clave) aviso.hidden = true;
+}
+aviso.querySelector('button').addEventListener('click', () => (aviso.hidden = true));
+
 // Imagen que carga: aparece con un fundido sobre el tono del período (styles.css).
 document.addEventListener(
   'load',
@@ -201,6 +218,7 @@ const BASES = {
   linea: { hash: '#linea', titulo: `Línea de tiempo · ${TITULO}` },
   mapa: { hash: '#mapa', titulo: `Mapa · ${TITULO}` },
 };
+const NOMBRE_BASE = { inicio: 'la portada', linea: 'la línea de tiempo', mapa: 'el mapa' };
 const pestanas = [...document.querySelectorAll('.pestana')];
 let base = raiz.dataset.base in BASES ? raiz.dataset.base : 'linea';
 
@@ -347,7 +365,12 @@ function aplicarRuta({ desdeBoton = false, inicial = false } = {}) {
   if (vista && vista.tipo !== 'desconocida') mostrarVista(vista, desdeBoton);
   else if (detalle.abierto) cerrarDetalle(destino ?? base);
   else if (destino) cambiarBase(destino, { enfocar: !inicial });
-  if (vista?.tipo === 'desconocida') anunciar('No encontramos esa página.');
+  // Un enlace roto (un evento que no existe, una historia sin ese paso): se dice a la vista y la dirección
+  // vuelve a la sección que se está mostrando.
+  if (vista?.tipo === 'desconocida') {
+    history.replaceState(null, '', BASES[base].hash);
+    avisar(`No encontramos esa página: puede que el enlace esté incompleto o sea antiguo. Estás en ${NOMBRE_BASE[base]}.`);
+  }
 }
 
 // En celulares, el gesto de volver trae su propia animación: entonces no se suma otra.
@@ -513,12 +536,16 @@ function cerrarDetalle(hacia = base) {
   });
 }
 
+// Mientras se busca, la barra inferior se oculta: movería la línea de tiempo que está debajo, sin verla, y
+// tapaba la barra de acciones del buscador (y el resultado con el foco) en el celular.
+const controles = $('.controles');
 function actualizarInert() {
   const tapado = detalle.abierto || filtros.abierto;
   seccionLinea.inert = tapado || base !== 'linea';
   seccionInicio.inert = tapado || base !== 'inicio';
   seccionMapa.inert = tapado || base !== 'mapa';
   elDetalle.inert = filtros.abierto;
+  controles.hidden = filtros.abierto;
 }
 
 // Enlaces internos (#evento/…, #historias…): navegan sin recargar y sin llenar el historial.
@@ -623,12 +650,35 @@ function primeraVisita() {
   }
 }
 
+// Sin conexión se puede seguir viendo lo ya abierto (Service Worker): se avisa mientras dure.
+const SIN_CONEXION = 'Sin conexión: puedes ver lo que ya abriste en este navegador; lo demás aparecerá al volver la conexión.';
+addEventListener('offline', () => avisar(SIN_CONEXION, { duracion: 0, clave: 'conexion' }));
+addEventListener('online', () => {
+  retirarAviso('conexion');
+  anunciar('Conexión recuperada.');
+});
+
+// Al imprimir un evento se abren sus plegables (fuentes, «¿Qué edad tenías?» queda oculto por el CSS) y
+// después vuelven a como estaban.
+let plegablesCerrados = [];
+addEventListener('beforeprint', () => {
+  plegablesCerrados = [...elDetalle.querySelectorAll('details:not([open])')];
+  for (const d of plegablesCerrados) d.open = true;
+});
+addEventListener('afterprint', () => {
+  for (const d of plegablesCerrados) d.open = false;
+  plegablesCerrados = [];
+});
+
 history.scrollRestoration = 'manual';
 document.body.dataset.vista = 'base';
 ponerBase(base);
 aplicarRuta({ inicial: true });
 if (!detalle.abierto && base === 'linea' && primeraVisita()) linea.entrada();
 animarCambios = true;
+if (!navigator.onLine) avisar(SIN_CONEXION, { duracion: 0, clave: 'conexion' });
+// La app arrancó: el rescate de index.html ya no aparece aunque después falle algo.
+raiz.dataset.app = 'lista';
 
 // Sin conexión: el Service Worker (plantilla en src/sw.js) solo existe en el sitio construido.
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {

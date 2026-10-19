@@ -1,0 +1,89 @@
+// Presupuesto del plan MVP (docs/PLAN_MVP.md, «Reglas para todo lo nuevo»): peso del sitio construido y reglas
+// del CSS que se pueden comprobar sin navegador. Uso: npm run build && npm run presupuesto
+// Falla (código 1) si algo se pasa; LCP, CLS y cuadros por segundo se miden aparte, con el navegador.
+import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { gzipSync } from 'node:zlib';
+
+// Peso gzip antes del plan (KB; zlib con su nivel por omisión, medido sobre lo publicado en el commit 405478a):
+// la carga inicial puede crecer 8 KB; el mapa ya existía y conserva su peso con 1 KB de margen; cada módulo
+// nuevo a pedido, 15 KB, y 60 KB en total.
+const BASE = { inicial: 11.39 + 122.24, mapa: 21.97 };
+const TOPE = { extraInicial: 8, mapaExtra: 1, modulo: 15, modulosTotal: 60, pagina: 2 };
+const DIST = 'dist';
+
+const errores = [];
+const avisos = [];
+const kb = (bytes) => bytes / 1000;
+const gz = (archivo) => kb(gzipSync(readFileSync(archivo)).length);
+const f = (n) => n.toFixed(2).padStart(7);
+
+if (!existsSync(join(DIST, 'index.html'))) {
+  console.error('No hay sitio construido: corre primero «npm run build».');
+  process.exit(1);
+}
+
+// ---- Peso: lo que pide index.html es la carga inicial; los demás módulos se cargan a pedido ----
+const html = readFileSync(join(DIST, 'index.html'), 'utf8');
+const pedidos = new Set([...html.matchAll(/(?:src|href)="\.?\/?(assets\/[^"]+\.(?:js|css))"/g)].map((m) => m[1]));
+const activos = readdirSync(join(DIST, 'assets')).filter((a) => /\.(js|css)$/.test(a));
+let inicial = 0;
+let modulos = 0;
+console.log('Peso gzip (KB)');
+for (const a of activos.sort()) {
+  const peso = gz(join(DIST, 'assets', a));
+  const ruta = `assets/${a}`;
+  if (pedidos.has(ruta)) {
+    inicial += peso;
+    console.log(`  inicial  ${f(peso)}  ${a}`);
+  } else if (a.startsWith('mapa-')) {
+    console.log(`  mapa     ${f(peso)}  ${a}`);
+    if (peso > BASE.mapa + TOPE.mapaExtra) errores.push(`El mapa pesa ${peso.toFixed(2)} KB (tope ${(BASE.mapa + TOPE.mapaExtra).toFixed(2)}).`);
+  } else {
+    modulos += peso;
+    console.log(`  a pedido ${f(peso)}  ${a}`);
+    if (peso > TOPE.modulo) errores.push(`${a} pesa ${peso.toFixed(2)} KB (tope ${TOPE.modulo} por módulo).`);
+  }
+}
+const topeInicial = BASE.inicial + TOPE.extraInicial;
+console.log(`  Carga inicial: ${inicial.toFixed(2)} KB (antes del plan ${BASE.inicial.toFixed(2)}, tope ${topeInicial.toFixed(2)})`);
+console.log(`  Módulos nuevos a pedido: ${modulos.toFixed(2)} KB (tope ${TOPE.modulosTotal})`);
+if (inicial > topeInicial) errores.push(`La carga inicial pesa ${inicial.toFixed(2)} KB (tope ${topeInicial.toFixed(2)}).`);
+if (modulos > TOPE.modulosTotal) errores.push(`Los módulos a pedido suman ${modulos.toFixed(2)} KB (tope ${TOPE.modulosTotal}).`);
+
+// Páginas para compartir (e/<id>.html), si existen: 2 KB cada una.
+if (existsSync(join(DIST, 'e'))) {
+  const paginas = readdirSync(join(DIST, 'e'));
+  const grandes = paginas.filter((p) => kb(readFileSync(join(DIST, 'e', p)).length) > TOPE.pagina);
+  console.log(`  Páginas para compartir: ${paginas.length}${grandes.length ? `, ${grandes.length} sobre ${TOPE.pagina} KB` : ''}`);
+  if (grandes.length) errores.push(`Páginas para compartir sobre ${TOPE.pagina} KB: ${grandes.slice(0, 5).join(', ')}.`);
+}
+
+// ---- CSS: letra de 1rem o más, duraciones de 400 ms o menos y nada en bucle ----
+// Sin comentarios, pero con sus saltos de línea: así el número de línea calza con el archivo.
+const css = readFileSync('src/styles.css', 'utf8').replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, ' '));
+const linea = (i) => css.slice(0, i).split('\n').length;
+// El primer valor fijo de la declaración (en max(), clamp() o calc(), el mínimo va primero).
+for (const m of css.matchAll(/font-size:\s*([^;}]+)/g)) {
+  const valor = m[1].trim();
+  const n = /(-?[\d.]+)(rem|px)\b/.exec(valor);
+  if (!n) continue;
+  const rem = n[2] === 'px' ? Number(n[1]) / 18 : Number(n[1]);
+  if (/^min\(/.test(valor)) avisos.push(`font-size con min() (línea ~${linea(m.index)}): revisar que no baje de 1rem.`);
+  else if (rem < 1) errores.push(`font-size bajo 1rem (línea ~${linea(m.index)}): ${valor}`);
+}
+for (const m of css.matchAll(/(transition|animation)(-duration)?:\s*([^;}]+)/g)) {
+  for (const d of m[3].matchAll(/(?<![\w-])([\d.]+)(ms|s)\b/g)) {
+    const ms = d[2] === 's' ? Number(d[1]) * 1000 : Number(d[1]);
+    if (ms > 400) errores.push(`Duración de ${ms} ms (línea ~${linea(m.index)}): el tope es 400 ms.`);
+  }
+  if (/\binfinite\b/.test(m[3])) errores.push(`Animación en bucle (línea ~${linea(m.index)}): no se permite.`);
+}
+
+for (const a of avisos) console.log(`Aviso: ${a}`);
+if (errores.length) {
+  console.error(`\n${errores.length} ${errores.length === 1 ? 'problema' : 'problemas'}:`);
+  for (const e of errores) console.error(`  - ${e}`);
+  process.exit(1);
+}
+console.log('\nOK: dentro del presupuesto.');

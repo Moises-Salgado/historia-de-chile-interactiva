@@ -756,7 +756,7 @@ body[data-vista='detalle'] .linea {
   height: 100%;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.6s ease-out;
+  transition: opacity 0.4s ease-out;
 }
 
 .curvas.lista {
@@ -858,8 +858,11 @@ body[data-vista='detalle'] .linea {
   content: '';
 }
 
-.puerta:hover > img {
-  scale: 1.04;
+/* Solo con puntero: en el celular, un toque dejaría la imagen agrandada. */
+@media (hover: hover) {
+  .puerta:hover > img {
+    scale: 1.04;
+  }
 }
 
 .puerta:active {
@@ -1295,6 +1298,7 @@ body[data-vista='detalle'] .linea {
 
 /* Una sola fila que se desplaza de lado (con «Todos los períodos» fijo al comienzo); el alto queda reservado
    antes de que se agreguen los botones. */
+/* El primer chip queda fijo a la izquierda: los demás, al recibir el foco, no se esconden bajo él. */
 .mapa-filtro {
   display: flex;
   gap: 0.375rem;
@@ -1302,6 +1306,7 @@ body[data-vista='detalle'] .linea {
   margin-top: 0.375rem;
   padding-bottom: 0.25rem;
   overflow-x: auto;
+  scroll-padding-inline-start: 12rem;
   scrollbar-width: thin;
 }
 
@@ -1682,6 +1687,11 @@ body[data-vista='detalle'] .linea {
     overflow: visible;
   }
 
+  /* Con la hoja abierta, la región que recibe el foco (flechas) queda sobre ella, no debajo. */
+  .mapa-desplazable:has(> .mapa-contenido:not([data-seleccion='todo'])) {
+    scroll-padding-bottom: calc(45dvh + 1rem);
+  }
+
   .mapa-contenido:not([data-seleccion='todo']) .atlas-panel {
     position: sticky;
     top: auto;
@@ -1887,8 +1897,11 @@ body[data-vista='detalle'] .linea {
   height: var(--lamina-alto-1, 11rem);
 }
 
-.evento:hover {
-  translate: 0 -2px;
+/* Solo con puntero: en el celular, la lámina quedaba levantada después de tocarla. */
+@media (hover: hover) {
+  .evento:hover {
+    translate: 0 -2px;
+  }
 }
 
 /* Anillo del evento actual: se asienta al elegirlo (llega un poco más grande y se ajusta). */
@@ -1996,8 +2009,10 @@ img[data-periodo]:not(.cargada) {
   opacity: 0;
 }
 
-.tarjeta:hover .tarjeta-img > img {
-  scale: 1.04;
+@media (hover: hover) {
+  .tarjeta:hover .tarjeta-img > img {
+    scale: 1.04;
+  }
 }
 
 .tarjeta-texto {
@@ -3164,12 +3179,14 @@ a.vecino:hover {
 }
 
 /* ---- Panel «Buscar y filtrar» ---- */
+/* scroll-padding: lo que recibe el foco no queda bajo la barra fija de acciones (WCAG 2.4.11). */
 .panel-filtros {
   position: absolute;
   inset: 0;
   z-index: 20;
   overflow-y: auto;
   overscroll-behavior: contain;
+  scroll-padding-bottom: 7.5rem;
   background: var(--fondo);
   transition:
     opacity 0.2s ease-out,
@@ -3664,6 +3681,207 @@ a.vecino:hover {
   from {
     opacity: 0;
     translate: -2.5rem 0;
+  }
+}
+
+/* Mientras dura una transición, los toques pasan a la página (un segundo toque en «Siguiente» no se pierde). */
+::view-transition {
+  pointer-events: none;
+}
+
+/* ---- Aviso a la vista (main.js): un enlace que no existe o la falta de conexión. Va arriba del contenido,
+   sobre lo que esté abierto, y se cierra solo o con su botón; el lector de pantalla ya lo oyó por #avisos. ---- */
+.aviso {
+  position: absolute;
+  top: 0.75rem;
+  left: 50%;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: max-content;
+  max-width: calc(100% - 2rem);
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borde-fuerte);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-alta);
+  translate: -50% 0;
+  transition:
+    opacity 0.18s ease-out,
+    translate 0.18s ease-out;
+}
+
+@starting-style {
+  .aviso {
+    opacity: 0;
+    translate: -50% -0.5rem;
+  }
+}
+
+.aviso-texto {
+  margin: 0;
+}
+
+/* Navegadores sin color-mix() (Chrome 109, el último para Windows 7 y 8.1, y Safari 16.1 o anterior): con
+   var() dentro, la declaración se anula al calcular y no cae a la anterior (la portada del detalle quedaba
+   sin océano, con texto claro sobre niebla). Aquí van colores planos. */
+@supports not (color: color-mix(in srgb, red, red)) {
+  .puerta-silueta {
+    fill: #84999c;
+    stroke: #84999c;
+  }
+
+  .destacado-marco,
+  .mapa-evento-img,
+  .vecino-img,
+  .resultado-img,
+  .ficha-img {
+    background: var(--superficie-2);
+  }
+
+  .region {
+    fill: var(--tierra-mapa);
+  }
+
+  .region:hover {
+    fill: #8fa7a4;
+  }
+
+  .tarjeta {
+    background: #14303a;
+  }
+
+  .tarjeta-img {
+    background: #1b3a44;
+  }
+
+  .franja::before {
+    background: transparent;
+    border-left: 1px dashed var(--borde-fuerte);
+  }
+
+  .detalle-portada {
+    background: var(--pacifico);
+  }
+
+  .detalle-marco::before {
+    background: transparent;
+  }
+
+  .sobre-periodo {
+    background: var(--superficie);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-clase]) :is(.punto, .tramo, .cartela, .detalle, .resultado, .epoca, .destacado) {
+      --tinta: var(--texto);
+    }
+  }
+}
+
+/* ---- Impresión: el evento abierto, como una lámina de papel (main.js abre los plegables antes de imprimir).
+   Sin barras ni botones; el crédito de la imagen y la dirección de cada fuente quedan a la vista. ---- */
+@media print {
+  @page {
+    margin: 1.5cm;
+  }
+
+  /* Con el mismo selector que el modo oscuro: quien imprime con el sistema en oscuro no saca texto claro sobre
+     papel blanco. */
+  :root,
+  :root:not([data-clase]),
+  .oceano,
+  .cabecera,
+  .inicio-banda,
+  .detalle-portada {
+    --fondo: #fff;
+    --superficie: #fff;
+    --superficie-2: #eee;
+    --texto: #000;
+    --texto-suave: #333;
+    --borde: #999;
+    --borde-fuerte: #555;
+    --acento: #6b3a18;
+    color-scheme: light;
+  }
+
+  :root:not([data-clase]) :is(.punto, .tramo, .cartela, .detalle, .resultado, .epoca, .destacado) {
+    --tinta: var(--color);
+  }
+
+  body {
+    display: block;
+    min-height: 0;
+    color: #000;
+    background: #fff;
+  }
+
+  .cabecera,
+  .controles,
+  .saltar,
+  .aviso,
+  .panel-filtros,
+  .linea-info,
+  body[data-vista='detalle'] :is(#linea, #inicio, #mapa),
+  .detalle :is(.boton, .edad, .edad-abrir, .vecinos, .historia-pasos, .ver-en-mapa, .ayuda, .personaje-cuenta) {
+    display: none !important;
+  }
+
+  /* Los personajes con ficha son botones en pantalla; en papel, sus nombres van como texto. */
+  .detalle .personajes .boton {
+    display: inline !important;
+    padding: 0;
+    color: inherit;
+    text-decoration: none;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .principal {
+    display: block;
+    overflow: visible;
+  }
+
+  .detalle {
+    position: static;
+    overflow: visible;
+  }
+
+  .detalle-portada {
+    padding: 0 0 1rem;
+    background: none;
+  }
+
+  .detalle-columnas {
+    display: block;
+  }
+
+  .detalle-ficha,
+  .detalle-ficha.fija {
+    position: static;
+    margin-top: 1.5rem;
+  }
+
+  .detalle-marco img {
+    max-height: 9cm;
+  }
+
+  figure,
+  .detalle-ficha,
+  .sabias-que {
+    break-inside: avoid;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .fuentes a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    overflow-wrap: anywhere;
   }
 }
 

@@ -29,6 +29,32 @@
         }
       })();
     </script>
+    <script>
+      // Rescate: si la app no arranca (su módulo no llega, falla al ejecutarse o el navegador es muy antiguo),
+      // se ofrece recargar en vez de dejar botones que no hacen nada. main.js marca <html data-app> al terminar.
+      // Sintaxis antigua a propósito: también debe correr donde no corren los módulos.
+      var __rescate = function () {
+        if (document.documentElement.getAttribute('data-app') || document.getElementById('rescate')) return;
+        var d = document.createElement('div');
+        d.id = 'rescate';
+        d.setAttribute('role', 'alert');
+        d.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:100;padding:1rem;background:#0f2c36;color:#edf3f1;font:1.125rem/1.4 system-ui,sans-serif;text-align:center';
+        d.innerHTML = 'No se pudo cargar la aplicación. <button type="button" style="margin-left:.5rem;padding:.5rem 1rem;font:inherit;color:#1d0f05;background:#e8a874;border:0;border-radius:.5rem;cursor:pointer">Recargar</button>';
+        d.getElementsByTagName('button')[0].onclick = function () {
+          location.reload();
+        };
+        if (document.body) document.body.appendChild(d);
+        else document.addEventListener('DOMContentLoaded', function () { document.body.appendChild(d); });
+      };
+      window.addEventListener('error', function (e) {
+        if (/\/(assets|src)\//.test(e.filename || '')) __rescate();
+      });
+      // El módulo principal se ejecuta antes de DOMContentLoaded: si al llegar ese momento la app no marcó
+      // que arrancó, su archivo no llegó (Vite quita el onerror del <script> al construir).
+      document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(__rescate, 0);
+      });
+    </script>
   </head>
   <body>
     <svg class="simbolos" aria-hidden="true" focusable="false">
@@ -168,6 +194,10 @@
 
       <article id="detalle" class="detalle" aria-labelledby="detalle-titulo" hidden></article>
       <section id="panel-filtros" class="panel-filtros" aria-labelledby="panel-titulo" hidden></section>
+      <div id="aviso" class="aviso" hidden>
+        <p class="aviso-texto" aria-hidden="true"></p>
+        <button type="button" class="boton chico" aria-label="Cerrar el aviso">Cerrar</button>
+      </div>
     </main>
 
     <nav class="controles" aria-label="Recorrer la línea de tiempo">
@@ -180,5 +210,6 @@
     <p id="avisos" class="solo-lector" role="status" aria-live="polite"></p>
     <noscript><p class="sin-js">La línea de tiempo y el mapa necesitan JavaScript activado para funcionar.</p></noscript>
     <script type="module" src="/src/main.js"></script>
+    <script nomodule>__rescate();</script>
   </body>
 </html>
