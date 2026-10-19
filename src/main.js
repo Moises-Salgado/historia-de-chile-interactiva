@@ -158,6 +158,7 @@ const linea = crearLineaDeTiempo(seccionLinea, $('#minimapa'), {
   anunciar,
   alAbrir: (item) => ir(item.esGrupo ? `#grupo/${item.id}` : `#evento/${item.id}`),
   alCambiar: actualizarControles,
+  nivel: () => nivel,
 });
 const detalle = crearDetalle(elDetalle, {
   periodos,
@@ -192,13 +193,16 @@ const inicio = crearInicio(seccionInicio, {
 // «Ya visto»: los eventos abiertos se recuerdan en este navegador, solo para una marca discreta en la tarjeta.
 const vistos = new Set((leerPreferencia('vistos') ?? '').split(',').filter((id) => porId.has(id)));
 linea.marcarVistos(vistos);
-// El último abierto se recuerda para «Seguir con…» en la portada.
+// El último abierto se recuerda para «Seguir con…» en la portada. El recién visto por primera vez se marca
+// al volver a la línea de tiempo (su ✓ se asienta).
+let recienVisto = null;
 function marcarVisto(ev) {
   guardarPreferencia('ultimo', ev.id);
   if (vistos.has(ev.id)) return;
   vistos.add(ev.id);
   guardarPreferencia('vistos', [...vistos].join(','));
   linea.marcarVistos([ev.id]);
+  recienVisto = ev.id;
 }
 
 botonTexto.addEventListener('click', () => {
@@ -220,6 +224,7 @@ $('.nivel').addEventListener('change', (e) => {
   cambiarVista(() => {
     marcarNivel();
     detalle.ponerNivel(nivel);
+    linea.ponerNivel();
   }, 'nivel');
 });
 
@@ -543,7 +548,7 @@ function cerrarDetalle(hacia = base) {
   const vuelve = Boolean(hacia === 'linea' && base === 'linea' && ev && lamina?.classList.contains('cargada') && laminaALaVista(lamina));
   if (vuelve) lamina.style.viewTransitionName = LAMINA;
   let miniatura = null;
-  cambiarVista((animado) => {
+  const transicion = cambiarVista((animado) => {
     detalle.ocultar();
     vistaActual = null;
     nav = { antes: null, despues: null };
@@ -556,8 +561,15 @@ function cerrarDetalle(hacia = base) {
     focoPrevio = null;
     miniatura = animado && vuelve ? linea.miniatura(ev) : null;
     if (miniatura) miniatura.style.viewTransitionName = LAMINA;
-  }, 'cerrar')?.then(() => {
+  }, 'cerrar');
+  const asentar = () => {
+    if (recienVisto && base === 'linea' && !detalle.abierto) linea.asentarVisto(recienVisto);
+    recienVisto = null;
+  };
+  if (!transicion) return asentar();
+  transicion.then(() => {
     if (miniatura) miniatura.style.viewTransitionName = '';
+    asentar();
   });
 }
 

@@ -190,3 +190,14 @@ Pedido del dueño (2026-10-19): dejar la app «bonita», con más animación y a
   - **Rótulos:** «Leer» visible delante de los niveles y «A+» pasa a «Texto».
   - **Barra inferior:** en el celular, el ícono va sobre la palabra, también con texto grande.
   - **Cabecera:** cabe sin desbordes en 320, 360, 390, 1366 y 1920 px, con texto grande y en modo clase.
+- **M3 · Línea de tiempo (hecha).**
+  - **Láminas** de 11 × 13/15/17 rem: 198 × 306 px en los hitos a 1366 × 768 (antes 171 × 261).
+  - **Espacio liberado:** sin fila de ayuda («Menos» y «Más» llevan su palabra) y con la franja inferior de 1,75 rem.
+  - **«Lo elegido»:** con el evento elegido a la vista, muestra su fecha, título, resumen del nivel y «Leer». Si no, el período del centro.
+  - **Huecos:** se marcan con «+N eventos · Acercar» cuando ahí hay eventos que solo tienen punto (15 en el zoom inicial).
+  - **Saltos largos** (más de dos pantallas): fundido y salto, sin recorrer la pista.
+  - **✓ de visto:** en SVG, más grande; se asienta al volver del detalle (fundido, sin rebote).
+  - **Minimapa:** marcas de 1 px.
+  - **Títulos:** con el ancho nuevo ocupan 279 líneas (antes 330), con 3 cortes y ninguno truncado en ningún modo; `balance` y `pretty` dan lo mismo.
+  - **Zoom con + y −:** FLIP de 280 ms. Con la CPU 4× más lenta, la animación pasa de 60 cps de media; los cuadros largos (`distribuir()` y la decodificación de imágenes nuevas) también ocurren sin animación.
+  - **Pruebas:** el script de capturas emula movimiento reducido salvo que se pida lo contrario; las pruebas de animación deben pedirlo.

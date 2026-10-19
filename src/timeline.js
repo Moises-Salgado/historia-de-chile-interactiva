@@ -11,10 +11,11 @@ import { animar, esc, icono, movimientoReducido, urlImagen } from './util.js';
 // la importancia (los hitos, más altos) y todas se apoyan en la base de su carril. Si la pantalla es baja,
 // láminas y portales bajan (hasta `minimo`) para que quepan la más alta y la cartela corta, pero no se
 // angostan: el título de la lámina baja con ella (--s) sin pasar de 1rem y así ocupa las mismas líneas.
-const MEDIDA = { hueco: 0.625, tallo: 1.5, margen: 1.25, eje: 1.25, anios: 1.75, franjas: 2.25 };
-const LAMINA = { ancho: 9.5, alto: { 1: 11, 2: 12.5, 3: 14.5 }, portal: 10.5, minimo: 0.6 };
-// Cartela según el alto del cielo (rem): completa (período, nombre, descripción) o corta (nombre y fechas,
-// 3,5rem con el margen de arriba: styles.css, .cielo[data-modo='corta']).
+// La lámina es lo principal de la pantalla (la franja de abajo es delgada y no hay fila de ayuda).
+const MEDIDA = { hueco: 0.625, tallo: 1.5, margen: 1.25, eje: 1.25, anios: 1.75, franjas: 1.75 };
+const LAMINA = { ancho: 11, alto: { 1: 13, 2: 15, 3: 17 }, portal: 11, minimo: 0.6 };
+// «Lo elegido» (la cartela del cielo) según su alto (rem): completa (con la descripción del período o el
+// resumen del evento) o corta (nombre y fechas, o fecha y título: 3,5rem con el margen de arriba).
 const CARTELA = { completa: 7, corta: 3.5 };
 // Zoom = fracción del ancho que necesitan todas las láminas para no encimarse.
 // Con `max` ya todos los eventos tienen lámina: acercar más solo los separaría.
@@ -184,7 +185,7 @@ const tarjeta = (ev, color) => {
     <li class="evento imp-${ev.importancia}" data-id="${ev.id}" style="--color:${color}" hidden>
       <button type="button" class="tarjeta" tabindex="-1" aria-label="${esc(`${ev.fechaTexto}: ${ev.titulo}`)}">
         <span class="tarjeta-img"><img src="${urlImagen(archivo, 250)}" srcset="${[250, 330, 500].map((a) => `${urlImagen(archivo, a)} ${a}w`).join(', ')}"
-          sizes="9.5rem" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}"></span>
+          sizes="${LAMINA.ancho}rem" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}"></span>
         <span class="tarjeta-texto"><span class="tarjeta-fecha">${esc(fechaCorta(ev))}</span><span class="tarjeta-titulo${titulo.length > 40 ? ' largo' : ''}">${esc(titulo)}</span></span>
       </button>
     </li>`;
@@ -205,8 +206,9 @@ const tarjetaGrupo = (grupo, color) => `
 /**
  * Crea la línea de tiempo dentro de `seccion` y el minimapa (con los botones de zoom) en `contenedorMinimapa`.
  * Llama a alAbrir(evento o grupo) al elegir una tarjeta y a alCambiar() cuando cambia la selección, el zoom o el filtro.
+ * nivel() da el nivel de lectura, para el resumen de «Lo elegido».
  */
-export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, periodos, grupos = [], alAbrir, alCambiar, anunciar }) {
+export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, periodos, grupos = [], alAbrir, alCambiar, anunciar, nivel = () => 'general' }) {
   // Grupos (data/grupos.json): eventos de una misma fecha que se muestran en una sola tarjeta, como
   // «Pueblos que vivían aquí», en una sola ranura y con un solo punto. Si un filtro deja solo uno, ese
   // evento vuelve a tener su tarjeta propia.
@@ -216,6 +218,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   const candidatosAnio = aniosCandidatos(escala);
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const colorDe = new Map(periodos.map((p) => [p.id, p.color]));
+  const periodoPorId = new Map(periodos.map((p) => [p.id, p]));
   const enRanura = (u) => `${(limitar(u / escala.total, 0, 1) * 100).toFixed(3)}%`;
 
   for (const grupo of grupos) {
@@ -235,8 +238,9 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       .join('');
   };
 
-  // El «cielo» es el espacio libre sobre los carriles: muestra la cartela del período que está al centro
-  // (y, al comienzo, el botón para empezar a leer). Queda fijo mientras la línea se desplaza.
+  // El «cielo» es el espacio libre sobre los carriles: muestra «Lo elegido». Con un evento elegido y a la vista
+  // (Anterior y Siguiente lo cambian), su fecha, título, resumen y «Leer»; si no, el período que está al
+  // centro (y, al comienzo, el botón para empezar a leer). Queda fijo mientras la línea se desplaza.
   seccion.insertAdjacentHTML(
     'beforeend',
     `<div class="cielo" hidden>
@@ -250,11 +254,13 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
           <button type="button" class="boton primario cartela-empezar"><span>Empezar a leer</span>${icono('siguiente')}</button>
           <a class="boton" href="#historias">Elegir una historia</a>
         </div>
+        <button type="button" class="boton primario cartela-leer" hidden><span>Leer</span>${icono('siguiente')}</button>
       </div>
     </div>
     <div class="ventana">
       <div class="pista">
         <svg class="conectores" aria-hidden="true"><path /></svg>
+        <div class="huecos" aria-hidden="true"></div>
         <div class="portales" aria-hidden="true">${franjas
           .map(
             ({ periodo: p }, i) => `<div class="portal" data-periodo="${p.id}" style="--color:${p.color}"><span class="portal-orden"><span class="portal-palabra">Período </span>${i + 1}</span>
@@ -278,7 +284,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     </div>`,
   );
   contenedorMinimapa.innerHTML = `
-    <button type="button" class="boton zoom" data-zoom="-1" aria-label="Alejar: ver menos eventos" title="Alejar (−)">${icono('menos')}</button>
+    <button type="button" class="boton zoom" data-zoom="-1" aria-label="Alejar: ver menos eventos" title="Alejar (−)">${icono('menos')}<span class="zoom-texto">Menos</span></button>
     <div class="minimapa" role="slider" tabindex="0" aria-label="Minimapa: posición en la historia" aria-valuemin="0" aria-valuemax="100">
       <div class="minimapa-barra">${franjas
         .map((fr) => {
@@ -290,14 +296,16 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       <div class="minimapa-marco"></div>
       <div class="minimapa-anios" aria-hidden="true"></div>
     </div>
-    <button type="button" class="boton zoom" data-zoom="1" aria-label="Acercar: ver más eventos" title="Acercar (+)">${icono('mas')}</button>`;
+    <button type="button" class="boton zoom" data-zoom="1" aria-label="Acercar: ver más eventos" title="Acercar (+)"><span class="zoom-texto">Más</span>${icono('mas')}</button>`;
 
   const cielo = seccion.querySelector('.cielo');
   const cartela = cielo.querySelector('.cartela');
   const acciones = cielo.querySelector('.cartela-acciones');
   const empezar = acciones.querySelector('.cartela-empezar');
+  const leer = cielo.querySelector('.cartela-leer');
   const ventana = seccion.querySelector('.ventana');
   const pista = ventana.querySelector('.pista');
+  const capaHuecos = pista.querySelector('.huecos');
   const elSaltos = [...pista.querySelectorAll('.salto-marca')];
   const svg = pista.querySelector('.conectores');
   const camino = svg.querySelector('path');
@@ -392,6 +400,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     const yCarril = (c) => base - g.h - c * (g.h + g.hueco);
 
     colocarTarjetas(yCarril);
+    dibujarHuecos(yCarril);
     const altoPortal = g.carriles * g.h + (g.carriles - 1) * g.hueco;
     elPortales.forEach((el, i) => {
       Object.assign(el.style, { width: `${g.portal}px`, height: `${altoPortal}px` });
@@ -469,8 +478,43 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       const i = carril.findIndex(([a]) => a > mejor.x);
       carril.splice(i < 0 ? carril.length : i, 0, [mejor.x, mejor.x + w]);
       const base = yCarril(mejor.c) + g.h;
-      ev.pos = { x: mejor.x, y: base - LAMINA.alto[ev.importancia] * g.rem * g.s, base };
+      ev.pos = { x: mejor.x, y: base - LAMINA.alto[ev.importancia] * g.rem * g.s, base, c: mejor.c };
     }
+  }
+
+  // Huecos: donde entre dos láminas sobra espacio y hay eventos que a este zoom solo tienen punto, una marca
+  // «+N eventos · Acercar» acerca la vista ahí (con el teclado, la tecla +). Así un hueco no parece una imagen
+  // que no cargó. Un hueco sin eventos es tiempo vacío y se deja como está.
+  let huecos = [];
+  function dibujarHuecos(yCarril) {
+    const { w, hueco } = g;
+    // Lo ocupado en cualquier carril (láminas y portales), unido: un hueco es una columna vacía de verdad.
+    const ocupado = [...items.filter((ev) => ev.pos).map((ev) => [ev.pos.x, ev.pos.x + w]), ...posPortales.map((x) => [x, x + g.portal])].sort((a, b) => a[0] - b[0]);
+    const union = [];
+    for (const [a, b] of ocupado) {
+      const ultimo = union.at(-1);
+      if (ultimo && a <= ultimo[1]) ultimo[1] = Math.max(ultimo[1], b);
+      else union.push([a, b]);
+    }
+    const sinLamina = items.filter((ev) => !ev.pos);
+    const alto = LAMINA.alto[1] * g.rem * g.s * 0.5;
+    const base = yCarril(0) + g.h;
+    huecos = [];
+    let html = '';
+    for (let i = 0; i < union.length - 1; i++) {
+      const [izq, der] = [union[i][1], union[i + 1][0]];
+      const libre = der - izq - 2 * hueco;
+      if (libre < 0.5 * w) continue;
+      const dentro = sinLamina.filter((ev) => X(ev.u) > izq && X(ev.u) < der);
+      if (!dentro.length) continue;
+      const ancho = Math.min(libre, 0.75 * w);
+      const x = izq + hueco + (libre - ancho) / 2;
+      huecos.push({ centro: x + ancho / 2, importancia: Math.max(...dentro.map((ev) => ev.importancia)) });
+      const n = dentro.length;
+      html += `<div class="hueco" data-i="${huecos.length - 1}" style="width:${ancho.toFixed(1)}px;height:${alto.toFixed(1)}px;transform:translate(${x.toFixed(1)}px, ${(base - alto).toFixed(1)}px)">
+        <span class="hueco-cuenta">+${n}</span><span class="hueco-texto">${n === 1 ? 'evento' : 'eventos'}</span><span class="hueco-accion">${icono('mas')}Acercar</span></div>`;
+    }
+    capaHuecos.innerHTML = html;
   }
 
   function dibujarEventos() {
@@ -534,19 +578,41 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     if (cielo.dataset.modo === 'completa' && cielo.scrollHeight > cielo.clientHeight + 1) desc.hidden = true;
   }
 
-  let periodoCartela = null;
-  function mostrarCartela(periodo) {
-    // Al comienzo de la línea (sin filtro): empezar por el primer evento o elegir una historia guiada.
-    acciones.hidden = filtroActivo || ventana.scrollLeft > ventana.clientWidth / 3;
-    if (periodo === periodoCartela) return;
-    periodoCartela = periodo;
-    const n = franjas.findIndex((fr) => fr.periodo === periodo) + 1;
-    cartela.style.setProperty('--color', periodo.color);
-    cartela.querySelector('.cartela-orden').textContent = `Período ${n} de ${franjas.length} · ${periodo.fechasTexto}`;
-    cartela.querySelector('.cartela-nombre').textContent = periodo.nombre;
-    cartela.querySelector('.cartela-fechas').textContent = periodo.fechasTexto;
-    cartela.querySelector('.cartela-desc').textContent = periodo.descripcion;
+  // «Lo elegido»: el evento elegido, si está a la vista (fecha, título, resumen del nivel de lectura y
+  // «Leer»); si no, el período que está al centro. Al comienzo de la línea (sin filtro ni evento elegido),
+  // «Empezar a leer» o elegir una historia guiada. Al cambiar, entra desde el lado del recorrido.
+  let periodoCentro = null;
+  let mostrado = '';
+  let uMostrado = 0;
+  function mostrarCartela(periodo = periodoCentro) {
+    periodoCentro = periodo;
+    if (!periodo) return;
+    const elegido = actual && enVista(actual) ? actual : null;
+    acciones.hidden = Boolean(elegido) || filtroActivo || ventana.scrollLeft > ventana.clientWidth / 3;
+    leer.hidden = !elegido;
+    const nuevo = elegido ? `${clave(elegido)}|${nivel()}` : periodo.id;
+    if (nuevo === mostrado) return;
+    const habia = mostrado;
+    mostrado = nuevo;
+    const p = elegido ? periodoPorId.get(elegido.periodoId) : periodo;
+    const fr = franjas.find((x) => x.periodo === p);
+    const n = franjas.indexOf(fr) + 1;
+    const resumen = elegido && (elegido.esGrupo ? elegido.descripcion : nivel() === 'nino' ? elegido.resumenNino : elegido.resumen);
+    const [orden, nombre, fechas, desc] = elegido
+      ? [elegido.fechaTexto, elegido.titulo, elegido.fechaTexto, resumen]
+      : [`Período ${n} de ${franjas.length} · ${p.fechasTexto}`, p.nombre, p.fechasTexto, p.descripcion];
+    cielo.dataset.tipo = elegido ? 'evento' : 'periodo';
+    cartela.style.setProperty('--color', p.color);
+    cartela.querySelector('.cartela-orden').textContent = orden;
+    cartela.querySelector('.cartela-nombre').textContent = nombre;
+    cartela.querySelector('.cartela-fechas').textContent = fechas;
+    cartela.querySelector('.cartela-desc').textContent = desc;
+    if (elegido) leer.setAttribute('aria-label', `Leer: ${elegido.titulo}`);
     ajustarDescripcion();
+    const u = elegido ? elegido.u : Number.isFinite(fr.desde) ? fr.desde : 0;
+    const lado = Math.sign(u - uMostrado) || 1;
+    uMostrado = u;
+    if (habia) animar(cartela, [{ opacity: 0, translate: `${lado * 0.5}rem 0` }, { opacity: 1, translate: '0 0' }], { duration: 180, easing: CURVA });
   }
 
   // ---- Minimapa ----
@@ -601,7 +667,32 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
 
   function centrarEn(ev, suave = true) {
     const x = ev.pos ? ev.pos.x + g.w / 2 : X(ev.u);
-    ventana.scrollTo({ left: x - ventana.clientWidth / 2, behavior: suave ? conducta() : 'auto' });
+    irA(x - ventana.clientWidth / 2, suave);
+  }
+
+  // Saltos largos (más de dos pantallas: «Al inicio», un período, el minimapa con el teclado): la vista se
+  // funde, salta y entra desde el lado del viaje, en vez de recorrer la pista (y pedir a Commons las
+  // imágenes de todo lo que hay en medio). Los saltos cortos siguen siendo un desplazamiento suave.
+  let salto = null;
+  function irA(left, suave = true) {
+    left = limitar(left, 0, Math.max(0, g.ancho - ventana.clientWidth));
+    const distancia = left - ventana.scrollLeft;
+    if (!suave || movimientoReducido() || Math.abs(distancia) <= 2 * ventana.clientWidth) {
+      salto = null;
+      ventana.scrollTo({ left, behavior: suave ? conducta() : 'auto' });
+      return;
+    }
+    const sale = animar(pista, [{ opacity: 1 }, { opacity: 0 }], { duration: 120, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' });
+    salto = sale;
+    sale?.finished.then(
+      () => {
+        if (salto !== sale) return; // otro salto lo reemplazó
+        ventana.scrollTo({ left, behavior: 'auto' });
+        sale.cancel();
+        animar(pista, [{ opacity: 0, translate: `${Math.sign(distancia) * 1.5}rem 0` }, { opacity: 1, translate: '0 0' }], { duration: 200, easing: CURVA });
+      },
+      () => {},
+    );
   }
 
   // Solo una tarjeta entra en el orden de Tab (la actual o la primera a la vista); las flechas recorren el resto.
@@ -630,6 +721,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       if (anunciarlo) anunciar(`${ev.fechaTexto}: ${ev.titulo}`);
     }
     mostrarTramo();
+    mostrarCartela();
     actualizarTabindex();
     if (ev && enfocar && ev.pos) enfocable.focus({ preventScroll: true });
     alCambiar();
@@ -653,7 +745,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
 
   function inicio() {
     seleccionar(null);
-    ventana.scrollTo({ left: 0, behavior: conducta() });
+    irA(0);
     anunciar('Inicio de la línea de tiempo.');
   }
 
@@ -663,7 +755,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     const fr = franjas[i];
     seleccionar(null);
     // El período empieza en su portal, que queda a la izquierda de la vista.
-    ventana.scrollTo({ left: (posPortales[i] ?? g.margenIzq) - g.rem, behavior: suave ? conducta() : 'auto' });
+    irA((posPortales[i] ?? g.margenIzq) - g.rem, suave);
     anunciar(`Período: ${fr.periodo.nombre}, ${fr.periodo.fechasTexto}.`);
     const primera = enfocar ? items.find((ev) => ev.pos && ev.periodoId === id) : null;
     if (primera) seleccionar(primera, { centrar: false, enfocar: true });
@@ -698,9 +790,36 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     return mejor?.x ?? ancho / 2;
   }
 
-  // El zoom no se anima: con View Transitions no llegaba a 50 fps con la CPU frenada 4× (docs/PLAN_MEJORAS.md).
-  // Las tarjetas que aparecen entran con un fundido (styles.css).
+  // La rueda y el pellizco hacen zoom directo (siguen al gesto). Con + y − (botones y teclado), las láminas a la
+  // vista se deslizan de su lugar viejo al nuevo (FLIP: solo translate, 280 ms, a lo más 20) y las que
+  // aparecen entran con su fundido (styles.css); años, conectores y huecos reaparecen al llegar. Con View
+  // Transitions no llegaba a 50 fps con la CPU frenada 4× (docs/PLAN_MEJORAS.md); así, sí (docs/PLAN_MVP.md).
   const zoom = (dir) => zoomEn(f * ZOOM.paso ** dir, anclaDeZoom());
+  function zoomAnimado(dir) {
+    if (movimientoReducido()) return zoom(dir);
+    const antes = new Map();
+    for (const item of items) {
+      if (!item.pos || antes.size >= 20) continue;
+      const li = elTarjeta.get(clave(item));
+      const r = li.getBoundingClientRect();
+      if (r.right > 0 && r.left < innerWidth) antes.set(li, r);
+    }
+    // La posición medida incluye un FLIP anterior a medio camino: se parte desde ahí.
+    for (const li of antes.keys()) for (const a of li.getAnimations()) if (a.id === 'flip') a.cancel();
+    const f0 = f;
+    zoom(dir);
+    if (f === f0) return;
+    for (const [li, r] of antes) {
+      if (li.hidden) continue;
+      const n = li.getBoundingClientRect();
+      const [dx, dy] = [r.left - n.left, r.top - n.top];
+      if (Math.abs(dx) + Math.abs(dy) < 1) continue;
+      const cuadros = Math.abs(dx) < innerWidth ? [{ translate: `${dx}px ${dy}px` }, { translate: '0 0' }] : [{ opacity: 0 }, { opacity: 1 }];
+      const a = animar(li, cuadros, { duration: 280, easing: 'cubic-bezier(0.2, 0, 0, 1)' });
+      if (a) a.id = 'flip';
+    }
+    for (const capa of [capaAnios, svg, capaHuecos]) animar(capa, [{ opacity: 0 }, { opacity: 0, offset: 0.6 }, { opacity: 1 }], { duration: 280 });
+  }
 
   // Entrada de la portada: el eje se dibuja de izquierda a derecha, los puntos aparecen a su paso y las
   // tarjetas a la vista suben. Dura menos de 400 ms y no bloquea nada (la línea se puede usar de inmediato).
@@ -784,6 +903,15 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     if (!ev) return;
     seleccionar(ev, { centrar: false });
     alAbrir(ev);
+  });
+  leer.addEventListener('click', () => actual && alAbrir(actual));
+
+  // La marca de un hueco acerca la vista ahí, lo justo para que aparezcan sus eventos.
+  capaHuecos.addEventListener('click', (e) => {
+    const hueco = huecos[e.target.closest('.hueco')?.dataset.i];
+    if (!hueco) return;
+    const umbral = { 3: 0, 2: ZOOM.hitos, 1: ZOOM.todos }[hueco.importancia];
+    zoomEn(Math.max(f * ZOOM.paso, umbral), hueco.centro - ventana.scrollLeft);
   });
 
   lista.addEventListener('keydown', (e) => {
@@ -909,7 +1037,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
 
   contenedorMinimapa.addEventListener('click', (e) => {
     const boton = e.target.closest('[data-zoom]');
-    if (boton && boton.getAttribute('aria-disabled') !== 'true') zoom(Number(boton.dataset.zoom));
+    if (boton && boton.getAttribute('aria-disabled') !== 'true') zoomAnimado(Number(boton.dataset.zoom));
   });
 
   // Minimapa: tocar o arrastrar lleva a ese punto; con el teclado, flechas (media pantalla),
@@ -935,8 +1063,8 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       ArrowLeft: () => ventana.scrollBy({ left: -ventana.clientWidth / 2, behavior: conducta() }),
       PageDown: () => irAPeriodo(franjas[Math.min(i + 1, franjas.length - 1)].periodo.id),
       PageUp: () => irAPeriodo(franjas[Math.max(i - 1, 0)].periodo.id),
-      Home: () => ventana.scrollTo({ left: 0, behavior: conducta() }),
-      End: () => ventana.scrollTo({ left: g.ancho, behavior: conducta() }),
+      Home: () => irA(0),
+      End: () => irA(g.ancho),
     };
     if (!acciones[e.key]) return;
     e.preventDefault();
@@ -971,11 +1099,22 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     mover,
     inicio,
     irAPeriodo,
-    zoom,
+    zoom: zoomAnimado,
     seleccionar,
     redistribuir,
     regla,
     entrada,
+    /** El nivel de lectura cambió: «Lo elegido» muestra el resumen que corresponde. */
+    ponerNivel() {
+      mostrado = '';
+      mostrarCartela();
+    },
+    /** Al volver del detalle, la marca de visto del evento recién leído se asienta (fundido, sin rebote). */
+    asentarVisto(id) {
+      const ev = porId.get(id);
+      if (!ev || !enVista(ev)) return;
+      animar(botonDe(ev), [{ opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1 }], { duration: 200, easing: CURVA, pseudoElement: '::after' });
+    },
     /** Imagen de la tarjeta de un evento si está a la vista (para la transición al detalle); si no, null. */
     miniatura: (ev) => (enVista(ev) ? elTarjeta.get(clave(ev)).querySelector('.tarjeta-img img') : null),
     /** Marca como ya vistos los eventos dados: un punto discreto en la tarjeta y «(ya visto)» en su nombre. */
