@@ -1,13 +1,14 @@
 // Arranque de la app: preferencias, secciones (portada, línea de tiempo y mapa), detalle, filtros y rutas por
 // hash: #inicio, #linea, #mapa (y #mapa/<región>, #mapa/zona/<id>, #mapa/chile, #mapa/fuera, #lugar/<id>),
-// #evento/<id>, #grupo/<id>, #historias, #historia/<id>/<paso> y #personaje/<nombre>.
+// #evento/<id>, #grupo/<id>, #historias, #historia/<id> (presentación), #historia/<id>/<paso>,
+// #historia/<id>/fin (cierre), #secuencia/<ids>/…, #personaje/<nombre>, #acerca, #docentes y #glosario.
 import './styles.css';
 import { cargarDatos, cargarTextos } from './datos.js';
-import { crearDetalle, imagenDetalle, urlCompartir } from './detalle.js';
+import { crearDetalle, imagenDetalle, rutaHistoria, urlCompartir } from './detalle.js';
 import { crearFiltros } from './filtros.js';
 import { crearInicio } from './inicio.js';
 import { crearLineaDeTiempo } from './timeline.js';
-import { conTransicion, guardarPreferencia, icono, leerPreferencia, movimientoReducido, normalizar, urlImagen, urlPlaceholder } from './util.js';
+import { conTransicion, guardarPreferencia, icono, leerNacimiento, leerPreferencia, movimientoReducido, normalizar, urlImagen, urlPlaceholder } from './util.js';
 
 // Si se llega directo al mapa, su módulo se pide de inmediato, mientras se arma el resto de la app.
 if (document.documentElement.dataset.base === 'mapa') import('./mapa.js').catch(() => {});
@@ -235,7 +236,9 @@ const detalle = crearDetalle(elDetalle, {
   rutaEnMapa,
   mapa: datosMapa,
   visto: (ev) => vistos.has(ev.id),
+  alCambiarNacimiento: (anio) => linea.ponerNacimiento(anio),
 });
+linea.ponerNacimiento(leerNacimiento());
 const filtros = crearFiltros($('#panel-filtros'), {
   periodos,
   temas,
@@ -252,7 +255,13 @@ const inicio = crearInicio(seccionInicio, {
   eventos,
   periodos,
   recorridos,
-  lugares: datosMapa.lugares,
+  mapa: datosMapa,
+  nivel: () => nivel,
+  alElegirNivel: (valor) => {
+    const radio = document.querySelector(`input[name="nivel"][value="${valor}"]`);
+    if (radio) radio.checked = true;
+    ponerNivel(valor);
+  },
   alElegirPeriodo: (id) => {
     periodoPedido = id;
     ir('#linea');
@@ -287,15 +296,19 @@ botonClase.addEventListener('click', () => {
   linea.redistribuir();
   anunciar(activo ? 'Modo para proyectar en clase activado. Av Pág y Re Pág avanzan y retroceden.' : 'Modo para proyectar en clase desactivado.');
 });
-$('.nivel').addEventListener('change', (e) => {
-  nivel = e.target.value;
+// El nivel se elige arriba («Leer») o en «Empieza aquí», en la portada: los dos quedan marcados.
+function ponerNivel(valor) {
+  nivel = valor;
   guardarPreferencia('nivel', nivel);
+  detenerLectura();
+  inicio.ponerNivel(nivel);
   cambiarVista(() => {
     marcarNivel();
     detalle.ponerNivel(nivel);
     linea.ponerNivel();
   }, 'nivel');
-});
+}
+$('.nivel').addEventListener('change', (e) => ponerNivel(e.target.value));
 
 // ---- Secciones: la portada (#inicio o sin #), la línea de tiempo (#linea) y el mapa (#mapa…) se ven de a
 // una; el detalle y la búsqueda se abren encima de la que está. <html data-base> la indica al CSS: index.html
@@ -387,7 +400,7 @@ function ubicarMarca() {
 }
 new ResizeObserver(ubicarMarca).observe($('.pestanas'));
 function actualizarPestanas() {
-  const actual = ['historias', 'historia'].includes(vistaActual?.tipo) ? 'historias' : base;
+  const actual = EN_HISTORIAS.has(vistaActual?.tipo) ? 'historias' : base;
   for (const p of pestanas) {
     if (p.dataset.seccion === actual) p.setAttribute('aria-current', 'page');
     else p.removeAttribute('aria-current');
@@ -434,41 +447,45 @@ function vistaDeRuta(hash = location.hash) {
   m = /^#grupo\/([a-z0-9-]+)$/.exec(hash);
   if (m) return grupoPorId.has(m[1]) ? { tipo: 'grupo', grupo: grupoPorId.get(m[1]) } : { tipo: 'desconocida' };
   if (hash === '#historias') return { tipo: 'historias' };
-  m = /^#historia\/([a-z0-9-]+)\/(\d+)$/.exec(hash);
-  if (m) {
-    const recorrido = recorridoPorId.get(m[1]);
-    const paso = Number(m[2]);
-    if (!recorrido || paso < 1 || paso > recorrido.eventos.length) return { tipo: 'desconocida' };
-    return { tipo: 'historia', recorrido, paso, ev: recorrido.eventos[paso - 1] };
-  }
+  m = /^#historia\/([a-z0-9-]+)(?:\/(\d+|fin))?$/.exec(hash);
+  if (m) return recorridoPorId.has(m[1]) ? vistaDeHistoria(recorridoPorId.get(m[1]), m[2]) : { tipo: 'desconocida' };
   m = /^#personaje\/([a-z0-9-]+)$/.exec(hash);
   if (m) return personajes.has(m[1]) ? { tipo: 'personaje', persona: personajes.get(m[1]) } : { tipo: 'desconocida' };
-  if (hash === '#acerca' || hash === '#docentes') return { tipo: 'pagina', id: hash.slice(1) };
+  if (hash === '#acerca' || hash === '#docentes' || hash === '#glosario') return { tipo: 'pagina', id: hash.slice(1) };
   // Secuencia armada por un docente (#docentes): eventos elegidos, en orden cronológico, como una historia.
-  m = /^#secuencia\/([a-z0-9,-]+?)(?:\/(\d+))?$/.exec(hash);
+  m = /^#secuencia\/([a-z0-9,-]+?)(?:\/(\d+|fin))?$/.exec(hash);
   if (m) {
     const ids = [...new Set(m[1].split(','))];
     const lista = ids.map((id) => porId.get(id)).filter(Boolean).sort((a, b) => eventos.indexOf(a) - eventos.indexOf(b));
-    const paso = Number(m[2] ?? 1);
-    if (lista.length < 2 || lista.length > 20 || lista.length !== ids.length || paso < 1 || paso > lista.length) return { tipo: 'desconocida' };
+    if (lista.length < 2 || lista.length > 20 || lista.length !== ids.length) return { tipo: 'desconocida' };
     const clave = lista.map((ev) => ev.id).join(',');
     const recorrido = {
       id: 'secuencia',
       titulo: 'Secuencia para la clase',
+      descripcion: 'Eventos elegidos en «Para docentes», en orden cronológico.',
       eventos: lista,
       origen: { href: '#docentes', texto: 'Para docentes' },
       salida: { href: '#linea', texto: 'Ir a la línea de tiempo' },
-      ruta: (n) => `#secuencia/${clave}/${n}`,
+      ruta: (n) => `#secuencia/${clave}${n === 0 ? '' : `/${n}`}`,
     };
-    return { tipo: 'historia', recorrido, paso, ev: lista[paso - 1] };
+    return vistaDeHistoria(recorrido, m[2]);
   }
   return null;
 }
-const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje|mapa|lugar|secuencia)\/|^#(?:historias|inicio|linea|mapa|acerca|docentes)$/.test(hash);
+// Sin número (o con 0), la presentación de la historia; con «fin», su cierre; si no, el paso pedido.
+function vistaDeHistoria(recorrido, paso = '0') {
+  if (paso === 'fin') return { tipo: 'historia-fin', recorrido };
+  const n = Number(paso);
+  if (n === 0) return { tipo: 'historia-inicio', recorrido };
+  if (n > recorrido.eventos.length) return { tipo: 'desconocida' };
+  return { tipo: 'historia', recorrido, paso: n, ev: recorrido.eventos[n - 1] };
+}
+const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje|mapa|lugar|secuencia)\/|^#(?:historias|inicio|linea|mapa|acerca|docentes|glosario)$/.test(hash);
 
 // Las vistas en lista, el paso de una historia y las páginas de texto traen su CSS a pedido (src/vistas.css), y
 // «Acerca de» y «Para docentes», también su contenido (src/paginas.js); si no llegan, se ofrece recargar.
-const CON_ESTILOS = new Set(['historias', 'historia', 'grupo', 'personaje', 'pagina']);
+const CON_ESTILOS = new Set(['historias', 'historia', 'historia-inicio', 'historia-fin', 'grupo', 'personaje', 'pagina']);
+const EN_HISTORIAS = new Set(['historias', 'historia', 'historia-inicio', 'historia-fin']);
 let estilosVistas = false;
 let paginas = null;
 let pedido = 0;
@@ -529,6 +546,18 @@ let nav = { antes: null, despues: null }; // direcciones de «Anterior» y «Sig
 const esperar = (ms) => new Promise((listo) => setTimeout(listo, ms));
 const laminaDetalle = () => elDetalle.querySelector('.detalle-marco img');
 const posicion = (vista) => vista?.ev?.u ?? vista?.grupo?.u ?? null;
+// Hacia dónde pasa la página: dentro de una historia, según el paso (la presentación es el 0 y el cierre va
+// al final); entre eventos, según su lugar en la línea de tiempo. Entre una historia y otra cosa, sin lado.
+function lado(previa, vista) {
+  const historia = (v) => (v?.recorrido ? rutaHistoria(v.recorrido, 0) : null);
+  if (historia(previa) || historia(vista)) {
+    if (historia(previa) !== historia(vista)) return '';
+    const n = (v) => (v.tipo === 'historia-inicio' ? 0 : v.tipo === 'historia-fin' ? Infinity : v.paso);
+    return n(vista) > n(previa) ? 'siguiente' : n(vista) < n(previa) ? 'anterior' : '';
+  }
+  const [a, b] = [posicion(previa), posicion(vista)];
+  return a === null || b === null || a === b ? '' : b > a ? 'siguiente' : 'anterior';
+}
 
 // La lámina solo crece o se encoge si se ve entera dentro del detalle (no tapada por la cabecera).
 function laminaALaVista(img) {
@@ -560,6 +589,7 @@ const rutaEvento = (item) => (!item ? null : item.esGrupo ? `#grupo/${item.id}` 
 function pintarVista(vista, desdeBoton) {
   const enfocar = !desdeBoton;
   let titulo;
+  detenerLectura();
   filtros.cerrar({ devolverFoco: false });
   if (vista.tipo === 'evento') {
     const { ev } = vista;
@@ -573,11 +603,22 @@ function pintarVista(vista, desdeBoton) {
     const antes = r.eventos[paso - 2] ?? null;
     const despues = r.eventos[paso] ?? null;
     detalle.mostrar(ev, { antes, despues, nivel, regla: linea.regla(ev), enfocar, historia: { recorrido: r, paso } });
-    // Después del último paso, «Siguiente» lleva a elegir otra historia (en una secuencia, a la línea de tiempo).
-    const rutaPaso = (n) => r.ruta?.(n) ?? `#historia/${r.id}/${n}`;
-    nav = { antes: antes && rutaPaso(paso - 1), despues: despues ? rutaPaso(paso + 1) : (r.salida?.href ?? '#historias') };
+    // Antes del primer paso está la presentación; después del último, el cierre.
+    nav = { antes: rutaHistoria(r, paso - 1), despues: rutaHistoria(r, despues ? paso + 1 : 'fin') };
     titulo = `${ev.titulo} · ${r.titulo}`;
     anunciar(`${r.titulo}, paso ${paso} de ${r.eventos.length}${desdeBoton ? `: ${ev.fechaTexto}, ${ev.titulo}` : ''}`);
+  } else if (vista.tipo === 'historia-inicio') {
+    const { recorrido: r } = vista;
+    detalle.mostrarInicioHistoria(r, { nivel, enfocar });
+    nav = { antes: null, despues: rutaHistoria(r, 1) };
+    titulo = r.titulo;
+    if (desdeBoton) anunciar(`${r.titulo}: presentación`);
+  } else if (vista.tipo === 'historia-fin') {
+    const { recorrido: r } = vista;
+    detalle.mostrarFinHistoria(r, { enfocar, otras: r.ruta ? [] : recorridos.filter((x) => x !== r) });
+    nav = { antes: rutaHistoria(r, r.eventos.length), despues: null };
+    titulo = `Fin · ${r.titulo}`;
+    if (desdeBoton) anunciar(`Fin de ${r.titulo}`);
   } else if (vista.tipo === 'grupo') {
     const { grupo } = vista;
     const antes = vecinosDe(grupo.eventos[0]).antes;
@@ -603,6 +644,7 @@ function pintarVista(vista, desdeBoton) {
     titulo = persona.nombre;
   }
   vistaActual = vista;
+  mostrarEscuchar();
   document.body.dataset.vista = 'detalle';
   document.title = `${titulo} · ${TITULO}`;
   actualizarInert();
@@ -670,8 +712,8 @@ function mostrarVista(vista, desdeBoton) {
   const faltan = [
     CON_ESTILOS.has(vista.tipo) && !estilosVistas && import('./vistas.css').then(() => (estilosVistas = true)),
     vista.tipo === 'pagina' && !paginas && import('./paginas.js').then((m) => (paginas = m)),
-    // El evento abierto lleva su detalle y sus fuentes; «Para docentes» calcula la duración de las historias.
-    cargarTextos(vista.ev ? [vista.ev] : vista.tipo === 'pagina' && vista.id === 'docentes' ? eventos : []),
+    // El evento abierto lleva su detalle y sus fuentes.
+    vista.ev && cargarTextos([vista.ev]),
   ].filter(Boolean);
   if (faltan.length) {
     const [turno, hash] = [++pedido, location.hash];
@@ -688,8 +730,7 @@ function mostrarVista(vista, desdeBoton) {
   const previa = vistaActual;
   const aplicar = () => pintarVista(vista, desdeBoton);
   if (detalle.abierto) {
-    const [a, b] = [posicion(previa), posicion(vista)];
-    const tipo = a === null || b === null || a === b ? '' : b > a ? 'siguiente' : 'anterior';
+    const tipo = lado(previa, vista);
     if (!tipo) return void cambiarVista(aplicar, tipo);
     nombrarViajeros(true);
     return void cambiarVista((animado) => {
@@ -724,6 +765,7 @@ function mostrarVista(vista, desdeBoton) {
 // Cierra la vista abierta y deja a la vista la sección `hacia` (por defecto, la que estaba debajo).
 let focoPrevio = null;
 function cerrarDetalle(hacia = base) {
+  detenerLectura();
   const ev = vistaActual?.ev;
   const lamina = laminaDetalle();
   const vuelve = Boolean(hacia === 'linea' && base === 'linea' && ev && lamina?.classList.contains('cargada') && laminaALaVista(lamina));
@@ -766,13 +808,72 @@ function actualizarInert() {
   controles.hidden = filtros.abierto;
 }
 
-// Acciones del detalle: compartir un evento, copiar su cita y guardar una historia para usar sin conexión.
+// Acciones del detalle: compartir un evento, copiar su cita, guardar una historia para usar sin conexión,
+// escucharlo y el repaso al cierre de una historia.
 elDetalle.addEventListener('click', (e) => {
   const b = e.target.closest('[data-accion]');
   if (b?.dataset.accion === 'compartir') compartir(porId.get(b.dataset.id));
   else if (b?.dataset.accion === 'copiar-cita') copiar(b.closest('.cita').querySelector('.cita-texto').textContent, 'Cita copiada.');
   else if (b?.dataset.accion === 'guardar-historia') guardarHistoria(b.dataset.historia);
+  else if (b?.dataset.accion === 'escuchar') alternarLectura();
+  else if (b?.dataset.accion === 'repaso') empezarRepaso();
 });
+const sinModulo = (error) => {
+  console.error(error);
+  avisar('No se pudo cargar esta parte (sin conexión o con una versión nueva del sitio). Recarga la página para intentarlo de nuevo.');
+};
+
+// «Escuchar» (src/escuchar.js, a pedido): el botón aparece solo si el sistema tiene una voz en español. Lee el
+// título, la fecha y el texto del nivel elegido; se detiene al cambiar de vista o de nivel y con Escape.
+let escuchar = null;
+const hayVozEspanola = () => 'speechSynthesis' in window && speechSynthesis.getVoices().some((v) => /^es(?:[-_]|$)/i.test(v.lang));
+function mostrarEscuchar() {
+  const p = elDetalle.querySelector('.detalle-escuchar');
+  if (p) p.hidden = !hayVozEspanola();
+}
+if ('speechSynthesis' in window) speechSynthesis.addEventListener?.('voiceschanged', mostrarEscuchar);
+let leyendoAhora = false;
+const leyendo = () => leyendoAhora;
+function marcarLectura(activa) {
+  leyendoAhora = activa;
+  const b = elDetalle.querySelector('[data-accion="escuchar"]');
+  if (b) b.querySelector('span').textContent = activa ? 'Detener la lectura' : 'Escuchar';
+}
+function detenerLectura() {
+  if (!escuchar) return;
+  escuchar.detener();
+  marcarLectura(false);
+}
+async function alternarLectura() {
+  if (leyendo()) return detenerLectura();
+  try {
+    escuchar ??= await import('./escuchar.js');
+  } catch (error) {
+    return sinModulo(error);
+  }
+  const ev = vistaActual?.ev;
+  if (!ev) return;
+  const parrafos = [...elDetalle.querySelectorAll('.detalle-cuerpo p')].map((p) => p.textContent);
+  if (escuchar.leer([`${ev.titulo}.`, `${ev.fechaTexto}.`, ...parrafos], { alTerminar: () => marcarLectura(false) })) marcarLectura(true);
+}
+
+// Repaso sin nota al cierre de una historia (src/repaso.js, a pedido): «Otra ronda» arma otra.
+async function empezarRepaso() {
+  const r = detalle.actual?.recorrido;
+  const caja = elDetalle.querySelector('.repaso-preguntas');
+  if (!r || !caja) return;
+  try {
+    const repaso = await import('./repaso.js');
+    repaso.pintar(caja, repaso.preguntas(r.eventos, { eventos, lugares: datosMapa.lugares, regiones: datosMapa.regiones, nino: nivel === 'nino' }));
+  } catch (error) {
+    return sinModulo(error);
+  }
+  // «Empezar el repaso» se va; al final de cada ronda queda «Otra ronda».
+  const inicioRepaso = elDetalle.querySelector('.repaso-empezar');
+  if (inicioRepaso) inicioRepaso.hidden = true;
+  caja.focus({ preventScroll: true });
+  caja.scrollIntoView({ block: 'start', behavior: movimientoReducido() ? 'auto' : 'smooth' });
+}
 
 // Enlaces internos (#evento/…, #historias…): navegan sin recargar y sin llenar el historial.
 document.addEventListener('click', (e) => {
@@ -831,7 +932,8 @@ $('#btn-quitar').addEventListener('click', () => filtros.limpiar());
 document.addEventListener('keydown', (e) => {
   if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
   if (e.key === 'Escape') {
-    if (filtros.abierto) filtros.cerrar();
+    if (leyendo()) detenerLectura(); // Escape primero detiene la lectura en voz alta
+    else if (filtros.abierto) filtros.cerrar();
     else if (detalle.abierto && !e.target.closest('input')) volver(); // en un campo, Escape solo cancela lo escrito
     return;
   }

@@ -4,8 +4,21 @@
 // al final, «¿Qué pasó antes / después?», el período y las fuentes. También muestra un paso de una historia
 // guiada, un grupo de eventos, la lista de historias o la ficha de un personaje, con la misma portada.
 import latitudes from './chile-latitudes.json';
-import { edadEn, formatearAnio, haceCuanto } from './fechas.js';
-import { borrarPreferencia, creditoImagen, esc, externo, guardarPreferencia, icono, leerPreferencia, movimientoReducido, nombreFuente, urlImagen } from './util.js';
+import { edadEn, formatearAnio, haceCuanto, parseFecha } from './fechas.js';
+import { paraRepaso } from './sensibles.js';
+import {
+  borrarPreferencia,
+  creditoImagen,
+  esc,
+  externo,
+  guardarPreferencia,
+  icono,
+  leerNacimiento,
+  minutosDeLectura,
+  movimientoReducido,
+  nombreFuente,
+  urlImagen,
+} from './util.js';
 
 // «Detallado» suma el detalle al resumen general: el detalle lo continúa, no lo repite.
 const PARRAFOS = {
@@ -62,15 +75,54 @@ const ficha = (ev, color, nivel, dato) => `
       <span class="ficha-resumen">${esc(nivel === 'nino' ? ev.resumenNino : ev.resumen)}</span></span>
   </a></li>`;
 
-// Barra de una historia guiada: nombre, «Paso N de M» y una fila de marcas (la actual, resaltada).
-const barraHistoria = ({ recorrido, paso }) => `
+/**
+ * Dirección de un paso de una historia: 0 es su presentación y 'fin', su cierre. Una secuencia armada por un
+ * docente (#secuencia/…) trae su propia forma de nombrar los pasos (`ruta`).
+ */
+export const rutaHistoria = (r, n) => r.ruta?.(n) ?? `#historia/${r.id}${n === 0 ? '' : `/${n}`}`;
+
+// Barra de una historia guiada: nombre (lleva a su presentación), «Paso N de M», cuánto pasó desde el paso
+// anterior y dónde ocurre este, y una fila de marcas (la actual, resaltada).
+const barraHistoria = ({ recorrido, paso }, conector = '') => `
   <nav class="historia-barra" aria-label="Historia guiada">
-    <p class="historia-nombre"><a href="${recorrido.origen?.href ?? '#historias'}">${esc(recorrido.origen?.texto ?? 'Historias guiadas')}</a> <span aria-hidden="true">›</span> ${esc(recorrido.titulo)}</p>
+    <p class="historia-nombre"><a href="${recorrido.origen?.href ?? '#historias'}">${esc(recorrido.origen?.texto ?? 'Historias guiadas')}</a> <span aria-hidden="true">›</span> <a href="${rutaHistoria(recorrido, 0)}">${esc(recorrido.titulo)}</a></p>
     <p class="historia-paso">Paso ${paso} de ${recorrido.eventos.length}</p>
+    ${conector ? `<p class="historia-conector">${conector}</p>` : ''}
     <ol class="historia-pasos" aria-hidden="true">${recorrido.eventos
       .map((_, i) => `<li${i + 1 === paso ? ' class="actual"' : i + 1 < paso ? ' class="antes"' : ''}></li>`)
       .join('')}</ol>
   </nav>`;
+
+// Cuánto pasó entre dos pasos seguidos, si ninguna de las dos fechas es aproximada. «Mientras tanto» si el nuevo
+// empieza antes de que termine el anterior (comparando con la menos precisa de las dos fechas); si no, desde el
+// final del anterior y solo entre fechas de igual precisión: «Ese mismo día», «Al día siguiente», «17 meses
+// después», «Al año siguiente», «57 años después».
+function tiempoEntre(a, b) {
+  if (a.fechaAproximada || b.fechaAproximada) return '';
+  const [x, y] = [parseFecha(a.fechaFin ?? a.fecha), parseFecha(b.fecha)];
+  if (!x || !y) return '';
+  const precision = (f) => (f.dia ? 3 : f.mes ? 2 : 1);
+  const p = Math.min(precision(x), precision(y));
+  const clave = (f) => f.anio * 10000 + (p > 1 ? f.mes * 100 : 0) + (p > 2 ? f.dia : 0);
+  if (a.fechaFin && clave(y) < clave(x)) return 'Mientras tanto';
+  if (precision(x) !== precision(y)) return '';
+  if (p === 1) {
+    const n = y.anio - x.anio;
+    return n === 0 ? 'Ese mismo año' : n === 1 ? 'Al año siguiente' : `${n} años después`;
+  }
+  // Meses cumplidos (con día, el último cuenta si ya llegó su día del mes); desde los 24, en años.
+  const meses = (y.anio - x.anio) * 12 + (y.mes - x.mes) - (p === 3 && y.dia < x.dia ? 1 : 0);
+  if (meses >= 24) return `${Math.floor(meses / 12)} años después`;
+  if (meses >= 1) return meses === 1 ? 'Un mes después' : `${meses} meses después`;
+  if (p === 2) return 'Ese mismo mes';
+  const dias = Math.round((Date.UTC(y.anio, y.mes - 1, y.dia) - Date.UTC(x.anio, x.mes - 1, x.dia)) / 864e5);
+  return dias === 0 ? 'Ese mismo día' : dias === 1 ? 'Al día siguiente' : `${dias} días después`;
+}
+
+// Países con artículo, para «en el Perú» (los demás van sin él: «en España», «en Suecia»).
+const PAISES = { Perú: 'el Perú', 'Reino Unido': 'el Reino Unido', 'Ciudad del Vaticano': 'la Ciudad del Vaticano', 'Varios países': 'varios países' };
+
+const NIVEL_NOMBRE = { nino: 'Para niños', general: 'General', detallado: 'Detallado' };
 
 // Dirección para compartir y citar un evento: su página propia (e/<id>.html, la genera vite.config.js), que
 // lleva su título y su resumen a la vista previa de WhatsApp, Classroom o un correo, y abre el evento.
@@ -135,24 +187,43 @@ function miniMapa(ev, lugarDe, zonaDe) {
   </svg>${viajero}</div>`;
 }
 
-// Año de nacimiento de quien lee (opcional, solo en este navegador) para mostrar su edad desde 1900.
-const leerNacimiento = () => {
-  const n = Number(leerPreferencia('nacimiento'));
-  return Number.isInteger(n) && n >= 1900 && n <= ANIO_ACTUAL ? n : null;
-};
-
 /**
  * Crea el panel en `raiz` («Volver», «Anterior» y «Siguiente» están en la barra inferior).
  * personajeDe(nombre) devuelve { slug, eventos } si el personaje tiene ficha (aparece en más de un evento);
  * rutaEnMapa(evento), la dirección donde se ve en el mapa (o null); `mapa`, los lugares y zonas (mini-mapa);
- * visto(evento), si ya se abrió en este navegador (avance de las historias).
+ * visto(evento), si ya se abrió en este navegador (avance de las historias); alCambiarNacimiento(año o null),
+ * al guardar u olvidar el año de nacimiento («Tu vida» en la línea de tiempo).
  */
-export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = () => null, mapa = { lugares: [], zonas: [] }, visto = () => false }) {
+export function crearDetalle(
+  raiz,
+  { periodos, temas, personajeDe, rutaEnMapa = () => null, mapa = { lugares: [], zonas: [] }, visto = () => false, alCambiarNacimiento = () => {} },
+) {
   const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   const temaDe = new Map(temas.map((t) => [t.id, t.nombre]));
   const lugarDe = new Map(mapa.lugares.map((l) => [l.id, l]));
   const zonaDe = new Map(mapa.zonas.map((z) => [z.id, z]));
   const colorDe = (ev) => periodoDe.get(ev.periodoId).color;
+  // Dónde ocurre un evento, como en una frase: «en Santiago», «en el estrecho de Magallanes» (el campo «en» de
+  // lugares.json), «en todo el país», «en el Perú»; con dos ubicaciones, «en Santiago y en Talca» (o «en Chile y
+  // en España»); con tres o más, «en varios lugares».
+  const enUbicacion = (u, conChile) => {
+    if (u === 'chile') return conChile ? 'en Chile' : 'en todo el país';
+    if (u.startsWith('fuera:')) {
+      const pais = u.slice('fuera:'.length);
+      return `en ${PAISES[pais] ?? pais}`;
+    }
+    const x = lugarDe.get(u) ?? zonaDe.get(u);
+    return x ? (x.en ?? `en ${x.nombre}`) : '';
+  };
+  const dondeOcurre = (ev) => {
+    const us = ev.ubicaciones;
+    if (us.length > 2) return 'en varios lugares';
+    const conChile = us.includes('chile') && us.some((u) => u.startsWith('fuera:'));
+    return us
+      .map((u) => enUbicacion(u, conChile))
+      .filter(Boolean)
+      .join(' y ');
+  };
   let actual = null;
   let nivel = 'general';
   let alCambiarNivel = null;
@@ -249,11 +320,13 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
     guardarPreferencia('nacimiento', campo.value);
     const edad = edadEn(actual, leerNacimiento());
     pintarEdad(`Guardado.${edad ? ` En este evento: ${edad}.` : ''}`);
+    alCambiarNacimiento(leerNacimiento());
   });
   raiz.addEventListener('click', (e) => {
     if (!e.target.closest('[data-accion="olvidar"]')) return;
     borrarPreferencia('nacimiento');
     pintarEdad('Se olvidó tu año de nacimiento.');
+    alCambiarNacimiento(null);
     raiz.querySelector('#anio-nacimiento').focus();
   });
 
@@ -264,20 +337,21 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
     const img = ev.imagen;
     const cuerpo = () => PARRAFOS[nivel](ev).map((x) => `<p>${esc(x)}</p>`).join('');
     const r = historia?.recorrido;
-    // Una secuencia armada por un docente (#secuencia/…) trae sus propias direcciones de paso y su salida.
-    const rutaPaso = (n) => r?.ruta?.(n) ?? `#historia/${r.id}/${n}`;
-    const salida = r?.salida ?? { href: '#historias', texto: 'Elegir otra historia' };
     const vecinos = historia
       ? `<nav class="vecinos" aria-label="Pasos de la historia">${vecino(antes, 'antes', colorDe, {
-          href: rutaPaso(historia.paso - 1),
+          href: rutaHistoria(r, historia.paso - 1),
           rotulo: 'Paso anterior',
-          vacio: 'Este es el primer paso.',
+          vacio: `Este es el primer paso. <a class="boton chico vecino-salida" href="${rutaHistoria(r, 0)}">Ver la presentación</a>`,
         })}${vecino(despues, 'despues', colorDe, {
-          href: rutaPaso(historia.paso + 1),
+          href: rutaHistoria(r, historia.paso + 1),
           rotulo: 'Paso siguiente',
-          vacio: `Este es el último paso de «${esc(r.titulo)}». <a class="boton chico vecino-salida" href="${salida.href}">${esc(salida.texto)}</a>`,
+          vacio: `Este es el último paso de «${esc(r.titulo)}». <a class="boton chico vecino-salida" href="${rutaHistoria(r, 'fin')}">Terminar la historia</a>`,
         })}</nav>`
       : `<nav class="vecinos" aria-label="Eventos anterior y siguiente">${vecino(antes, 'antes', colorDe)}${vecino(despues, 'despues', colorDe)}</nav>`;
+    // En una historia: cuánto pasó desde el paso anterior y dónde ocurre este (si es otro lugar que el anterior).
+    const lugar = historia ? dondeOcurre(ev) : '';
+    const partes = historia ? [antes && tiempoEntre(antes, ev), lugar !== (antes ? dondeOcurre(antes) : '') && lugar].filter(Boolean).join(' · ') : '';
+    const conector = esc(partes.charAt(0).toUpperCase() + partes.slice(1));
 
     // Orden de lectura: título, fecha y lugar; luego la imagen (a la derecha en pantallas anchas), el texto,
     // la ficha (al lado del texto en pantallas anchas) y el resto.
@@ -292,7 +366,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
       `
       <div class="detalle-revista">
         ${portada({
-          arriba: historia ? barraHistoria(historia) : '',
+          arriba: historia ? barraHistoria(historia, conector) : '',
           ceja: esc(p.nombre),
           titulo: esc(ev.titulo),
           debajo: `<p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time> <span class="detalle-hace">${tiempo(ev)}</span>${
@@ -310,10 +384,30 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
         <div class="detalle-columnas">
           <div class="detalle-texto">
             <p class="detalle-leyendo para-nino">Leyendo: <b>Para niños</b></p>
+            <p class="detalle-escuchar" hidden><button type="button" class="boton chico" data-accion="escuchar">${icono('sonido')}<span>Escuchar</span></button></p>
             <div class="detalle-cuerpo" data-nivel="${nivel}">${cuerpo()}</div>
             ${
               ev.sabiasQue
                 ? `<aside class="sabias-que" aria-labelledby="sabias-que-titulo"><h3 id="sabias-que-titulo">¿Sabías que…?</h3><p>${esc(ev.sabiasQue)}</p></aside>`
+                : ''
+            }
+            ${
+              ev.seDiscute
+                ? `<aside class="se-discute" aria-labelledby="se-discute-titulo"><h3 id="se-discute-titulo"><span class="para-nino">No todos lo ven igual</span><span class="no-nino">Lo que se discute</span></h3><p>${esc(ev.seDiscute)}</p></aside>`
+                : ''
+            }
+            ${
+              ev.glosario?.length
+                ? `<details class="plegable glosario-evento">
+                <summary>Palabras para entender (${ev.glosario.length})</summary>
+                <dl class="glosario-lista">${ev.glosario
+                  .map(
+                    (g) =>
+                      `<div><dt>${esc(g.termino)}</dt><dd>${esc(g.definicion)}${g.fuente ? ` <span class="glosario-fuente">${externo(g.fuente, `Fuente: ${esc(nombreFuente(g.fuente))}`)}</span>` : ''}</dd></div>`,
+                  )
+                  .join('')}</dl>
+                <p><a href="#glosario">Ver el glosario completo</a></p>
+              </details>`
                 : ''
             }
           </div>
@@ -402,7 +496,6 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
     };
   }
 
-  /** La lista de historias guiadas. */
   // Página de texto («Acerca de», «Para docentes»: src/paginas.js) con la misma portada, sin imagen.
   function mostrarPagina({ ceja, titulo, intro = '', html }, { enfocar = true } = {}) {
     iniciar({ pagina: true });
@@ -417,6 +510,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
     );
   }
 
+  /** La lista de historias guiadas. */
   function mostrarHistorias(recorridos, { enfocar = true } = {}) {
     iniciar({ historias: true });
     raiz.style.removeProperty('--color');
@@ -432,12 +526,18 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
         <div class="detalle-texto">
           <ul class="historias-lista escalonar">${recorridos
             .map((r) => {
-              // Avance: cuántos pasos ya se vieron; la historia sigue en el primero que falta.
+              // Avance, como dato: cuántos pasos ya se vieron. A medio camino, la puerta lleva al primero que falta;
+              // si no, a la presentación.
               const vistosAqui = r.eventos.filter(visto).length;
-              const siguiente = r.eventos.findIndex((ev) => !visto(ev)) + 1 || 1;
-              const accion = !vistosAqui ? 'Empezar' : vistosAqui === r.eventos.length ? 'Terminada · volver a recorrerla' : `${vistosAqui} de ${r.eventos.length} pasos vistos · seguir`;
+              const enCurso = vistosAqui > 0 && vistosAqui < r.eventos.length;
+              const href = enCurso ? rutaHistoria(r, r.eventos.findIndex((ev) => !visto(ev)) + 1) : rutaHistoria(r, 0);
+              const accion = !vistosAqui
+                ? 'Empezar'
+                : enCurso
+                  ? `${vistosAqui} de ${r.eventos.length} pasos vistos · seguir`
+                  : `${vistosAqui} de ${r.eventos.length} pasos vistos · volver a recorrerla`;
               return `
-            <li><a class="puerta historia-puerta" href="#historia/${r.id}/${siguiente}">
+            <li><a class="puerta historia-puerta" href="${href}">
               <span class="mosaico puerta-mosaico" aria-hidden="true">${r.eventos
                 .slice(0, 4)
                 .map((ev) => `<img src="${urlImagen(ev.imagen.archivo, 250)}" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}">`)
@@ -453,6 +553,151 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
             })
             .join('')}</ul>
         </div>
+      </div>
+      </div>`,
+      enfocar,
+    );
+  }
+
+  // Silueta con los pasos de una historia: un punto por lugar (los cercanos se juntan) con sus números. Cuenta la
+  // primera ubicación de cada paso: si es una zona, todo Chile o fuera, no lleva punto (la lista lo nombra igual).
+  function siluetaDePasos(eventos) {
+    const puntos = [];
+    eventos.forEach((ev, i) => {
+      const l = lugarDe.get(ev.ubicaciones[0]);
+      if (!l) return;
+      const [x, y] = l.id === 'rapa-nui' ? RAPA : proyectar(l.lat, l.lon);
+      const cerca = puntos.find((p) => Math.hypot(p.x - x, p.y - y) < 40);
+      if (cerca) cerca.pasos.push(i + 1);
+      else puntos.push({ x, y, pasos: [i + 1], rapa: l.id === 'rapa-nui' });
+    });
+    if (!puntos.length) return '';
+    // «2-4, 7»: los números seguidos se juntan.
+    const tramos = (pasos) => {
+      const t = [];
+      for (const n of pasos) {
+        if (t.length && t.at(-1)[1] === n - 1) t.at(-1)[1] = n;
+        else t.push([n, n]);
+      }
+      return t.map(([a, b]) => (a === b ? a : `${a}-${b}`)).join(', ');
+    };
+    return `<svg class="recorrido-mapa" viewBox="-40 -10 560 1026" aria-hidden="true" focusable="false">
+      <use href="#silueta-chile" width="302" height="1006" class="recorrido-tierra"/>
+      ${puntos.some((p) => p.rapa) ? `<rect class="minimapa-recuadro" x="${RAPA[0] - 30}" y="${RAPA[1] - 26}" width="60" height="52" rx="6"/>` : ''}
+      ${puntos
+        .map(
+          (p) =>
+            `<circle class="recorrido-punto" cx="${p.x.toFixed(0)}" cy="${p.y.toFixed(0)}" r="14"/><text class="recorrido-numero" x="${(p.x + 28).toFixed(0)}" y="${(p.y + 16).toFixed(0)}">${tramos(p.pasos)}</text>`,
+        )
+        .join('')}
+    </svg>`;
+  }
+
+  /** Presentación de una historia (paso 0): de qué trata, cuánto toma según el nivel y sus pasos. */
+  function mostrarInicioHistoria(r, { nivel: nivelLectura, enfocar = true }) {
+    iniciar({ recorrido: r, inicio: true }, nivelLectura);
+    const vistosAqui = r.eventos.filter(visto).length;
+    const siguiente = r.eventos.findIndex((ev) => !visto(ev)) + 1;
+    const duracion = () => `unos ${minutosDeLectura(r.eventos, nivel)} min en «${NIVEL_NOMBRE[nivel]}»`;
+    const ir = (n, texto, clase = 'boton') => `<a class="${clase}" href="${rutaHistoria(r, n)}"><span>${texto}</span>${icono('siguiente')}</a>`;
+    const acciones = !vistosAqui
+      ? ir(1, 'Empezar', 'boton primario')
+      : vistosAqui < r.eventos.length
+        ? `${ir(siguiente, `Seguir en el paso ${siguiente}`, 'boton primario')} ${ir(1, 'Empezar desde el principio')}`
+        : ir(1, 'Recorrerla de nuevo', 'boton primario');
+    raiz.style.removeProperty('--color');
+    pintar(
+      `
+      <div class="detalle-revista">
+      ${portada({
+        ceja: `Historia guiada · ${r.eventos.length} pasos · ${formatearAnio(r.eventos[0].anio)}-${formatearAnio(r.eventos.at(-1).anio)}`,
+        titulo: esc(r.titulo),
+        debajo: `<p class="vista-intro">${esc(r.descripcion)}</p>
+          <p class="recorrido-duracion">${icono('sonido')}<span>Leída en voz alta: <span class="recorrido-minutos">${duracion()}</span></span></p>`,
+      })}
+      <div class="detalle-contenido vista-lista">
+        <p class="recorrido-acciones">${acciones}</p>
+        <div class="recorrido">
+          <ol class="recorrido-pasos escalonar">${r.eventos
+            .map(
+              (ev, i) => `<li><a href="${rutaHistoria(r, i + 1)}" style="--color:${colorDe(ev)}">
+                <span class="recorrido-num" aria-hidden="true">${i + 1}</span>
+                <span class="recorrido-texto"><span class="recorrido-fecha">${esc(ev.fechaTexto)}</span> <span class="recorrido-titulo">${esc(ev.titulo)}</span></span>
+                ${visto(ev) ? `${icono('visto')}<span class="solo-lector"> (ya lo viste)</span>` : ''}
+              </a></li>`,
+            )
+            .join('')}</ol>
+          ${siluetaDePasos(r.eventos)}
+        </div>
+        ${r.ruta ? '' : `<p><button type="button" class="boton chico" data-accion="guardar-historia" data-historia="${r.id}">${icono('copiar')}<span>Guardar para usar sin conexión</span></button></p>`}
+      </div>
+      </div>`,
+      enfocar,
+    );
+    alCambiarNivel = () => {
+      raiz.querySelector('.recorrido-minutos').textContent = duracion();
+    };
+  }
+
+  /**
+   * Cierre de una historia: la tira de sus pasos, el repaso (si tiene eventos que no son de temas sensibles) y
+   * otras historias para seguir (primero las empezadas, después las nuevas).
+   */
+  function mostrarFinHistoria(r, { enfocar = true, otras = [] }) {
+    iniciar({ recorrido: r, fin: true });
+    const avance = (x) => {
+      const n = x.eventos.filter(visto).length;
+      return n === x.eventos.length ? 2 : n ? 0 : 1;
+    };
+    const siguientes = [...otras].sort((a, b) => avance(a) - avance(b)).slice(0, 3);
+    const preguntables = r.eventos.filter(paraRepaso);
+    raiz.style.removeProperty('--color');
+    pintar(
+      `
+      <div class="detalle-revista">
+      ${portada({
+        ceja: `<a href="${r.origen?.href ?? '#historias'}">${esc(r.origen?.texto ?? 'Historias guiadas')}</a> · Fin`,
+        titulo: esc(r.titulo),
+        debajo: `<p class="vista-intro">Estos fueron sus ${r.eventos.length} pasos, de ${esc(r.eventos[0].fechaTexto)} a ${esc(r.eventos.at(-1).fechaTexto)}.</p>`,
+      })}
+      <div class="detalle-contenido vista-lista">
+        <ol class="recorrido-tira escalonar">${r.eventos
+          .map(
+            (ev, i) => `<li><a href="${rutaHistoria(r, i + 1)}" style="--color:${colorDe(ev)}">
+              <span class="tira-img">${miniatura(ev, '10rem')}</span>
+              <span class="tira-texto"><span class="tira-paso">Paso ${i + 1} · ${esc(formatearAnio(ev.anio))}</span><span class="tira-titulo">${esc(ev.titulo)}</span></span>
+            </a></li>`,
+          )
+          .join('')}</ol>
+        ${
+          preguntables.length >= 3
+            ? `<section class="repaso" aria-labelledby="repaso-titulo">
+              <h3 id="repaso-titulo">Repaso sin nota</h3>
+              <p>Unas preguntas para recordar lo que viste, con botones. No hay puntaje: al responder, aparece la respuesta.</p>
+              <p class="repaso-empezar"><button type="button" class="boton" data-accion="repaso">${icono('ruta')}<span>Empezar el repaso</span></button></p>
+              <div class="repaso-preguntas" role="group" aria-label="Preguntas del repaso" tabindex="-1"></div>
+            </section>`
+            : ''
+        }
+        ${
+          siguientes.length
+            ? `<section class="sigue" aria-labelledby="sigue-titulo">
+              <h3 id="sigue-titulo">Sigue con…</h3>
+              <ul class="sigue-lista">${siguientes
+                .map((x) => {
+                  const n = x.eventos.filter(visto).length;
+                  return `<li><a class="ficha" href="${rutaHistoria(x, 0)}" style="--color:var(--cobre-vivo)">
+                    ${mosaico(x.eventos)}
+                    <span class="ficha-texto"><span class="ficha-meta">${x.eventos.length} pasos${n ? ` · ${n} vistos` : ''}</span><span class="ficha-titulo">${esc(x.titulo)}</span>
+                      <span class="ficha-resumen">${esc(x.descripcion)}</span></span>
+                  </a></li>`;
+                })
+                .join('')}</ul>
+            </section>`
+            : ''
+        }
+        <p class="recorrido-acciones"><a class="boton" href="${rutaHistoria(r, 0)}">${icono('ruta')}<span>Ver la presentación</span></a>
+          <a class="boton" href="${r.salida?.href ?? '#historias'}">${icono('volver')}<span>${esc(r.salida?.texto ?? 'Elegir otra historia')}</span></a></p>
       </div>
       </div>`,
       enfocar,
@@ -504,8 +749,10 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
 
   return {
     mostrar,
+    mostrarFinHistoria,
     mostrarGrupo,
     mostrarHistorias,
+    mostrarInicioHistoria,
     mostrarPagina,
     mostrarPersonaje,
     ocultar,

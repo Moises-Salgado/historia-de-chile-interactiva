@@ -3,7 +3,12 @@
 // (cargarTextos; ver textosAPedido en vite.config.js).
 import { parseFecha } from './fechas.js';
 
-const archivos = import.meta.glob(['../data/*.json', '!../data/[0-9][0-9]-*.json'], { eager: true, import: 'default' });
+// «Lo que se discute» y el glosario tampoco van en la carga inicial: viajan con los textos de cada evento y en
+// virtual:glosario (vite.config.js).
+const archivos = import.meta.glob(['../data/*.json', '!../data/[0-9][0-9]-*.json', '!../data/se-discute.json', '!../data/glosario.json'], {
+  eager: true,
+  import: 'default',
+});
 const porPeriodo = import.meta.glob('../data/[0-9][0-9]-*.json', { eager: true, import: 'default', query: '?ligero' });
 const textosPorPeriodo = import.meta.glob('../data/[0-9][0-9]-*.json', { import: 'default', query: '?textos' });
 const eventosDe = new Map(); // JSON de período → sus eventos visibles

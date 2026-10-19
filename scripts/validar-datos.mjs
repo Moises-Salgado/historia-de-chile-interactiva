@@ -3,6 +3,8 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { parseFecha } from '../src/fechas.js';
+import { aparece } from '../src/glosario-aparece.js';
+import { esSensible } from '../src/sensibles.js';
 
 const DIR = resolve(process.argv[2] ?? 'data');
 const ARCHIVO_EVENTOS = /^(\d{2})-[a-z0-9-]+\.json$/;
@@ -244,12 +246,6 @@ function validarGrupos(lista, ctx) {
   });
 }
 
-// Temas sensibles (CLAUDE.md) donde no corresponde una ficha de curiosidades: guerras de la Conquista y la
-// Araucanía, guerras del período 05 (incluida la del Pacífico), la dictadura, matanzas y el estallido social.
-const SENSIBLES = new Set(['1907-matanza-escuela-santa-maria', '1938-matanza-seguro-obrero', '2019-estallido-social', '1991-informe-rettig', '1998-detencion-pinochet-londres']);
-const esSensible = (ev) =>
-  ev.periodoId === '08' || SENSIBLES.has(ev.id) || (ev.temas.includes('guerra') && (ev.periodoId === '05' || ev.temas.includes('pueblos-originarios')));
-
 // «¿Sabías que?»: una oración copiada textualmente del detalle del evento, nunca en temas sensibles.
 function validarSabiasQue(mapa, ctx) {
   if (!mapa || typeof mapa !== 'object' || Array.isArray(mapa)) return error('sabias-que.json', 'debe ser un objeto { "id": "oración" }');
@@ -261,6 +257,59 @@ function validarSabiasQue(mapa, ctx) {
     else if (!ev.detalle.includes(frase)) error(d, 'la frase debe copiarse textualmente del detalle');
     else if (esSensible(ev)) error(d, 'tema sensible: aquí no corresponde un «¿Sabías que?»');
   }
+}
+
+// «Lo que se discute»: una oración (o un párrafo breve) copiada textualmente del detalle del evento, sobre sus
+// distintas interpretaciones; distinta de su «¿Sabías que?». No va en los hechos que el Estado y la justicia
+// reconocen como violaciones a los derechos humanos: ahí, un recuadro de debate los relativizaría.
+const SIN_DEBATE = new Set(['1973-violaciones-derechos-humanos', '1974-dina-y-cni', '1973-exilio', '1991-informe-rettig']);
+function validarSeDiscute(mapa, ctx, sabiasQue) {
+  if (!mapa || typeof mapa !== 'object' || Array.isArray(mapa)) return error('se-discute.json', 'debe ser un objeto { "id": "oración" }');
+  for (const [id, frase] of Object.entries(mapa)) {
+    const d = `se-discute.json [${id}]`;
+    const ev = ctx.eventos.get(id);
+    if (!ev) error(d, 'el evento no existe');
+    else if (!esTexto(frase)) error(d, 'la frase está vacía');
+    else if (!ev.detalle.includes(frase)) error(d, 'la frase debe copiarse textualmente del detalle');
+    else if (SIN_DEBATE.has(id)) error(d, 'hecho reconocido por el Estado y la justicia: aquí no corresponde «Lo que se discute»');
+    else if (sabiasQue?.[id] && (sabiasQue[id].includes(frase) || frase.includes(sabiasQue[id]))) error(d, 'repite su «¿Sabías que?»');
+  }
+}
+
+// Glosario: palabras de los textos con una explicación breve. Cada una lleva su fuente (https) o sale de una
+// oración textual de un evento («deTexto»: { evento, frase }); «formas» son otras maneras de escribirla (el
+// plural) y «eventos», si se da, limita dónde vale. Debe aparecer en algún evento visible.
+function validarGlosario(lista, ctx) {
+  if (!Array.isArray(lista)) return error('glosario.json', 'debe ser una lista');
+  const ids = new Set();
+  lista.forEach((g, i) => {
+    const d = `glosario.json [${g?.id ?? i}]`;
+    if (!ID.test(g?.id ?? '')) error(d, 'id inválido (minúsculas, números y guiones)');
+    else if (ids.has(g.id)) error(d, 'id repetido');
+    ids.add(g?.id);
+    if (!esTexto(g?.termino)) return error(d, 'falta "termino"');
+    if (!esTexto(g.definicion)) error(d, 'falta "definicion"');
+    else if (g.definicion.length > 240) aviso(d, 'definición de más de 240 caracteres');
+    if (g.formas !== undefined && !(Array.isArray(g.formas) && g.formas.every(esTexto))) error(d, '"formas" debe ser una lista de textos');
+    if (g.eventos !== undefined) {
+      if (!Array.isArray(g.eventos) || !g.eventos.length) error(d, '"eventos" debe ser una lista de ids');
+      // Cada evento listado debe usar la palabra (o una de sus formas) en sus textos.
+      else
+        for (const id of g.eventos) {
+          const x = ctx.eventos.get(id);
+          if (!x) error(d, `el evento "${id}" no existe`);
+          else if (!aparece({ ...g, eventos: undefined }, x)) error(d, `la palabra no aparece en los textos de "${id}"`);
+        }
+    }
+    const conFuente = typeof g.fuente === 'string' && /^https:\/\/\S+$/.test(g.fuente);
+    const ev = ctx.eventos.get(g.deTexto?.evento);
+    const delTexto = Boolean(ev && esTexto(g.deTexto.frase) && [ev.resumenNino, ev.resumen, ev.detalle].some((t) => t.includes(g.deTexto.frase)));
+    if (g.fuente !== undefined && !conFuente) error(d, '"fuente" debe ser una URL https');
+    if (g.deTexto !== undefined && !delTexto) error(d, '"deTexto" debe tener un evento existente y una oración copiada de sus textos');
+    if (!conFuente && !delTexto) error(d, 'necesita "fuente" (https) o "deTexto" (oración textual de un evento)');
+    const visibles = [...ctx.eventos.values()].filter((x) => !x.pendienteVerificacion);
+    if (!visibles.some((x) => aparece(g, x))) error(d, 'no aparece en ningún evento visible');
+  });
 }
 
 // Mapa (lugares.json): las 16 regiones actuales de norte a sur, lugares con coordenadas e ítem de Wikidata
@@ -362,7 +411,7 @@ if (!existsSync(DIR)) {
 
 const nombres = readdirSync(DIR).filter((n) => n.endsWith('.json')).sort();
 const archivosEventos = nombres.filter((n) => ARCHIVO_EVENTOS.test(n));
-const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json', 'lugares.json', 'ubicaciones.json', 'titulos-cortos.json'];
+const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json', 'lugares.json', 'ubicaciones.json', 'titulos-cortos.json', 'se-discute.json', 'glosario.json'];
 for (const n of nombres) {
   if (!ARCHIVO_EVENTOS.test(n) && !['periodos.json', 'temas.json', ...OPCIONALES].includes(n)) aviso(n, 'archivo no reconocido (la app lo ignora)');
 }
@@ -410,12 +459,17 @@ if (grupos) validarGrupos(grupos, ctx);
 if (sabiasQue) validarSabiasQue(sabiasQue, ctx);
 const titulosCortos = opcional('titulos-cortos.json');
 if (titulosCortos) validarTitulosCortos(titulosCortos, ctx);
+const seDiscute = opcional('se-discute.json');
+if (seDiscute) validarSeDiscute(seDiscute, ctx, sabiasQue);
+const glosario = opcional('glosario.json');
+if (glosario) validarGlosario(glosario, ctx);
 const lugares = opcional('lugares.json');
 const ubicaciones = opcional('ubicaciones.json');
 if (lugares || ubicaciones) validarUbicaciones(ubicaciones, ctx, validarLugares(lugares));
 
 console.log(`Datos: ${ctx.periodos.size} períodos · ${ctx.temas.size} temas · ${total} eventos en ${archivosEventos.length} archivos`);
 console.log(`Historias: ${recorridos?.length ?? 0} · grupos: ${grupos?.length ?? 0} · «¿Sabías que?»: ${Object.keys(sabiasQue ?? {}).length} · títulos cortos: ${Object.keys(titulosCortos ?? {}).length}`);
+console.log(`«Lo que se discute»: ${Object.keys(seDiscute ?? {}).length} · glosario: ${glosario?.length ?? 0} palabras`);
 if (lugares?.lugares) console.log(`Mapa: ${lugares.lugares.length} lugares (${lugares.lugares.filter((l) => l.aproximado).length} aproximados) · ${lugares.zonas?.length ?? 0} zonas · ${Object.keys(ubicaciones ?? {}).length} eventos ubicados`);
 if (ctx.pendientes.length) console.log(`Ocultos por pendienteVerificacion (${ctx.pendientes.length}): ${ctx.pendientes.join(', ')}`);
 if (ctx.recientes.length) console.log(`Posteriores a 2023 visibles, confirmar certeza (${ctx.recientes.length}): ${ctx.recientes.join(', ')}`);

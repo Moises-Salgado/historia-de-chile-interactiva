@@ -1,0 +1,220 @@
+[
+  {
+    "id": "ariki",
+    "termino": "Ariki",
+    "definicion": "Jefe rapanui.",
+    "deTexto": { "evento": "1888-incorporacion-de-rapa-nui", "frase": "El marino chileno Policarpo Toro y el ariki (jefe) rapanui Atamu Tekena firmaron un acuerdo, y Rapa Nui pasó a formar parte de Chile." },
+    "eventos": ["1888-incorporacion-de-rapa-nui"]
+  },
+  {
+    "id": "cabildo-abierto",
+    "termino": "Cabildo abierto",
+    "formas": ["cabildo abierto", "cabildos abiertos"],
+    "definicion": "Reunión de los vecinos de una ciudad para tratar un asunto muy importante. En el del 18 de septiembre de 1810, en Santiago, se reunieron unos 400 vecinos.",
+    "deTexto": { "evento": "1810-primera-junta-de-gobierno", "frase": "El 18 de septiembre de 1810, unos 400 vecinos se reunieron en un cabildo abierto en el edificio del Real Tribunal del Consulado, en Santiago." },
+    "eventos": ["1808-crisis-de-la-monarquia", "1810-primera-junta-de-gobierno", "1817-batalla-de-chacabuco", "1823-abdicacion-de-ohiggins"]
+  },
+  {
+    "id": "cacique",
+    "termino": "Cacique",
+    "formas": ["cacique", "caciques"],
+    "definicion": "Jefe de un grupo indígena, como Michimalonco, que dirigió a los guerreros que atacaron Santiago en 1541.",
+    "deTexto": { "evento": "1541-ataque-de-michimalonco", "frase": "Pocos meses después de su fundación, Santiago fue atacada y quemada por guerreros indígenas dirigidos por el cacique Michimalonco, que defendían sus tierras." },
+    "eventos": ["1541-ataque-de-michimalonco", "1641-parlamento-de-quilin", "1793-parlamento-de-negrete"]
+  },
+  {
+    "id": "congreso",
+    "termino": "Congreso",
+    "formas": ["Congreso"],
+    "definicion": "Reunión de representantes elegidos que hacen las leyes del país.",
+    "deTexto": { "evento": "1811-primer-congreso-nacional", "frase": "Por primera vez, representantes elegidos en distintas ciudades se reunieron en Santiago para hacer leyes para Chile: fue el Primer Congreso Nacional." },
+    "eventos": ["1811-primer-congreso-nacional", "1891-guerra-civil", "1924-ruido-de-sables", "1925-constitucion-de-1925", "1970-eleccion-salvador-allende", "1973-golpe-de-estado"]
+  },
+  {
+    "id": "constitucion",
+    "termino": "Constitución",
+    "formas": ["Constitución", "constituciones"],
+    "definicion": "La ley más importante de un país.",
+    "deTexto": { "evento": "1833-constitucion", "frase": "En 1833 Chile aprobó una nueva Constitución, que es la ley más importante de un país." },
+    "eventos": ["1833-constitucion", "1925-constitucion-de-1925", "1980-constitucion", "2005-reformas-constitucionales", "2019-estallido-social", "2020-plebiscito-nacional", "2022-plebiscito-constitucional", "2023-plebiscito-constitucional"]
+  },
+  {
+    "id": "cuestion-social",
+    "termino": "Cuestión social",
+    "definicion": "Los problemas que afectaron a los trabajadores y a los sectores populares de Chile entre fines del siglo XIX y comienzos del XX.",
+    "deTexto": { "evento": "1880-cuestion-social", "frase": "Se llama «cuestión social» al conjunto de problemas que afectaron a los trabajadores y sectores populares de Chile entre fines del siglo XIX y comienzos del XX." },
+    "eventos": ["1880-cuestion-social"]
+  },
+  {
+    "id": "democracia",
+    "termino": "Democracia",
+    "definicion": "Forma de gobierno en que el poder lo ejerce el pueblo, que elige a sus autoridades en elecciones periódicas y con voto secreto.",
+    "fuente": "https://www.bcn.cl/formacioncivica/detalle_guia?h=10221.3%2F45671",
+    "eventos": ["1980-constitucion", "1983-protestas-nacionales", "1989-eleccion-aylwin", "1990-aylwin-asume-presidencia"]
+  },
+  {
+    "id": "derechos-humanos",
+    "termino": "Derechos humanos",
+    "definicion": "Derechos que tienen todas las personas, sin distinción de nacionalidad, sexo, origen, color, religión, lengua o cualquier otra condición.",
+    "fuente": "https://www.bcn.cl/formacioncivica/detalle_guia?h=10221.3%2F45660",
+    "eventos": ["1973-violaciones-derechos-humanos", "1973-exilio", "1974-dina-y-cni", "1990-aylwin-asume-presidencia", "1991-informe-rettig", "2019-estallido-social"]
+  },
+  {
+    "id": "detenido-desaparecido",
+    "termino": "Detenido desaparecido",
+    "formas": ["detenidos desaparecidos", "detenido desaparecido", "desaparecidas", "desaparecidos", "desaparecieron", "desapariciones forzadas", "desaparición forzada"],
+    "definicion": "Persona detenida por agentes del Estado cuya detención se negó o cuyo paradero se ocultó.",
+    "fuente": "https://rehuirelolvido.indh.cl/tema/desaparicionforzada/",
+    "eventos": ["1973-violaciones-derechos-humanos", "1974-dina-y-cni"]
+  },
+  {
+    "id": "dictadura",
+    "termino": "Dictadura",
+    "definicion": "Gobierno autoritario, que no surge de elecciones libres. En Chile, entre 1973 y 1990, una Junta Militar tomó el poder, clausuró el Congreso y puso en receso a los partidos políticos.",
+    "fuente": "https://www.bcn.cl/historiapolitica/hitos_periodo/detalle_periodo.html?per=1973-1990",
+    "eventos": ["1973-golpe-de-estado", "1973-violaciones-derechos-humanos", "1974-dina-y-cni", "1975-reformas-economicas", "1983-protestas-nacionales", "1990-aylwin-asume-presidencia", "1991-informe-rettig", "2006-revolucion-pinguina"]
+  },
+  {
+    "id": "exilio",
+    "termino": "Exilio",
+    "formas": ["exilio", "exiliados", "exiliadas", "exiliado"],
+    "definicion": "Tener que vivir fuera del propio país por razones políticas, muchas veces sin poder volver.",
+    "deTexto": { "evento": "1973-exilio", "frase": "Después del golpe, miles de chilenos tuvieron que irse a vivir a otros países por sus ideas políticas, y a muchos no se les dejaba volver." },
+    "eventos": ["1927-primer-gobierno-ibanez", "1938-matanza-seguro-obrero", "1973-exilio"]
+  },
+  {
+    "id": "expropiar",
+    "termino": "Expropiar",
+    "formas": ["expropiar", "expropió", "expropiaron", "expropiación", "expropiaciones"],
+    "definicion": "Que el Estado pase a ser dueño de una propiedad privada según lo que dice una ley, como los terrenos agrícolas que se expropiaron en la reforma agraria.",
+    "deTexto": { "evento": "1962-reforma-agraria", "frase": "Con la reforma agraria, el Estado expropió muchos de esos terrenos para que los trabajaran familias campesinas." },
+    "eventos": ["1962-reforma-agraria", "1964-gobierno-frei-montalva"]
+  },
+  {
+    "id": "golpe-de-estado",
+    "termino": "Golpe de Estado",
+    "formas": ["golpe de Estado", "golpe"],
+    "definicion": "Toma del poder por la fuerza.",
+    "deTexto": { "evento": "1938-matanza-seguro-obrero", "frase": "En 1938, un grupo de jóvenes intentó tomar el poder por la fuerza en Santiago." },
+    "eventos": ["1925-constitucion-de-1925", "1938-matanza-seguro-obrero", "1970-eleccion-salvador-allende", "1973-golpe-de-estado", "1973-exilio"]
+  },
+  {
+    "id": "guerra-civil",
+    "termino": "Guerra civil",
+    "formas": ["guerra civil", "guerras civiles", "guerra entre chilenos"],
+    "definicion": "Guerra entre grupos de un mismo país.",
+    "deTexto": { "evento": "1891-guerra-civil", "frase": "El presidente José Manuel Balmaceda y el Congreso no se pusieron de acuerdo sobre quién debía tener más poder, y Chile vivió una guerra entre chilenos." },
+    "eventos": ["1823-abdicacion-de-ohiggins", "1830-batalla-de-lircay", "1833-constitucion", "1851-guerra-civil-loncomilla", "1891-guerra-civil", "1891-muerte-de-balmaceda"]
+  },
+  {
+    "id": "junta-de-gobierno",
+    "termino": "Junta de gobierno",
+    "formas": ["junta de gobierno", "Junta Militar", "junta", "Junta"],
+    "definicion": "Grupo de personas que gobierna en conjunto, como la Primera Junta de 1810 o la Junta Militar de 1973.",
+    "deTexto": { "evento": "1823-abdicacion-de-ohiggins", "frase": "El mando pasó a una junta formada por Agustín Eyzaguirre, José Miguel Infante y Fernando Errázuriz." },
+    "eventos": ["1808-crisis-de-la-monarquia", "1810-primera-junta-de-gobierno", "1823-abdicacion-de-ohiggins", "1891-guerra-civil", "1924-ruido-de-sables", "1932-republica-socialista", "1973-golpe-de-estado", "1974-dina-y-cni", "1980-constitucion"]
+  },
+  {
+    "id": "lonko",
+    "termino": "Lonko",
+    "definicion": "Jefe de una comunidad mapuche, llamada lof.",
+    "deTexto": { "evento": "1500-pueblo-mapuche", "frase": "Vivían en comunidades llamadas lof, cada una dirigida por un lonko, sin un gobierno central único." },
+    "eventos": ["1500-pueblo-mapuche"]
+  },
+  {
+    "id": "maremoto",
+    "termino": "Maremoto o tsunami",
+    "formas": ["maremoto", "maremotos", "tsunami", "tsunamis", "gran ola"],
+    "definicion": "Gran ola que llega desde el mar después de un terremoto.",
+    "deTexto": { "evento": "1835-terremoto-de-concepcion", "frase": "Un terremoto muy fuerte destruyó las ciudades de Concepción y Talcahuano, y después llegó una gran ola desde el mar." },
+    "eventos": ["1835-terremoto-de-concepcion", "1960-terremoto-valdivia", "2010-terremoto-27f"]
+  },
+  {
+    "id": "mediacion",
+    "termino": "Mediación",
+    "formas": ["mediación", "mediador", "mediadora"],
+    "definicion": "Ayuda de alguien que no es parte de un conflicto para que las partes lleguen a un acuerdo conversando, como la del papa Juan Pablo II entre Chile y Argentina.",
+    "deTexto": { "evento": "1978-crisis-del-beagle", "frase": "El papa Juan Pablo II ayudó a que ambos países resolvieran el conflicto conversando." },
+    "eventos": ["1881-tratado-de-limites-con-argentina", "1978-crisis-del-beagle", "1984-tratado-paz-amistad"]
+  },
+  {
+    "id": "nacionalizacion",
+    "termino": "Nacionalización",
+    "formas": ["nacionalización", "nacionalizar", "nacionalizó", "nacionalizada", "nacionalizadas"],
+    "definicion": "Que algo que pertenecía a empresas privadas pase a ser del Estado, como las grandes minas de cobre en 1971.",
+    "deTexto": { "evento": "1971-nacionalizacion-del-cobre", "frase": "En 1971, el Congreso aprobó por unanimidad, es decir, sin votos en contra, que las grandes minas de cobre, que eran de empresas de Estados Unidos, pasaran a ser del Estado de Chile." },
+    "eventos": ["1964-gobierno-frei-montalva", "1971-nacionalizacion-del-cobre"]
+  },
+  {
+    "id": "ocupacion-de-la-araucania",
+    "termino": "Ocupación de la Araucanía",
+    "formas": ["Ocupación de la Araucanía", "Pacificación de la Araucanía"],
+    "definicion": "Avance militar del Estado chileno, entre 1861 y 1883, sobre el territorio mapuche al sur del río Biobío. En su época se le llamó «Pacificación»; hoy muchos historiadores y organizaciones mapuche prefieren hablar de «ocupación».",
+    "deTexto": { "evento": "1861-ocupacion-de-la-araucania", "frase": "En su época el Estado llamó a este proceso «Pacificación de la Araucanía», un nombre que hoy se discute: muchos historiadores y organizaciones mapuche prefieren hablar de «ocupación»." },
+    "eventos": ["1861-ocupacion-de-la-araucania"]
+  },
+  {
+    "id": "parlamento",
+    "termino": "Parlamento (encuentro hispano-mapuche)",
+    "formas": ["parlamento", "parlamentos"],
+    "definicion": "Gran encuentro entre autoridades españolas y líderes mapuche para conversar y llegar a acuerdos, por ejemplo sobre la paz y la frontera.",
+    "deTexto": { "evento": "1793-parlamento-de-negrete", "frase": "Durante la Colonia, las autoridades españolas y los líderes mapuche se reunían en grandes encuentros llamados parlamentos para conversar y llegar a acuerdos." },
+    "eventos": ["1598-batalla-de-curalaba", "1641-parlamento-de-quilin", "1793-parlamento-de-negrete", "1861-ocupacion-de-la-araucania"]
+  },
+  {
+    "id": "plebiscito",
+    "termino": "Plebiscito",
+    "formas": ["plebiscito", "plebiscitos"],
+    "definicion": "Votación en que la ciudadanía aprueba o rechaza una propuesta, como una Constitución o, en 1988, el candidato propuesto por las Fuerzas Armadas.",
+    "deTexto": { "evento": "1988-plebiscito", "frase": "La Constitución de 1980 establecía que en 1988 se haría un plebiscito para aprobar o rechazar al candidato propuesto por las Fuerzas Armadas para un nuevo período presidencial, y el candidato fue Augusto Pinochet." },
+    "eventos": ["1883-tratado-de-ancon", "1925-constitucion-de-1925", "1980-constitucion", "1988-plebiscito", "1989-eleccion-aylwin", "2019-estallido-social", "2020-plebiscito-nacional", "2022-plebiscito-constitucional", "2023-plebiscito-constitucional"]
+  },
+  {
+    "id": "reduccion",
+    "termino": "Reducción (en la Araucanía)",
+    "formas": ["reducción", "reducciones"],
+    "definicion": "Terreno, mucho más pequeño que su territorio original, donde el Estado radicó a las familias mapuche después de la ocupación de la Araucanía.",
+    "deTexto": { "evento": "1861-ocupacion-de-la-araucania", "frase": "Entre 1884 y 1929, la Comisión Radicadora de Indígenas entregó «títulos de merced» que radicaron a las familias mapuche en reducciones, sobre una pequeña parte de su territorio original; el resto quedó en manos del Estado, que lo remató o lo entregó a colonos chilenos y europeos." },
+    "eventos": ["1861-ocupacion-de-la-araucania"]
+  },
+  {
+    "id": "republica-parlamentaria",
+    "termino": "República Parlamentaria",
+    "formas": ["República Parlamentaria", "régimen parlamentario", "parlamentarismo"],
+    "definicion": "Época, entre 1891 y 1925, en que el Congreso tuvo un fuerte poder sobre los gobiernos.",
+    "deTexto": { "evento": "1891-guerra-civil", "frase": "Después de la guerra, el Congreso tuvo un fuerte poder sobre los gobiernos, y las causas del conflicto siguen siendo objeto de interpretaciones distintas." },
+    "eventos": ["1891-guerra-civil", "1924-ruido-de-sables", "1925-constitucion-de-1925"]
+  },
+  {
+    "id": "salitre",
+    "termino": "Salitre",
+    "formas": ["salitre", "salitrera", "salitreras", "salitrero", "salitreros"],
+    "definicion": "Sustancia del desierto del norte que se usaba como abono para las plantas. Se sacaba en pueblos llamados oficinas salitreras.",
+    "deTexto": { "evento": "1880-auge-del-salitre", "frase": "En el desierto del norte de Chile había salitre, una sustancia que se usaba como abono para las plantas." },
+    "eventos": ["1879-guerra-del-pacifico", "1880-auge-del-salitre", "1880-cuestion-social", "1891-guerra-civil", "1907-matanza-escuela-santa-maria", "1912-partido-obrero-socialista", "1927-primer-gobierno-ibanez", "1929-gran-depresion-crisis-salitre"]
+  },
+  {
+    "id": "tratado",
+    "termino": "Tratado y tregua",
+    "formas": ["tratado", "tratados", "tregua"],
+    "definicion": "Un tratado es un acuerdo que firman países o autoridades, por ejemplo para fijar una frontera o terminar una guerra; una tregua es un acuerdo para dejar de pelear.",
+    "deTexto": { "evento": "1881-tratado-de-limites-con-argentina", "frase": "Chile y Argentina firmaron un acuerdo para decidir por dónde pasaba la frontera entre ambos países." },
+    "eventos": ["1826-tratado-de-tantauco", "1879-guerra-del-pacifico", "1881-tratado-de-limites-con-argentina", "1883-tratado-de-ancon", "1884-pacto-de-tregua-con-bolivia", "1904-tratado-de-paz-con-bolivia", "1984-tratado-paz-amistad"]
+  },
+  {
+    "id": "voto-censitario",
+    "termino": "Voto censitario",
+    "formas": ["voto censitario"],
+    "definicion": "Voto limitado a los hombres que cumplían requisitos de propiedad o renta.",
+    "deTexto": { "evento": "1833-constitucion", "frase": "Estableció un Poder Ejecutivo fuerte, la religión católica como oficial y un voto censitario, es decir, limitado a los hombres que cumplían requisitos de propiedad o renta." },
+    "eventos": ["1833-constitucion"]
+  },
+  {
+    "id": "yanacona",
+    "termino": "Yanacona",
+    "formas": ["yanacona", "yanaconas"],
+    "definicion": "Indígena que acompañaba y servía a los españoles, como auxiliar o como sirviente.",
+    "deTexto": { "evento": "1536-expedicion-de-almagro", "frase": "En 1535, Diego de Almagro salió del Cuzco, en el Perú, con casi 500 españoles y un gran número de indígenas auxiliares, llamados yanaconas, para conquistar las tierras del sur." },
+    "eventos": ["1536-expedicion-de-almagro", "1541-fundacion-de-santiago", "1557-lautaro"]
+  }
+]

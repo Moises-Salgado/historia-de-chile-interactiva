@@ -1,12 +1,41 @@
 // Portada (#inicio). La bienvenida y las tres puertas están en index.html, para que se vean antes de que
-// cargue la app; aquí se completan desde los datos: cifras, créditos de las imágenes, el «¿Sabías que…?»
-// del día y los períodos (cada uno lleva a su tramo de la línea de tiempo).
+// cargue la app; aquí se completan desde los datos: cifras, créditos de las imágenes, «Empieza aquí» (la
+// primera vez), el «¿Sabías que…?» del día, «Tu recorrido» y los períodos (cada uno lleva a su tramo de la línea).
 import { curvasDeNivel } from './curvas.js';
-import { haceCuanto } from './fechas.js';
-import { creditoImagen, esc, icono, movimientoReducido, urlImagen, urlPlaceholder } from './util.js';
+import { cargarTextos } from './datos.js';
+import { haceCuanto, parseFecha } from './fechas.js';
+import { creditoImagen, esc, guardarPreferencia, icono, leerNacimiento, leerPreferencia, movimientoReducido, urlImagen, urlPlaceholder } from './util.js';
 
-/** alElegirPeriodo(id) se llama al elegir un período (en vez de seguir el enlace #linea). */
-export function crearInicio(seccion, { eventos, periodos, recorridos, lugares = [], alElegirPeriodo }) {
+// El evento que muestra «Elige cómo leer» en sus tres niveles.
+const MUESTRA = '1945-nobel-gabriela-mistral';
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+// La primera oración de un texto (no corta en «c. 1500» ni en «a.C.»).
+const primeraOracion = (texto) => String(texto ?? '').split(/(?<=[.!?…»])\s+(?=[A-ZÁÉÍÓÚÑ¿¡«])/u)[0];
+const sesion = {
+  leer: (clave) => {
+    try {
+      return sessionStorage.getItem(`historia-chile:${clave}`);
+    } catch {
+      return null;
+    }
+  },
+  guardar: (clave, valor) => {
+    try {
+      if (valor === null) sessionStorage.removeItem(`historia-chile:${clave}`);
+      else sessionStorage.setItem(`historia-chile:${clave}`, valor);
+    } catch {
+      // Sin almacenamiento: vale solo mientras la página esté abierta.
+    }
+  },
+};
+
+/**
+ * alElegirPeriodo(id) se llama al elegir un período (en vez de seguir el enlace #linea) y alElegirNivel(nivel),
+ * al elegir cómo leer en «Empieza aquí»; nivel() da el nivel de lectura actual. `mapa` trae regiones, lugares y
+ * zonas («Tu región»).
+ */
+export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { regiones: [], lugares: [], zonas: [] }, nivel = () => 'general', alElegirNivel, alElegirPeriodo }) {
+  const { lugares } = mapa;
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   seccion.querySelectorAll('.curvas').forEach(curvasDeNivel);
@@ -45,30 +74,53 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, lugares = 
     creditos.push(`${esc(ev.titulo)}: ${creditoImagen(ev.imagen)}`);
   }
 
-  // «¿Sabías que…?» del día: cambia a medianoche y es el mismo para todos ese día. Sale de los eventos con
-  // frase en data/sabias-que.json, que excluye los temas sensibles (scripts/validar-datos.mjs).
+  // «¿Sabías que…?» del día: cambia a medianoche y es el mismo para todos ese día; «Otro dato» pasa al siguiente.
+  // Sale de los eventos con frase en data/sabias-que.json, que excluye los temas sensibles (scripts/validar-datos.mjs).
   const candidatos = eventos.filter((ev) => ev.sabiasQue);
   const destacado = seccion.querySelector('.destacado');
   if (candidatos.length) {
     const hoy = new Date();
-    const dia = Math.floor(Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()) / 864e5);
-    const ev = candidatos[dia % candidatos.length];
-    const periodo = periodoDe.get(ev.periodoId);
-    const { archivo } = ev.imagen;
-    destacado.style.setProperty('--color', periodo.color);
+    let i = Math.floor(Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()) / 864e5) % candidatos.length;
     destacado.innerHTML = `
       <figure class="destacado-figura">
-        <a class="destacado-marco" href="#evento/${ev.id}" tabindex="-1" aria-hidden="true"><img src="${urlImagen(archivo, 500)}"
-          srcset="${urlImagen(archivo, 500)} 500w, ${urlImagen(archivo, 960)} 960w" sizes="(max-width: 40em) 100vw, 28rem" alt=""
-          loading="lazy" decoding="async" data-periodo="${ev.periodoId}"></a>
-        <figcaption class="credito">Imagen: ${creditoImagen(ev.imagen)}</figcaption>
+        <a class="destacado-marco" tabindex="-1" aria-hidden="true"><img alt="" loading="lazy" decoding="async" sizes="(max-width: 40em) 100vw, 28rem"></a>
+        <figcaption class="credito"></figcaption>
       </figure>
       <div class="destacado-texto">
         <h2 class="ceja" id="destacado-ceja">¿Sabías que…?</h2>
-        <h3 class="destacado-titulo"><a href="#evento/${ev.id}">${esc(ev.titulo)}</a></h3>
-        <p class="destacado-fecha">${esc(ev.fechaTexto)} · ${esc(periodo.nombre)}</p>
-        <p class="destacado-frase">${esc(ev.sabiasQue)}</p>
+        <div class="destacado-dato">
+          <h3 class="destacado-titulo"><a></a></h3>
+          <p class="destacado-fecha"></p>
+          <p class="destacado-frase"></p>
+        </div>
+        <p class="destacado-acciones"><button type="button" class="boton chico destacado-otro">${icono('siguiente')}<span>Otro dato</span></button></p>
       </div>`;
+    const img = destacado.querySelector('img');
+    // Se cambian los textos y la imagen, no el HTML: el foco se queda en «Otro dato».
+    const mostrarDato = () => {
+      const ev = candidatos[i];
+      const periodo = periodoDe.get(ev.periodoId);
+      const { archivo } = ev.imagen;
+      destacado.style.setProperty('--color', periodo.color);
+      for (const a of destacado.querySelectorAll('.destacado-marco, .destacado-titulo a')) a.href = `#evento/${ev.id}`;
+      img.classList.remove('cargada');
+      delete img.dataset.respaldo;
+      img.dataset.periodo = ev.periodoId;
+      img.srcset = `${urlImagen(archivo, 500)} 500w, ${urlImagen(archivo, 960)} 960w`;
+      img.src = urlImagen(archivo, 500);
+      destacado.querySelector('.credito').innerHTML = `Imagen: ${creditoImagen(ev.imagen)}`;
+      destacado.querySelector('.destacado-titulo a').textContent = ev.titulo;
+      destacado.querySelector('.destacado-fecha').textContent = `${ev.fechaTexto} · ${periodo.nombre}`;
+      destacado.querySelector('.destacado-frase').textContent = ev.sabiasQue;
+    };
+    mostrarDato();
+    // Desde ahora, cada dato nuevo se anuncia (el primero no: es parte de la página).
+    destacado.querySelector('.destacado-dato').setAttribute('aria-live', 'polite');
+    destacado.querySelector('.destacado-otro').hidden = candidatos.length < 2;
+    destacado.querySelector('.destacado-otro').addEventListener('click', () => {
+      i = (i + 1) % candidatos.length;
+      mostrarDato();
+    });
     destacado.hidden = false;
   }
 
@@ -103,6 +155,125 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, lugares = 
 
   seccion.querySelector('.inicio-creditos').innerHTML = creditos.length ? `Imágenes de las puertas: ${creditos.join('; ')}.` : '';
 
+  // ---- «Empieza aquí»: para quien llega a la portada sin haber abierto nada (nunca con un enlace directo). Se
+  // ve durante esa visita, aunque se vaya y se vuelva, y no vuelve a aparecer; «Ocultar» lo quita ya. ----
+  const empieza = seccion.querySelector('.empieza');
+  const llegoALaPortada = /^#?(?:inicio)?$/.test(location.hash);
+  if (sesion.leer('empieza') === 'si' || (llegoALaPortada && !leerPreferencia('vistos') && !leerPreferencia('empieza'))) {
+    sesion.guardar('empieza', 'si');
+    guardarPreferencia('empieza', 'visto');
+    pintarEmpieza();
+  }
+
+  function pintarEmpieza() {
+    const esencial = recorridos.find((r) => r.id === 'esencial');
+    const muestra = porId.get(MUESTRA);
+    // Este mes en la historia: los eventos de fecha conocida (no aproximada) en el mes de hoy, todos con el mismo
+    // trato y en orden de calendario (los que solo tienen mes, al final). Si son más de 6, se ven los 6 más
+    // cercanos a hoy (primero los que vienen) sin separar los de un mismo día; el resto, en un desplegable.
+    const hoy = new Date();
+    const mes = hoy.getMonth() + 1;
+    const delMes = eventos
+      .filter((ev) => !ev.fechaAproximada && parseFecha(ev.fecha)?.mes === mes)
+      .map((ev) => ({ ev, dia: parseFecha(ev.fecha).dia }))
+      .sort((a, b) => (a.dia ?? 32) - (b.dia ?? 32) || a.ev.t - b.ev.t);
+    let aLaVista = delMes;
+    if (delMes.length > 6) {
+      const conDia = delMes.filter((x) => x.dia);
+      const cercanos = [...conDia.filter((x) => x.dia >= hoy.getDate()), ...conDia.filter((x) => x.dia < hoy.getDate()).reverse()];
+      const elegidos = [];
+      for (const x of cercanos) {
+        if (elegidos.length >= 6 && x.dia !== elegidos.at(-1).dia) break;
+        elegidos.push(x);
+      }
+      aLaVista = delMes.filter((x) => elegidos.includes(x));
+    }
+    const resto = delMes.filter((x) => !aLaVista.includes(x));
+    // «5 de octubre de 1988 · Plebiscito de 1988… · hace 37 años»; un proceso, «Desde el 11 de septiembre de 1973»
+    // y sin «hace»; el aniversario de hoy lleva «Hoy». Todos con el filete de su período, sin imagen.
+    const itemDelMes = ({ ev, dia }) => {
+      const f = parseFecha(ev.fecha);
+      const cuando = ev.fechaFin ? `Desde ${f.dia ? `el ${f.dia} de ` : ''}${MESES[f.mes - 1]} de ${f.anio}` : ev.fechaTexto;
+      const hace = ev.fechaFin ? null : haceCuanto(ev);
+      return `<li><a href="#evento/${ev.id}" style="--color:${periodoDe.get(ev.periodoId).color}">
+        <span class="empieza-mes-fecha">${dia === hoy.getDate() ? '<span class="empieza-hoy">Hoy</span> ' : ''}${esc(cuando.charAt(0).toUpperCase() + cuando.slice(1))}</span>
+        <span class="empieza-mes-titulo">${esc(ev.titulo)}</span>
+        ${hace ? `<span class="empieza-mes-hace">${hace}</span>` : ''}
+      </a></li>`;
+    };
+    const NIVELES = [
+      ['nino', 'Para niños', (ev) => ev.resumenNino],
+      ['general', 'General', (ev) => ev.resumen],
+      ['detallado', 'Detallado', (ev) => ev.detalle],
+    ];
+    empieza.innerHTML = `
+      <p class="ceja">Primera vez aquí</p>
+      <h2 id="empieza-titulo">Empieza aquí</h2>
+      <div class="empieza-grilla">
+        ${
+          esencial
+            ? `<a class="empieza-esencial" href="#historia/esencial">
+            <span class="mosaico empieza-mosaico" aria-hidden="true">${esencial.eventos
+              .slice(0, 4)
+              .map((ev) => `<img src="${urlImagen(ev.imagen.archivo, 250)}" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}">`)
+              .join('')}</span>
+            <span class="empieza-esencial-texto">
+              <span class="ceja">Historia guiada · ${esencial.eventos.length} pasos</span>
+              <span class="empieza-esencial-titulo">${esc(esencial.titulo)}</span>
+              <span class="empieza-esencial-bajada">${esc(esencial.descripcion)}</span>
+              <span class="boton primario"><span>Empezar</span>${icono('siguiente')}</span>
+            </span>
+          </a>`
+            : ''
+        }
+        ${
+          muestra
+            ? `<fieldset class="empieza-nivel">
+            <legend>Elige cómo leer</legend>
+            <p class="empieza-ayuda">El mismo evento, «${esc(muestra.titulo)}», en los tres niveles. Se puede cambiar cuando quieras, arriba, en «Leer».</p>
+            <div class="empieza-niveles">${NIVELES.map(
+              ([valor, nombre, texto]) => `<label class="empieza-opcion">
+                <span class="empieza-opcion-fila"><input type="radio" name="empieza-nivel" value="${valor}"${valor === nivel() ? ' checked' : ''}> <span class="empieza-opcion-nombre">${nombre}</span></span>
+                <span class="empieza-opcion-texto" data-nivel="${valor}">${esc(primeraOracion(texto(muestra)) || '…')}</span>
+              </label>`,
+            ).join('')}</div>
+          </fieldset>`
+            : ''
+        }
+        ${
+          delMes.length
+            ? `<section class="empieza-mes" aria-labelledby="empieza-mes-titulo">
+            <h3 id="empieza-mes-titulo">Este mes en la historia: ${MESES[mes - 1]}</h3>
+            <ul>${aLaVista.map(itemDelMes).join('')}</ul>
+            ${
+              resto.length
+                ? `<details class="plegable empieza-mes-mas"><summary>Ver los otros ${resto.length} de ${MESES[mes - 1]}</summary><ul>${resto.map(itemDelMes).join('')}</ul></details>`
+                : ''
+            }
+          </section>`
+            : ''
+        }
+      </div>
+      <p class="empieza-pie"><button type="button" class="boton chico empieza-ocultar">${icono('cerrar')}<span>Ocultar</span></button></p>`;
+    empieza.hidden = false;
+    // El texto «Detallado» de la muestra llega con los textos de su período.
+    if (muestra) {
+      cargarTextos([muestra])
+        ?.then(() => {
+          empieza.querySelector('[data-nivel="detallado"]').textContent = primeraOracion(muestra.detalle);
+        })
+        .catch(() => {});
+    }
+    empieza.addEventListener('change', (e) => {
+      if (e.target.name === 'empieza-nivel') alElegirNivel?.(e.target.value);
+    });
+    empieza.querySelector('.empieza-ocultar').addEventListener('click', () => {
+      empieza.hidden = true;
+      sesion.guardar('empieza', null);
+      seccion.querySelector('#inicio-titulo').focus({ preventScroll: true });
+    });
+  }
+
   // «Tu recorrido»: cuántos eventos se han visto en este navegador y con cuál seguir (el siguiente sin ver
   // después del último abierto o, si no hay, el primero sin ver).
   // Se arma una vez y después solo cambian los textos y el enlace: así no se pierde el foco al volver.
@@ -113,10 +284,42 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, lugares = 
     <a class="boton primario seguir-enlace" href="#linea"><span class="seguir-texto"></span>${icono('siguiente')}</a>
     <ol class="seguir-barra">${periodos
       .map((p) => `<li style="--color:${p.color}" title="${esc(p.nombre)}"><span class="solo-lector">${esc(p.nombre)}: </span><span class="seguir-dato"></span><i aria-hidden="true"></i></li>`)
-      .join('')}</ol>`;
+      .join('')}</ol>
+    <p class="seguir-vida" hidden></p>
+    <div class="seguir-region">
+      <label class="rotulo" for="tu-region">Tu región</label>
+      <select id="tu-region" class="campo">
+        <option value="">Elige una región</option>${mapa.regiones.map((r) => `<option value="${r.codigo}">${esc(r.nombre)}</option>`).join('')}
+      </select>
+      <p class="seguir-region-dato" aria-live="polite"></p>
+    </div>`;
   const cuenta = seguir.querySelector('.seguir-cuenta');
   const enlace = seguir.querySelector('.seguir-enlace');
   const tramos = [...seguir.querySelectorAll('.seguir-barra li')];
+
+  // «Tu región» (guardada solo en este navegador): cuántos eventos tienen un lugar o una zona en ella.
+  const regionDeLugar = new Map(lugares.map((l) => [l.id, l.region]));
+  const regionesDeZona = new Map(mapa.zonas.map((z) => [z.id, z.regiones]));
+  const selector = seguir.querySelector('#tu-region');
+  const datoRegion = seguir.querySelector('.seguir-region-dato');
+  function mostrarRegion() {
+    const codigo = selector.value;
+    const region = mapa.regiones.find((r) => r.codigo === codigo);
+    if (!region) {
+      datoRegion.textContent = '';
+      return;
+    }
+    const n = eventos.filter((ev) => ev.ubicaciones.some((u) => regionDeLugar.get(u) === codigo || regionesDeZona.get(u)?.includes(codigo))).length;
+    datoRegion.innerHTML = n
+      ? `${n} ${n === 1 ? 'evento tiene' : 'eventos tienen'} un lugar en la ${esc(region.nombre)}. <a href="#mapa/${codigo.toLowerCase()}">Verlos en el mapa</a>`
+      : `Todavía ningún evento tiene un lugar en la ${esc(region.nombre)}.`;
+  }
+  selector.value = mapa.regiones.some((r) => r.codigo === leerPreferencia('region')) ? leerPreferencia('region') : '';
+  mostrarRegion();
+  selector.addEventListener('change', () => {
+    guardarPreferencia('region', selector.value);
+    mostrarRegion();
+  });
   // Una barra por período con lo visto en él, como dato («5 de 12»): sin «completado» ni porcentajes, porque
   // «completaste la dictadura» no corresponde.
   function mostrarAvance(vistos, ultimoId) {
@@ -136,6 +339,14 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, lugares = 
       tramos[j].querySelector('.seguir-dato').textContent = `${n} de ${del.length}`;
       tramos[j].style.setProperty('--lleno', (n / del.length).toFixed(3));
     });
+    // «Desde que naciste»: con el año guardado en «¿Qué edad tenías?» (solo en este navegador).
+    const nacimiento = leerNacimiento();
+    const vida = seguir.querySelector('.seguir-vida');
+    vida.hidden = !nacimiento;
+    if (nacimiento) {
+      const n = eventos.filter((ev) => ev.anio >= nacimiento).length;
+      vida.textContent = `Desde que naciste, en ${nacimiento}, ${n === 1 ? 'hay 1 evento' : `hay ${n} eventos`} en esta línea de tiempo.`;
+    }
   }
 
   // Lo que está bajo el pliegue aparece al entrar en pantalla, una sola vez (sin JavaScript, o con movimiento
@@ -160,6 +371,11 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, lugares = 
 
   return {
     mostrarAvance,
+    /** Marca en «Empieza aquí» el nivel elegido arriba. */
+    ponerNivel: (valor) => {
+      const opcion = empieza.querySelector(`input[name="empieza-nivel"][value="${valor}"]`);
+      if (opcion) opcion.checked = true;
+    },
     /** Lleva el foco al título de la portada (al llegar a ella con una pestaña o con «Volver»). */
     enfocar: () => seccion.querySelector('#inicio-titulo').focus({ preventScroll: true }),
   };

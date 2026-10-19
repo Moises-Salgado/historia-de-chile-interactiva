@@ -1334,6 +1334,232 @@ body[data-vista='detalle'] .linea {
   margin: 0;
 }
 
+/* «Desde que naciste» y «Tu región» (guardados solo en este navegador). */
+.seguir-vida,
+.seguir-region-dato {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.seguir-region-dato:empty {
+  display: none;
+}
+
+.seguir-region {
+  display: flex;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.seguir-region .campo {
+  width: auto;
+  max-width: 100%;
+}
+
+.destacado-acciones {
+  margin: 1rem 0 0;
+}
+
+/* «Empieza aquí» (inicio.js): la primera vez, sin ventana encima. La historia esencial, «Elige cómo leer» (el
+   mismo evento en los tres niveles, con su propio grupo de opciones) y «Este mes en la historia». */
+.empieza {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-top: 3px solid var(--cobre-vivo);
+  border-radius: var(--radio-l);
+  box-shadow: var(--sombra);
+}
+
+.empieza h2 {
+  margin: 0.25rem 0 1.25rem;
+  font-family: var(--serif);
+  font-size: clamp(1.625rem, 1.2rem + 1.5vw, 2.25rem);
+  font-weight: 600;
+}
+
+.empieza-grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  align-items: start;
+  gap: 1.5rem;
+}
+
+.empieza-esencial {
+  display: grid;
+  overflow: hidden;
+  color: var(--texto);
+  text-decoration: none;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  transition: border-color var(--dur-micro) ease;
+}
+
+@media (hover: hover) {
+  .empieza-esencial:hover {
+    border-color: var(--acento);
+  }
+}
+
+.empieza-mosaico {
+  aspect-ratio: 16 / 9;
+  background: var(--superficie-2);
+}
+
+.empieza-mosaico > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.empieza-esencial-texto {
+  display: grid;
+  justify-items: start;
+  gap: 0.375rem;
+  padding: 0.875rem 1rem 1rem;
+}
+
+.empieza-esencial-titulo,
+.empieza-nivel legend,
+.empieza-mes h3 {
+  font-family: var(--serif);
+  font-size: var(--t-4);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.empieza-esencial-bajada,
+.empieza-ayuda {
+  color: var(--texto-suave);
+}
+
+.empieza-esencial .boton {
+  margin-top: 0.375rem;
+}
+
+.empieza-nivel {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.empieza-nivel legend {
+  margin-bottom: 0.25rem;
+  padding: 0;
+}
+
+.empieza-ayuda {
+  margin: 0 0 0.75rem;
+}
+
+.empieza-niveles {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.empieza-opcion {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.625rem 0.875rem;
+  cursor: pointer;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  transition: border-color var(--dur-micro) ease;
+}
+
+.empieza-opcion:has(input:checked) {
+  background: var(--superficie);
+  border-color: var(--acento);
+  box-shadow: inset 0 0 0 1px var(--acento);
+}
+
+.empieza-opcion-fila {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+}
+
+.empieza-opcion input {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  accent-color: var(--acento);
+}
+
+.empieza-opcion-texto {
+  color: var(--texto-suave);
+}
+
+.empieza-mes h3 {
+  margin: 0 0 0.75rem;
+}
+
+.empieza-mes ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.empieza-mes a {
+  display: grid;
+  padding: 0.5rem 0.75rem;
+  color: var(--texto);
+  text-decoration: none;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-left: 0.3125rem solid var(--color);
+  border-radius: var(--radio);
+  transition: border-color var(--dur-micro) ease;
+}
+
+.empieza-mes-hace {
+  color: var(--texto-suave);
+}
+
+.empieza-hoy {
+  padding: 0 0.375rem;
+  color: var(--sobre-acento);
+  background: var(--acento);
+  border-radius: var(--radio-s);
+}
+
+.empieza-mes-mas {
+  margin-top: 0.5rem;
+}
+
+.empieza-mes-mas ul {
+  padding: 0 0.5rem 0.5rem;
+}
+
+@media (hover: hover) {
+  .empieza-mes a:hover {
+    border-color: var(--acento);
+    border-left-color: var(--color);
+  }
+}
+
+.empieza-mes-fecha {
+  font-family: var(--rotulo);
+  font-size: var(--t-1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--acento);
+}
+
+.empieza-pie {
+  margin: 1.25rem 0 0;
+}
+
 /* Pantallas bajas (un notebook, un proyector de 1280×720): las puertas suben a la primera pantalla. */
 @media (max-height: 50em) and (min-width: 40.01em) {
   .inicio-hero h2 {
@@ -2060,6 +2286,39 @@ img[data-periodo]:not(.cargada) {
   top: 0;
   bottom: 0;
   background: var(--texto);
+}
+
+/* «Tu vida» (timeline.js): un tramo de cobre sobre el eje, del año de nacimiento guardado a hoy, con su rótulo al
+   comienzo. Va debajo de las láminas y no se proyecta en clase (es un dato personal). */
+.tu-vida {
+  position: absolute;
+  top: calc(var(--y-eje) - 6px);
+  left: 0;
+  height: 12px;
+  background: color-mix(in srgb, var(--cobre-vivo) 45%, transparent);
+  border-radius: var(--pildora);
+  pointer-events: none;
+}
+
+.tu-vida-rotulo {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  padding: 0 0.5rem;
+  font-family: var(--rotulo);
+  font-size: var(--t-0);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--acento);
+  white-space: nowrap;
+  background: var(--fondo);
+  border: 1px solid var(--cobre-vivo);
+  border-radius: var(--pildora);
+  translate: 0 -50%;
+}
+
+[data-clase] .tu-vida {
+  display: none;
 }
 
 /* En oscuro, el eje no debe ser lo más brillante de la pantalla. */
@@ -3464,6 +3723,71 @@ body[data-vista='detalle'] .minimapa-fila {
   display: none;
 }
 
+/* «Escuchar»: main.js lo muestra solo si el sistema tiene una voz en español. */
+.detalle-escuchar {
+  margin: 0 0 0.75rem;
+}
+
+/* «Lo que se discute» (data/se-discute.json): una oración del detalle sobre las distintas interpretaciones.
+   Sobria, sin el filete de cobre de las curiosidades; en «Detallado» ya está en el texto. */
+.se-discute {
+  max-width: 36rem;
+  margin: 1.5rem 0 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+
+.se-discute h3 {
+  margin: 0 0 0.375rem;
+  font-family: var(--rotulo);
+  font-size: var(--t-1);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.se-discute p {
+  margin: 0;
+}
+
+.detalle[data-nivel='detallado'] .se-discute {
+  display: none;
+}
+
+/* «Palabras para entender»: las del glosario que aparecen en los textos del evento (data/glosario.json). */
+.glosario-evento {
+  max-width: 36rem;
+  margin-top: 1.5rem;
+}
+
+.glosario-lista {
+  margin: 0;
+  padding: 0 0.75rem 0.25rem;
+}
+
+.glosario-lista > div + div {
+  margin-top: 0.75rem;
+}
+
+.glosario-lista dt {
+  font-weight: 700;
+}
+
+.glosario-lista dd {
+  margin: 0.125rem 0 0;
+}
+
+.glosario-evento > p {
+  padding: 0 0.75rem 0.75rem;
+}
+
+.glosario-fuente {
+  color: var(--texto-suave);
+}
+
 .personajes-otros {
   margin: 0.75rem 0 0;
 }
@@ -4138,6 +4462,10 @@ html[data-cargando] {
 
   .tarjeta {
     background: #14303a;
+  }
+
+  .tu-vida {
+    background: rgb(201 122 63 / 0.45);
   }
 
   .tarjeta-img {

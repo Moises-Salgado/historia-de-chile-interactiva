@@ -29,13 +29,13 @@
     <title>Historia de Chile Interactiva</title>
     <script>
       // Antes de pintar: sin dirección (o con #inicio) se ve la portada; con otra, la línea de tiempo (main.js
-      // decide el resto al cargar). «Acerca de» y «Para docentes» se abren sobre la portada, que las enlaza en
-      // su pie. Las fotos de las puertas (loading=lazy) se piden de inmediato solo si se ve la portada: con un
+      // decide el resto al cargar). «Acerca de», «Para docentes» y el glosario se abren sobre la portada, que
+      // los enlaza en su pie. Las fotos de las puertas (loading=lazy) se piden de inmediato solo si se ve la portada: con un
       // enlace directo a un evento no se descargan.
       (() => {
         const h = location.hash;
         const portada = /^#?(?:inicio)?$/.test(h);
-        const base = portada || /^#(?:acerca|docentes)$/.test(h) ? 'inicio' : /^#(?:mapa|lugar)(?:\/|$)/.test(h) ? 'mapa' : 'linea';
+        const base = portada || /^#(?:acerca|docentes|glosario)$/.test(h) ? 'inicio' : /^#(?:mapa|lugar)(?:\/|$)/.test(h) ? 'mapa' : 'linea';
         document.documentElement.dataset.base = base;
         if (!portada) return;
         // La llegada a la portada se anima solo la primera vez en la sesión (styles.css, [data-llegada]); se
@@ -210,7 +210,7 @@
                 <span class="mosaico puerta-mosaico" aria-hidden="true"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Abdications_of_Bayonne_(F._Per%C3%A9z%2C_c._1846).jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1808-crisis-de-la-monarquia" data-ancho="250" /><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Se%C3%B1or_de_Mayo_-_terremoto_1647.jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1647-terremoto-de-santiago" data-ancho="250" /><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Manuscrito_original_de_la_Constituci%C3%B3n_Pol%C3%ADtica_de_la_Rep%C3%BAblica_de_Chile_de_1833._Archivo_Nacional_de_Chile.jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1833-constitucion" data-ancho="250" /><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Elo%C3%ADsa_Diaz_(1900).jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1877-decreto-amunategui" data-ancho="250" /></span>
                 <span class="puerta-texto">
                   <span class="puerta-titulo">Seguir una historia guiada</span>
-                  <span class="puerta-bajada"><span data-cifra="historias">4</span> historias, paso a paso</span>
+                  <span class="puerta-bajada"><span data-cifra="historias">9</span> historias, paso a paso</span>
                 </span>
               </a>
             </li>
@@ -219,10 +219,11 @@
             <li><b data-cifra="eventos">121</b> eventos con imagen y fuentes</li>
             <li><b data-cifra="periodos">9</b> períodos</li>
             <li><b data-cifra="lugares">34</b> lugares en el mapa</li>
-            <li><b data-cifra="historias">4</b> historias guiadas</li>
+            <li><b data-cifra="historias">9</b> historias guiadas</li>
           </ul>
         </div>
         <div class="inicio-cuerpo">
+          <section class="empieza" aria-labelledby="empieza-titulo" hidden></section>
           <section class="seguir" aria-labelledby="seguir-titulo" hidden></section>
           <section class="destacado" aria-labelledby="destacado-ceja" hidden></section>
           <section class="epocas" aria-labelledby="epocas-titulo">
@@ -238,6 +239,7 @@
               <ul class="colofon-enlaces">
                 <li><a href="#acerca">Acerca del proyecto</a></li>
                 <li><a href="#docentes">Para docentes</a></li>
+                <li><a href="#glosario">Glosario</a></li>
                 <li><a href="https://github.com/Moises-Salgado/historia-de-chile-interactiva/blob/main/docs/FUENTES.md" target="_blank" rel="noopener">Fuentes de cada evento<span class="solo-lector"> (se abre en otra pestaña)</span></a></li>
                 <li><a href="https://github.com/Moises-Salgado/historia-de-chile-interactiva" target="_blank" rel="noopener">Código<span class="solo-lector"> (se abre en otra pestaña)</span></a></li>
               </ul>

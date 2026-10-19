@@ -279,6 +279,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
           .join('')}${eventos
           .map((ev) => `<span class="punto imp-${ev.importancia}" data-id="${ev.id}" style="--color:${colorDe.get(ev.periodoId)}" title="${esc(ev.titulo)}" hidden></span>`)
           .join('')}</div>
+        <div class="tu-vida" aria-hidden="true" hidden><span class="tu-vida-rotulo">Tu vida</span></div>
         <ol class="eventos" aria-label="Eventos en orden cronológico">${listaTarjetas()}</ol>
       </div>
     </div>`,
@@ -318,6 +319,15 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   const elNombres = elFranjas.map((el) => el.querySelector('.franja-nombre'));
   const finFranja = []; // borde derecho de cada franja y ancho de su nombre (px), para ocultar nombres cortados
   const decadas = pista.querySelector('.eje-decadas');
+  // «Tu vida»: desde el año de nacimiento guardado («¿Qué edad tenías?») hasta hoy, sobre el eje.
+  const tuVida = pista.querySelector('.tu-vida');
+  let nacimiento = null;
+  function ubicarTuVida() {
+    tuVida.hidden = !nacimiento;
+    if (!nacimiento) return;
+    const izq = X(escala.uDe(nacimiento));
+    Object.assign(tuVida.style, { left: `${izq.toFixed(1)}px`, width: `${Math.max(0, X(escala.uDe(escala.hoy)) - izq).toFixed(1)}px` });
+  }
   const elTarjeta = new Map([...lista.children].map((li) => [li.dataset.id, li]));
   const elPunto = new Map([...pista.querySelectorAll('.punto')].map((el) => [el.dataset.id, el]));
   const minimapa = contenedorMinimapa.querySelector('.minimapa');
@@ -438,6 +448,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       tramos += `<span style="left:${a.toFixed(1)}px;width:${(X(escala.uDe(Math.min(d + 10, escala.hoy))) - a).toFixed(1)}px"></span>`;
     }
     decadas.innerHTML = tramos;
+    ubicarTuVida();
     mostrarTramo();
     actualizarTabindex();
     actualizarMinimapa();
@@ -1108,6 +1119,11 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     ponerNivel() {
       mostrado = '';
       mostrarCartela();
+    },
+    /** Año de nacimiento de quien lee (o null): la banda «Tu vida». */
+    ponerNacimiento(anio) {
+      nacimiento = anio;
+      ubicarTuVida();
     },
     /** Al volver del detalle, la marca de visto del evento recién leído se asienta (fundido, sin rebote). */
     asentarVisto(id) {

@@ -78,6 +78,14 @@ const { lugares } = leer('lugares.json');
 const ubicaciones = leer('ubicaciones.json');
 const lugaresAproximados = lugares.filter((l) => l.aproximado);
 const usos = (id) => eventos.filter((ev) => ubicaciones[ev.id]?.includes(id)).map((ev) => `\`${ev.id}\``);
+// Glosario: todas sus explicaciones esperan revisión humana (docs/PLAN_MVP.md, M8).
+let glosario = [];
+try {
+  glosario = leer('glosario.json');
+} catch {
+  // Sin glosario todavía.
+}
+const deDonde = (g) => (g.fuente ? enlace(nombreFuente(g.fuente), g.fuente) : `del texto de \`${g.deTexto?.evento}\`: «${md(g.deTexto?.frase ?? '')}»`);
 const seccion = [
   INICIO,
   '## Listas automáticas',
@@ -92,6 +100,10 @@ const seccion = [
         (l) => `- ${md(l.nombre)} (\`${l.id}\`): ${md(l.nota)}. ${enlace(`Wikidata ${l.wikidata}`, `https://www.wikidata.org/wiki/${l.wikidata}`)} · eventos: ${usos(l.id).join(', ')}`,
       )
     : ['Ninguno.']),
+  '',
+  `### Glosario: explicaciones por revisar (${glosario.length})`,
+  '',
+  ...(glosario.length ? glosario.map((g) => `- **${md(g.termino)}**: ${md(g.definicion)} (${deDonde(g)})`) : ['Ninguna.']),
   FIN,
 ].join('\n');
 const ruta = join(RAIZ, 'docs/REVISION_PENDIENTE.md');

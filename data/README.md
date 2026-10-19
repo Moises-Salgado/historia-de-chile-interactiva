@@ -83,15 +83,17 @@ JSON en UTF-8. `src/datos.js` los incluye en el sitio y `npm test` (`scripts/val
 
 La app la carga desde `https://commons.wikimedia.org/wiki/Special:FilePath/<archivo>?width=800`, muestra siempre autor, licencia y enlace a Commons, y si falla usa `public/placeholders/periodo-NN.svg`.
 
-## Historias guiadas, grupos, «¿Sabías que?» y títulos cortos (opcionales)
+## Historias guiadas, grupos, «¿Sabías que?», «Lo que se discute», glosario y títulos cortos (opcionales)
 
-No agregan hechos nuevos: solo ordenan o citan los eventos que ya existen.
+No agregan hechos nuevos: solo ordenan o citan los eventos que ya existen. La excepción es el glosario, que explica palabras y por eso lleva su propia fuente.
 
 | Archivo | Contenido | Reglas |
 |---|---|---|
-| `recorridos.json` | Historias guiadas (`#historia/<id>/<paso>`): `{ "id", "titulo", "descripcion", "eventos": [ids] }`. | Al menos 3 pasos, en orden cronológico, con eventos que existen y se muestran. La descripción no puede afirmar nada que no digan esos eventos. |
+| `recorridos.json` | Historias guiadas: `{ "id", "titulo", "descripcion", "eventos": [ids] }`. `#historia/<id>` es su presentación (duración y pasos sobre la silueta), `#historia/<id>/<paso>` cada paso y `#historia/<id>/fin` el cierre (lo recorrido, el repaso y otras historias). La de id `esencial` es la que propone «Empieza aquí» en la portada. | Al menos 3 pasos, en orden cronológico, con eventos que existen y se muestran. La descripción no puede afirmar nada que no digan esos eventos. |
 | `grupos.json` | Eventos de una misma fecha que la línea de tiempo muestra en una sola tarjeta (`#grupo/<id>`): `{ "id", "titulo", "miembros" (plural, ej. "pueblos"), "descripcion", "eventos": [ids] }`. | Al menos 2 eventos, todos con la misma `fecha`; un evento no puede estar en dos grupos. El orden de `eventos` es el de la lista (ej. de norte a sur). |
 | `sabias-que.json` | `{ "<id del evento>": "<oración>" }`: una oración del `detalle` que se muestra como «¿Sabías que…?» en los niveles Para niños y General. | La oración debe estar copiada textualmente del `detalle` y entenderse sola (sin «él», «ese año» ni «horas más tarde»). No se usa en temas sensibles, porque una ficha de curiosidades no corresponde ahí: guerras de la Conquista y de la Araucanía, guerras del período 05 (incluida la del Pacífico), todo el período 08 (dictadura), matanzas y estallido social. `npm test` lo comprueba. |
+| `se-discute.json` | `{ "<id del evento>": "<oración>" }`: una oración del `detalle` que dice que hay distintas interpretaciones o debate; se muestra como «Lo que se discute» en Para niños y General (en Detallado ya está en el texto). | Copiada textualmente del `detalle`. `npm test` lo comprueba. |
+| `glosario.json` | Lista de `{ "id", "termino", "formas"? (otras maneras de escribirla, como el plural), "definicion", "fuente"? (URL), "deTexto"? ({ "evento", "frase" }), "eventos"? }`. Cada evento muestra en «Palabras para entender» las que aparecen en sus textos, y `#glosario` las reúne todas, con sus eventos. | Cada palabra lleva una fuente (https) o sale de una oración copiada de los textos de un evento (`deTexto`), y debe aparecer en algún evento. Si en otros textos tiene otro sentido, `eventos` limita dónde vale. Todas esperan revisión humana: `npm run docs` las lista en `docs/REVISION_PENDIENTE.md`. |
 | `titulos-cortos.json` | `{ "<id del evento>": "<título corto>" }`: lo que muestra la lámina de la línea de tiempo cuando el título completo no cabe en sus líneas. El detalle, el buscador y el nombre accesible de la lámina usan siempre el completo. | Hasta 42 caracteres y más corto que el título. Sin datos nuevos: cada palabra de 4 letras o más (comparando sus 6 primeras) debe estar en el título o en el `resumen`. `npm test` lo comprueba. |
 
 ## Mapa: lugares y ubicaciones
@@ -100,7 +102,7 @@ El mapa (`#mapa`) ubica cada evento según su campo `lugar`, sin agregar informa
 
 | Archivo | Contenido | Reglas |
 |---|---|---|
-| `lugares.json` | `regiones` (las 16, de norte a sur: `codigo`, `nombre`, `corto`); `lugares` (`id`, `nombre`, `region`, `lat`, `lon`, `wikidata` y, si el punto representa un sitio o una zona, `aproximado: true` y una `nota` que lo explica); `zonas` (`id`, `nombre`, `regiones`): áreas sin alfiler que cuentan en sus regiones. | Coordenadas tomadas del ítem de Wikidata indicado (CC0). Los lugares aproximados se listan en `docs/REVISION_PENDIENTE.md` (`npm run docs`). |
+| `lugares.json` | `regiones` (las 16, de norte a sur: `codigo`, `nombre`, `corto`); `lugares` (`id`, `nombre`, `region`, `lat`, `lon`, `wikidata` y, si el punto representa un sitio o una zona, `aproximado: true` y una `nota` que lo explica); `zonas` (`id`, `nombre`, `regiones`): áreas sin alfiler que cuentan en sus regiones. Lugares y zonas pueden llevar `en`, la frase con su artículo para los conectores de las historias («en el estrecho de Magallanes», «junto al río Mataquito»; sin `en`, «en {nombre}»), y un lugar, `corto`, el nombre para el repaso («Valparaíso»). | Coordenadas tomadas del ítem de Wikidata indicado (CC0). Los lugares aproximados se listan en `docs/REVISION_PENDIENTE.md` (`npm run docs`). |
 | `ubicaciones.json` | `{ "<id del evento>": ["<lugar o zona>", …] }`; también `"chile"` (alcance nacional) y `"fuera:<País>"` (ocurrido en todo o en parte en otro país). | Cada evento visible tiene al menos una ubicación, y cada una existe. Una zona se usa cuando el `lugar` nombra un área (ej. «Del río Choapa a Chiloé»); sus regiones salen del texto del evento. |
 
 ## Validación

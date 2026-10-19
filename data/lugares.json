@@ -141,6 +141,7 @@
     {
       "id": "san-jose",
       "nombre": "Mina San José",
+      "en": "en la mina San José",
       "region": "AT",
       "lat": -27.1602,
       "lon": -70.4968,
@@ -149,6 +150,7 @@
     {
       "id": "aconcagua",
       "nombre": "Valle del Aconcagua",
+      "en": "en el valle del Aconcagua",
       "region": "VS",
       "lat": -32.7507,
       "lon": -70.7251,
@@ -167,6 +169,8 @@
     {
       "id": "valparaiso",
       "nombre": "Valparaíso y Viña del Mar",
+      "corto": "Valparaíso",
+      "en": "en Valparaíso",
       "region": "VS",
       "lat": -33.0461,
       "lon": -71.6197,
@@ -175,6 +179,7 @@
     {
       "id": "juan-fernandez",
       "nombre": "Archipiélago Juan Fernández",
+      "en": "en el archipiélago Juan Fernández",
       "region": "VS",
       "lat": -33.6414,
       "lon": -78.8411,
@@ -209,6 +214,7 @@
     {
       "id": "maipu",
       "nombre": "Llanos del Maipo",
+      "en": "en los llanos del Maipo",
       "region": "RM",
       "lat": -33.5011,
       "lon": -70.7719,
@@ -245,6 +251,7 @@
     {
       "id": "mataquito",
       "nombre": "Río Mataquito",
+      "en": "junto al río Mataquito",
       "region": "ML",
       "lat": -35.0681,
       "lon": -71.6386,
@@ -325,6 +332,7 @@
     {
       "id": "llanquihue",
       "nombre": "Lago Llanquihue",
+      "en": "en el lago Llanquihue",
       "region": "LL",
       "lat": -41.1333,
       "lon": -72.7833,
@@ -349,6 +357,7 @@
     {
       "id": "estrecho",
       "nombre": "Estrecho de Magallanes",
+      "en": "en el estrecho de Magallanes",
       "region": "MA",
       "lat": -53.63,
       "lon": -70.9183,
@@ -367,6 +376,7 @@
     {
       "id": "beagle",
       "nombre": "Canal Beagle",
+      "en": "en el canal Beagle",
       "region": "MA",
       "lat": -54.8756,
       "lon": -68.1364,
@@ -377,6 +387,7 @@
     {
       "id": "altiplano",
       "nombre": "Altiplano y valles de Arica y Tarapacá",
+      "en": "en el altiplano",
       "regiones": [
         "AP",
         "TA"
@@ -385,6 +396,7 @@
     {
       "id": "norte-y-centro",
       "nombre": "Norte y centro de Chile, hasta el Maule",
+      "en": "en el norte y el centro de Chile",
       "regiones": [
         "AP",
         "TA",
@@ -400,6 +412,7 @@
     {
       "id": "norte-chico",
       "nombre": "Norte Chico",
+      "en": "en el Norte Chico",
       "regiones": [
         "AT",
         "CO"
@@ -408,6 +421,7 @@
     {
       "id": "chile-central",
       "nombre": "Chile central",
+      "en": "en Chile central",
       "regiones": [
         "VS",
         "RM",
@@ -420,6 +434,7 @@
     {
       "id": "choapa-chiloe",
       "nombre": "Del río Choapa a Chiloé",
+      "en": "entre el río Choapa y Chiloé",
       "regiones": [
         "CO",
         "VS",
@@ -436,6 +451,7 @@
     {
       "id": "chonos",
       "nombre": "Archipiélagos de Chiloé, Guaitecas y Chonos",
+      "en": "en los archipiélagos de Chiloé, Guaitecas y Chonos",
       "regiones": [
         "LL",
         "AI"
@@ -444,6 +460,7 @@
     {
       "id": "patagonia-occidental",
       "nombre": "Canales de la Patagonia occidental",
+      "en": "en los canales de la Patagonia occidental",
       "regiones": [
         "AI",
         "MA"
@@ -452,6 +469,7 @@
     {
       "id": "araucania",
       "nombre": "Araucanía, entre los ríos Biobío y Toltén",
+      "en": "en la Araucanía",
       "regiones": [
         "BI",
         "AR"
@@ -460,6 +478,7 @@
     {
       "id": "tarapaca-antofagasta",
       "nombre": "Tarapacá y Antofagasta",
+      "en": "en Tarapacá y Antofagasta",
       "regiones": [
         "TA",
         "AN"
@@ -468,6 +487,7 @@
     {
       "id": "centro-sur-1960",
       "nombre": "Zona centro-sur, de Ñuble a Aysén",
+      "en": "en la zona centro-sur",
       "regiones": [
         "NB",
         "BI",

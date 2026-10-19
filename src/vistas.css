@@ -208,6 +208,13 @@
   border-color: var(--acento);
 }
 
+/* «57 años después · en Curalaba»: en su propia línea, al final de la barra. */
+.historia-conector {
+  flex-basis: 100%;
+  order: 1;
+  color: var(--texto-suave);
+}
+
 .historia-guardar {
   margin-top: 0.5rem;
 }
@@ -294,9 +301,312 @@
   gap: 0.5rem;
 }
 
+/* ---- Presentación de una historia (paso 0): duración, acciones y los pasos, en lista y sobre la silueta ---- */
+.recorrido-duracion {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem !important;
+  color: var(--texto-suave);
+}
+
+.recorrido-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+}
+
+.recorrido {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem 2rem;
+  align-items: start;
+  max-width: 60rem;
+  margin-bottom: 1.5rem;
+}
+
+.recorrido-pasos {
+  display: grid;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recorrido-pasos a {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--texto);
+  text-decoration: none;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-left: 0.3125rem solid var(--color);
+  border-radius: var(--radio);
+  transition: border-color var(--dur-micro) ease;
+}
+
+@media (hover: hover) {
+  .recorrido-pasos a:hover {
+    border-color: var(--acento);
+    border-left-color: var(--color);
+  }
+}
+
+.recorrido-num {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  font-family: var(--rotulo);
+  font-size: var(--t-3);
+  font-weight: 600;
+  color: var(--sobre-pacifico);
+  background: var(--pacifico);
+  border-radius: 50%;
+}
+
+.recorrido-texto {
+  display: grid;
+}
+
+.recorrido-fecha {
+  color: var(--texto-suave);
+}
+
+.recorrido-titulo {
+  font-family: var(--serif);
+  font-size: var(--t-3);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.recorrido-pasos .icono {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--acento);
+}
+
+.recorrido-mapa {
+  position: sticky;
+  top: 1rem;
+  width: auto;
+  height: min(34rem, 75vh);
+}
+
+.recorrido-tierra {
+  fill: var(--tierra);
+}
+
+.recorrido-punto {
+  fill: var(--cobre-vivo);
+  stroke: var(--fondo);
+  stroke-width: 8;
+}
+
+.recorrido-numero {
+  font-family: var(--rotulo);
+  font-size: 54px;
+  font-weight: 600;
+  fill: var(--texto);
+  paint-order: stroke;
+  stroke: var(--fondo);
+  stroke-width: 12px;
+  stroke-linejoin: round;
+}
+
+/* En una columna, la silueta va arriba y más baja (al lado no deja espacio para los títulos). */
+@media (max-width: 40em) {
+  .recorrido {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .recorrido-mapa {
+    position: static;
+    order: -1;
+    justify-self: center;
+    height: 16rem;
+  }
+
+  .recorrido-numero {
+    font-size: 66px;
+  }
+}
+
+/* ---- Cierre de una historia: la tira de sus pasos, el repaso y «Sigue con…» ---- */
+.recorrido-tira {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 10rem), 1fr));
+  gap: 0.75rem;
+  max-width: 76rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.recorrido-tira a {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  overflow: hidden;
+  color: var(--texto);
+  text-decoration: none;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-top: 0.3125rem solid var(--color);
+  border-radius: var(--radio);
+  transition: border-color var(--dur-micro) ease;
+}
+
+@media (hover: hover) {
+  .recorrido-tira a:hover {
+    border-color: var(--acento);
+    border-top-color: var(--color);
+  }
+}
+
+.tira-img {
+  aspect-ratio: 16 / 10;
+  background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
+}
+
+.tira-img > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tira-texto {
+  display: grid;
+  align-content: start;
+  gap: 0.125rem;
+  padding: 0.5rem 0.625rem 0.625rem;
+}
+
+.tira-paso {
+  font-family: var(--rotulo);
+  font-size: var(--t-1);
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+}
+
+.tira-titulo {
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.repaso,
+.sigue {
+  max-width: 54rem;
+  margin: 0 0 2rem;
+}
+
+.repaso {
+  padding: 1rem 1.25rem 1.25rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-l);
+}
+
+.repaso h3,
+.sigue h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--serif);
+  font-size: var(--t-4);
+  font-weight: 600;
+}
+
+.repaso-preguntas {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.pregunta {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.pregunta legend {
+  margin-bottom: 0.5rem;
+  padding: 0;
+  font-weight: 700;
+}
+
+.pregunta-opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.opcion[aria-disabled='true'] {
+  cursor: default;
+}
+
+/* Respondida, las otras opciones se atenúan; la correcta lleva anillo de cobre y ✓, y la elegida que no lo
+   era, borde punteado (sin rojo). Las dos se ven enteras. */
+.pregunta .opcion.correcta,
+.pregunta .opcion.elegida {
+  opacity: 1;
+}
+
+.pregunta .opcion.correcta {
+  border-color: var(--acento);
+  box-shadow: inset 0 0 0 1px var(--acento);
+}
+
+.pregunta .opcion.elegida:not(.correcta) {
+  border-style: dashed;
+  border-color: var(--borde-fuerte);
+}
+
+.pregunta-respuesta {
+  margin: 0.5rem 0 0;
+}
+
+.pregunta-respuesta:empty {
+  display: none;
+}
+
+.sigue-lista {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- Glosario (#glosario, src/paginas.js) ---- */
+.glosario-pagina {
+  margin: 0;
+}
+
+.glosario-pagina dt {
+  font-family: var(--serif);
+  font-size: var(--t-4);
+  font-weight: 600;
+}
+
+.glosario-pagina dd {
+  margin: 0.25rem 0 0;
+}
+
+.glosario-eventos {
+  margin: 0.5rem 0 0;
+  color: var(--texto-suave);
+}
+
 /* Navegadores sin color-mix() (ver styles.css): colores planos. */
 @supports not (color: color-mix(in srgb, red, red)) {
-  .ficha-img {
+  .ficha-img,
+  .tira-img {
     background: var(--superficie-2);
   }
 }

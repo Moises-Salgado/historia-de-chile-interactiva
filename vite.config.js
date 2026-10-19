@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import { aparece } from './src/glosario-aparece.js';
 
 // Dirección pública del sitio: las vistas previas al compartir necesitan URL absolutas.
 const SITIO = 'https://moises-salgado.github.io/historia-de-chile-interactiva/';
@@ -50,15 +51,41 @@ function paginasParaCompartir() {
 }
 
 // Los textos largos de cada evento (detalle y fuentes, la mitad del peso de los datos) no van en la carga inicial:
-// src/datos.js importa cada JSON de período con ?ligero (sin esos campos) y los pide con ?textos (solo esos
-// campos, por id) al abrir un evento. El plugin de JSON de Vite no toca los JSON con una consulta propia, así que
-// este load() entrega el módulo ya hecho, igual en npm run dev que al construir.
+// src/datos.js importa cada JSON de período con ?ligero (sin esos campos, con las palabras del detalle para
+// calcular duraciones) y los pide con ?textos al abrir un evento: detalle, fuentes, su «Lo que se discute»
+// (data/se-discute.json) y las palabras del glosario que aparecen en sus textos (data/glosario.json). El glosario
+// completo, con los eventos de cada palabra, es el módulo virtual:glosario (página #glosario). El plugin de JSON
+// de Vite no toca los JSON con una consulta propia, así que este load() entrega el módulo ya hecho, igual en
+// npm run dev que al construir.
 const TEXTOS = ['detalle', 'fuentes'];
+const GLOSARIO = '\0virtual:glosario';
+const palabras = (texto) => String(texto ?? '').split(/\s+/).filter(Boolean).length;
 function textosAPedido() {
+  let carpeta;
+  const leer = (nombre, vacio) => {
+    const ruta = join(carpeta, nombre);
+    return existsSync(ruta) ? JSON.parse(readFileSync(ruta, 'utf8')) : vacio;
+  };
+  const definicion = ({ termino, definicion, fuente }) => ({ termino, definicion, ...(fuente ? { fuente } : {}) });
   return {
     name: 'historia-chile:textos-a-pedido',
     enforce: 'pre',
+    configResolved(config) {
+      carpeta = join(config.root, 'data');
+    },
+    resolveId(id) {
+      return id === 'virtual:glosario' ? GLOSARIO : null;
+    },
     load(id) {
+      if (id === GLOSARIO) {
+        for (const nombre of ['glosario.json', ...readdirSync(carpeta).filter((f) => /^\d\d-.*\.json$/.test(f))]) this.addWatchFile(join(carpeta, nombre));
+        const eventos = readdirSync(carpeta)
+          .filter((f) => /^\d\d-.*\.json$/.test(f))
+          .flatMap((f) => JSON.parse(readFileSync(join(carpeta, f), 'utf8')))
+          .filter((ev) => !ev.pendienteVerificacion);
+        const glosario = leer('glosario.json', []).map((g) => ({ ...definicion(g), id: g.id, eventos: eventos.filter((ev) => aparece(g, ev)).map((ev) => ev.id) }));
+        return { code: `export default ${JSON.stringify(glosario)};`, moduleType: 'js' };
+      }
       // En npm run dev la consulta llega con más parámetros (?import&ligero).
       const [ruta, consulta = ''] = id.split('?');
       const parte = ['ligero', 'textos'].find((p) => new URLSearchParams(consulta).has(p));
@@ -66,7 +93,23 @@ function textosAPedido() {
       this.addWatchFile(ruta);
       const eventos = JSON.parse(readFileSync(ruta, 'utf8'));
       const tomar = (ev, quedarse) => Object.fromEntries(Object.entries(ev).filter(([campo]) => TEXTOS.includes(campo) === quedarse));
-      const datos = parte === 'ligero' ? eventos.map((ev) => tomar(ev, false)) : Object.fromEntries(eventos.map((ev) => [ev.id, tomar(ev, true)]));
+      let datos;
+      if (parte === 'ligero') {
+        datos = eventos.map((ev) => ({ ...tomar(ev, false), palabrasDetalle: palabras(ev.detalle) }));
+      } else {
+        for (const nombre of ['se-discute.json', 'glosario.json']) this.addWatchFile(join(carpeta, nombre));
+        const seDiscute = leer('se-discute.json', {});
+        const glosario = leer('glosario.json', []);
+        datos = Object.fromEntries(
+          eventos.map((ev) => {
+            const textos = tomar(ev, true);
+            if (seDiscute[ev.id]) textos.seDiscute = seDiscute[ev.id];
+            const suyas = glosario.filter((g) => aparece(g, ev));
+            if (suyas.length) textos.glosario = suyas.map(definicion);
+            return [ev.id, textos];
+          }),
+        );
+      }
       // Como hace Vite con los JSON grandes: JSON.parse de un texto se lee más rápido que un objeto literal.
       return { code: `export default JSON.parse(${JSON.stringify(JSON.stringify(datos))});`, moduleType: 'js' };
     },

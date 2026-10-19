@@ -261,3 +261,26 @@ Pedido del dueño (2026-10-19): dejar la app «bonita», con más animación y a
     - El detalle y las fuentes de cada evento salieron de la carga inicial: un archivo por período, de 5 a 8 KB, que se pide al abrir un evento (o antes, al presionar su lámina o su enlace). El Service Worker los guarda con el resto. La carga inicial bajó de 140,9 a 99,3 KB gzip, por debajo de los 133,6 de antes del plan.
     - El CSS de las listas, del paso de historia y de las páginas pasó a `src/vistas.css` (1,2 KB, a pedido). Para comprobar que el orden no cambia nada, se pusieron sus reglas al principio y al final de la cascada en 24 vistas y modos: solo varía el alto mínimo de las puertas de historias, cuya regla ya ganaba antes.
     - `npm run presupuesto` revisa también `mapa.css` y `vistas.css`, y cuenta los textos aparte.
+- **M8 · Guía y aprendizaje (hecha).** El contenido lo propuso el agente de narrativa y se comprobó contra los datos: cada id, el orden de los pasos y cada oración citada, letra por letra.
+  - **Cinco historias nuevas** (ahora son 9):
+    - «Lo esencial de Chile», 14 pasos por los 9 períodos. En el 05 lleva la Ocupación de la Araucanía y la Guerra del Pacífico; en el 08, el golpe, las violaciones a los derechos humanos y el plebiscito de 1988; termina en el estallido de 2019.
+    - «Aprender en Chile», «Libros, periódicos y poesía», «De la plata al cobre» (con la matanza de 1907, sin la Guerra del Pacífico como guerra por recursos) y «Fronteras y tratados» (con Quilín, la Araucanía, Magallanes y Rapa Nui, no solo los tratados con Estados vecinos).
+  - **Presentación de cada historia** (`#historia/<id>`): duración en voz alta según el nivel, los pasos numerados en lista y sobre la silueta (los lugares cercanos se juntan) y «Empezar», «Seguir en el paso N» o «Recorrerla de nuevo».
+  - **Conectores entre pasos:** «57 años después · en Curalaba», «Mientras tanto» si un paso empieza antes de que termine el anterior, solo entre fechas de igual precisión y no aproximadas. Los lugares van con su artículo (campo `en` de `lugares.json`); si el lugar se repite, se omite.
+  - **Cierre** (`#historia/<id>/fin`): la tira de lo recorrido, el repaso y «Sigue con…» (primero las historias empezadas).
+  - **Repaso sin nota** (`repaso.js`, 1,8 KB a pedido):
+    - Hasta 5 preguntas: qué pasó primero, en qué siglo, dónde y quién aparece, con botones. La respuesta va siempre en texto («Así es.» o «La respuesta es otra.»), con enlaces, sin puntaje.
+    - Sin temas sensibles, sin eventos cuyo hecho central es una muerte, sin personas que aparecen en un tema sensible y con una guerra como máximo por ronda.
+    - Las opciones falsas no pueden ser parte del hecho: lugares de otra región y a más de 300 km; personas de otra época (más de 80 años).
+    - En la prueba, un «¿dónde?» ponía Rancagua como opción falsa para el 27F (que sí la afectó); desde entonces solo se pregunta por eventos con un único lugar.
+  - **«Lo que se discute»** (32 eventos, `data/se-discute.json`): una oración textual del detalle. Va en Para niños («No todos lo ven igual») y en General; en Detallado ya está en el texto. Por regla del validador, no va en los hechos que el Estado y la justicia reconocen como violaciones a los derechos humanos, ni repite el «¿Sabías que?». El de 1833 pasó a «Lo que se discute» y su «¿Sabías que?» es otra oración.
+  - **Glosario** (28 palabras, `data/glosario.json`):
+    - 24 se explican con una oración copiada de un evento. Las otras 4 llevan fuente: la BCN (democracia, derechos humanos y dictadura) y el INDH (detenido desaparecido). El diccionario de la RAE no se pudo consultar (responde 403) y no se cita.
+    - Cada evento muestra «Palabras para entender» con las suyas, y `#glosario` las reúne con sus eventos.
+    - El validador comprueba que cada palabra aparezca en los textos de los eventos donde se muestra; así se encontró un error de la propuesta.
+  - **«Escuchar»** (`escuchar.js`, 0,5 KB): solo con una voz en español del sistema (en Windows, la de México). Nunca empieza solo; Escape o cambiar de vista o de nivel lo detienen.
+  - **Portada:**
+    - «Empieza aquí», solo para quien llega a la portada sin haber abierto nada: «Lo esencial de Chile», «Elige cómo leer» (el mismo evento en los tres niveles) y «Este mes en la historia». Todos los eventos del mes llevan el mismo trato y el filete de su período; si son más de 6, se ven los más cercanos a hoy y el resto va en un desplegable.
+    - «Otro dato» en el «¿Sabías que…?». En «Tu recorrido» se suman «Desde que naciste» y «Tu región».
+  - **«Tu vida»:** un tramo de cobre sobre el eje, del año de nacimiento guardado a hoy. No se proyecta en clase.
+  - **Peso:** la carga inicial queda en 106,6 KB gzip, aún 27 KB menos que antes del plan. «Lo que se discute» y el glosario viajan con los textos de cada período.

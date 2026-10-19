@@ -1,5 +1,26 @@
 [
   {
+    "id": "esencial",
+    "titulo": "Lo esencial de Chile",
+    "descripcion": "De las momias chinchorro al estallido social de 2019, en catorce pasos por los nueve períodos: la conquista, la independencia, la ocupación de la Araucanía y la Guerra del Pacífico, el voto de las mujeres, el golpe de Estado, las violaciones a los derechos humanos y el plebiscito de 1988.",
+    "eventos": [
+      "ac5000-cultura-chinchorro",
+      "1541-fundacion-de-santiago",
+      "1598-batalla-de-curalaba",
+      "1818-proclamacion-de-la-independencia",
+      "1833-constitucion",
+      "1861-ocupacion-de-la-araucania",
+      "1879-guerra-del-pacifico",
+      "1880-cuestion-social",
+      "1949-voto-femenino",
+      "1973-golpe-de-estado",
+      "1973-violaciones-derechos-humanos",
+      "1988-plebiscito",
+      "1990-aylwin-asume-presidencia",
+      "2019-estallido-social"
+    ]
+  },
+  {
     "id": "independencia",
     "titulo": "La Independencia",
     "descripcion": "De la crisis de la monarquía española en 1808 a la batalla de Maipú en 1818: cómo Chile pasó de colonia española a país independiente.",
@@ -53,6 +74,69 @@
       "1945-nobel-gabriela-mistral",
       "1949-voto-femenino",
       "2006-bachelet-primera-presidenta"
+    ]
+  },
+  {
+    "id": "aprender",
+    "titulo": "Aprender en Chile",
+    "descripcion": "De la Real Universidad de San Felipe, autorizada en 1738, a las marchas estudiantiles de 2011: colegios, universidades y escuelas, el decreto que permitió a las mujeres obtener títulos universitarios y la ley que hizo obligatoria la educación primaria.",
+    "eventos": [
+      "1738-universidad-de-san-felipe",
+      "1767-expulsion-de-los-jesuitas",
+      "1813-instituto-nacional-y-biblioteca",
+      "1842-universidad-de-chile",
+      "1877-decreto-amunategui",
+      "1920-ley-instruccion-primaria-obligatoria",
+      "1938-eleccion-aguirre-cerda",
+      "1964-gobierno-frei-montalva",
+      "2006-revolucion-pinguina",
+      "2011-movimiento-estudiantil"
+    ]
+  },
+  {
+    "id": "letras",
+    "titulo": "Libros, periódicos y poesía",
+    "descripcion": "De La Araucana, cuya primera parte se publicó en 1569, a los premios Nobel de Gabriela Mistral (1945) y Pablo Neruda (1971), pasando por el primer periódico del país y la Biblioteca Nacional.",
+    "eventos": [
+      "1569-la-araucana",
+      "1812-aurora-de-chile",
+      "1813-instituto-nacional-y-biblioteca",
+      "1914-gabriela-mistral-juegos-florales",
+      "1945-nobel-gabriela-mistral",
+      "1971-nobel-pablo-neruda"
+    ]
+  },
+  {
+    "id": "mineria",
+    "titulo": "De la plata al cobre",
+    "descripcion": "De los incas, que explotaron minas de metales en el norte y centro de Chile, al rescate de los 33 mineros en 2010, pasando por la plata de Chañarcillo, el salitre y sus trabajadores, y la nacionalización del cobre.",
+    "eventos": [
+      "1470-tawantinsuyu-en-chile",
+      "1832-plata-de-chanarcillo",
+      "1851-ferrocarril-caldera-copiapo",
+      "1880-auge-del-salitre",
+      "1907-matanza-escuela-santa-maria",
+      "1929-gran-depresion-crisis-salitre",
+      "1971-nacionalizacion-del-cobre",
+      "2010-rescate-33-mineros"
+    ]
+  },
+  {
+    "id": "fronteras",
+    "titulo": "Fronteras y tratados",
+    "descripcion": "Del parlamento de Quilín, en 1641, al Tratado de Paz y Amistad con Argentina, en 1984: cómo se fueron fijando los límites del territorio, incluidos la Araucanía, el estrecho de Magallanes y Rapa Nui.",
+    "eventos": [
+      "1641-parlamento-de-quilin",
+      "1826-tratado-de-tantauco",
+      "1843-fuerte-bulnes",
+      "1861-ocupacion-de-la-araucania",
+      "1881-tratado-de-limites-con-argentina",
+      "1883-tratado-de-ancon",
+      "1884-pacto-de-tregua-con-bolivia",
+      "1888-incorporacion-de-rapa-nui",
+      "1904-tratado-de-paz-con-bolivia",
+      "1978-crisis-del-beagle",
+      "1984-tratado-paz-amistad"
     ]
   }
 ]

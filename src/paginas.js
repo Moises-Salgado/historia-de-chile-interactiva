@@ -1,15 +1,13 @@
-// Páginas de texto que se cargan a pedido (import() en main.js): «Acerca de» (#acerca) y «Para docentes»
-// (#docentes, con «Arma tu secuencia»). Todo lo que dicen sale de los criterios del proyecto (CLAUDE.md), de las
-// licencias del README y de lo que la app guarda de verdad en el navegador.
-import { esc, icono } from './util.js';
+// Páginas de texto que se cargan a pedido (import() en main.js): «Acerca de» (#acerca), «Para docentes»
+// (#docentes, con «Arma tu secuencia») y el glosario (#glosario). Todo lo que dicen sale de los criterios del
+// proyecto (CLAUDE.md), de las licencias del README, de lo que la app guarda de verdad en el navegador y de
+// data/glosario.json (con los eventos donde aparece cada palabra: virtual:glosario, vite.config.js).
+import glosario from 'virtual:glosario';
+import { esc, externo, icono, minutosDeLectura, nombreFuente, PALABRAS_POR_MINUTO } from './util.js';
 
 const REPO = 'https://github.com/Moises-Salgado/historia-de-chile-interactiva';
 const afuera = (url, texto) => `<a href="${url}" target="_blank" rel="noopener">${texto}<span class="solo-lector"> (se abre en otra pestaña)</span></a>`;
 const MAX_SECUENCIA = 20;
-// Lectura en voz alta en clase: unas 130 palabras por minuto.
-const PALABRAS_POR_MINUTO = 130;
-const palabras = (texto) => String(texto ?? '').split(/\s+/).filter(Boolean).length;
-const minutos = (n) => `${Math.max(1, Math.round(n / PALABRAS_POR_MINUTO))} min`;
 
 function acerca({ eventos, periodos }) {
   return {
@@ -53,10 +51,8 @@ function acerca({ eventos, periodos }) {
 }
 
 function docentes({ eventos, periodos, recorridos }) {
-  const duracion = (r) => {
-    const total = (campo) => r.eventos.reduce((s, ev) => s + palabras(ev[campo]), 0);
-    return `${minutos(total('resumenNino'))} para niños · ${minutos(total('resumen'))} general · ${minutos(total('detalle'))} detallado`;
-  };
+  const duracion = (r) =>
+    `${minutosDeLectura(r.eventos, 'nino')} min para niños · ${minutosDeLectura(r.eventos, 'general')} min general · ${minutosDeLectura(r.eventos, 'detallado')} min detallado`;
   const porPeriodo = periodos.map((p) => ({ p, lista: eventos.filter((ev) => ev.periodoId === p.id) }));
   return {
     ceja: 'Para docentes',
@@ -84,7 +80,7 @@ function docentes({ eventos, periodos, recorridos }) {
         <h3 id="docentes-historias">Las historias guiadas y su duración</h3>
         <p>Tiempo aproximado leyendo en voz alta (${PALABRAS_POR_MINUTO} palabras por minuto), según el nivel:</p>
         <ul class="pagina-lista">${recorridos
-          .map((r) => `<li><a href="#historia/${r.id}/1">${esc(r.titulo)}</a> · ${r.eventos.length} pasos<br><span class="pagina-dato">${duracion(r)}</span></li>`)
+          .map((r) => `<li><a href="#historia/${r.id}">${esc(r.titulo)}</a> · ${r.eventos.length} pasos<br><span class="pagina-dato">${duracion(r)}</span></li>`)
           .join('')}</ul>
       </section>
       <section class="pagina-bloque secuencia" aria-labelledby="docentes-secuencia">
@@ -110,7 +106,31 @@ function docentes({ eventos, periodos, recorridos }) {
   };
 }
 
-export const pagina = (id, datos) => ({ acerca, docentes })[id]?.(datos) ?? null;
+// Glosario: cada palabra con su definición breve, su fuente (si no sale del propio texto) y los eventos donde
+// aparece. Las definiciones esperan revisión humana (docs/REVISION_PENDIENTE.md) y la página lo dice.
+function glosarioPagina({ eventos }) {
+  const porId = new Map(eventos.map((ev) => [ev.id, ev]));
+  const lista = [...glosario].sort((a, b) => a.termino.localeCompare(b.termino, 'es'));
+  const MAX = 6;
+  return {
+    ceja: 'Glosario',
+    titulo: 'Palabras para entender',
+    intro: `${lista.length} palabras que aparecen en los textos, con una explicación breve y los eventos donde se usan. Las explicaciones están en revisión: si ves un error, avísanos (en «Acerca de»).`,
+    html: `<dl class="glosario-pagina">${lista
+      .map((g) => {
+        const donde = g.eventos.map((id) => porId.get(id)).filter(Boolean);
+        const enlaces = donde.slice(0, MAX).map((ev) => `<a href="#evento/${ev.id}">${esc(ev.titulo)}</a>`);
+        return `<div class="pagina-bloque" id="glosario-${g.id}">
+          <dt>${esc(g.termino)}</dt>
+          <dd>${esc(g.definicion)}${g.fuente ? ` <span class="glosario-fuente">${externo(g.fuente, `Fuente: ${esc(nombreFuente(g.fuente))}`)}</span>` : ''}
+            ${donde.length ? `<p class="glosario-eventos">Aparece en: ${enlaces.join(' · ')}${donde.length > MAX ? ` y ${donde.length - MAX} más` : ''}.</p>` : ''}</dd>
+        </div>`;
+      })
+      .join('')}</dl>`,
+  };
+}
+
+export const pagina = (id, datos) => ({ acerca, docentes, glosario: glosarioPagina })[id]?.(datos) ?? null;
 
 /** Activa los controles de la página ya pintada en `contenedor`; copiar(texto, aviso) y avisar(texto) vienen de main.js. */
 export function activar(contenedor, { eventos, copiar, avisar }) {

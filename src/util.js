@@ -18,6 +18,15 @@ export const normalizar = (texto) =>
 
 export const movimientoReducido = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Duración de lectura en voz alta (en clase o con «Escuchar»): unas 130 palabras por minuto. «Detallado» lee el
+// resumen general y el detalle (palabrasDetalle viene con los datos, sin cargar el texto: vite.config.js).
+export const PALABRAS_POR_MINUTO = 130;
+const contarPalabras = (texto) => String(texto ?? '').split(/\s+/).filter(Boolean).length;
+const palabrasEn = (ev, nivel) =>
+  nivel === 'nino' ? contarPalabras(ev.resumenNino) : contarPalabras(ev.resumen) + (nivel === 'detallado' ? (ev.palabrasDetalle ?? 0) : 0);
+/** Minutos (al menos 1) que toma leer en voz alta los eventos de `lista` en el nivel pedido. */
+export const minutosDeLectura = (lista, nivel) => Math.max(1, Math.round(lista.reduce((s, ev) => s + palabrasEn(ev, nivel), 0) / PALABRAS_POR_MINUTO));
+
 /** Anima con la Web Animations API; si se pidió reducir el movimiento, no hace nada. */
 export const animar = (el, cuadros, opciones) => (movimientoReducido() || !el?.animate ? null : el.animate(cuadros, opciones));
 
@@ -61,6 +70,12 @@ export function guardarPreferencia(clave, valor) {
   }
 }
 
+/** Año de nacimiento de quien lee («¿Qué edad tenías?», solo en este navegador), entre 1900 y hoy, o null. */
+export function leerNacimiento() {
+  const n = Number(leerPreferencia('nacimiento'));
+  return Number.isInteger(n) && n >= 1900 && n <= new Date().getFullYear() ? n : null;
+}
+
 export function borrarPreferencia(clave) {
   try {
     localStorage.removeItem(PREFIJO + clave);
@@ -102,6 +117,7 @@ const FUENTES = {
   'mhn.gob.cl': 'Museo Histórico Nacional',
   'archivonacional.gob.cl': 'Archivo Nacional',
   'museodelamemoria.cl': 'Museo de la Memoria y los Derechos Humanos',
+  'indh.cl': 'Instituto Nacional de Derechos Humanos',
   'precolombino.cl': 'Museo Chileno de Arte Precolombino',
   'chileprecolombino.cl': 'Museo Chileno de Arte Precolombino',
   'monumentos.gob.cl': 'Consejo de Monumentos Nacionales',
