@@ -7,6 +7,9 @@ Línea de tiempo interactiva de la historia de Chile, desde el poblamiento hasta
 - Más de 120 eventos en 9 períodos, con fecha, lugar, personajes, imagen con su crédito y las fuentes consultadas.
 - Línea de tiempo horizontal con franjas de color por período, minimapa y zoom según la importancia de cada evento: el zoom mínimo muestra solo los grandes hitos.
 - Búsqueda por título, personaje o año, y filtros por período y tema.
+- Historias guiadas paso a paso (la Independencia, los grandes terremotos, las constituciones y las mujeres en la vida pública), fichas de los personajes que aparecen en varios eventos y los pueblos originarios reunidos de norte a sur.
+- En cada evento: cuánto tiempo pasó («hace 147 años»), un «¿Sabías que…?» tomado del texto detallado y, si quien lee guarda su año de nacimiento (solo en su navegador), qué edad tenía.
+- Modo «Proyectar en clase» para pantallas anchas: letra grande, colores claros y Av Pág / Re Pág para avanzar con un control de presentaciones.
 - Accesible: se maneja con teclado, mouse o pantalla táctil y funciona con lector de pantalla. El texto mide al menos 18 px, hay un botón «Texto grande», el modo oscuro es automático y se respeta la preferencia de reducir el movimiento.
 - Funciona sin conexión para lo ya visitado (Service Worker).
 - Transiciones suaves donde el navegador las admite: la imagen de una tarjeta crece hasta el detalle, «Anterior / Siguiente» pasan la página, y los eventos ya leídos llevan una marca discreta. Si se pide reducir el movimiento, no hay animaciones.
@@ -34,7 +37,8 @@ El sitio queda en `http://localhost:5173`.
 ## Estructura
 
 ```text
-data/       períodos, temas y un JSON de eventos por período (esquema en data/README.md)
+data/       períodos, temas, un JSON de eventos por período, historias guiadas, grupos y
+            «¿Sabías que?» (esquema en data/README.md)
 src/        main.js (rutas #evento/<id>), timeline.js, detalle.js, filtros.js, datos.js,
             fechas.js, util.js, styles.css, sw.js (plantilla del Service Worker) y fonts/
 public/     favicon, dibujos de respaldo por período (placeholders/) y licencia de la fuente (fonts/)

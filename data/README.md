@@ -83,6 +83,16 @@ JSON en UTF-8. `src/datos.js` los incluye en el sitio y `npm test` (`scripts/val
 
 La app la carga desde `https://commons.wikimedia.org/wiki/Special:FilePath/<archivo>?width=800`, muestra siempre autor, licencia y enlace a Commons, y si falla usa `public/placeholders/periodo-NN.svg`.
 
+## Historias guiadas, grupos y «¿Sabías que?» (opcionales)
+
+No agregan hechos nuevos: solo ordenan o citan los eventos que ya existen.
+
+| Archivo | Contenido | Reglas |
+|---|---|---|
+| `recorridos.json` | Historias guiadas (`#historia/<id>/<paso>`): `{ "id", "titulo", "descripcion", "eventos": [ids] }`. | Al menos 3 pasos, en orden cronológico, con eventos que existen y se muestran. La descripción no puede afirmar nada que no digan esos eventos. |
+| `grupos.json` | Eventos de una misma fecha que la línea de tiempo muestra en una sola tarjeta (`#grupo/<id>`): `{ "id", "titulo", "miembros" (plural, ej. "pueblos"), "descripcion", "eventos": [ids] }`. | Al menos 2 eventos, todos con la misma `fecha`; un evento no puede estar en dos grupos. El orden de `eventos` es el de la lista (ej. de norte a sur). |
+| `sabias-que.json` | `{ "<id del evento>": "<oración>" }`: una oración del `detalle` que se muestra como «¿Sabías que…?» en los niveles Para niños y General. | La oración debe estar copiada textualmente del `detalle` y entenderse sola (sin «él», «ese año» ni «horas más tarde»). No se usa en temas sensibles, porque una ficha de curiosidades no corresponde ahí: guerras de la Conquista y de la Araucanía, guerras del período 05 (incluida la del Pacífico), todo el período 08 (dictadura), matanzas y estallido social. `npm test` lo comprueba. |
+
 ## Validación
 
 - `npm test`: **errores** (bloquean: campos faltantes, ids repetidos, fechas inválidas, temas o licencias no permitidos, sin fuentes) y **avisos** (revisar: largo de los textos, fechas fuera del período, solo Wikipedia como fuente).

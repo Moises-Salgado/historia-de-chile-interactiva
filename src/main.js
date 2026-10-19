@@ -1,15 +1,33 @@
-// Arranque de la app: preferencias, línea de tiempo, detalle, filtros y router por hash (#evento/<id>).
+// Arranque de la app: preferencias, línea de tiempo, detalle, filtros y rutas por hash:
+// #evento/<id>, #grupo/<id>, #historias, #historia/<id>/<paso> y #personaje/<nombre>.
 import './styles.css';
 import { cargarDatos } from './datos.js';
 import { crearDetalle } from './detalle.js';
 import { crearFiltros } from './filtros.js';
 import { crearLineaDeTiempo } from './timeline.js';
-import { conTransicion, guardarPreferencia, leerPreferencia, urlPlaceholder } from './util.js';
+import { conTransicion, guardarPreferencia, leerPreferencia, movimientoReducido, normalizar, urlPlaceholder } from './util.js';
 
-const { periodos, temas, eventos } = cargarDatos();
+const { periodos, temas, eventos, recorridos, grupos } = cargarDatos();
 const porId = new Map(eventos.map((ev) => [ev.id, ev]));
+const grupoPorId = new Map(grupos.map((g) => [g.id, g]));
+const recorridoPorId = new Map(recorridos.map((r) => [r.id, r]));
 const $ = (selector) => document.querySelector(selector);
 const TITULO = document.title;
+
+// Personajes que aparecen en más de un evento: tienen ficha propia (#personaje/<nombre-sin-tildes>).
+const slugDe = (nombre) =>
+  normalizar(nombre)
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+const personajes = new Map();
+for (const ev of eventos) {
+  for (const nombre of ev.personajes) {
+    const slug = slugDe(nombre);
+    if (!personajes.has(slug)) personajes.set(slug, { slug, nombre, eventos: [] });
+    personajes.get(slug).eventos.push(ev);
+  }
+}
+for (const [slug, p] of personajes) if (p.eventos.length < 2) personajes.delete(slug);
 
 // Avisos para lectores de pantalla (región «status» oculta a la vista).
 const avisos = $('#avisos');
@@ -53,14 +71,23 @@ document.addEventListener(
   true,
 );
 
-// Tamaño de texto y nivel de lectura, recordados en este navegador.
+// Preferencias recordadas en este navegador: tamaño de texto, modo «Proyectar en clase» y nivel de lectura.
+const raiz = document.documentElement;
 const botonTexto = $('#btn-texto');
+const botonClase = $('#btn-clase');
 function ponerTextoGrande(grande) {
-  if (grande) document.documentElement.dataset.texto = 'grande';
-  else delete document.documentElement.dataset.texto;
+  if (grande) raiz.dataset.texto = 'grande';
+  else delete raiz.dataset.texto;
   botonTexto.setAttribute('aria-pressed', String(grande));
 }
+// En clase: letra más grande, colores claros (se ven mejor proyectados) y Av Pág / Re Pág para avanzar.
+function ponerModoClase(activo) {
+  if (activo) raiz.dataset.clase = '';
+  else delete raiz.dataset.clase;
+  botonClase.setAttribute('aria-pressed', String(activo));
+}
 ponerTextoGrande(leerPreferencia('texto') === 'grande');
+ponerModoClase(leerPreferencia('clase') === 'si');
 
 const NIVELES = ['nino', 'general', 'detallado'];
 let nivel = NIVELES.includes(leerPreferencia('nivel')) ? leerPreferencia('nivel') : 'general';
@@ -71,14 +98,15 @@ const elDetalle = $('#detalle');
 const linea = crearLineaDeTiempo(seccionLinea, $('#minimapa'), {
   eventos,
   periodos,
+  grupos,
   anunciar,
-  alAbrir: (ev) => abrirEvento(ev.id),
+  alAbrir: (item) => ir(item.esGrupo ? `#grupo/${item.id}` : `#evento/${item.id}`),
   alCambiar: actualizarControles,
 });
 const detalle = crearDetalle(elDetalle, {
   periodos,
   temas,
-  alBuscar: (nombre) => filtros.buscarPersonaje(nombre),
+  personajeDe: (nombre) => personajes.get(slugDe(nombre)) ?? null,
 });
 const filtros = crearFiltros($('#panel-filtros'), {
   periodos,
@@ -86,7 +114,7 @@ const filtros = crearFiltros($('#panel-filtros'), {
   eventos,
   boton: $('#btn-buscar'),
   alCambiar: aplicarFiltros,
-  alElegir: (ev) => abrirEvento(ev.id),
+  alElegir: (ev) => ir(`#evento/${ev.id}`),
   alAbrirOCerrar: actualizarInert,
 });
 
@@ -106,33 +134,57 @@ botonTexto.addEventListener('click', () => {
   guardarPreferencia('texto', grande ? 'grande' : 'normal');
   linea.redistribuir();
 });
+botonClase.addEventListener('click', () => {
+  const activo = botonClase.getAttribute('aria-pressed') !== 'true';
+  ponerModoClase(activo);
+  guardarPreferencia('clase', activo ? 'si' : 'no');
+  linea.redistribuir();
+  anunciar(activo ? 'Modo para proyectar en clase activado. Av Pág y Re Pág avanzan y retroceden.' : 'Modo para proyectar en clase desactivado.');
+});
 $('.nivel').addEventListener('change', (e) => {
   nivel = e.target.value;
   guardarPreferencia('nivel', nivel);
   detalle.ponerNivel(nivel);
 });
 
-// ---- Router: #evento/<id> abre el detalle; cualquier otra dirección muestra la línea de tiempo ----
-const idEnRuta = () => /^#evento\/([a-z0-9-]+)$/.exec(location.hash)?.[1] ?? null;
+// ---- Rutas: cada dirección con # muestra una vista sobre la línea de tiempo; sin #, la línea de tiempo ----
+function vistaDeRuta(hash = location.hash) {
+  let m = /^#evento\/([a-z0-9-]+)$/.exec(hash);
+  if (m) return porId.has(m[1]) ? { tipo: 'evento', ev: porId.get(m[1]) } : { tipo: 'desconocida' };
+  m = /^#grupo\/([a-z0-9-]+)$/.exec(hash);
+  if (m) return grupoPorId.has(m[1]) ? { tipo: 'grupo', grupo: grupoPorId.get(m[1]) } : { tipo: 'desconocida' };
+  if (hash === '#historias') return { tipo: 'historias' };
+  m = /^#historia\/([a-z0-9-]+)\/(\d+)$/.exec(hash);
+  if (m) {
+    const recorrido = recorridoPorId.get(m[1]);
+    const paso = Number(m[2]);
+    if (!recorrido || paso < 1 || paso > recorrido.eventos.length) return { tipo: 'desconocida' };
+    return { tipo: 'historia', recorrido, paso, ev: recorrido.eventos[paso - 1] };
+  }
+  m = /^#personaje\/([a-z0-9-]+)$/.exec(hash);
+  if (m) return personajes.has(m[1]) ? { tipo: 'personaje', persona: personajes.get(m[1]) } : { tipo: 'desconocida' };
+  return null;
+}
+const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje)\/|^#historias$/.test(hash);
 
-// Desde la línea de tiempo se agrega una entrada al historial; entre detalles se reemplaza, así
-// «Volver» (y el botón Atrás del navegador) regresa siempre a la línea de tiempo.
-function abrirEvento(id, { desdeBoton = false } = {}) {
-  const url = `#evento/${id}`;
+// Desde la línea de tiempo se agrega una entrada al historial; entre vistas se reemplaza, así «Volver»
+// (y el botón Atrás del navegador) regresa a la línea de tiempo. La ficha de un personaje sí se agrega:
+// «Volver» desde ella regresa al evento donde se eligió el nombre.
+function ir(url, { desdeBoton = false } = {}) {
   if (location.hash !== url) {
-    if (detalle.abierto) history.replaceState(history.state, '', url);
+    if (detalle.abierto && !url.startsWith('#personaje/')) history.replaceState(history.state, '', url);
     else history.pushState({ app: true }, '', url);
   }
   aplicarRuta({ desdeBoton });
 }
 
 function aplicarRuta({ desdeBoton = false } = {}) {
-  const id = idEnRuta();
-  const ev = porId.get(id);
-  if (ev) mostrarDetalle(ev, desdeBoton);
+  const vista = vistaDeRuta();
+  if (vista && vista.tipo !== 'desconocida') mostrarVista(vista, desdeBoton);
   else if (detalle.abierto) cerrarDetalle();
-  if (id && !ev) anunciar('No encontramos ese evento.');
+  if (vista?.tipo === 'desconocida') anunciar('No encontramos esa página.');
 }
+
 // En celulares, el gesto de volver trae su propia animación: entonces no se suma otra.
 window.addEventListener('popstate', (e) => {
   sinAnimar = e.hasUAVisualTransition === true;
@@ -152,12 +204,15 @@ function volver() {
 }
 
 // ---- Transiciones: la miniatura crece hasta la lámina del detalle (y vuelve al cerrarlo) y, entre
-// detalles, la página pasa hacia el lado del recorrido. Sin View Transitions, el cambio es inmediato. ----
+// vistas, la página pasa hacia el lado del recorrido. Sin View Transitions, el cambio es inmediato. ----
 const LAMINA = 'lamina';
 let animarCambios = false; // la ruta con que se abre la página no se anima
 let sinAnimar = false;
+let vistaActual = null;
+let nav = { antes: null, despues: null }; // direcciones de «Anterior» y «Siguiente» en la vista abierta
 const esperar = (ms) => new Promise((listo) => setTimeout(listo, ms));
 const laminaDetalle = () => elDetalle.querySelector('.detalle-marco img');
+const posicion = (vista) => vista?.ev?.u ?? vista?.grupo?.u ?? null;
 
 // La lámina solo crece o se encoge si se ve entera dentro del detalle (no tapada por la cabecera).
 function laminaALaVista(img) {
@@ -172,25 +227,79 @@ function cambiarVista(cambiar, tipo) {
   return null;
 }
 
-// Antes y después según el filtro activo (si el evento lo cumple) o entre todos los eventos.
-function mostrarDetalle(ev, desdeBoton) {
-  const previo = detalle.actual;
-  const aplicar = () => {
-    const lista = linea.visibles.includes(ev) ? linea.visibles : eventos;
-    const i = lista.indexOf(ev);
-    filtros.cerrar({ devolverFoco: false });
-    detalle.mostrar(ev, { antes: lista[i - 1] ?? null, despues: lista[i + 1] ?? null, nivel, regla: linea.regla(ev), enfocar: !desdeBoton });
-    document.body.dataset.vista = 'detalle';
-    document.title = `${ev.titulo} · ${TITULO}`;
-    actualizarInert();
-    linea.seleccionar(ev, { suave: false });
-    marcarVisto(ev);
-    if (desdeBoton) anunciar(`${ev.fechaTexto}: ${ev.titulo}`);
+// Antes y después de un evento: según el filtro activo (si el evento lo cumple) o entre todos los eventos.
+// Como en la línea de tiempo, un grupo vecino (con dos o más eventos a la vista) cuenta como uno solo.
+const grupoDeEvento = new Map(grupos.flatMap((g) => g.eventos.map((ev) => [ev, g])));
+function vecinosDe(ev) {
+  const lista = linea.visibles.includes(ev) ? linea.visibles : eventos;
+  const i = lista.indexOf(ev);
+  const comoItem = (x) => {
+    const g = grupoDeEvento.get(x);
+    return g && g !== grupoDeEvento.get(ev) && g.eventos.filter((m) => lista.includes(m)).length > 1 ? g : x;
   };
-  if (previo === ev) return aplicar();
-  if (previo) return void cambiarVista(aplicar, eventos.indexOf(ev) > eventos.indexOf(previo) ? 'siguiente' : 'anterior');
+  return { antes: lista[i - 1] ? comoItem(lista[i - 1]) : null, despues: lista[i + 1] ? comoItem(lista[i + 1]) : null };
+}
+const rutaEvento = (item) => (!item ? null : item.esGrupo ? `#grupo/${item.id}` : `#evento/${item.id}`);
 
-  const miniatura = filtros.abierto ? null : linea.miniatura(ev);
+function pintarVista(vista, desdeBoton) {
+  const enfocar = !desdeBoton;
+  let titulo;
+  filtros.cerrar({ devolverFoco: false });
+  if (vista.tipo === 'evento') {
+    const { ev } = vista;
+    const { antes, despues } = vecinosDe(ev);
+    detalle.mostrar(ev, { antes, despues, nivel, regla: linea.regla(ev), enfocar });
+    nav = { antes: rutaEvento(antes), despues: rutaEvento(despues) };
+    titulo = ev.titulo;
+    if (desdeBoton) anunciar(`${ev.fechaTexto}: ${ev.titulo}`);
+  } else if (vista.tipo === 'historia') {
+    const { ev, recorrido: r, paso } = vista;
+    const antes = r.eventos[paso - 2] ?? null;
+    const despues = r.eventos[paso] ?? null;
+    detalle.mostrar(ev, { antes, despues, nivel, regla: linea.regla(ev), enfocar, historia: { recorrido: r, paso } });
+    // Después del último paso, «Siguiente» lleva a elegir otra historia.
+    nav = { antes: antes && `#historia/${r.id}/${paso - 1}`, despues: despues ? `#historia/${r.id}/${paso + 1}` : '#historias' };
+    titulo = `${ev.titulo} · ${r.titulo}`;
+    anunciar(`${r.titulo}, paso ${paso} de ${r.eventos.length}${desdeBoton ? `: ${ev.fechaTexto}, ${ev.titulo}` : ''}`);
+  } else if (vista.tipo === 'grupo') {
+    const { grupo } = vista;
+    const antes = vecinosDe(grupo.eventos[0]).antes;
+    const despues = vecinosDe(grupo.eventos.at(-1)).despues;
+    detalle.mostrarGrupo(grupo, { antes, despues, nivel, regla: linea.regla(grupo), enfocar });
+    nav = { antes: rutaEvento(antes), despues: rutaEvento(despues) };
+    titulo = grupo.titulo;
+    if (desdeBoton) anunciar(`${grupo.fechaTexto}: ${grupo.titulo}`);
+  } else if (vista.tipo === 'historias') {
+    detalle.mostrarHistorias(recorridos, { enfocar });
+    nav = { antes: null, despues: null };
+    titulo = 'Historias guiadas';
+  } else {
+    const { persona } = vista;
+    detalle.mostrarPersonaje(persona, { nivel, regla: linea.regla(persona.eventos), enfocar });
+    nav = { antes: null, despues: null };
+    titulo = persona.nombre;
+  }
+  vistaActual = vista;
+  document.body.dataset.vista = 'detalle';
+  document.title = `${titulo} · ${TITULO}`;
+  actualizarInert();
+  const marcado = vista.ev ?? vista.grupo;
+  if (marcado) linea.seleccionar(marcado, { suave: false });
+  if (vista.ev) marcarVisto(vista.ev);
+  actualizarControles();
+}
+
+function mostrarVista(vista, desdeBoton) {
+  const previa = vistaActual;
+  const aplicar = () => pintarVista(vista, desdeBoton);
+  if (detalle.abierto) {
+    const [a, b] = [posicion(previa), posicion(vista)];
+    const tipo = a === null || b === null || a === b ? '' : b > a ? 'siguiente' : 'anterior';
+    return void cambiarVista(aplicar, tipo);
+  }
+
+  // Al abrir desde la línea de tiempo, la miniatura del evento crece hasta la lámina del detalle.
+  const miniatura = vista.ev && !filtros.abierto ? linea.miniatura(vista.ev) : null;
   if (miniatura) miniatura.style.viewTransitionName = LAMINA;
   cambiarVista(async (animado) => {
     if (miniatura) miniatura.style.viewTransitionName = '';
@@ -210,13 +319,15 @@ function mostrarDetalle(ev, desdeBoton) {
 }
 
 function cerrarDetalle() {
-  const ev = detalle.actual;
+  const ev = vistaActual?.ev;
   const lamina = laminaDetalle();
-  const vuelve = Boolean(lamina?.classList.contains('cargada') && laminaALaVista(lamina));
+  const vuelve = Boolean(ev && lamina?.classList.contains('cargada') && laminaALaVista(lamina));
   if (vuelve) lamina.style.viewTransitionName = LAMINA;
   let miniatura = null;
   cambiarVista((animado) => {
     detalle.ocultar();
+    vistaActual = null;
+    nav = { antes: null, despues: null };
     document.body.dataset.vista = 'linea';
     document.title = TITULO;
     actualizarInert();
@@ -234,12 +345,13 @@ function actualizarInert() {
   elDetalle.inert = filtros.abierto;
 }
 
-// Enlaces internos (#evento/…) del detalle: navegan sin recargar y sin llenar el historial.
+// Enlaces internos (#evento/…, #historias…): navegan sin recargar y sin llenar el historial.
 document.addEventListener('click', (e) => {
-  const enlace = e.target.closest('a[href^="#evento/"]');
-  if (!enlace || e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+  const enlace = e.target.closest('a[href^="#"]');
+  if (!enlace || !esRuta(enlace.getAttribute('href'))) return;
+  if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
   e.preventDefault();
-  abrirEvento(enlace.getAttribute('href').slice('#evento/'.length));
+  ir(enlace.getAttribute('href'));
 });
 
 // ---- Barra inferior: Anterior / Inicio (o Volver) / Siguiente ----
@@ -249,15 +361,20 @@ const botonInicio = $('#btn-inicio');
 
 function actualizarControles() {
   const enDetalle = detalle.abierto;
-  botonAnterior.setAttribute('aria-disabled', String(enDetalle ? !detalle.antes : !linea.puedeMover(-1)));
-  botonSiguiente.setAttribute('aria-disabled', String(enDetalle ? !detalle.despues : !linea.puedeMover(1)));
+  botonAnterior.setAttribute('aria-disabled', String(enDetalle ? !nav.antes : !linea.puedeMover(-1)));
+  botonSiguiente.setAttribute('aria-disabled', String(enDetalle ? !nav.despues : !linea.puedeMover(1)));
   botonInicio.textContent = enDetalle ? 'Volver' : 'Inicio';
+  // En las vistas sin recorrido (historias, personaje) Anterior y Siguiente no sirven: se ocultan.
+  const ocultar = enDetalle && !nav.antes && !nav.despues;
+  const conFoco = [botonAnterior, botonSiguiente].includes(document.activeElement);
+  for (const b of [botonAnterior, botonSiguiente]) b.style.visibility = ocultar ? 'hidden' : '';
+  if (ocultar && conFoco) $('#detalle-titulo')?.focus({ preventScroll: true });
 }
 
 function mover(dir) {
   if (!detalle.abierto) return linea.mover(dir);
-  const ev = dir > 0 ? detalle.despues : detalle.antes;
-  if (ev) abrirEvento(ev.id, { desdeBoton: true });
+  const url = dir > 0 ? nav.despues : nav.antes;
+  if (url) ir(url, { desdeBoton: true });
 }
 
 // aria-disabled en vez de disabled: el botón conserva el foco al llegar al primer o último evento.
@@ -278,18 +395,30 @@ function aplicarFiltros() {
 }
 $('#btn-quitar').addEventListener('click', () => filtros.limpiar());
 
-// ---- Teclado: flechas (anterior / siguiente), + y − (zoom), Escape (cerrar) ----
+// ---- Teclado: flechas (anterior / siguiente), + y − (zoom), Escape (cerrar); en clase, Av Pág y Re Pág ----
 document.addEventListener('keydown', (e) => {
   if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
   if (e.key === 'Escape') {
     if (filtros.abierto) filtros.cerrar();
-    else if (detalle.abierto) volver();
+    else if (detalle.abierto && !e.target.closest('input')) volver(); // en un campo, Escape solo cancela lo escrito
     return;
   }
   if (filtros.abierto || e.target.closest('input, select, textarea, [contenteditable="true"]')) return;
-  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+  // Los controles remotos para presentaciones envían Av Pág y Re Pág: primero recorren el texto del
+  // detalle y, al llegar al final (o al comienzo), pasan al evento siguiente (o al anterior).
+  const pagina = 'clase' in raiz.dataset && (e.key === 'PageDown' || e.key === 'PageUp');
+  if (pagina && detalle.abierto) {
+    const abajo = e.key === 'PageDown';
+    const queda = abajo ? elDetalle.scrollHeight - elDetalle.clientHeight - elDetalle.scrollTop : elDetalle.scrollTop;
+    if (queda > 2) {
+      e.preventDefault();
+      elDetalle.scrollBy({ top: (abajo ? 0.8 : -0.8) * elDetalle.clientHeight, behavior: movimientoReducido() ? 'auto' : 'smooth' });
+      return;
+    }
+  }
+  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || pagina) {
     e.preventDefault();
-    mover(e.key === 'ArrowRight' ? 1 : -1);
+    mover(e.key === 'ArrowRight' || e.key === 'PageDown' ? 1 : -1);
   } else if (!detalle.abierto && (e.key === '+' || e.key === '=')) {
     linea.zoom(1);
   } else if (!detalle.abierto && (e.key === '-' || e.key === '_')) {

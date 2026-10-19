@@ -33,7 +33,6 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
   );
   const elegidos = { periodo: new Set(periodoDe.keys()), tema: new Set(nombreTema.keys()) };
   let terminos = [];
-  let personaje = null; // nombre exacto (normalizado) al llegar desde el botón de un personaje
   let encontrados = []; // [{ ev, parcial, motivo }] según la búsqueda actual
   let aceptados = null; // eventos que la búsqueda deja en la línea de tiempo (null = sin búsqueda)
 
@@ -50,6 +49,7 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
         <h2 id="panel-titulo">Buscar y filtrar</h2>
         <button type="button" class="boton" data-accion="cerrar">Cerrar</button>
       </div>
+      <p class="panel-historias">¿Prefieres un recorrido paso a paso? <a href="#historias">Elegir una historia guiada</a></p>
       <label class="rotulo" for="buscar">Buscar por título, personaje, lugar o año</label>
       <input id="buscar" class="campo" type="search" autocomplete="off" spellcheck="false" placeholder="Ej.: Prat, 1879, terremoto">
       <p class="resultados-cuenta" role="status"></p>
@@ -81,9 +81,6 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
   }
 
   function buscarEventos() {
-    if (personaje) {
-      return eventos.filter((ev) => pasaFiltros(ev) && ev.personajes.some((n) => normalizar(n) === personaje)).map((ev) => ({ ev, parcial: false, motivo: null }));
-    }
     const lista = [];
     for (const ev of eventos) {
       if (!pasaFiltros(ev)) continue;
@@ -99,7 +96,7 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
   }
 
   const coincide = (ev) => pasaFiltros(ev) && (!aceptados || aceptados.has(ev));
-  const hayBusqueda = () => terminos.length > 0 || personaje !== null;
+  const hayBusqueda = () => terminos.length > 0;
   const activo = () => hayBusqueda() || elegidos.periodo.size < periodos.length || elegidos.tema.size < temas.length;
 
   const resultado = ({ ev, motivo }) => {
@@ -142,7 +139,6 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
   campo.addEventListener('input', () => {
     clearTimeout(espera);
     espera = setTimeout(() => {
-      personaje = null;
       terminos = palabras(campo.value);
       actualizar();
     }, 200);
@@ -182,7 +178,6 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
   function limpiar() {
     clearTimeout(espera);
     terminos = [];
-    personaje = null;
     campo.value = '';
     for (const casilla of panel.querySelectorAll('input[type="checkbox"]')) {
       casilla.checked = true;
@@ -191,22 +186,11 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
     actualizar();
   }
 
-  /** Muestra los eventos donde aparece un personaje (por su nombre exacto, no por parecido). */
-  function buscarPersonaje(nombre) {
-    clearTimeout(espera);
-    campo.value = nombre;
-    terminos = palabras(nombre);
-    personaje = normalizar(nombre);
-    actualizar();
-    abrir();
-  }
-
   return {
     coincide,
     activo,
     cerrar,
     limpiar,
-    buscarPersonaje,
     get abierto() {
       return !panel.hidden;
     },

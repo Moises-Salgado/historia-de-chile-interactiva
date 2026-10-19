@@ -27,12 +27,14 @@ const limitar = (n, min, max) => Math.min(max, Math.max(min, n));
 const conducta = () => (movimientoReducido() ? 'auto' : 'smooth');
 
 // Escala en ranuras (u). Hay un ancla por fecha de inicio de evento y de período (y una para hoy); los
-// n eventos de un ancla ocupan n ranuras seguidas y el tramo hasta la siguiente ancla mide
-// 1,2·log10(1 + años / 5) ranuras.
-function crearEscala(eventos, periodos) {
+// n eventos de un ancla ocupan n ranuras seguidas (los de un grupo comparten una sola) y el tramo hasta
+// la siguiente ancla mide 1,2·log10(1 + años / 5) ranuras.
+function crearEscala(eventos, periodos, grupoDe) {
   const hoy = anioDecimal(new Date());
-  const cuantos = new Map();
-  for (const ev of eventos) cuantos.set(ev.t, (cuantos.get(ev.t) ?? 0) + 1);
+  const ocupa = (ev) => grupoDe.get(ev) ?? ev;
+  const ocupantes = new Map();
+  for (const ev of eventos) ocupantes.set(ev.t, (ocupantes.get(ev.t) ?? new Set()).add(ocupa(ev)));
+  const cuantos = new Map([...ocupantes].map(([t, lista]) => [t, lista.size]));
   // La línea parte en el primer evento (no en el inicio del primer período): así se ve desde el comienzo.
   const primero = Math.min(...cuantos.keys());
   const tiempos = [...new Set([...cuantos.keys(), ...periodos.map((p) => p.inicio), hoy])].filter((t) => t >= primero).sort((a, b) => a - b);
@@ -64,10 +66,15 @@ function crearEscala(eventos, periodos) {
   }
 
   const orden = new Map();
+  const ranura = new Map();
   for (const ev of eventos) {
-    const j = orden.get(ev.t) ?? 0;
-    orden.set(ev.t, j + 1);
-    ev.u = uDe(ev.t) + j;
+    const o = ocupa(ev);
+    if (!ranura.has(o)) {
+      const j = orden.get(ev.t) ?? 0;
+      orden.set(ev.t, j + 1);
+      ranura.set(o, uDe(ev.t) + j);
+    }
+    ev.u = ranura.get(o);
     ev.uFin = ev.tFin === null ? null : uDe(ev.tFin);
   }
   return { anclas, uDe, hoy, total: u };
@@ -172,17 +179,50 @@ const tarjeta = (ev, color) => {
     </li>`;
 };
 
+// Tarjeta de un grupo: mosaico con las primeras cuatro imágenes y la cantidad de eventos que reúne.
+const tarjetaGrupo = (grupo, color) => `
+    <li class="evento grupo" data-id="${grupo.clave}" style="--color:${color}" hidden>
+      <button type="button" class="tarjeta" tabindex="-1">
+        <span class="tarjeta-img mosaico">${grupo.eventos
+          .slice(0, 4)
+          .map((ev) => `<img src="${urlImagen(ev.imagen.archivo, 120)}" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}">`)
+          .join('')}</span>
+        <span class="tarjeta-texto"><span class="tarjeta-fecha">${esc(fechaCorta(grupo.eventos[0]))}</span><span class="tarjeta-titulo">${esc(grupo.titulo)}</span><span class="tarjeta-cuenta"></span></span>
+      </button>
+    </li>`;
+
 /**
  * Crea la línea de tiempo dentro de `seccion` y el minimapa (con los botones de zoom) en `contenedorMinimapa`.
- * Llama a alAbrir(evento) al elegir un evento y a alCambiar() cuando cambia la selección, el zoom o el filtro.
+ * Llama a alAbrir(evento o grupo) al elegir una tarjeta y a alCambiar() cuando cambia la selección, el zoom o el filtro.
  */
-export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, periodos, alAbrir, alCambiar, anunciar }) {
-  const escala = crearEscala(eventos, periodos);
+export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, periodos, grupos = [], alAbrir, alCambiar, anunciar }) {
+  // Grupos (data/grupos.json): eventos de una misma fecha que se muestran en una sola tarjeta, como
+  // «Pueblos que vivían aquí», en una sola ranura y con un solo punto. Si un filtro deja solo uno, ese
+  // evento vuelve a tener su tarjeta propia.
+  const grupoDe = new Map(grupos.flatMap((grupo) => grupo.eventos.map((ev) => [ev, grupo])));
+  const escala = crearEscala(eventos, periodos, grupoDe);
   const franjas = calcularFranjas(periodos, eventos, escala);
   const candidatosAnio = aniosCandidatos(escala);
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const colorDe = new Map(periodos.map((p) => [p.id, p.color]));
   const enRanura = (u) => `${(limitar(u / escala.total, 0, 1) * 100).toFixed(3)}%`;
+
+  for (const grupo of grupos) {
+    Object.assign(grupo, { esGrupo: true, clave: `grupo:${grupo.id}`, uFin: null, pos: null, periodoId: grupo.eventos[0].periodoId, fechaTexto: grupo.eventos[0].fechaTexto });
+    porId.set(grupo.clave, grupo);
+  }
+  const clave = (item) => item.clave ?? item.id;
+  const listaTarjetas = () => {
+    const puestos = new Set();
+    return eventos
+      .map((ev) => {
+        const grupo = grupoDe.get(ev);
+        const antes = grupo && !puestos.has(grupo) ? tarjetaGrupo(grupo, colorDe.get(grupo.periodoId)) : '';
+        if (grupo) puestos.add(grupo);
+        return antes + tarjeta(ev, colorDe.get(ev.periodoId));
+      })
+      .join('');
+  };
 
   // El «cielo» es el espacio libre sobre los carriles: muestra la cartela del período que está al centro
   // (y, al comienzo, el botón para empezar a leer). Queda fijo mientras la línea se desplaza.
@@ -195,7 +235,10 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
           <p class="cartela-fila"><span class="cartela-nombre"></span> <span class="cartela-fechas"></span></p>
           <p class="cartela-desc"></p>
         </div>
-        <button type="button" class="boton primario cartela-empezar" hidden>Empezar a leer <span aria-hidden="true">▶</span></button>
+        <div class="cartela-acciones" hidden>
+          <button type="button" class="boton primario cartela-empezar">Empezar a leer <span aria-hidden="true">▶</span></button>
+          <a class="boton" href="#historias">Elegir una historia</a>
+        </div>
       </div>
     </div>
     <div class="ventana">
@@ -213,7 +256,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
           .join('')}${eventos
           .map((ev) => `<span class="punto imp-${ev.importancia}" data-id="${ev.id}" style="--color:${colorDe.get(ev.periodoId)}" title="${esc(ev.titulo)}" hidden></span>`)
           .join('')}</div>
-        <ol class="eventos" aria-label="Eventos en orden cronológico">${eventos.map((ev) => tarjeta(ev, colorDe.get(ev.periodoId))).join('')}</ol>
+        <ol class="eventos" aria-label="Eventos en orden cronológico">${listaTarjetas()}</ol>
       </div>
     </div>`,
   );
@@ -234,7 +277,8 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
 
   const cielo = seccion.querySelector('.cielo');
   const cartela = cielo.querySelector('.cartela');
-  const empezar = cielo.querySelector('.cartela-empezar');
+  const acciones = cielo.querySelector('.cartela-acciones');
+  const empezar = acciones.querySelector('.cartela-empezar');
   const ventana = seccion.querySelector('.ventana');
   const pista = ventana.querySelector('.pista');
   const elSaltos = [...pista.querySelectorAll('.salto-marca')];
@@ -257,13 +301,41 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   let f = ZOOM.inicial;
   let visibles = eventos;
   let enFiltro = new Set(eventos);
+  let items = eventos; // lo que puede tener tarjeta: los eventos visibles, con cada grupo en lugar de sus eventos
   let filtroActivo = false;
   let actual = null;
   let enfocable = null;
   const g = { rem: 18, w: 0, h: 0, hueco: 0, tallo: 0, z: 1, carriles: 1, margenIzq: 0, ejeY: 0, ancho: 0, minImp: 2 };
   const X = (u) => g.margenIzq + u * g.z;
   const uEn = (x) => (x - g.margenIzq) / g.z;
-  const botonDe = (ev) => elTarjeta.get(ev.id).querySelector('.tarjeta');
+  const botonDe = (item) => elTarjeta.get(clave(item)).querySelector('.tarjeta');
+  const puntoDe = (item) => elPunto.get(item.esGrupo ? item.punto.id : item.id);
+
+  // Un grupo reemplaza a sus eventos si el filtro deja dos o más; en el eje queda solo el punto del primero.
+  let puntosOcultos = new Set();
+  function armarItems() {
+    const quedan = new Map();
+    puntosOcultos = new Set();
+    for (const grupo of grupos) {
+      const lista = grupo.eventos.filter((ev) => enFiltro.has(ev));
+      for (const ev of grupo.eventos) elPunto.get(ev.id).title = ev.titulo;
+      if (lista.length < 2) continue;
+      for (const ev of lista.slice(1)) puntosOcultos.add(ev);
+      elPunto.get(lista[0].id).title = grupo.titulo;
+      quedan.set(grupo, lista);
+      Object.assign(grupo, { u: lista[0].u, punto: lista[0], importancia: Math.max(...lista.map((ev) => ev.importancia)) });
+      const li = elTarjeta.get(grupo.clave);
+      li.className = `evento grupo imp-${grupo.importancia}${li.classList.contains('actual') ? ' actual' : ''}`;
+      li.querySelector('.tarjeta-cuenta').textContent = `${lista.length} ${grupo.miembros}`;
+      botonDe(grupo).setAttribute('aria-label', `${grupo.fechaTexto}: ${grupo.titulo} (${lista.length} ${grupo.miembros})`);
+    }
+    items = visibles.flatMap((ev) => {
+      const grupo = grupoDe.get(ev);
+      if (!quedan.has(grupo)) return [ev];
+      return quedan.get(grupo)[0] === ev ? [grupo] : [];
+    });
+  }
+  armarItems();
 
   // ---- Distribución: tamaños, carriles, tarjetas, eje, años, franjas y minimapa ----
   function distribuir() {
@@ -294,7 +366,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     const yCarril = (c) => base - g.h - c * (g.h + g.hueco);
 
     colocarTarjetas(yCarril);
-    const finTarjetas = visibles.reduce((max, ev) => (ev.pos ? Math.max(max, ev.pos.x + g.w) : max), 0);
+    const finTarjetas = items.reduce((max, ev) => (ev.pos ? Math.max(max, ev.pos.x + g.w) : max), 0);
     g.ancho = Math.ceil(Math.max(X(escala.total) + g.w, finTarjetas) + MEDIDA.margen * rem);
     pista.style.width = `${g.ancho}px`;
     pista.style.setProperty('--tarjeta-ancho', `${g.w}px`);
@@ -331,8 +403,8 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     const carriles = Array.from({ length: g.carriles }, () => [[0, MEDIDA.margen * g.rem - hueco]]);
     const maxDer = (filtroActivo ? 2.5 : 0.8) * (w + hueco);
     const maxIzq = 0.3 * (w + hueco);
-    for (const ev of eventos) ev.pos = null;
-    const candidatos = visibles.filter((ev) => ev.importancia >= g.minImp).sort((a, b) => b.importancia - a.importancia || a.u - b.u);
+    for (const item of [...eventos, ...grupos]) item.pos = null;
+    const candidatos = items.filter((ev) => ev.importancia >= g.minImp).sort((a, b) => b.importancia - a.importancia || a.u - b.u);
     for (const ev of candidatos) {
       const deseado = X(ev.u) - tallo;
       let mejor = null;
@@ -358,10 +430,15 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       const punto = elPunto.get(ev.id);
       li.hidden = !ev.pos;
       if (ev.pos) li.style.transform = `translate(${ev.pos.x.toFixed(1)}px, ${ev.pos.y.toFixed(1)}px)`;
-      punto.hidden = !enFiltro.has(ev);
+      punto.hidden = !enFiltro.has(ev) || puntosOcultos.has(ev);
       punto.style.transform = `translateX(${X(ev.u).toFixed(1)}px)`;
       punto.classList.toggle('sin-tarjeta', !ev.pos);
       elMarca.get(ev.id).hidden = !enFiltro.has(ev);
+    }
+    for (const grupo of grupos) {
+      const li = elTarjeta.get(grupo.clave);
+      li.hidden = !grupo.pos;
+      if (grupo.pos) li.style.transform = `translate(${grupo.pos.x.toFixed(1)}px, ${grupo.pos.y.toFixed(1)}px)`;
     }
   }
 
@@ -369,7 +446,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   function dibujarConectores(alto) {
     const { h, tallo, ejeY, rem } = g;
     let d = '';
-    for (const ev of visibles) {
+    for (const ev of items) {
       if (!ev.pos) continue;
       const sx = ev.pos.x + tallo;
       const px = X(ev.u);
@@ -402,8 +479,8 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
 
   let periodoCartela = null;
   function mostrarCartela(periodo) {
-    // Al comienzo de la línea (sin filtro), el botón lleva al primer evento.
-    empezar.hidden = filtroActivo || ventana.scrollLeft > ventana.clientWidth / 3;
+    // Al comienzo de la línea (sin filtro): empezar por el primer evento o elegir una historia guiada.
+    acciones.hidden = filtroActivo || ventana.scrollLeft > ventana.clientWidth / 3;
     if (periodo === periodoCartela) return;
     periodoCartela = periodo;
     const n = franjas.findIndex((fr) => fr.periodo === periodo) + 1;
@@ -427,8 +504,8 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     mostrarCartela(periodo);
   }
 
-  // Barra con los períodos y la posición de un evento (para el detalle).
-  function regla(ev) {
+  // Barra con los períodos y la posición de un evento, un grupo o varios eventos (para el detalle).
+  function regla(marcas) {
     const segmentos = franjas
       .map((fr) => {
         const desde = Number.isFinite(fr.desde) ? fr.desde : 0;
@@ -437,7 +514,15 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       })
       .join('');
     return `<div class="regla" aria-hidden="true"><span class="regla-extremo">${formatearAnio(Math.floor(escala.anclas[0].t / 1000) * 1000)}</span>
-      <span class="regla-barra">${segmentos}<span class="regla-marca" style="left:${enRanura(ev.u)}"></span></span><span class="regla-extremo">Hoy</span></div>`;
+      <span class="regla-barra">${segmentos}${tramoDe([].concat(marcas))}</span><span class="regla-extremo">Hoy</span></div>`;
+  }
+
+  // Una marca para un evento; para varios (la ficha de un personaje), un tramo de la primera a la última.
+  function tramoDe(lista) {
+    const desde = Math.min(...lista.map((ev) => ev.u));
+    const hasta = Math.max(...lista.map((ev) => ev.u));
+    if (lista.length === 1 || hasta === desde) return `<span class="regla-marca" style="left:${enRanura(desde)}"></span>`;
+    return `<span class="regla-tramo" style="left:${enRanura(desde)};width:${enRanura(hasta - desde)}"></span>`;
   }
 
   function etiquetarMinimapa() {
@@ -461,22 +546,25 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   // Solo una tarjeta entra en el orden de Tab (la actual o la primera a la vista); las flechas recorren el resto.
   function actualizarTabindex() {
     const izq = ventana.scrollLeft;
-    const objetivo = actual?.pos ? actual : (visibles.find((ev) => ev.pos && ev.pos.x + g.w > izq) ?? visibles.find((ev) => ev.pos));
+    const objetivo = actual?.pos ? actual : (items.find((ev) => ev.pos && ev.pos.x + g.w > izq) ?? items.find((ev) => ev.pos));
     const boton = objetivo ? botonDe(objetivo) : null;
     if (enfocable && enfocable !== boton) enfocable.tabIndex = -1;
     enfocable = boton;
     if (boton) boton.tabIndex = 0;
   }
 
+  // Elegir un evento que está dentro de un grupo elige la tarjeta del grupo.
   function seleccionar(ev, { enfocar = false, centrar = true, suave = true, anunciarlo = false } = {}) {
+    const grupo = grupoDe.get(ev);
+    if (grupo && items.includes(grupo)) ev = grupo;
     if (actual) {
-      elTarjeta.get(actual.id).classList.remove('actual');
-      elPunto.get(actual.id).classList.remove('actual');
+      elTarjeta.get(clave(actual)).classList.remove('actual');
+      puntoDe(actual).classList.remove('actual');
     }
     actual = ev;
     if (ev) {
-      elTarjeta.get(ev.id).classList.add('actual');
-      elPunto.get(ev.id).classList.add('actual');
+      elTarjeta.get(clave(ev)).classList.add('actual');
+      puntoDe(ev).classList.add('actual');
       if (centrar) centrarEn(ev, suave);
       if (anunciarlo) anunciar(`${ev.fechaTexto}: ${ev.titulo}`);
     }
@@ -488,16 +576,17 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
 
   // Evento con tarjeta antes (-1) o después (1) del dado; sin evento dado, el primero o el último a la vista.
   function vecinoConTarjeta(dir, desde = actual) {
-    const i = desde ? visibles.indexOf(desde) : -1;
-    if (i >= 0) return (dir > 0 ? visibles.slice(i + 1).find((ev) => ev.pos) : visibles.slice(0, i).findLast((ev) => ev.pos)) ?? null;
+    const i = desde ? items.indexOf(desde) : -1;
+    if (i >= 0) return (dir > 0 ? items.slice(i + 1).find((ev) => ev.pos) : items.slice(0, i).findLast((ev) => ev.pos)) ?? null;
     const izq = ventana.scrollLeft;
     const der = izq + ventana.clientWidth;
-    return (dir > 0 ? visibles.find((ev) => ev.pos && ev.pos.x >= izq) : visibles.findLast((ev) => ev.pos && ev.pos.x + g.w <= der)) ?? null;
+    return (dir > 0 ? items.find((ev) => ev.pos && ev.pos.x >= izq) : items.findLast((ev) => ev.pos && ev.pos.x + g.w <= der)) ?? null;
   }
 
+  // Si el foco está en una tarjeta, pasa a la nueva (Enter abre siempre la que está elegida).
   function mover(dir) {
     const ev = vecinoConTarjeta(dir);
-    if (ev) seleccionar(ev, { anunciarlo: true });
+    if (ev) seleccionar(ev, { anunciarlo: true, enfocar: lista.contains(document.activeElement) });
     else anunciar(dir > 0 ? 'Llegaste al último evento.' : 'Este es el primer evento.');
   }
 
@@ -569,12 +658,12 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       if (x < 0 || x > ancho || punto.hidden) continue;
       animaciones.push(animar(punto, [{ opacity: 0 }, { opacity: 1 }], { duration: 100, delay: (x / ancho) * 280, fill: 'backwards' }));
     }
-    visibles
+    items
       .filter(enVista)
       .sort((a, b) => a.pos.x - b.pos.x)
       .forEach((ev, i) => {
         const cuadros = [{ opacity: 0, translate: '0 1rem' }, { opacity: 1, translate: '0 0' }];
-        animaciones.push(animar(elTarjeta.get(ev.id), cuadros, { duration: 300, delay: Math.min(i, 6) * 15, easing: CURVA, fill: 'backwards' }));
+        animaciones.push(animar(elTarjeta.get(clave(ev)), cuadros, { duration: 300, delay: Math.min(i, 6) * 15, easing: CURVA, fill: 'backwards' }));
       });
     Promise.all(animaciones.map((a) => a?.finished)).finally(() => seccion.classList.remove('entrando'));
   }
@@ -582,7 +671,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   // La imagen grande del detalle se pide al presionar una tarjeta (o con Enter), un instante antes del clic.
   const precargadas = new Set();
   function precargar(ev) {
-    if (!ev || precargadas.has(ev.id)) return;
+    if (!ev?.imagen || precargadas.has(ev.id)) return;
     precargadas.add(ev.id);
     new Image().src = urlImagen(ev.imagen.archivo, 800);
   }
@@ -611,15 +700,16 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   pista.querySelector('.eje').addEventListener('click', (e) => {
     const ev = eventoDe(e.target);
     if (!ev) return;
+    const grupo = grupoDe.get(ev);
     seleccionar(ev, { centrar: false });
-    alAbrir(ev);
+    alAbrir(grupo && items.includes(grupo) ? grupo : ev);
   });
   pista.querySelector('.franjas').addEventListener('click', (e) => {
     const boton = e.target.closest('.franja-nombre');
     if (boton) irAPeriodo(boton.dataset.periodo);
   });
   empezar.addEventListener('click', () => {
-    const ev = visibles.find((x) => x.pos);
+    const ev = items.find((x) => x.pos);
     if (!ev) return;
     seleccionar(ev, { centrar: false });
     alAbrir(ev);
@@ -632,8 +722,8 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     const accion = {
       ArrowRight: () => vecinoConTarjeta(1, ev),
       ArrowLeft: () => vecinoConTarjeta(-1, ev),
-      Home: () => visibles.find((x) => x.pos),
-      End: () => visibles.findLast((x) => x.pos),
+      Home: () => items.find((x) => x.pos),
+      End: () => items.findLast((x) => x.pos),
     }[e.key];
     if (!accion) return;
     e.preventDefault();
@@ -812,7 +902,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     regla,
     entrada,
     /** Imagen de la tarjeta de un evento si está a la vista (para la transición al detalle); si no, null. */
-    miniatura: (ev) => (enVista(ev) ? elTarjeta.get(ev.id).querySelector('.tarjeta-img img') : null),
+    miniatura: (ev) => (enVista(ev) ? elTarjeta.get(clave(ev)).querySelector('.tarjeta-img img') : null),
     /** Marca como ya vistos los eventos dados: un punto discreto en la tarjeta y «(ya visto)» en su nombre. */
     marcarVistos(ids) {
       for (const id of ids) {
@@ -829,13 +919,14 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       visibles = eventos.filter(coincide);
       enFiltro = new Set(visibles);
       filtroActivo = activo;
-      if (actual && !enFiltro.has(actual)) seleccionar(null, { centrar: false });
+      armarItems();
+      if (actual && !items.includes(actual)) seleccionar(null, { centrar: false });
       distribuir();
       ventana.scrollLeft = X(centro) - ventana.clientWidth / 2;
       const izq = ventana.scrollLeft;
       const der = izq + ventana.clientWidth;
-      if (!visibles.some((ev) => ev.pos && ev.pos.x < der && ev.pos.x + g.w > izq)) {
-        const primera = visibles.find((ev) => ev.pos);
+      if (!items.some((ev) => ev.pos && ev.pos.x < der && ev.pos.x + g.w > izq)) {
+        const primera = items.find((ev) => ev.pos);
         if (primera) centrarEn(primera, false);
       }
       alCambiar();
@@ -846,7 +937,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       actualizarTabindex();
       enfocable?.focus({ preventScroll: true });
     },
-    puedeMover: (dir) => (actual ? Boolean(vecinoConTarjeta(dir)) : visibles.some((ev) => ev.pos)),
+    puedeMover: (dir) => (actual ? Boolean(vecinoConTarjeta(dir)) : items.some((ev) => ev.pos)),
     get visibles() {
       return visibles;
     },

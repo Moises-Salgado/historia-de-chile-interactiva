@@ -155,6 +155,7 @@ function validarEvento(ev, archivo, prefijo, ctx) {
     if (!ID.test(ev.id)) error(d, 'id solo admite minúsculas sin tildes, números y guiones');
     if (ctx.ids.has(ev.id)) error(d, `id repetido (también en ${ctx.ids.get(ev.id)})`);
     ctx.ids.set(ev.id, archivo);
+    ctx.eventos.set(ev.id, ev);
   }
   if (esTexto(ev.titulo) && ev.titulo.length > 80) aviso(d, 'título de más de 80 caracteres');
   if (esTexto(ev.periodoId)) {
@@ -193,6 +194,75 @@ function validarEvento(ev, archivo, prefijo, ctx) {
   if (ev.pendienteVerificacion === true) ctx.pendientes.push(ev.id);
 }
 
+// Ids de eventos que usan las historias y los grupos: deben existir, verse en la app y no repetirse.
+function idsDeEventos(lista, d, ctx, minimo) {
+  if (!Array.isArray(lista) || lista.length < minimo) {
+    error(d, `"eventos" debe ser una lista de al menos ${minimo} ids`);
+    return [];
+  }
+  if (new Set(lista).size !== lista.length) error(d, 'eventos repetidos');
+  return lista.filter((id) => {
+    const ev = ctx.eventos.get(id);
+    if (!ev) error(d, `el evento "${id}" no existe`);
+    else if (ev.pendienteVerificacion) error(d, `el evento "${id}" está pendiente de verificación (no se muestra)`);
+    return ev && !ev.pendienteVerificacion;
+  });
+}
+
+function validarLista(nombre, lista, validar) {
+  if (!Array.isArray(lista)) return error(nombre, 'debe ser una lista');
+  const ids = new Set();
+  lista.forEach((x, i) => {
+    const d = `${nombre} [${x?.id ?? i}]`;
+    if (!ID.test(x?.id ?? '')) error(d, 'id inválido (minúsculas, números y guiones)');
+    else if (ids.has(x.id)) error(d, 'id repetido');
+    ids.add(x?.id);
+    for (const k of ['titulo', 'descripcion']) if (!esTexto(x?.[k])) error(d, `falta "${k}"`);
+    validar(x ?? {}, d);
+  });
+}
+
+// Historias guiadas: pasos en orden cronológico.
+function validarRecorridos(lista, ctx) {
+  validarLista('recorridos.json', lista, (r, d) => {
+    const valores = idsDeEventos(r.eventos, d, ctx, 3).map((id) => parseFecha(ctx.eventos.get(id).fecha)?.valor ?? 0);
+    if (valores.some((v, i) => i > 0 && v < valores[i - 1])) error(d, 'los pasos deben ir en orden cronológico');
+  });
+}
+
+// Grupos: eventos de una misma fecha que la línea de tiempo muestra en una sola tarjeta.
+function validarGrupos(lista, ctx) {
+  const usados = new Map();
+  validarLista('grupos.json', lista, (g, d) => {
+    if (!esTexto(g.miembros)) error(d, 'falta "miembros" (sustantivo en plural, ej. "pueblos")');
+    const ids = idsDeEventos(g.eventos, d, ctx, 2);
+    if (new Set(ids.map((id) => ctx.eventos.get(id).fecha)).size > 1) error(d, 'los eventos de un grupo deben tener la misma fecha');
+    for (const id of ids) {
+      if (usados.has(id)) error(d, `el evento "${id}" ya está en el grupo ${usados.get(id)}`);
+      usados.set(id, g.id);
+    }
+  });
+}
+
+// Temas sensibles (CLAUDE.md) donde no corresponde una ficha de curiosidades: guerras de la Conquista y la
+// Araucanía, guerras del período 05 (incluida la del Pacífico), la dictadura, matanzas y el estallido social.
+const SENSIBLES = new Set(['1907-matanza-escuela-santa-maria', '1938-matanza-seguro-obrero', '2019-estallido-social', '1991-informe-rettig', '1998-detencion-pinochet-londres']);
+const esSensible = (ev) =>
+  ev.periodoId === '08' || SENSIBLES.has(ev.id) || (ev.temas.includes('guerra') && (ev.periodoId === '05' || ev.temas.includes('pueblos-originarios')));
+
+// «¿Sabías que?»: una oración copiada textualmente del detalle del evento, nunca en temas sensibles.
+function validarSabiasQue(mapa, ctx) {
+  if (!mapa || typeof mapa !== 'object' || Array.isArray(mapa)) return error('sabias-que.json', 'debe ser un objeto { "id": "oración" }');
+  for (const [id, frase] of Object.entries(mapa)) {
+    const d = `sabias-que.json [${id}]`;
+    const ev = ctx.eventos.get(id);
+    if (!ev) error(d, 'el evento no existe');
+    else if (!esTexto(frase)) error(d, 'la frase está vacía');
+    else if (!ev.detalle.includes(frase)) error(d, 'la frase debe copiarse textualmente del detalle');
+    else if (esSensible(ev)) error(d, 'tema sensible: aquí no corresponde un «¿Sabías que?»');
+  }
+}
+
 if (!existsSync(DIR)) {
   console.error(`No existe la carpeta de datos: ${DIR}`);
   process.exit(1);
@@ -200,8 +270,9 @@ if (!existsSync(DIR)) {
 
 const nombres = readdirSync(DIR).filter((n) => n.endsWith('.json')).sort();
 const archivosEventos = nombres.filter((n) => ARCHIVO_EVENTOS.test(n));
+const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json'];
 for (const n of nombres) {
-  if (!ARCHIVO_EVENTOS.test(n) && n !== 'periodos.json' && n !== 'temas.json') aviso(n, 'archivo no reconocido (la app lo ignora)');
+  if (!ARCHIVO_EVENTOS.test(n) && !['periodos.json', 'temas.json', ...OPCIONALES].includes(n)) aviso(n, 'archivo no reconocido (la app lo ignora)');
 }
 
 function cargarMeta(nombre) {
@@ -214,6 +285,7 @@ const ctx = {
   temas: validarTemas(cargarMeta('temas.json') ?? []),
   periodos: validarPeriodos(cargarMeta('periodos.json') ?? []),
   ids: new Map(),
+  eventos: new Map(),
   imagenes: new Map(),
   pendientes: [],
   recientes: [],
@@ -237,8 +309,16 @@ for (const archivo of archivosEventos) {
 for (const id of ctx.periodos.keys()) {
   if (!archivosEventos.some((n) => n.startsWith(`${id}-`))) aviso('periodos.json', `el período ${id} aún no tiene archivo de eventos`);
 }
+const opcional = (n) => (nombres.includes(n) ? leer(n) : null);
+const recorridos = opcional('recorridos.json');
+const grupos = opcional('grupos.json');
+const sabiasQue = opcional('sabias-que.json');
+if (recorridos) validarRecorridos(recorridos, ctx);
+if (grupos) validarGrupos(grupos, ctx);
+if (sabiasQue) validarSabiasQue(sabiasQue, ctx);
 
 console.log(`Datos: ${ctx.periodos.size} períodos · ${ctx.temas.size} temas · ${total} eventos en ${archivosEventos.length} archivos`);
+console.log(`Historias: ${recorridos?.length ?? 0} · grupos: ${grupos?.length ?? 0} · «¿Sabías que?»: ${Object.keys(sabiasQue ?? {}).length}`);
 if (ctx.pendientes.length) console.log(`Ocultos por pendienteVerificacion (${ctx.pendientes.length}): ${ctx.pendientes.join(', ')}`);
 if (ctx.recientes.length) console.log(`Posteriores a 2023 visibles, confirmar certeza (${ctx.recientes.length}): ${ctx.recientes.join(', ')}`);
 if (avisos.length) console.log(`\nAVISOS (${avisos.length}):\n${avisos.map((a) => `  - ${a}`).join('\n')}`);

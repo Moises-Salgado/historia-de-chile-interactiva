@@ -155,6 +155,39 @@ Quedan pendientes:
 
 ## Ola 3 · Narrativa con los datos actuales
 
+**Estado: hecha (18-10-2026).** Se verificó con capturas en Edge (escritorio, 1280 y 1200 px, celular, modo oscuro y modo clase):
+
+| Criterio | Resultado |
+|---|---|
+| Historias guiadas | 4 historias y 28 pasos: Independencia (9), Grandes terremotos (6), Constituciones (8) y Mujeres en la vida pública (5). «Paso N de M» se anuncia al lector de pantalla y el último paso solo ofrece elegir otra historia |
+| Pueblos originarios | una tarjeta, «Pueblos que vivían aquí (9 pueblos)», con un mosaico, una sola ranura y un solo punto en el eje; abre la lista de norte a sur. Si un filtro deja uno solo («mapuche»), vuelve su tarjeta propia |
+| Eventos a la vista en 1366×768 | 9 tarjetas (antes 6) |
+| Ficha de personaje | 40 personajes que aparecen en 2 o más eventos; sin retrato ni biografía |
+| «¿Sabías que…?» | 77 frases copiadas del detalle. `npm test` comprueba que estén textuales y que no haya ninguna en temas sensibles: guerras de la Conquista, de la Araucanía y del período 05 (incluida la del Pacífico), la dictadura, matanzas y el estallido |
+| «¿Qué edad tenías?» | se guarda solo en el navegador, con «Olvidar»; desde 1900 |
+| Modo «Proyectar en clase» | letra al 140 %, colores claros y cabecera en una fila; Av Pág y Re Pág avanzan |
+| Cabecera | una fila desde 1200 px |
+| Peso agregado (gzip) | JS +9,6 KB (unos 4 KB son las frases de «¿Sabías que?»), CSS +0,7 KB |
+| Errores de consola | ninguno |
+
+Revisión final del crítico y del guardián de accesibilidad: 15 hallazgos, todos corregidos y comprobados en Edge.
+- **Contenido:** se quitaron frases sensibles o que no se entendían fuera de contexto.
+- **Recorrido:**
+  - el último paso ofrece «Elegir otra historia» y «Siguiente» lleva a la lista;
+  - «Volver» desde la ficha de un personaje regresa al evento;
+  - Anterior y Siguiente del detalle cuentan el grupo de pueblos como uno solo.
+- **Presentación:**
+  - los personajes sin ficha van en una frase y ya no parecen botones;
+  - los resúmenes de las listas se cortan en 3 líneas;
+  - la regla de un personaje muestra un tramo;
+  - Av Pág y Re Pág recorren primero el texto del detalle.
+- **Accesibilidad:**
+  - el formulario de edad ya no pierde el foco y su aviso se lee;
+  - Escape dentro del campo no cierra la vista;
+  - el foco sigue a la selección en la línea;
+  - el modo clase siempre se puede desactivar.
+
+Lo planificado:
 - **Historias guiadas** en `data/recorridos.json`, validadas por `npm test`:
   - Tienen ruta propia, «Paso 3 de 7» con aviso `aria-live` y ninguna celebración al final.
   - Primeras tres: Independencia, Terremotos y Constituciones. Todos sus eventos ya existen en los datos.
@@ -166,6 +199,13 @@ Quedan pendientes:
 - «¿En qué año naciste?» opcional: «Tenías X años», guardado solo en el navegador y con un botón «Olvidar».
 
 ## Ola 4 · Contenido nuevo (requiere verificación)
+
+**Estado: no se implementó.** Todo lo de esta ola es contenido nuevo que una persona debe revisar antes de publicarlo:
+- las coordenadas y el mapa (proyección y ubicación de cada lugar);
+- la identidad de cada retrato;
+- las preguntas «Para pensar», que requieren revisión docente.
+
+Hacerlo sin esa revisión iría contra las reglas de veracidad de `CLAUDE.md`.
 
 - Coordenadas aproximadas y un mapa «¿Dónde pasó?». El mapa es decorativo y el lugar sigue escrito en texto.
 - Mapa de los pueblos originarios de norte a sur, con una lista accesible equivalente.

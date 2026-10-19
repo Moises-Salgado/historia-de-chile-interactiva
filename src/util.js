@@ -58,6 +58,14 @@ export function guardarPreferencia(clave, valor) {
   }
 }
 
+export function borrarPreferencia(clave) {
+  try {
+    localStorage.removeItem(PREFIJO + clave);
+  } catch {
+    // Sin almacenamiento: no había nada guardado.
+  }
+}
+
 /** Imagen de Commons al ancho pedido. Solo anchos estándar (120, 250, 330, 500, 800→960…): ver CLAUDE.md. */
 export const urlImagen = (archivo, ancho) =>
   `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(archivo)}?width=${ancho}`;

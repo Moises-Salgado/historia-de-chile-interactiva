@@ -1,0 +1,58 @@
+[
+  {
+    "id": "independencia",
+    "titulo": "La Independencia",
+    "descripcion": "De la crisis de la monarquía española en 1808 a la batalla de Maipú en 1818: cómo Chile pasó de colonia española a país independiente.",
+    "eventos": [
+      "1808-crisis-de-la-monarquia",
+      "1810-primera-junta-de-gobierno",
+      "1811-primer-congreso-nacional",
+      "1814-desastre-de-rancagua",
+      "1814-reconquista-espanola",
+      "1817-cruce-de-los-andes",
+      "1817-batalla-de-chacabuco",
+      "1818-proclamacion-de-la-independencia",
+      "1818-batalla-de-maipu"
+    ]
+  },
+  {
+    "id": "terremotos",
+    "titulo": "Los grandes terremotos",
+    "descripcion": "Seis terremotos que marcaron la historia de Chile, desde 1647 hasta 2010.",
+    "eventos": [
+      "1647-terremoto-de-santiago",
+      "1835-terremoto-de-concepcion",
+      "1906-terremoto-de-valparaiso",
+      "1939-terremoto-chillan-corfo",
+      "1960-terremoto-valdivia",
+      "2010-terremoto-27f"
+    ]
+  },
+  {
+    "id": "constituciones",
+    "titulo": "Las constituciones",
+    "descripcion": "Las reglas principales del país: las constituciones de 1833, 1925 y 1980, sus reformas y los plebiscitos de 2020 a 2023.",
+    "eventos": [
+      "1833-constitucion",
+      "1925-constitucion-de-1925",
+      "1980-constitucion",
+      "2005-reformas-constitucionales",
+      "2019-estallido-social",
+      "2020-plebiscito-nacional",
+      "2022-plebiscito-constitucional",
+      "2023-plebiscito-constitucional"
+    ]
+  },
+  {
+    "id": "mujeres",
+    "titulo": "Mujeres en la vida pública",
+    "descripcion": "Del decreto de 1877 que permitió a las mujeres obtener títulos universitarios a la primera presidenta de Chile, en 2006.",
+    "eventos": [
+      "1877-decreto-amunategui",
+      "1914-gabriela-mistral-juegos-florales",
+      "1945-nobel-gabriela-mistral",
+      "1949-voto-femenino",
+      "2006-bachelet-primera-presidenta"
+    ]
+  }
+]

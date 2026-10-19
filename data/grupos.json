@@ -1,0 +1,19 @@
+[
+  {
+    "id": "pueblos-1500",
+    "titulo": "Pueblos que vivían aquí",
+    "miembros": "pueblos",
+    "descripcion": "Hacia 1500, antes de la llegada de los europeos, distintos pueblos vivían en el territorio que hoy es Chile. Aquí aparecen de norte a sur; Rapa Nui, en el océano Pacífico, va al final.",
+    "eventos": [
+      "1500-pueblo-aymara",
+      "1500-pueblo-atacameno",
+      "1500-pueblo-diaguita",
+      "1500-pueblo-mapuche",
+      "1500-pueblo-chono",
+      "1500-pueblo-kawesqar",
+      "1500-pueblo-selknam",
+      "1500-pueblo-yagan",
+      "1500-pueblo-rapanui"
+    ]
+  }
+]

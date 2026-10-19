@@ -37,6 +37,18 @@ export function haceCuanto({ t, anio, anioFin, fechaAproximada }, hoy = anioDeci
   return `${anioFin !== anio ? 'comenzó hace' : 'hace'} ${fechaAproximada ? 'unos ' : ''}${NUMERO.format(n)} ${n === 1 ? 'año' : 'años'}`;
 }
 
+/**
+ * Edad de quien lee en el año del evento (solo desde 1900): «ese año cumpliste 13», «el año en que naciste»
+ * o «faltaban 10 años para que nacieras». null sin año de nacimiento o para eventos anteriores a 1900.
+ */
+export function edadEn({ anio }, nacimiento) {
+  if (!nacimiento || anio < 1900) return null;
+  const d = anio - nacimiento;
+  if (d > 0) return `ese año cumpliste ${d}`;
+  if (d === 0) return 'el año en que naciste';
+  return `faltaban ${-d} ${d === -1 ? 'año' : 'años'} para que nacieras`;
+}
+
 /** Fecha breve de las tarjetas, solo con años: «1879», «1879-1884», «c. 1500», «c. 5000 a.C.». */
 export function fechaCorta({ anio, anioFin, fechaAproximada }) {
   return `${fechaAproximada ? 'c. ' : ''}${formatearAnio(anio)}${anioFin !== anio ? `-${formatearAnio(anioFin)}` : ''}`;
