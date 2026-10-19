@@ -65,16 +65,38 @@ Chile es una franja larga que se recorre en dos direcciones: de izquierda a dere
   - Las imágenes se piden en 250, 330 o 500 px según la pantalla.
   - Un portal de color abre cada período: número, nombre, fechas y curvas de nivel, en un SVG de fondo sin peticiones. Tocarlo lleva al primer evento del período.
   - El eje es una escala gráfica de tramos alternados, como adorno: los años se leen en las etiquetas.
-  - Con poca altura, láminas y portales se achican hasta un 60 % para que quepa la cartela.
+  - Con poca altura, láminas y portales bajan hasta un 60 % para que quepa la cartela, pero no se angostan (ver E).
   - Medido:
     - **Láminas a la vista:** 5 o 6 en 1366×768 en las zonas densas, porque los hitos se ubican primero y dejan huecos; 10 en 1920×1080, con dos carriles. No alcanza del todo el «≥ 6» del plan; se prefirieron láminas grandes antes que más chicas.
     - **Rendimiento:** 54 cuadros por segundo al desplazar con la CPU 4× más lenta. LCP de 2,5 s y CLS de 0,01 al abrir `#linea` en frío en un celular lento.
 - **D · Detalle tipo revista (hecha).**
-  - **Portada sobre el océano:** el titular (período, título, fecha, «hace…» y lugar) y la imagen completa, sin recortar, con su pie y crédito debajo. De fondo va la misma imagen difuminada al 20 %. Los textos claros superan 5:1 aunque la imagen sea blanca.
+  - **Portada sobre el océano:** el titular (período, título, fecha, «hace…» y lugar) y la imagen completa, sin recortar, con su pie y crédito debajo. El fondo lleva curvas de nivel y un tinte del 14 % del color del período; la imagen difuminada que tenía al principio se quitó en E.
   - **Grupos, historias y personajes** usan la misma portada, con curvas de nivel en vez de imagen.
   - **Ficha lateral** (fija al desplazar): un mini-mapa con la silueta de Chile y los lugares del evento, las franjas de sus zonas o todo el país en cobre, más el lugar, el período, «Ver en el mapa», la regla del tiempo, los temas y los personajes. Para las zonas basta un resumen de latitudes por región, de 0,3 KB (`src/chile-latitudes.json`, que también escribe `generar-mapa.mjs`).
   - **El «¿Sabías que…?»** va como cita con filete de cobre.
   - **Medido:** en celular (390×844), el título y la imagen caben en la primera pantalla; también en escritorio y en los pasos de historia.
+- **E · Pulido y verificación (hecha).**
+  - **Mediciones** en el sitio construido, primera visita en celular con red 4G lenta y CPU 4× más lenta:
+
+    | Vista | LCP | CLS | Peso propio |
+    |---|---|---|---|
+    | Portada | 1,5 s (la primera conexión a Wikimedia puede llevarlo a 2,7 s) | 0 | 179 KB |
+    | Línea de tiempo | 2,3 a 2,5 s | 0,01 | 178 KB |
+    | Mapa | 1,0 s | 0,002 | 200 KB |
+    | Evento por enlace directo | 3,4 a 3,7 s (antes del rediseño, 4,4 s) | 0 | 179 KB |
+
+    - En modo oscuro las cifras son similares.
+    - En modo clase, en escritorio, todo carga en menos de 0,6 s.
+    - El peso propio es HTML, CSS, JS y fuentes, ya comprimidos; las imágenes de Commons van aparte.
+  - **Mejoras en la carga del detalle:** la imagen principal tiene `srcset` (500 o 960 px) y, con un enlace directo, se precarga antes de armar la línea de tiempo.
+  - **Revisión del crítico, del director de arte y del guardián** sobre capturas de 19 pantallas. Lo principal que cambió:
+    - **Mapa:** en escritorio queda fijo y del alto de la pantalla. En celular, lo elegido aparece en una hoja abajo y el mapa se desplaza solo si esa hoja lo tapa. La tierra y los límites superan 3:1 de contraste. Si el mapa no carga, un aviso ofrece recargar. Las regiones usan `aria-current` y el globo con el nombre se cierra con Escape.
+    - **Línea de tiempo:** hay 9 títulos cortos (`data/titulos-cortos.json`) para los títulos que no cabían. Con poca altura, las láminas bajan sin angostarse y su título baja con ellas sin pasar de 1 rem. Antes se truncaban 20 títulos en modo clase a 1366×768, 10 con texto grande y 40 con texto grande en celular; ahora, ninguno. Solo se parten con guion las palabras de 13 letras o más. La descripción del período va completa o no va, y la cartela corta se oculta si no cabe entera.
+    - **Detalle:** sin fondo difuminado, para que ningún evento se vea más lúgubre o más épico por su foto. La imagen va con paspartú, la columna de lectura mide 36 rem y la ficha queda fija solo cuando cabe entera.
+    - **Para volver:** la portada muestra «Tu recorrido» (cuántos eventos se han visto y con cuál seguir). Cada historia guiada muestra su avance, las láminas vistas llevan ✓ y los eventos desde 1900 ofrecen «¿Qué edad tenías?» junto a la fecha.
+    - **Cabecera:** va en una fila desde 84 em. Con texto grande en el celular ocupa tres filas, y dos al leer un evento.
+    - **Historias:** el degradado va con el texto, así la ceja cobre tiene contraste AA sea cual sea el alto de la tarjeta.
+  - **Revisión final de las 19 pantallas** (claro, oscuro, modo clase, texto grande, celular y escritorio): letra mínima de 18 px (22 px con texto grande y 22,4 en modo clase), sin desborde horizontal y sin errores de consola.
 
 ## Datos del mapa
 

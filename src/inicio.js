@@ -32,7 +32,7 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, alElegirPe
       img.remove();
       continue;
     }
-    const url = urlImagen(ev.imagen.archivo, 500);
+    const url = urlImagen(ev.imagen.archivo, Number(img.dataset.ancho) || 500);
     if (img.getAttribute('src') !== url) img.src = url;
     const respaldo = () => {
       if (img.dataset.respaldo) return img.remove();
@@ -92,7 +92,31 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, alElegirPe
 
   seccion.querySelector('.inicio-creditos').innerHTML = creditos.length ? `Imágenes de las puertas: ${creditos.join('; ')}.` : '';
 
+  // «Tu recorrido»: cuántos eventos se han visto en este navegador y con cuál seguir (el siguiente sin ver
+  // después del último abierto o, si no hay, el primero sin ver).
+  // Se arma una vez y después solo cambian los textos y el enlace: así no se pierde el foco al volver.
+  const seguir = seccion.querySelector('.seguir');
+  seguir.innerHTML = `
+    <h2 class="ceja" id="seguir-titulo">Tu recorrido</h2>
+    <p class="seguir-cuenta"></p>
+    <a class="boton primario seguir-enlace" href="#linea"><span class="seguir-texto"></span> <span aria-hidden="true">▶</span></a>`;
+  const cuenta = seguir.querySelector('.seguir-cuenta');
+  const enlace = seguir.querySelector('.seguir-enlace');
+  function mostrarAvance(vistos, ultimoId) {
+    seguir.hidden = !vistos.size;
+    if (!vistos.size) return;
+    const i = eventos.findIndex((ev) => ev.id === ultimoId);
+    const proximo = eventos.slice(i + 1).find((ev) => !vistos.has(ev.id)) ?? eventos.find((ev) => !vistos.has(ev.id));
+    cuenta.innerHTML = `Llevas <strong>${vistos.size} de ${eventos.length}</strong> eventos vistos en este navegador.${proximo ? '' : ' ¡Ya los viste todos!'}`;
+    enlace.hidden = !proximo;
+    if (proximo) {
+      enlace.href = `#evento/${proximo.id}`;
+      enlace.querySelector('.seguir-texto').textContent = `Seguir con: ${proximo.titulo}`;
+    }
+  }
+
   return {
+    mostrarAvance,
     /** Lleva el foco al título de la portada (al llegar a ella con una pestaña o con «Volver»). */
     enfocar: () => seccion.querySelector('#inicio-titulo').focus({ preventScroll: true }),
   };

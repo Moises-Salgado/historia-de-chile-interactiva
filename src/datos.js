@@ -15,9 +15,11 @@ export function cargarDatos() {
   const sabiasQue = archivos['../data/sabias-que.json'] ?? {};
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const ubicaciones = archivos['../data/ubicaciones.json'] ?? {};
+  const titulosCortos = archivos['../data/titulos-cortos.json'] ?? {};
   for (const ev of eventos) {
     ev.sabiasQue = sabiasQue[ev.id] ?? null;
     ev.ubicaciones = ubicaciones[ev.id] ?? [];
+    ev.tituloCorto = titulosCortos[ev.id] ?? null; // solo para la lámina de la línea de tiempo
   }
   const conEventos = (lista) => (lista ?? []).map((x) => ({ ...x, eventos: x.eventos.map((id) => porId.get(id)).filter(Boolean) }));
   return {

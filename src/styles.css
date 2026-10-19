@@ -46,6 +46,8 @@
   --cobre-claro: #e8a874; /* cobre sobre el océano */
   --cobre-vivo: #c97a3f; /* solo marcas decorativas: no alcanza 3:1 sobre la niebla */
   --tierra: #46666b;
+  /* Curvas de nivel de los portales de período (línea de tiempo y portada). */
+  --curvas-portal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300' preserveAspectRatio='none'%3E%3Cg fill='none' stroke-width='1.2'%3E%3Cg stroke='%23fff' stroke-opacity='.16'%3E%3Cpath d='M0 30c40-14 60 14 100 2s60-16 100-4'/%3E%3Cpath d='M0 55c40-12 60 16 100 4s60-14 100-2'/%3E%3Cpath d='M0 105c40-14 60 12 100 0s60-16 100-2'/%3E%3Cpath d='M0 130c40-10 60 16 100 4s60-14 100-4'/%3E%3Cpath d='M0 180c40-14 60 14 100 2s60-14 100-2'/%3E%3Cpath d='M0 205c40-12 60 16 100 4s60-16 100-4'/%3E%3Cpath d='M0 255c40-14 60 12 100 0s60-14 100-2'/%3E%3Cpath d='M0 280c40-10 60 14 100 4s60-16 100-4'/%3E%3C/g%3E%3Cg stroke='%23e8a874' stroke-opacity='.4'%3E%3Cpath d='M0 80c40-14 60 14 100 2s60-16 100-4'/%3E%3Cpath d='M0 155c40-12 60 16 100 4s60-14 100-2'/%3E%3Cpath d='M0 230c40-14 60 12 100 0s60-16 100-2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   --sombra: 0 1px 1px rgb(8 25 31 / 0.06), 0 6px 16px -8px rgb(8 25 31 / 0.3);
   --sombra-alta: 0 2px 4px rgb(8 25 31 / 0.08), 0 14px 32px -12px rgb(8 25 31 / 0.4);
   --lavado: 7%; /* tinte de cada período sobre la línea: igual para los nueve */
@@ -72,7 +74,6 @@
   :root:not([data-clase]) {
     --acento: #e8a874;
     --sobre-acento: #1d0f05;
-    --rojo: #ff8a80;
     --fondo: #0b1619;
     --superficie: #122125;
     --superficie-2: #1a2e33;
@@ -429,19 +430,10 @@ h2[tabindex='-1']:focus,
   scale: 0.97;
 }
 
+/* La sección actual va en una pastilla de cobre: es lo más visible de la cabecera (los ajustes, menos). */
 .pestana[aria-current='page'] {
-  color: var(--texto);
-}
-
-.pestana[aria-current='page']::after {
-  position: absolute;
-  right: 0.625rem;
-  bottom: 0.25rem;
-  left: 0.625rem;
-  height: 3px;
+  color: var(--sobre-acento);
   background: var(--acento);
-  border-radius: 2px;
-  content: '';
 }
 
 /* La fila de secciones recorta lo que sale de ella: el contorno de foco va por dentro. */
@@ -462,11 +454,37 @@ h2[tabindex='-1']:focus,
   gap: 0.375rem 0.75rem;
 }
 
-@media (min-width: 112em) {
-  .cabecera {
+/* En pantallas anchas, todo en una fila (más alto para el contenido). Entre 84em y 112em, con rótulos
+   compactos: «Niños», «A+» y la lupa (los nombres accesibles no cambian). En clase y con texto grande, dos filas. */
+@media (min-width: 84em) {
+  :root:not([data-clase], [data-texto='grande']) .cabecera {
     grid-template-areas: 'marca pestanas lectura buscar';
     grid-template-columns: auto minmax(0, 1fr) auto auto;
   }
+}
+
+@media (min-width: 84em) and (max-width: 111.99em) {
+  :root:not([data-clase], [data-texto='grande']) .cabecera :is(.nivel-titulo, .nivel-opciones .solo-ancho, #btn-texto .solo-ancho, .texto-buscar) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  :root:not([data-clase], [data-texto='grande']) .cabecera .nivel-opciones .solo-angosto {
+    display: inline;
+  }
+}
+
+/* Bordes finos en la cabecera: siete cajas con borde grueso competían con el contenido. */
+.cabecera :is(.boton, .nivel-opciones) {
+  border-width: 1px;
+}
+
+.cabecera .nivel-opciones label + label {
+  border-left-width: 1px;
 }
 
 /* Sin espacio para la marca completa queda el ícono (el nombre sigue en el título para lectores de pantalla). */
@@ -545,14 +563,36 @@ h2[tabindex='-1']:focus,
   }
 }
 
-/* Teléfono con «Texto grande»: tres filas (marca, «A+» y lupa; secciones; nivel de lectura a todo el ancho). */
+/* Teléfono con «Texto grande»: tres filas (marca y «A+»; secciones y lupa; nivel de lectura a todo el ancho). */
 @media (max-width: 40em) {
   :root[data-texto='grande'] .cabecera {
     grid-template-areas:
-      'marca texto buscar'
-      'pestanas pestanas pestanas'
+      'marca . texto'
+      'pestanas pestanas buscar'
       'nivel nivel nivel';
     grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  /* Leyendo un evento, la fila de secciones se oculta («Volver» está abajo y deja ver la imagen) y la lupa
+     sube a la primera fila. */
+  :root[data-texto='grande'] body[data-vista='detalle'] .cabecera {
+    grid-template-areas:
+      'marca texto buscar'
+      'nivel nivel nivel';
+  }
+
+  :root[data-texto='grande'] body[data-vista='detalle'] .pestanas {
+    display: none;
+  }
+
+  /* Barra inferior en una fila: «Anterior» y «Siguiente» quedan como flechas (su nombre no cambia). */
+  :root[data-texto='grande'] .nav-texto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   :root[data-texto='grande'] .lectura {
@@ -642,9 +682,10 @@ h2[tabindex='-1']:focus,
 }
 
 .nivel-opciones input:checked + span {
-  color: var(--sobre-acento);
+  color: var(--texto);
   font-weight: 700;
-  background: var(--acento);
+  background: var(--pacifico-3);
+  box-shadow: inset 0 -3px 0 var(--acento);
 }
 
 .nivel-opciones input:focus-visible + span {
@@ -764,45 +805,6 @@ body[data-vista='detalle'] .linea {
   color: var(--texto-suave);
 }
 
-/* Los dos ejes del atlas, dibujados como escalas gráficas de mapa. */
-.ejes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.75rem;
-  margin: 1.25rem 0 0;
-  padding: 0;
-  font-family: var(--rotulo);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  list-style: none;
-}
-
-.ejes li {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-}
-
-.eje-icono {
-  flex: none;
-  border: 1px solid currentColor;
-}
-
-.eje-icono.horizontal {
-  width: 2.5rem;
-  height: 6px;
-  background: repeating-linear-gradient(90deg, currentColor 0 25%, transparent 25% 50%);
-}
-
-.eje-icono.vertical {
-  width: 6px;
-  height: 2.5rem;
-  color: var(--acento);
-  background: repeating-linear-gradient(180deg, currentColor 0 25%, transparent 25% 50%);
-}
-
 .inicio-silueta {
   width: auto;
   height: clamp(14rem, 28vw, 21rem);
@@ -910,8 +912,8 @@ body[data-vista='detalle'] .linea {
   right: 4.75rem;
   width: auto;
   height: calc(100% - 1.5rem);
-  fill: var(--tierra);
-  stroke: var(--tierra);
+  fill: color-mix(in oklab, var(--tierra) 70%, #fff);
+  stroke: color-mix(in oklab, var(--tierra) 70%, #fff);
   stroke-width: 2;
   stroke-linejoin: round;
 }
@@ -949,13 +951,67 @@ body[data-vista='detalle'] .linea {
 }
 
 .puerta-mapa::after {
-  background: linear-gradient(180deg, transparent 45%, rgb(8 25 31 / 0.8) 80%);
+  background: linear-gradient(90deg, rgb(8 25 31 / 0.88) 0 40%, transparent 75%);
 }
 
-/* La foto de Gabriela Mistral es un perfil: se encuadra el rostro sobre el título. */
-.puerta-historias > img {
-  object-position: 50% 60%;
+.puerta-mapa .puerta-texto {
+  max-width: 65%;
 }
+
+/* Historias guiadas (detalle.js) como puertas: mosaico a sangre con las imágenes de sus primeros pasos y,
+   encima, el título, la descripción y el avance. El degradado va con el texto y llega a 0,85 donde empieza
+   la ceja, sea cual sea el alto de la tarjeta (en el celular la descripción ocupa más líneas). */
+.historias-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+  gap: 1rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.historia-puerta {
+  min-height: 18rem;
+}
+
+.historia-puerta::after {
+  background: rgb(8 25 31 / 0.15);
+}
+
+.historia-puerta .puerta-texto {
+  padding-top: 3rem;
+  background: linear-gradient(180deg, rgb(8 25 31 / 0), rgb(8 25 31 / 0.85) 2.5rem, rgb(8 25 31 / 0.95));
+}
+
+.puerta-mosaico {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  gap: 2px;
+}
+
+.puerta-mosaico > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.historia-puerta .ceja,
+.historia-avance {
+  color: var(--cobre-claro);
+}
+
+.historia-avance {
+  margin-top: 0.375rem;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+
 
 .inicio-cuerpo {
   display: grid;
@@ -1025,7 +1081,7 @@ body[data-vista='detalle'] .linea {
   margin: 1rem 0 0;
   padding-left: 1rem;
   font-family: var(--serif);
-  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  font-size: clamp(1.1875rem, 1.1rem + 0.35vw, 1.375rem);
   font-weight: 600;
   line-height: 1.35;
   color: var(--texto-suave);
@@ -1055,19 +1111,20 @@ body[data-vista='detalle'] .linea {
   align-items: baseline;
   gap: 0 0.5rem;
   height: 100%;
-  padding: 0.75rem 1rem 0.875rem 0.75rem;
-  color: var(--texto);
+  min-height: 7.5rem;
+  padding: 0.875rem 1rem 1rem 0.75rem;
+  color: #fff;
   text-decoration: none;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-top: 4px solid var(--color);
+  background: var(--curvas-portal) center / 100% 100% no-repeat, var(--color);
   border-radius: var(--radio);
-  transition: scale 0.12s ease;
+  box-shadow: var(--sombra);
+  transition:
+    scale 0.12s ease,
+    box-shadow 0.15s ease;
 }
 
 .epoca:hover {
-  border-color: var(--acento);
-  border-top-color: var(--color);
+  box-shadow: var(--sombra-alta);
 }
 
 .epoca:active {
@@ -1080,7 +1137,6 @@ body[data-vista='detalle'] .linea {
   font-size: 1.5rem;
   font-weight: 600;
   line-height: 1;
-  color: var(--tinta);
 }
 
 .epoca-nombre {
@@ -1095,7 +1151,45 @@ body[data-vista='detalle'] .linea {
   font-size: 1.0625rem;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--texto-suave);
+  color: #e3ece9;
+}
+
+@media (min-width: 48em) {
+  .epocas-lista {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* «Tu recorrido»: lo visto y con qué seguir (inicio.js). */
+.seguir {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-left: 0.375rem solid var(--cobre-vivo);
+  border-radius: var(--radio);
+}
+
+.seguir .ceja {
+  flex-basis: 100%;
+}
+
+.seguir-cuenta {
+  margin: 0;
+}
+
+/* Pantallas bajas (un notebook, un proyector de 1280×720): las puertas suben a la primera pantalla. */
+@media (max-height: 50em) and (min-width: 40.01em) {
+  .inicio-hero h2 {
+    font-size: 3rem;
+  }
+
+  .puertas .puerta {
+    min-height: 11rem;
+  }
 }
 
 .inicio-creditos {
@@ -1112,12 +1206,11 @@ body[data-vista='detalle'] .linea {
     font-size: 2rem;
   }
 
-  .inicio-silueta,
-  .ejes {
+  .inicio-silueta {
     display: none;
   }
 
-  .puerta {
+  .puertas .puerta {
     min-height: 11rem;
   }
 
@@ -1126,9 +1219,9 @@ body[data-vista='detalle'] .linea {
   }
 }
 
-/* ---- Mapa de Chile (#mapa, src/mapa.js): el mapa sobre el océano, de norte a sur, a la izquierda; a la
-   derecha el título, el filtro y el panel con los eventos de lo elegido (en una columna, con algo elegido,
-   el panel va antes del mapa) ---- */
+/* ---- Mapa de Chile (#mapa, src/mapa.js): a la izquierda, el país entero sobre el océano (fijo y del alto de
+   la pantalla); a la derecha el título, el filtro y el panel con los eventos de lo elegido. En una columna,
+   el mapa se recorre de norte a sur y lo elegido aparece en una hoja fija abajo ---- */
 .mapa {
   position: absolute;
   inset: 0;
@@ -1148,6 +1241,8 @@ body[data-vista='detalle'] .linea {
 
 /* Espacio reservado con la proporción del mapa (viewBox de mapa.js), así no salta al cargar. */
 .mapa-lienzo {
+  width: auto;
+  height: calc(100cqh - 2.5rem);
   aspect-ratio: 310 / 1022;
 }
 
@@ -1169,7 +1264,7 @@ body[data-vista='detalle'] .linea {
     'figura cabeza'
     'figura panel';
   grid-template-rows: auto 1fr;
-  grid-template-columns: minmax(16rem, 24rem) minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
   gap: 1.25rem 2.5rem;
   max-width: 76rem;
@@ -1198,13 +1293,32 @@ body[data-vista='detalle'] .linea {
   color: var(--texto-suave);
 }
 
-/* Alto reservado para la primera fila de botones, que se agregan al cargar el mapa. */
+/* Una sola fila que se desplaza de lado (con «Todos los períodos» fijo al comienzo); el alto queda reservado
+   antes de que se agreguen los botones. */
 .mapa-filtro {
   display: flex;
-  flex-wrap: wrap;
   gap: 0.375rem;
-  min-height: 2.5rem;
+  min-height: 2.75rem;
   margin-top: 0.375rem;
+  padding-bottom: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.mapa-filtro .chip {
+  flex: none;
+}
+
+.mapa-filtro .chip:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--pacifico);
+  box-shadow: 0.75rem 0 0.75rem -0.5rem var(--pacifico);
+}
+
+.mapa-filtro .chip:first-child[aria-pressed='true'] {
+  background: var(--sobre-pacifico);
 }
 
 .chip {
@@ -1247,34 +1361,57 @@ body[data-vista='detalle'] .linea {
 }
 
 .atlas-mapa {
-  position: relative;
+  position: sticky;
+  top: 1rem;
   grid-area: figura;
   margin: 0;
   background: none;
 }
 
+/* Los rótulos pueden salir del recuadro del mapa (miden 18 px aunque el mapa sea chico). */
 .mapa-svg {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  overflow: visible;
 }
 
 .mapa-nota {
-  margin-top: 0.75rem;
+  margin: 0;
   color: var(--texto-suave);
 }
 
-/* Regiones: más cobre cuantos más eventos tienen (con el filtro, en ese período); la elegida, cobre claro. */
+/* Regiones: más cobre cuantas más eventos tienen (con el filtro, en ese período); la elegida, cobre claro y
+   con contorno oscuro encima. La tierra (#5f8287, 3,5:1 sobre el océano) y los límites claros superan 3:1. */
 .region {
-  fill: color-mix(in oklab, var(--cobre-vivo) var(--peso, 0%), var(--tierra));
-  stroke: var(--pacifico);
-  stroke-width: 0.8;
+  --tierra-mapa: #5f8287;
+  fill: color-mix(in oklab, var(--cobre-vivo) var(--peso, 0%), var(--tierra-mapa));
+  stroke: #e3ece9;
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
   cursor: pointer;
   transition: fill 0.15s ease;
 }
 
 .region:hover {
-  fill: color-mix(in oklab, var(--cobre-claro) 55%, var(--tierra));
+  fill: color-mix(in oklab, var(--cobre-claro) 55%, var(--tierra-mapa));
+}
+
+.contornos path,
+.contorno-foco {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+.contornos path {
+  stroke: #08191f;
+  stroke-width: 2.5px;
+}
+
+.contorno-foco {
+  stroke: #fff;
+  stroke-width: 3px;
 }
 
 .region.elegida {
@@ -1283,11 +1420,6 @@ body[data-vista='detalle'] .linea {
 
 .region:focus {
   outline: none;
-}
-
-.region:focus-visible {
-  stroke: #fff;
-  stroke-width: 2.5;
 }
 
 .graticula line,
@@ -1310,13 +1442,18 @@ body[data-vista='detalle'] .linea {
   fill: var(--texto-suave);
 }
 
-.rotulos text {
-  fill: var(--texto);
+.rotulos text,
+.graticula text,
+.recuadro text {
   paint-order: stroke;
   stroke: var(--pacifico);
   stroke-width: calc(var(--letra, 18px) * 0.22);
   stroke-linejoin: round;
   pointer-events: none;
+}
+
+.rotulos text {
+  fill: var(--texto);
 }
 
 /* Lugares: el punto crece con la cantidad de eventos; el área invisible agranda lo que se puede tocar. */
@@ -1344,9 +1481,10 @@ body[data-vista='detalle'] .linea {
   position: absolute;
   z-index: 5;
   padding: 0.25rem 0.625rem;
+  max-width: min(16rem, calc(100% - 1rem));
   font-weight: 600;
   color: var(--pacifico);
-  white-space: nowrap;
+  text-align: center;
   pointer-events: none;
   background: var(--sobre-pacifico);
   border-radius: 0.375rem;
@@ -1515,6 +1653,8 @@ body[data-vista='detalle'] .linea {
   color: var(--texto-suave);
 }
 
+/* En una columna: el mapa se recorre de norte a sur, sin saltos; con algo elegido, el panel es una hoja fija
+   abajo (con su propio desplazamiento) y el mapa sigue a la vista encima. */
 @media (max-width: 52em) {
   .mapa-contenido {
     grid-template-areas:
@@ -1525,16 +1665,15 @@ body[data-vista='detalle'] .linea {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .mapa-contenido:not([data-seleccion='todo']) {
-    grid-template-areas:
-      'cabeza'
-      'panel'
-      'figura';
-  }
-
   .atlas-mapa {
+    position: static;
     justify-self: center;
     width: min(100%, 19rem);
+  }
+
+  .mapa-lienzo {
+    width: 100%;
+    height: auto;
   }
 
   .atlas-panel {
@@ -1543,15 +1682,16 @@ body[data-vista='detalle'] .linea {
     overflow: visible;
   }
 
-  .mapa-filtro {
-    flex-wrap: nowrap;
-    padding-bottom: 0.25rem;
-    overflow-x: auto;
-    scrollbar-width: thin;
-  }
-
-  .chip {
-    flex: none;
+  .mapa-contenido:not([data-seleccion='todo']) .atlas-panel {
+    position: sticky;
+    top: auto;
+    bottom: 0;
+    z-index: 2;
+    max-height: 45dvh;
+    margin-inline: -0.5rem;
+    overflow-y: auto;
+    border-radius: var(--radio) var(--radio) 0 0;
+    box-shadow: 0 -12px 32px -12px rgb(0 0 0 / 0.7);
   }
 }
 
@@ -1566,6 +1706,9 @@ body[data-vista='detalle'] .linea {
   justify-content: space-between;
   column-gap: 1rem;
   padding: 0 1rem;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  letter-spacing: 0.04em;
   color: var(--texto-suave);
 }
 
@@ -1636,7 +1779,7 @@ body[data-vista='detalle'] .linea {
 
 .cartela-info {
   min-width: 0;
-  max-width: 46rem;
+  max-width: 52rem;
 }
 
 .cartela p {
@@ -1663,14 +1806,10 @@ body[data-vista='detalle'] .linea {
   color: var(--texto-suave);
 }
 
+/* Completa o nada (timeline.js la oculta si no cabe): cortada podía dejar una afirmación sin su fuente. */
 .cartela-desc {
-  display: -webkit-box;
   margin-top: 0.25rem !important;
-  overflow: hidden;
   color: var(--texto-suave);
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
 }
 
 .cartela-acciones {
@@ -1807,14 +1946,20 @@ body[data-vista='detalle'] .linea {
 /* Ya visto: un punto discreto en la esquina (el nombre accesible dice «ya visto»). */
 .evento.visto .tarjeta::after {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  width: 0.625rem;
-  height: 0.625rem;
+  top: 0.375rem;
+  right: 0.375rem;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #08191f;
   background: #fff;
   border-radius: 50%;
-  box-shadow: 0 0 0 2px rgb(8 25 31 / 0.6);
-  content: '';
+  box-shadow: 0 1px 3px rgb(8 25 31 / 0.6);
+  content: '✓';
 }
 
 .evento.actual .tarjeta {
@@ -1856,6 +2001,7 @@ img[data-periodo]:not(.cargada) {
 }
 
 .tarjeta-texto {
+  --fundido: calc(1.5rem * var(--s, 1)); /* el degradado llega a 0,78 donde empieza el texto */
   position: absolute;
   right: 0;
   bottom: 0;
@@ -1864,9 +2010,9 @@ img[data-periodo]:not(.cargada) {
   flex-direction: column;
   align-items: flex-start;
   gap: 0.25rem;
-  padding: 2.25rem 0.75rem 0.75rem;
+  padding: var(--fundido) 0.75rem calc(0.75rem * var(--s, 1));
   text-shadow: 0 1px 2px rgb(8 25 31 / 0.85);
-  background: linear-gradient(180deg, rgb(8 25 31 / 0) 0, rgb(8 25 31 / 0.78) 2rem, rgb(8 25 31 / 0.9) 100%);
+  background: linear-gradient(180deg, rgb(8 25 31 / 0) 0, rgb(8 25 31 / 0.78) var(--fundido), rgb(8 25 31 / 0.9) 100%);
 }
 
 .tarjeta-fecha {
@@ -1884,26 +2030,36 @@ img[data-periodo]:not(.cargada) {
   border-radius: 0.25rem;
 }
 
+/* En pantallas bajas el título baja con la lámina (--s, timeline.js), nunca de 1rem. Solo se parten con
+   guion las palabras de 13 letras o más («Proclamación» o «presidencial» caben enteras). */
 .tarjeta-titulo {
   display: -webkit-box;
   overflow: hidden;
   font-family: var(--serif);
-  font-size: 1.0625rem;
+  font-size: max(1rem, 1.0625rem * var(--s, 1));
   font-weight: 600;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  overflow-wrap: break-word;
-}
-
-.evento.imp-3 .tarjeta-titulo {
-  font-size: 1.1875rem;
   -webkit-line-clamp: 4;
   line-clamp: 4;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+  hyphens: auto;
+  hyphenate-limit-chars: 13 6 6;
+}
+
+.evento.imp-3 .tarjeta-titulo:not(.largo) {
+  font-size: max(1rem, 1.1875rem * var(--s, 1));
+}
+
+/* Los títulos de más de 40 letras van algo más chicos (timeline.js); las láminas bajas, en 3 líneas. */
+.tarjeta-titulo.largo,
+.evento.imp-1 .tarjeta-titulo {
+  font-size: 1rem;
 }
 
 .evento.imp-1 .tarjeta-titulo {
-  font-size: 1rem;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 
 /* Grupo (varios eventos de una misma fecha): mosaico de imágenes y cuántos reúne. */
@@ -1950,7 +2106,7 @@ img[data-periodo]:not(.cargada) {
   overflow: hidden;
   color: #fff;
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300' preserveAspectRatio='none'%3E%3Cg fill='none' stroke-width='1.2'%3E%3Cg stroke='%23fff' stroke-opacity='.16'%3E%3Cpath d='M0 30c40-14 60 14 100 2s60-16 100-4'/%3E%3Cpath d='M0 55c40-12 60 16 100 4s60-14 100-2'/%3E%3Cpath d='M0 105c40-14 60 12 100 0s60-16 100-2'/%3E%3Cpath d='M0 130c40-10 60 16 100 4s60-14 100-4'/%3E%3Cpath d='M0 180c40-14 60 14 100 2s60-14 100-2'/%3E%3Cpath d='M0 205c40-12 60 16 100 4s60-16 100-4'/%3E%3Cpath d='M0 255c40-14 60 12 100 0s60-14 100-2'/%3E%3Cpath d='M0 280c40-10 60 14 100 4s60-16 100-4'/%3E%3C/g%3E%3Cg stroke='%23e8a874' stroke-opacity='.4'%3E%3Cpath d='M0 80c40-14 60 14 100 2s60-16 100-4'/%3E%3Cpath d='M0 155c40-12 60 16 100 4s60-14 100-2'/%3E%3Cpath d='M0 230c40-14 60 12 100 0s60-16 100-2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
+    var(--curvas-portal)
       center / 100% 100% no-repeat,
     var(--color);
   border-radius: var(--radio);
@@ -1987,6 +2143,20 @@ img[data-periodo]:not(.cargada) {
   margin-top: auto;
 }
 
+/* En pantallas angostas (timeline.js): solo el número y las fechas. */
+.pista.angosta .portal {
+  padding: 0.75rem 0.5rem;
+}
+
+.pista.angosta :is(.portal-nombre, .portal-palabra) {
+  display: none;
+}
+
+.pista.angosta .portal-orden {
+  font-size: 2rem;
+  letter-spacing: 0;
+}
+
 /* Eje, puntos y años */
 .eje {
   position: absolute;
@@ -2005,9 +2175,28 @@ img[data-periodo]:not(.cargada) {
   right: 0;
   left: 0;
   height: 8px;
-  background: repeating-linear-gradient(90deg, var(--texto) 0 2.5rem, var(--superficie) 2.5rem 5rem);
+  background: var(--superficie);
   border: 1.5px solid var(--texto);
   transform-origin: 0 50%; /* la entrada de la línea lo dibuja de izquierda a derecha */
+}
+
+.eje-decadas > span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--texto);
+}
+
+/* En oscuro, el eje no debe ser lo más brillante de la pantalla. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-clase]) .eje-linea {
+    background: var(--superficie-2);
+    border-color: var(--borde-fuerte);
+  }
+
+  :root:not([data-clase]) .eje-decadas > span {
+    background: var(--borde-fuerte);
+  }
 }
 
 .tramo {
@@ -2212,6 +2401,10 @@ img[data-periodo]:not(.cargada) {
   opacity: 0.85;
 }
 
+.franja.estrecha .franja-nombre {
+  visibility: hidden;
+}
+
 .franja-nombre:focus-visible {
   outline: 3px solid #fff;
   outline-offset: -5px;
@@ -2239,25 +2432,11 @@ img[data-periodo]:not(.cargada) {
   padding-inline: 0.5rem;
 }
 
-/* En pantallas angostas los tres botones caben en una fila con letra normal; con «Texto grande»,
-   «Inicio» (o «Volver») pasa a su propia fila. */
+/* En pantallas angostas los tres botones caben en una fila con letra normal; con «Texto grande» también,
+   porque «Anterior» y «Siguiente» quedan como flechas (ver la cabecera). */
 @media (max-width: 40em) {
   .controles .boton.grande {
     font-weight: 400;
-  }
-
-  :root[data-texto='grande'] .controles {
-    grid-template-areas:
-      'mapa mapa'
-      'anterior siguiente'
-      'inicio inicio';
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-
-  :root[data-texto='grande'] body[data-vista='detalle'] .controles {
-    grid-template-areas:
-      'anterior siguiente'
-      'inicio inicio';
   }
 }
 
@@ -2397,10 +2576,9 @@ body[data-vista='detalle'] .minimapa-fila {
   background: var(--fondo);
 }
 
-/* Portada de cada vista, sobre el océano: el titular y la imagen completa (sin recortar), de fondo la misma
-   imagen difuminada y apenas visible (el texto claro conserva el contraste AA sobre cualquier imagen). En
-   celular, titular e imagen caben juntos en la primera pantalla. */
-/* Sobre el fondo difuminado (a lo más 20 % de una imagen blanca), los textos claros superan 5:1. */
+/* Portada de cada vista: el titular y la imagen completa (sin recortar, en un paspartú, con su pie y crédito)
+   sobre el océano con curvas de nivel y un leve tinte del color del período. El fondo es el mismo para todos
+   los eventos: ninguno se ve más lúgubre o más épico por su foto. */
 .detalle-portada {
   --texto-suave: #c8d6d2;
   --acento: #f2c9a4;
@@ -2408,30 +2586,16 @@ body[data-vista='detalle'] .minimapa-fila {
   isolation: isolate;
   overflow: hidden;
   padding: clamp(1rem, 3vw, 2rem) 1rem;
-}
-
-.detalle-portada.sin-figura {
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='none'%3E%3Cg fill='none' stroke-width='1'%3E%3Cg stroke='%23edf3f1' stroke-opacity='.08'%3E%3Cpath d='M0 20c80-14 120 14 200 2s120-16 200-4'/%3E%3Cpath d='M0 45c80-12 120 16 200 4s120-14 200-2'/%3E%3Cpath d='M0 95c80-14 120 12 200 0s120-16 200-2'/%3E%3Cpath d='M0 120c80-10 120 16 200 4s120-14 200-4'/%3E%3Cpath d='M0 170c80-14 120 14 200 2s120-14 200-2'/%3E%3C/g%3E%3Cg stroke='%23e8a874' stroke-opacity='.25'%3E%3Cpath d='M0 70c80-14 120 14 200 2s120-16 200-4'/%3E%3Cpath d='M0 145c80-12 120 16 200 4s120-14 200-2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
       center / 100% 100% no-repeat,
-    var(--pacifico);
-}
-
-.detalle-fondo {
-  position: absolute;
-  inset: -2rem;
-  z-index: -1;
-  width: calc(100% + 4rem);
-  height: calc(100% + 4rem);
-  object-fit: cover;
-  opacity: 0.2;
-  filter: blur(24px) saturate(1.2);
+    color-mix(in oklab, var(--color, var(--pacifico)) 14%, var(--pacifico));
 }
 
 .detalle-portada-contenido {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, auto);
-  align-items: start;
+  align-items: center;
   gap: 1rem 2.5rem;
   max-width: 76rem;
   margin: 0 auto;
@@ -2468,6 +2632,33 @@ body[data-vista='detalle'] .minimapa-fila {
   color: var(--texto-suave);
 }
 
+/* Bajada: la versión breve del evento, solo en pantallas anchas (en celular la imagen va primero). */
+.detalle-bajada {
+  display: none;
+  max-width: 38rem;
+  margin-top: 0.875rem !important;
+  font-size: 1.1875rem;
+  line-height: 1.5;
+}
+
+@media (min-width: 60em) {
+  .detalle-bajada:not(:empty) {
+    display: block;
+  }
+}
+
+/* Botón con aspecto de enlace (por ejemplo, «¿Qué edad tenías?» junto a la fecha). */
+.enlace {
+  padding: 0;
+  font: inherit;
+  color: var(--acento);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
 .vista-intro {
   max-width: 44rem;
   margin-top: 0.5rem !important;
@@ -2489,7 +2680,11 @@ body[data-vista='detalle'] .minimapa-fila {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: min(44vh, 26rem);
+  height: min(40vh, 24rem);
+  padding: 0.75rem;
+  background: rgb(237 243 241 / 0.06);
+  border: 1px solid rgb(237 243 241 / 0.14);
+  border-radius: var(--radio);
 }
 
 .detalle-marco::before {
@@ -2523,8 +2718,7 @@ body[data-vista='detalle'] .minimapa-fila {
     'texto ficha'
     'mas ficha';
   grid-template-rows: auto 1fr;
-  grid-template-columns: minmax(0, 44rem) minmax(15rem, 20rem);
-  justify-content: center;
+  grid-template-columns: minmax(0, 38rem) minmax(15rem, 20rem);
   align-items: start;
   gap: 1.5rem 3rem;
   max-width: 76rem;
@@ -2540,9 +2734,8 @@ body[data-vista='detalle'] .minimapa-fila {
   grid-area: mas;
 }
 
+/* Fija al desplazar solo si cabe entera (detalle.js le pone .fija). */
 .detalle-ficha {
-  position: sticky;
-  top: 1rem;
   display: grid;
   grid-area: ficha;
   gap: 0.875rem;
@@ -2552,8 +2745,27 @@ body[data-vista='detalle'] .minimapa-fila {
   border-radius: var(--radio);
 }
 
+.detalle-ficha.fija {
+  position: sticky;
+  top: 1rem;
+}
+
 .detalle-ficha .ceja {
   font-size: 1.0625rem;
+}
+
+/* Rótulos cortos en versalita condensada; los títulos con nombre, en serif. */
+.detalle-ficha .personajes h3,
+.plegable summary {
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.detalle-ficha .personajes h3 {
+  color: var(--texto-suave);
 }
 
 .ficha-lugar {
@@ -2696,15 +2908,16 @@ body[data-vista='detalle'] .minimapa-fila {
   border-radius: 0 0.3125rem 0.3125rem 0;
 }
 
+/* Marca del evento: una raya, no una perilla (no se arrastra). */
 .regla-marca {
   position: absolute;
   top: 50%;
-  width: 1.25rem;
-  height: 1.25rem;
-  margin: -0.625rem 0 0 -0.625rem;
-  background: var(--superficie);
-  border: 4px solid var(--texto);
-  border-radius: 50%;
+  width: 0.3125rem;
+  height: 1.5rem;
+  margin: -0.75rem 0 0 -0.15625rem;
+  background: var(--texto);
+  border-radius: 0.15625rem;
+  box-shadow: 0 0 0 2px var(--superficie);
 }
 
 /* Tramo (ficha de un personaje): del primer al último evento donde aparece. */
@@ -2770,8 +2983,11 @@ body[data-vista='detalle'] .minimapa-fila {
   border-color: var(--color);
 }
 
+/* Medida de lectura: unos 75 caracteres por línea, con interlineado amplio. */
 .detalle-cuerpo {
-  max-width: 44rem;
+  max-width: 36rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
 }
 
 .detalle-cuerpo p {
@@ -2779,7 +2995,7 @@ body[data-vista='detalle'] .minimapa-fila {
 }
 
 .detalle-cuerpo[data-nivel='nino'] {
-  font-size: 1.2rem;
+  font-size: 1.3125rem;
 }
 
 .personajes h3 {
@@ -2887,7 +3103,9 @@ a.vecino:hover {
 
 .sobre-periodo h3 {
   margin: 0 0 0.25rem;
-  font-size: 1.125rem;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .sobre-periodo-fechas {
@@ -3142,10 +3360,15 @@ a.vecino:hover {
 }
 
 /* ---- Vistas en lista: grupo, historias guiadas y ficha de personaje ---- */
+/* Las listas comparten el borde izquierdo con el titular (76rem); las fichas de texto, a lo más 54rem. */
 .detalle-contenido.vista-lista {
-  max-width: 54rem;
+  max-width: 76rem;
   margin: 0 auto;
   padding: 1.5rem 1rem 2rem;
+}
+
+.vista-lista :is(.fichas, .vecinos, .sobre-periodo, .ayuda) {
+  max-width: 54rem;
 }
 
 .fichas {
@@ -3305,7 +3528,7 @@ a.vecino:hover {
 /* «¿Sabías que…?»: una frase textual del detalle, como cita destacada con filete de cobre (en «Detallado»
    ya está en el texto). */
 .sabias-que {
-  max-width: 44rem;
+  max-width: 36rem;
   margin: 1.75rem 0 0.5rem;
   padding: 0.25rem 0 0.25rem 1.25rem;
   border-left: 4px solid var(--cobre-vivo);
@@ -3324,7 +3547,7 @@ a.vecino:hover {
 .sabias-que p {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  font-size: clamp(1.1875rem, 1.1rem + 0.35vw, 1.375rem);
   font-weight: 600;
   line-height: 1.35;
   text-wrap: pretty;
@@ -3456,6 +3679,14 @@ a.vecino:hover {
 
   .minimapa-marco {
     border-color: Highlight;
+  }
+
+  /* La sección actual, el período elegido en el mapa y el nivel de lectura se marcan con un contorno. */
+  .pestana[aria-current='page'],
+  .chip[aria-pressed='true'],
+  .nivel-opciones input:checked + span {
+    outline: 3px solid Highlight;
+    outline-offset: -3px;
   }
 
   .franja,

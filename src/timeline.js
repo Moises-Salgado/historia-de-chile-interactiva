@@ -9,11 +9,13 @@ import { animar, esc, movimientoReducido, urlImagen } from './util.js';
 
 // Medidas en rem (crecen con «Texto grande»). Todas las láminas tienen el mismo ancho; el alto depende de
 // la importancia (los hitos, más altos) y todas se apoyan en la base de su carril. Si la pantalla es baja,
-// láminas y portales se achican (hasta `minimo`) para que quepan la más alta y la cartela corta.
+// láminas y portales bajan (hasta `minimo`) para que quepan la más alta y la cartela corta, pero no se
+// angostan: el título de la lámina baja con ella (--s) sin pasar de 1rem y así ocupa las mismas líneas.
 const MEDIDA = { hueco: 0.625, tallo: 1.5, margen: 1.25, eje: 1.25, anios: 1.75, franjas: 2.25 };
 const LAMINA = { ancho: 9.5, alto: { 1: 11, 2: 12.5, 3: 14.5 }, portal: 10.5, minimo: 0.6 };
-// Cartela según el alto del cielo (rem): completa (período, nombre, descripción) o corta (nombre y fechas).
-const CARTELA = { completa: 7, corta: 2.75 };
+// Cartela según el alto del cielo (rem): completa (período, nombre, descripción) o corta (nombre y fechas,
+// 3,5rem con el margen de arriba: styles.css, .cielo[data-modo='corta']).
+const CARTELA = { completa: 7, corta: 3.5 };
 // Zoom = fracción del ancho que necesitan todas las láminas para no encimarse.
 // Con `max` ya todos los eventos tienen lámina: acercar más solo los separaría.
 const ZOOM = { min: 0.25, max: 1.64, inicial: 0.6, paso: 1.4, hitos: 0.45, todos: 0.8 };
@@ -106,7 +108,8 @@ function aniosCandidatos(escala) {
   const anios = [];
   // Prehistoria: solo miles redondos a.C.; desde 1400 (los primeros eventos d.C.), cada año.
   for (let a = Math.ceil(escala.anclas[0].t / 1000) * 1000; a < 0; a += 1000) anios.push(a);
-  for (let a = 1400; a <= Math.floor(escala.hoy); a++) anios.push(a);
+  // Desde 1400, solo las décadas: el año exacto de cada evento está en su lámina.
+  for (let a = 1400; a <= Math.floor(escala.hoy); a += 10) anios.push(a);
   return anios
     .map((a) => {
       const r = PASOS.findIndex((m) => a % m === 0);
@@ -175,12 +178,14 @@ function libreHasta(carril, x, ancho, hueco) {
 // el título van encima, sobre un degradado oscuro.
 const tarjeta = (ev, color) => {
   const { archivo } = ev.imagen;
+  // En la lámina va el título corto si lo hay (data/titulos-cortos.json); el nombre accesible lleva el completo.
+  const titulo = ev.tituloCorto ?? ev.titulo;
   return `
     <li class="evento imp-${ev.importancia}" data-id="${ev.id}" style="--color:${color}" hidden>
       <button type="button" class="tarjeta" tabindex="-1" aria-label="${esc(`${ev.fechaTexto}: ${ev.titulo}`)}">
         <span class="tarjeta-img"><img src="${urlImagen(archivo, 250)}" srcset="${[250, 330, 500].map((a) => `${urlImagen(archivo, a)} ${a}w`).join(', ')}"
           sizes="9.5rem" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}"></span>
-        <span class="tarjeta-texto"><span class="tarjeta-fecha">${esc(fechaCorta(ev))}</span><span class="tarjeta-titulo">${esc(ev.titulo)}</span></span>
+        <span class="tarjeta-texto"><span class="tarjeta-fecha">${esc(fechaCorta(ev))}</span><span class="tarjeta-titulo${titulo.length > 40 ? ' largo' : ''}">${esc(titulo)}</span></span>
       </button>
     </li>`;
 };
@@ -252,7 +257,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
         <svg class="conectores" aria-hidden="true"><path /></svg>
         <div class="portales" aria-hidden="true">${franjas
           .map(
-            ({ periodo: p }, i) => `<div class="portal" data-periodo="${p.id}" style="--color:${p.color}"><span class="portal-orden">Período ${i + 1}</span>
+            ({ periodo: p }, i) => `<div class="portal" data-periodo="${p.id}" style="--color:${p.color}"><span class="portal-orden"><span class="portal-palabra">Período </span>${i + 1}</span>
               <span class="portal-nombre">${esc(p.nombre)}</span><span class="portal-fechas">${esc(p.fechasTexto)}</span></div>`,
           )
           .join('')}</div>
@@ -263,7 +268,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
           )
           .join('')}</div>
         <div class="anios" aria-hidden="true"></div>
-        <div class="eje" aria-hidden="true"><div class="eje-linea"></div><span class="tramo" hidden></span>${saltos(escala)
+        <div class="eje" aria-hidden="true"><div class="eje-linea"><div class="eje-decadas"></div></div><span class="tramo" hidden></span>${saltos(escala)
           .map((u) => `<span class="salto-marca" data-u="${u}"></span>`)
           .join('')}${eventos
           .map((ev) => `<span class="punto imp-${ev.importancia}" data-id="${ev.id}" style="--color:${colorDe.get(ev.periodoId)}" title="${esc(ev.titulo)}" hidden></span>`)
@@ -302,6 +307,9 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   const estadoVista = seccion.querySelector('.estado-vista');
   const elFranjas = [...pista.querySelectorAll('.franja')];
   const elPortales = [...pista.querySelectorAll('.portal')];
+  const elNombres = elFranjas.map((el) => el.querySelector('.franja-nombre'));
+  const finFranja = []; // borde derecho de cada franja y ancho de su nombre (px), para ocultar nombres cortados
+  const decadas = pista.querySelector('.eje-decadas');
   const elTarjeta = new Map([...lista.children].map((li) => [li.dataset.id, li]));
   const elPunto = new Map([...pista.querySelectorAll('.punto')].map((el) => [el.dataset.id, el]));
   const minimapa = contenedorMinimapa.querySelector('.minimapa');
@@ -365,12 +373,14 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       rem,
       s,
       // En pantallas angostas con texto grande, la lámina no puede ser más ancha que la vista.
-      w: Math.min(LAMINA.ancho * rem * s, ventana.clientWidth - 2 * MEDIDA.margen * rem),
+      w: Math.min(LAMINA.ancho * rem, ventana.clientWidth - 2 * MEDIDA.margen * rem),
       h: LAMINA.alto[3] * rem * s, // alto del carril: el de la lámina más alta
       hueco,
       tallo: MEDIDA.tallo * rem,
-      portal: LAMINA.portal * rem * s,
+      // En pantallas angostas el portal solo lleva el número y las fechas: así cabe también una lámina.
+      portal: ventana.clientWidth < 640 ? 5.5 * rem * s : LAMINA.portal * rem,
     });
+    pista.classList.toggle('angosta', ventana.clientWidth < 640);
     // El primer portal va antes del primer evento.
     g.margenIzq = MEDIDA.margen * rem + g.portal + g.hueco + g.tallo;
     g.ejeY = yAnios - (MEDIDA.eje * rem) / 2;
@@ -391,6 +401,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     g.ancho = Math.ceil(Math.max(X(escala.total) + g.w, finTarjetas) + MEDIDA.margen * rem);
     pista.style.width = `${g.ancho}px`;
     pista.style.setProperty('--tarjeta-ancho', `${g.w}px`);
+    pista.style.setProperty('--s', s.toFixed(3));
     for (const imp of [1, 2, 3]) pista.style.setProperty(`--lamina-alto-${imp}`, `${(LAMINA.alto[imp] * rem * s).toFixed(1)}px`);
     pista.style.setProperty('--y-eje', `${g.ejeY}px`);
     pista.style.setProperty('--y-anios', `${yAnios}px`);
@@ -407,7 +418,17 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       const izq = Number.isFinite(fr.desde) ? X(fr.desde) : 0;
       const der = Number.isFinite(fr.hasta) ? X(fr.hasta) : g.ancho;
       Object.assign(elFranjas[i].style, { left: `${izq}px`, width: `${Math.max(0, der - izq)}px` });
+      elFranjas[i].classList.remove('estrecha');
+      finFranja[i] = { der, rotulo: elNombres[i].scrollWidth };
     });
+    // Escala gráfica honesta: un tramo oscuro por cada década real (cada dos, alternadas) desde 1400; antes,
+    // los milenios van comprimidos y el eje queda liso. Un tramo ancho es una década con muchos eventos.
+    let tramos = '';
+    for (let d = 1400; d < escala.hoy; d += 20) {
+      const a = X(escala.uDe(d));
+      tramos += `<span style="left:${a.toFixed(1)}px;width:${(X(escala.uDe(Math.min(d + 10, escala.hoy))) - a).toFixed(1)}px"></span>`;
+    }
+    decadas.innerHTML = tramos;
     mostrarTramo();
     actualizarTabindex();
     actualizarMinimapa();
@@ -503,6 +524,14 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     cielo.hidden = !modo;
     cielo.dataset.modo = modo;
     Object.assign(cielo.style, { top: `${ventana.offsetTop}px`, height: `${alto}px` });
+    ajustarDescripcion();
+  }
+
+  // La descripción del período va completa o no va: cortada podía dejar una afirmación sin su fuente.
+  function ajustarDescripcion() {
+    const desc = cartela.querySelector('.cartela-desc');
+    desc.hidden = false;
+    if (cielo.dataset.modo === 'completa' && cielo.scrollHeight > cielo.clientHeight + 1) desc.hidden = true;
   }
 
   let periodoCartela = null;
@@ -517,6 +546,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     cartela.querySelector('.cartela-nombre').textContent = periodo.nombre;
     cartela.querySelector('.cartela-fechas').textContent = periodo.fechasTexto;
     cartela.querySelector('.cartela-desc').textContent = periodo.descripcion;
+    ajustarDescripcion();
   }
 
   // ---- Minimapa ----
@@ -530,6 +560,9 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     minimapa.setAttribute('aria-valuenow', String(Math.round(((a + b) / 2) * 100)));
     minimapa.setAttribute('aria-valuetext', `${periodo.nombre}, ${periodo.fechasTexto}`);
     mostrarCartela(periodo);
+    // El nombre fijo de una franja que ya casi salió por la izquierda se oculta (si no, asoma un dígito suelto).
+    const izq = ventana.scrollLeft;
+    finFranja.forEach(({ der, rotulo }, i) => elFranjas[i].classList.toggle('estrecha', der > izq && der - izq < rotulo));
   }
 
   // Barra con los períodos y la posición de un evento, un grupo o varios eventos (para el detalle).
@@ -541,7 +574,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
         return `<span class="regla-periodo" style="left:${enRanura(desde)};width:${enRanura(hasta - desde)};--color:${fr.periodo.color}"></span>`;
       })
       .join('');
-    return `<div class="regla" aria-hidden="true"><span class="regla-extremo">${formatearAnio(Math.floor(escala.anclas[0].t / 1000) * 1000)}</span>
+    return `<div class="regla" aria-hidden="true"><span class="regla-extremo">${formatearAnio(Math.round(escala.anclas[0].t))}</span>
       <span class="regla-barra">${segmentos}${tramoDe([].concat(marcas))}</span><span class="regla-extremo">Hoy</span></div>`;
   }
 

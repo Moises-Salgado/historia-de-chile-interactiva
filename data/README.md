@@ -83,7 +83,7 @@ JSON en UTF-8. `src/datos.js` los incluye en el sitio y `npm test` (`scripts/val
 
 La app la carga desde `https://commons.wikimedia.org/wiki/Special:FilePath/<archivo>?width=800`, muestra siempre autor, licencia y enlace a Commons, y si falla usa `public/placeholders/periodo-NN.svg`.
 
-## Historias guiadas, grupos y «¿Sabías que?» (opcionales)
+## Historias guiadas, grupos, «¿Sabías que?» y títulos cortos (opcionales)
 
 No agregan hechos nuevos: solo ordenan o citan los eventos que ya existen.
 
@@ -92,6 +92,7 @@ No agregan hechos nuevos: solo ordenan o citan los eventos que ya existen.
 | `recorridos.json` | Historias guiadas (`#historia/<id>/<paso>`): `{ "id", "titulo", "descripcion", "eventos": [ids] }`. | Al menos 3 pasos, en orden cronológico, con eventos que existen y se muestran. La descripción no puede afirmar nada que no digan esos eventos. |
 | `grupos.json` | Eventos de una misma fecha que la línea de tiempo muestra en una sola tarjeta (`#grupo/<id>`): `{ "id", "titulo", "miembros" (plural, ej. "pueblos"), "descripcion", "eventos": [ids] }`. | Al menos 2 eventos, todos con la misma `fecha`; un evento no puede estar en dos grupos. El orden de `eventos` es el de la lista (ej. de norte a sur). |
 | `sabias-que.json` | `{ "<id del evento>": "<oración>" }`: una oración del `detalle` que se muestra como «¿Sabías que…?» en los niveles Para niños y General. | La oración debe estar copiada textualmente del `detalle` y entenderse sola (sin «él», «ese año» ni «horas más tarde»). No se usa en temas sensibles, porque una ficha de curiosidades no corresponde ahí: guerras de la Conquista y de la Araucanía, guerras del período 05 (incluida la del Pacífico), todo el período 08 (dictadura), matanzas y estallido social. `npm test` lo comprueba. |
+| `titulos-cortos.json` | `{ "<id del evento>": "<título corto>" }`: lo que muestra la lámina de la línea de tiempo cuando el título completo no cabe en sus líneas. El detalle, el buscador y el nombre accesible de la lámina usan siempre el completo. | Hasta 42 caracteres y más corto que el título. Sin datos nuevos: cada palabra de 4 letras o más (comparando sus 6 primeras) debe estar en el título o en el `resumen`. `npm test` lo comprueba. |
 
 ## Mapa: lugares y ubicaciones
 

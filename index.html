@@ -21,7 +21,7 @@
         const base = /^#?(?:inicio)?$/.test(h) ? 'inicio' : /^#(?:mapa|lugar)(?:\/|$)/.test(h) ? 'mapa' : 'linea';
         document.documentElement.dataset.base = base;
         if (base !== 'inicio') return;
-        for (const archivo of ['Hodges_easter-island.jpg', 'Gabriela_Mistral_1945_(cropped).jpg']) {
+        for (const archivo of ['Hodges_easter-island.jpg']) {
           const l = document.createElement('link');
           Object.assign(l, { rel: 'preload', as: 'image', fetchPriority: 'high' });
           l.href = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(archivo) + '?width=500';
@@ -90,16 +90,12 @@
           <canvas class="curvas" aria-hidden="true"></canvas>
           <div class="inicio-hero">
             <div class="inicio-texto">
-              <p class="ceja">De Arica al cabo de Hornos</p>
+              <p class="ceja">Un atlas de la historia de Chile</p>
               <h2 id="inicio-titulo" tabindex="-1">La historia de Chile, en el tiempo y en el territorio</h2>
               <p class="inicio-bajada">
                 Desde los primeros habitantes, <span data-cifra="antiguedad">hace unos 14.500 años</span>, hasta hoy: <span data-cifra="eventos">121</span> momentos con
                 imágenes de época y textos para niños, para todo público y para quienes quieren profundizar.
               </p>
-              <ul class="ejes">
-                <li><span class="eje-icono horizontal" aria-hidden="true"></span>En el tiempo: de los primeros pueblos a hoy</li>
-                <li><span class="eje-icono vertical" aria-hidden="true"></span>En el territorio: de Arica al cabo de Hornos</li>
-              </ul>
             </div>
             <svg class="inicio-silueta" viewBox="0 0 302 1006" aria-hidden="true" focusable="false"><use href="#silueta-chile" /></svg>
           </div>
@@ -129,7 +125,7 @@
             </li>
             <li>
               <a class="puerta puerta-historias" href="#historias">
-                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gabriela_Mistral_1945_(cropped).jpg?width=500" alt="" loading="lazy" decoding="async" data-evento="1945-nobel-gabriela-mistral" />
+                <span class="mosaico puerta-mosaico" aria-hidden="true"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Abdications_of_Bayonne_(F._Per%C3%A9z%2C_c._1846).jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1808-crisis-de-la-monarquia" data-ancho="250" /><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Se%C3%B1or_de_Mayo_-_terremoto_1647.jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1647-terremoto-de-santiago" data-ancho="250" /><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Manuscrito_original_de_la_Constituci%C3%B3n_Pol%C3%ADtica_de_la_Rep%C3%BAblica_de_Chile_de_1833._Archivo_Nacional_de_Chile.jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1833-constitucion" data-ancho="250" /><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Elo%C3%ADsa_Diaz_(1900).jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1877-decreto-amunategui" data-ancho="250" /></span>
                 <span class="puerta-texto">
                   <span class="puerta-titulo">Seguir una historia guiada</span>
                   <span class="puerta-bajada"><span data-cifra="historias">4</span> historias, paso a paso</span>
@@ -139,6 +135,7 @@
           </ul>
         </div>
         <div class="inicio-cuerpo">
+          <section class="seguir" aria-labelledby="seguir-titulo" hidden></section>
           <section class="destacado" aria-labelledby="destacado-ceja" hidden></section>
           <section class="epocas" aria-labelledby="epocas-titulo">
             <p class="ceja">Para ir directo</p>
@@ -157,12 +154,12 @@
               <p class="ceja">Mapa de Chile</p>
               <h2 id="mapa-titulo" tabindex="-1">Lo que pasó en cada lugar</h2>
               <p class="mapa-intro">Toca una región o un lugar para ver sus eventos, o filtra por período. Los límites son los de las 16 regiones actuales.</p>
+              <p class="mapa-nota">Regiones: Natural Earth (dominio público). Coordenadas de los lugares: Wikidata.</p>
               <div class="mapa-filtro" role="group" aria-label="Filtrar el mapa por período"></div>
             </header>
             <figure class="atlas-mapa oceano">
               <div class="mapa-lienzo"><p class="mapa-cargando">Cargando el mapa…</p></div>
-              <div class="globo" hidden></div>
-              <figcaption class="mapa-nota">Regiones: Natural Earth (dominio público). Coordenadas de los lugares: Wikidata.</figcaption>
+              <div class="globo" aria-hidden="true" hidden></div>
             </figure>
             <div class="atlas-panel"></div>
           </div>
@@ -174,10 +171,10 @@
     </main>
 
     <nav class="controles" aria-label="Recorrer la línea de tiempo">
-      <button type="button" id="btn-anterior" class="boton grande nav-anterior"><span aria-hidden="true">◀</span> Anterior</button>
+      <button type="button" id="btn-anterior" class="boton grande nav-anterior"><span aria-hidden="true">◀</span> <span class="nav-texto">Anterior</span></button>
       <button type="button" id="btn-inicio" class="boton grande nav-inicio">Al inicio<span class="solo-lector"> de la línea de tiempo</span></button>
       <div id="minimapa" class="minimapa-fila"></div>
-      <button type="button" id="btn-siguiente" class="boton grande nav-siguiente">Siguiente <span aria-hidden="true">▶</span></button>
+      <button type="button" id="btn-siguiente" class="boton grande nav-siguiente"><span class="nav-texto">Siguiente</span> <span aria-hidden="true">▶</span></button>
     </nav>
 
     <p id="avisos" class="solo-lector" role="status" aria-live="polite"></p>

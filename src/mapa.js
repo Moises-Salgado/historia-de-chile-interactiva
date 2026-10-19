@@ -6,13 +6,13 @@
 // elige; los lugares de cada región están también como botones en el panel.
 import geo from './chile-regiones.json';
 import { curvasDeNivel } from './curvas.js';
-import { esc, urlImagen } from './util.js';
+import { esc, movimientoReducido, urlImagen } from './util.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 const MARGEN = { izq: 4, der: 4, arriba: 8, abajo: 8 };
 // Rótulos fijos para orientarse: al oeste (sobre el mar) salvo Santiago, que va al este. Las latitudes van al
 // este, en el borde del mapa (el lado argentino no se dibuja).
-const ROTULOS = [['arica'], ['antofagasta'], ['copiapo'], ['valparaiso', 'Valparaíso'], ['santiago', 'Santiago', 'este'], ['concepcion'], ['valdivia'], ['chiloe'], ['estrecho', 'Estrecho']];
+const ROTULOS = [['arica'], ['iquique'], ['antofagasta'], ['copiapo'], ['valparaiso', 'Valparaíso'], ['santiago', 'Santiago', 'este'], ['concepcion'], ['valdivia'], ['monte-verde'], ['chiloe', 'Chiloé', 'este'], ['estrecho', 'Estrecho']];
 const plural = (n, una, varias) => `${n} ${n === 1 ? una : varias}`;
 
 /**
@@ -43,7 +43,6 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
   };
 
   // El título, la introducción y el espacio del mapa están en index.html (se ven antes de que cargue esto).
-  const desplazable = seccion.querySelector('.mapa-desplazable');
   const contenido = seccion.querySelector('.mapa-contenido');
   const figura = seccion.querySelector('.atlas-mapa');
   const lienzo = figura.querySelector('.mapa-lienzo');
@@ -63,19 +62,23 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
   svg.setAttribute('class', 'mapa-svg');
   svg.setAttribute('role', 'group');
   svg.setAttribute('aria-labelledby', 'mapa-titulo');
-  let capas = '<g class="graticula" aria-hidden="true">';
+  // Las rayas de latitud van bajo las regiones y sus números encima, con halo: donde Chile es más ancho
+  // (20°, 25° y 55° S) la tierra llega al borde y los taparía.
+  let rayas = '';
+  let latitudes = '';
   for (let lat = -20; lat >= -55; lat -= 5) {
     const y = ((LAT_MAX - lat) * S).toFixed(1);
-    capas += `<line x1="0" x2="${geo.ancho}" y1="${y}" y2="${y}"/><text x="${geo.ancho}" y="${y}" dy="-0.35em" text-anchor="end">${-lat}° S</text>`;
+    rayas += `<line x1="0" x2="${geo.ancho}" y1="${y}" y2="${y}"/>`;
+    latitudes += `<text x="${geo.ancho}" y="${y}" dy="-0.35em" text-anchor="end">${-lat}° S</text>`;
   }
   const { x: rx, y: ry } = geo.rapa;
-  capas += `</g><g class="recuadro" aria-hidden="true"><rect x="${rx - 28}" y="${ry - 22}" width="56" height="44" rx="3"/><text x="${rx - 26}" y="${ry + 22}" dy="1.1em">Rapa Nui · otra escala</text></g>`;
+  const capas = `<g class="graticula" aria-hidden="true">${rayas}</g><g class="recuadro" aria-hidden="true"><rect x="${rx - 28}" y="${ry - 22}" width="56" height="44" rx="3"/><text x="${rx - 28}" y="${ry - 22}" dy="-0.4em">Rapa Nui · otra escala</text></g>`;
   svg.innerHTML = `${capas}<g class="regiones">${geo.regiones
     .map((r) => `<path class="region" data-codigo="${r.codigo}" d="${r.d}${r.rapa}" tabindex="-1" role="button"/>`)
-    .join('')}</g><g class="alfileres">${mapa.lugares
+    .join('')}</g><g class="contornos" aria-hidden="true"></g><path class="contorno-foco" aria-hidden="true"/><g class="graticula" aria-hidden="true">${latitudes}</g><g class="alfileres" aria-hidden="true">${mapa.lugares
     .map((l) => {
       const [x, y] = xy(l);
-      return `<g class="alfiler" data-lugar="${l.id}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})" role="button"><circle class="area" r="9"/><circle class="punto" r="3"/></g>`;
+      return `<g class="alfiler" data-lugar="${l.id}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><circle class="area" r="9"/><circle class="punto" r="3"/></g>`;
     })
     .join('')}</g><g class="rotulos" aria-hidden="true">${ROTULOS.map(([id, texto, lado]) => {
     const l = lugarPorId.get(id);
@@ -87,6 +90,11 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
   lienzo.replaceChildren(svg);
   const elRegion = new Map([...svg.querySelectorAll('.region')].map((el) => [el.dataset.codigo, el]));
   const elLugar = new Map([...svg.querySelectorAll('.alfiler')].map((el) => [el.dataset.lugar, el]));
+  const geoRegion = new Map(geo.regiones.map((r) => [r.codigo, r]));
+  // Contornos encima de todas las regiones (si no, las vecinas tapan la mitad del borde): lo elegido y el foco.
+  const contornos = svg.querySelector('.contornos');
+  const contornoFoco = svg.querySelector('.contorno-foco');
+  const caminoDe = (codigo) => `${geoRegion.get(codigo).d}${geoRegion.get(codigo).rapa}`;
 
   // Los rótulos miden 18 px en pantalla sea cual sea el tamaño del mapa (y crecen con «Texto grande»).
   const ajustarLetra = () => {
@@ -104,19 +112,27 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     const max = Math.max(1, ...cuenta.values());
     const zona = seleccion.tipo === 'zona' ? new Set(zonaPorId.get(seleccion.id).regiones) : null;
     const regionElegida = seleccion.tipo === 'region' ? seleccion.id : seleccion.tipo === 'lugar' ? lugarPorId.get(seleccion.id).region : null;
+    const elegidas = [];
     for (const [codigo, el] of elRegion) {
       const n = cuenta.get(codigo);
+      const elegida = codigo === regionElegida || Boolean(zona?.has(codigo));
       el.style.setProperty('--peso', `${Math.round((n / max) * 70)}%`);
       el.setAttribute('aria-label', `${nombreRegion(codigo)}: ${plural(n, 'evento', 'eventos')}`);
-      el.classList.toggle('elegida', codigo === regionElegida || Boolean(zona?.has(codigo)));
-      el.setAttribute('aria-pressed', String(codigo === regionElegida));
+      el.dataset.globo = `${regionPorCodigo.get(codigo)?.corto ?? codigo}: ${plural(n, 'evento', 'eventos')}`;
+      el.classList.toggle('elegida', elegida);
+      // Las regiones llevan a otra vista (no se activan y desactivan): la elegida se marca como actual.
+      if (elegida) el.setAttribute('aria-current', 'true');
+      else el.removeAttribute('aria-current');
+      if (elegida) elegidas.push(codigo);
     }
+    contornos.innerHTML = elegidas.map((c) => `<path d="${caminoDe(c)}"/>`).join('');
+    // Los lugares se tocan con el dedo o el mouse; con el teclado y el lector, desde la lista del panel.
     for (const [id, el] of elLugar) {
       const n = de.lugar(id).length;
       const l = lugarPorId.get(id);
       el.style.display = n ? '' : 'none';
       el.querySelector('.punto').setAttribute('r', (2.6 + Math.sqrt(n) * 1.7).toFixed(1));
-      el.setAttribute('aria-label', `${l.nombre}: ${plural(n, 'evento', 'eventos')}${l.aproximado ? ' (ubicación aproximada)' : ''}`);
+      el.dataset.globo = `${l.nombre}: ${plural(n, 'evento', 'eventos')}${l.aproximado ? ' (ubicación aproximada)' : ''}`;
       el.classList.toggle('elegido', seleccion.tipo === 'lugar' && seleccion.id === id);
     }
     const foco = regionElegida ?? zona?.values().next().value ?? 'AP';
@@ -187,26 +203,50 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
       fuera: 'Fuera de Chile',
     })[tipo];
 
-  const enfocarSeleccion = () =>
-    (seleccion.tipo === 'todo' ? seccion.querySelector('#mapa-titulo') : panel.querySelector('#mapa-panel-titulo'))?.focus({ preventScroll: true });
+  // Desde fuera del mapa, el foco va a su título (o al de lo elegido); desde dentro (por ejemplo, con
+  // «◀ Todas las regiones»), al título del panel, que está a la vista.
+  const enfocarSeleccion = (desdeDentro = false) =>
+    (seleccion.tipo === 'todo' && !desdeDentro ? seccion.querySelector('#mapa-titulo') : panel.querySelector('#mapa-panel-titulo'))?.focus({ preventScroll: true });
+
+  // En el celular (una columna, styles.css), lo elegido aparece en una hoja fija abajo. Si en el mapa queda
+  // tapado por ella o fuera de la pantalla (al llegar por un enlace), el mapa se desplaza lo justo; si se ve,
+  // no se mueve.
+  const desplazable = seccion.querySelector('.mapa-desplazable');
+  const unaColumna = matchMedia('(max-width: 52em)');
+  function dejarALaVista() {
+    const ctm = svg.getScreenCTM();
+    if (!unaColumna.matches || !ctm || !desplazable.clientHeight) return;
+    let centro;
+    if (seleccion.tipo === 'lugar') centro = xy(lugarPorId.get(seleccion.id));
+    else if (seleccion.tipo === 'region' || seleccion.tipo === 'zona') {
+      const centros = (seleccion.tipo === 'region' ? [seleccion.id] : zonaPorId.get(seleccion.id).regiones).map((c) => geoRegion.get(c).centro);
+      centro = [0, 1].map((k) => centros.reduce((suma, c) => suma + c[k], 0) / centros.length);
+    } else return;
+    const { y } = new DOMPoint(...centro).matrixTransform(ctm);
+    const arriba = desplazable.getBoundingClientRect().top;
+    const abajo = panel.getBoundingClientRect().top;
+    const margen = 48;
+    if (y > arriba + margen && y < abajo - margen) return;
+    desplazable.scrollBy({ top: y - (arriba + (abajo - arriba) * 0.45), behavior: movimientoReducido() ? 'auto' : 'smooth' });
+  }
 
   /**
    * Muestra lo elegido ({ tipo: 'todo' | 'region' | 'lugar' | 'zona' | 'chile' | 'fuera', id }). Si no cambió, no
-   * se vuelve a pintar (así conserva el foco que se le devolvió al cerrar un evento).
+   * se vuelve a pintar (así conserva el foco y el desplazamiento al cerrar un evento).
    */
   let pintado = false;
   function mostrar(nueva, { enfocar = false } = {}) {
+    const dentro = seccion.contains(document.activeElement);
     const cambio = !pintado || nueva.tipo !== seleccion.tipo || nueva.id !== seleccion.id;
     if (cambio) {
       seleccion = nueva;
       pintarMapa();
       pintarPanel();
-      // En una columna el panel va arriba: se vuelve a él para ver lo elegido.
-      if (pintado && nueva.tipo !== 'todo' && getComputedStyle(contenido).gridTemplateColumns.split(' ').length < 2) desplazable.scrollTop = 0;
-      else panel.scrollTop = 0;
+      panel.scrollTop = 0;
       pintado = true;
+      dejarALaVista();
     }
-    if (enfocar && (cambio || !seccion.contains(document.activeElement))) enfocarSeleccion();
+    if (enfocar && (cambio || !dentro)) enfocarSeleccion(dentro);
   }
 
   // ---- Interacción: tocar, teclado y globo con el nombre ----
@@ -221,6 +261,10 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
   svg.addEventListener('keydown', (e) => {
     const el = e.target.closest('.region, .alfiler');
     if (!el) return;
+    if (e.key === 'Escape') {
+      globo.hidden = true;
+      return;
+    }
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       elegirEn(el);
@@ -236,23 +280,40 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     destino.focus();
   });
 
+  // Globo con el nombre corto y la cantidad: sobre el centro de la región (no de su caja, que en Valparaíso
+  // incluye el recuadro de Rapa Nui) o sobre el lugar. Escape lo cierra; los lectores ya oyen el nombre.
+  const punto = svg.createSVGPoint();
   function mostrarGlobo(el) {
-    const texto = el?.getAttribute('aria-label');
+    const texto = el?.dataset.globo;
     if (!texto) return void (globo.hidden = true);
-    const caja = (el.querySelector('.punto') ?? el).getBoundingClientRect();
     const base = figura.getBoundingClientRect();
+    let x;
+    let y;
+    if (el.dataset.codigo) {
+      [punto.x, punto.y] = geoRegion.get(el.dataset.codigo).centro;
+      ({ x, y } = punto.matrixTransform(svg.getScreenCTM()));
+    } else {
+      const caja = el.querySelector('.punto').getBoundingClientRect();
+      [x, y] = [caja.left + caja.width / 2, caja.top];
+    }
     globo.textContent = texto;
     globo.hidden = false;
-    // Centrado sobre lo señalado, sin salirse del mapa por los lados.
+    // Sin salirse del mapa por los lados.
     const mitad = globo.offsetWidth / 2;
-    const x = caja.left - base.left + caja.width / 2;
-    globo.style.left = `${Math.min(Math.max(x, mitad), Math.max(mitad, base.width - mitad))}px`;
-    globo.style.top = `${caja.top - base.top + (el.classList.contains('region') ? caja.height / 2 : 0)}px`;
+    globo.style.left = `${Math.min(Math.max(x - base.left, mitad), Math.max(mitad, base.width - mitad))}px`;
+    globo.style.top = `${y - base.top}px`;
   }
   svg.addEventListener('pointerover', (e) => mostrarGlobo(e.target.closest('.alfiler, .region')));
   svg.addEventListener('pointerleave', () => (globo.hidden = true));
-  svg.addEventListener('focusin', (e) => mostrarGlobo(e.target.closest('.alfiler, .region')));
-  svg.addEventListener('focusout', () => (globo.hidden = true));
+  svg.addEventListener('focusin', (e) => {
+    const el = e.target.closest('.region');
+    mostrarGlobo(el);
+    if (el) contornoFoco.setAttribute('d', caminoDe(el.dataset.codigo));
+  });
+  svg.addEventListener('focusout', () => {
+    globo.hidden = true;
+    contornoFoco.removeAttribute('d');
+  });
 
   filtro.addEventListener('click', (e) => {
     const b = e.target.closest('button');
@@ -269,6 +330,6 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     mostrar,
     titulo,
     /** Lleva el foco al título de lo elegido (o al del mapa). */
-    enfocar: enfocarSeleccion,
+    enfocar: () => enfocarSeleccion(),
   };
 }

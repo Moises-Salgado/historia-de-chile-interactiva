@@ -267,6 +267,8 @@ function validarSabiasQue(mapa, ctx) {
 // (si el punto representa un sitio o una zona, `aproximado` y una `nota` que lo explica) y zonas sin
 // alfiler, que cuentan en sus regiones. Devuelve los ids que puede usar ubicaciones.json.
 const REGIONES = ['AP', 'TA', 'AN', 'AT', 'CO', 'VS', 'RM', 'LI', 'ML', 'NB', 'BI', 'AR', 'LR', 'LL', 'AI', 'MA'];
+const RUTA_LATITUDES = new URL('../src/chile-latitudes.json', import.meta.url);
+const LATITUDES = existsSync(RUTA_LATITUDES) ? JSON.parse(readFileSync(RUTA_LATITUDES, 'utf8')) : {};
 const enChile = (lat, lon) => (lat <= -17 && lat >= -56.5 && lon >= -81 && lon <= -66) || (Math.abs(lat + 27.1) < 0.5 && Math.abs(lon + 109.35) < 0.6);
 function validarLugares(datos) {
   const ids = new Set();
@@ -289,6 +291,13 @@ function validarLugares(datos) {
     nuevo(l, donde);
     if (!REGIONES.includes(l?.region)) error(donde, `región desconocida "${l?.region}"`);
     if (!Number.isFinite(l?.lat) || !Number.isFinite(l?.lon) || !enChile(l.lat, l.lon)) error(donde, 'coordenadas inválidas o fuera de Chile');
+    // La latitud debe caer en la franja de su región (src/chile-latitudes.json, en la escala del mapa, con
+    // 3 unidades de margen); Rapa Nui va en un recuadro aparte. Los casos en el límite se revisan a mano.
+    else if (LATITUDES[l.region] && l.id !== 'rapa-nui') {
+      const y = (-17.4 - l.lat) * 26;
+      const [norte, sur] = LATITUDES[l.region];
+      if (y < norte - 3 || y > sur + 3) error(donde, `la latitud ${l.lat} no cae en la región ${l.region}`);
+    }
     if (!/^Q\d+$/.test(l?.wikidata ?? '')) error(donde, 'falta el ítem de Wikidata ("wikidata": "Q…") de donde salen las coordenadas');
     if (l?.aproximado !== undefined && l.aproximado !== true) error(donde, '"aproximado" solo puede ser true');
     if (l?.aproximado && !esTexto(l.nota)) error(donde, 'un lugar aproximado necesita una "nota" que explique qué representa el punto');
@@ -321,6 +330,31 @@ function validarUbicaciones(mapa, ctx, lugares) {
   for (const [id, ev] of ctx.eventos) if (!ev.pendienteVerificacion && !mapa[id]) error(d, `falta la ubicación del evento "${id}"`);
 }
 
+// Títulos cortos (titulos-cortos.json): solo para la lámina de la línea de tiempo, cuando el título no cabe.
+// Hasta 42 caracteres y sin datos nuevos: cada palabra de 4 letras o más (comparando sus 6 primeras) está en
+// el título o en el resumen del evento.
+const sinTildes = (t) => t.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+const raices = (texto) => new Set(sinTildes(texto).split(/[^\p{L}\p{N}]+/u).filter((p) => p.length >= 4).map((p) => p.slice(0, 6)));
+function validarTitulosCortos(mapa, ctx) {
+  if (!mapa || typeof mapa !== 'object' || Array.isArray(mapa)) return error('titulos-cortos.json', 'debe ser un objeto { "id": "título corto" }');
+  for (const [id, corto] of Object.entries(mapa)) {
+    const d = `titulos-cortos.json [${id}]`;
+    const ev = ctx.eventos.get(id);
+    if (!ev) {
+      error(d, 'el evento no existe');
+      continue;
+    }
+    if (!esTexto(corto) || corto.length > 42) {
+      error(d, 'debe tener entre 1 y 42 caracteres');
+      continue;
+    }
+    if (corto.length >= ev.titulo.length) error(d, 'no es más corto que el título');
+    const fuente = raices(`${ev.titulo} ${ev.resumen}`);
+    const ajenas = [...raices(corto)].filter((p) => !fuente.has(p));
+    if (ajenas.length) error(d, `palabras que no están en el título ni en el resumen: ${ajenas.join(', ')}`);
+  }
+}
+
 if (!existsSync(DIR)) {
   console.error(`No existe la carpeta de datos: ${DIR}`);
   process.exit(1);
@@ -328,7 +362,7 @@ if (!existsSync(DIR)) {
 
 const nombres = readdirSync(DIR).filter((n) => n.endsWith('.json')).sort();
 const archivosEventos = nombres.filter((n) => ARCHIVO_EVENTOS.test(n));
-const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json', 'lugares.json', 'ubicaciones.json'];
+const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json', 'lugares.json', 'ubicaciones.json', 'titulos-cortos.json'];
 for (const n of nombres) {
   if (!ARCHIVO_EVENTOS.test(n) && !['periodos.json', 'temas.json', ...OPCIONALES].includes(n)) aviso(n, 'archivo no reconocido (la app lo ignora)');
 }
@@ -374,12 +408,14 @@ const sabiasQue = opcional('sabias-que.json');
 if (recorridos) validarRecorridos(recorridos, ctx);
 if (grupos) validarGrupos(grupos, ctx);
 if (sabiasQue) validarSabiasQue(sabiasQue, ctx);
+const titulosCortos = opcional('titulos-cortos.json');
+if (titulosCortos) validarTitulosCortos(titulosCortos, ctx);
 const lugares = opcional('lugares.json');
 const ubicaciones = opcional('ubicaciones.json');
 if (lugares || ubicaciones) validarUbicaciones(ubicaciones, ctx, validarLugares(lugares));
 
 console.log(`Datos: ${ctx.periodos.size} períodos · ${ctx.temas.size} temas · ${total} eventos en ${archivosEventos.length} archivos`);
-console.log(`Historias: ${recorridos?.length ?? 0} · grupos: ${grupos?.length ?? 0} · «¿Sabías que?»: ${Object.keys(sabiasQue ?? {}).length}`);
+console.log(`Historias: ${recorridos?.length ?? 0} · grupos: ${grupos?.length ?? 0} · «¿Sabías que?»: ${Object.keys(sabiasQue ?? {}).length} · títulos cortos: ${Object.keys(titulosCortos ?? {}).length}`);
 if (lugares?.lugares) console.log(`Mapa: ${lugares.lugares.length} lugares (${lugares.lugares.filter((l) => l.aproximado).length} aproximados) · ${lugares.zonas?.length ?? 0} zonas · ${Object.keys(ubicaciones ?? {}).length} eventos ubicados`);
 if (ctx.pendientes.length) console.log(`Ocultos por pendienteVerificacion (${ctx.pendientes.length}): ${ctx.pendientes.join(', ')}`);
 if (ctx.recientes.length) console.log(`Posteriores a 2023 visibles, confirmar certeza (${ctx.recientes.length}): ${ctx.recientes.join(', ')}`);

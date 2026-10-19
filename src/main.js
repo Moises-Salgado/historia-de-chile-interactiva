@@ -3,7 +3,7 @@
 // #evento/<id>, #grupo/<id>, #historias, #historia/<id>/<paso> y #personaje/<nombre>.
 import './styles.css';
 import { cargarDatos } from './datos.js';
-import { crearDetalle } from './detalle.js';
+import { crearDetalle, imagenDetalle } from './detalle.js';
 import { crearFiltros } from './filtros.js';
 import { crearInicio } from './inicio.js';
 import { crearLineaDeTiempo } from './timeline.js';
@@ -14,6 +14,16 @@ if (document.documentElement.dataset.base === 'mapa') import('./mapa.js').catch(
 
 const { periodos, temas, eventos, recorridos, grupos, mapa: datosMapa } = cargarDatos();
 const porId = new Map(eventos.map((ev) => [ev.id, ev]));
+
+// Con un enlace directo a un evento, su imagen (lo más pesado de la vista) se pide antes de armar la línea de
+// tiempo, con el mismo srcset del detalle para que el navegador elija la misma versión.
+const enlaceDirecto = porId.get(/^#evento\/([a-z0-9-]+)$/.exec(location.hash)?.[1]);
+if (enlaceDirecto) {
+  const { srcset, sizes } = imagenDetalle(enlaceDirecto.imagen.archivo);
+  const enlace = Object.assign(document.createElement('link'), { rel: 'preload', as: 'image', imageSrcset: srcset, imageSizes: sizes });
+  enlace.fetchPriority = 'high';
+  document.head.append(enlace);
+}
 const grupoPorId = new Map(grupos.map((g) => [g.id, g]));
 const recorridoPorId = new Map(recorridos.map((r) => [r.id, r]));
 const $ = (selector) => document.querySelector(selector);
@@ -128,6 +138,7 @@ const detalle = crearDetalle(elDetalle, {
   personajeDe: (nombre) => personajes.get(slugDe(nombre)) ?? null,
   rutaEnMapa,
   mapa: datosMapa,
+  visto: (ev) => vistos.has(ev.id),
 });
 const filtros = crearFiltros($('#panel-filtros'), {
   periodos,
@@ -154,7 +165,9 @@ const inicio = crearInicio(seccionInicio, {
 // «Ya visto»: los eventos abiertos se recuerdan en este navegador, solo para una marca discreta en la tarjeta.
 const vistos = new Set((leerPreferencia('vistos') ?? '').split(',').filter((id) => porId.has(id)));
 linea.marcarVistos(vistos);
+// El último abierto se recuerda para «Seguir con…» en la portada.
 function marcarVisto(ev) {
+  guardarPreferencia('ultimo', ev.id);
   if (vistos.has(ev.id)) return;
   vistos.add(ev.id);
   guardarPreferencia('vistos', [...vistos].join(','));
@@ -215,12 +228,31 @@ function seleccionDeRuta(hash) {
 // El mapa (módulo y formas de las regiones) se carga la primera vez que se abre.
 let mapa = null;
 let cargaMapa = null;
+// Si el módulo no llega (sin conexión, o una versión nueva publicada mientras la pestaña estaba abierta), se
+// avisa y se ofrece recargar: reintentar import() no sirve, el navegador recuerda el módulo que falló.
+function avisarMapaFallido() {
+  const aviso = seccionMapa.querySelector('.mapa-cargando');
+  if (!aviso || aviso.dataset.fallo) return;
+  aviso.dataset.fallo = 'si';
+  aviso.textContent = 'No se pudo cargar el mapa. ';
+  const boton = Object.assign(document.createElement('button'), { type: 'button', className: 'boton chico', textContent: 'Recargar la página' });
+  boton.addEventListener('click', () => location.reload());
+  aviso.append(boton);
+  anunciar('No se pudo cargar el mapa.');
+}
+
 function mostrarMapa({ enfocar = false } = {}) {
-  cargaMapa ??= import('./mapa.js').then(({ crearMapa }) => {
-    mapa = crearMapa(seccionMapa, { eventos, periodos, mapa: datosMapa, anunciar, alElegir: (ruta) => ir(ruta) });
-  });
+  cargaMapa ??= import('./mapa.js')
+    .then(({ crearMapa }) => {
+      mapa = crearMapa(seccionMapa, { eventos, periodos, mapa: datosMapa, anunciar, alElegir: (ruta) => ir(ruta) });
+    })
+    .catch(avisarMapaFallido);
   cargaMapa.then(() => {
     if (base !== 'mapa') return;
+    if (!mapa) {
+      if (enfocar) seccionMapa.querySelector('.mapa-cargando button')?.focus();
+      return;
+    }
     const seleccion = seleccionDeRuta(location.hash);
     mapa.mostrar(seleccion, { enfocar: enfocar && !detalle.abierto });
     if (!detalle.abierto) document.title = seleccion.tipo === 'todo' ? BASES.mapa.titulo : `${mapa.titulo(seleccion)} · Mapa · ${TITULO}`;
@@ -231,6 +263,7 @@ function ponerBase(nueva) {
   base = nueva;
   raiz.dataset.base = nueva;
   if (!detalle.abierto) document.title = BASES[nueva].titulo;
+  if (nueva === 'inicio') inicio.mostrarAvance(vistos, leerPreferencia('ultimo'));
   actualizarInert();
   actualizarControles();
   actualizarPestanas();

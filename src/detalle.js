@@ -5,7 +5,7 @@
 // guiada, un grupo de eventos, la lista de historias o la ficha de un personaje, con la misma portada.
 import latitudes from './chile-latitudes.json';
 import { edadEn, formatearAnio, haceCuanto } from './fechas.js';
-import { borrarPreferencia, creditoImagen, esc, externo, guardarPreferencia, leerPreferencia, nombreFuente, urlImagen } from './util.js';
+import { borrarPreferencia, creditoImagen, esc, externo, guardarPreferencia, leerPreferencia, movimientoReducido, nombreFuente, urlImagen } from './util.js';
 
 // «Detallado» suma el detalle al resumen general: el detalle lo continúa, no lo repite.
 const PARRAFOS = {
@@ -72,11 +72,10 @@ const barraHistoria = ({ recorrido, paso }) => `
       .join('')}</ol>
   </nav>`;
 
-// Portada de cada vista, sobre el océano: ceja, título y, si hay, la imagen completa con su pie y crédito
-// (de fondo, la misma imagen difuminada). Sin imagen, curvas de nivel.
-const portada = ({ ceja, titulo, debajo = '', figura = '', fondo = '', arriba = '' }) => `
+// Portada de cada vista, sobre el océano con curvas de nivel: ceja, título y, si hay, la imagen completa con
+// su pie y crédito.
+const portada = ({ ceja, titulo, debajo = '', figura = '', arriba = '' }) => `
   <header class="detalle-portada oceano${figura ? '' : ' sin-figura'}">
-    ${fondo}
     <div class="detalle-portada-contenido">
       ${arriba}
       <div class="detalle-titular">
@@ -87,6 +86,13 @@ const portada = ({ ceja, titulo, debajo = '', figura = '', fondo = '', arriba = 
       ${figura}
     </div>
   </header>`;
+
+/** Imagen del detalle: 500 px en pantallas angostas y 800 (que Commons sirve en 960) en las anchas. */
+export const imagenDetalle = (archivo) => ({
+  src: urlImagen(archivo, 800),
+  srcset: `${urlImagen(archivo, 500)} 500w, ${urlImagen(archivo, 800)} 960w`,
+  sizes: '(max-width: 60em) calc(100vw - 2rem), min(36rem, 46vw)',
+});
 
 // Mini-mapa: la silueta de Chile (index.html) con los lugares del evento, las franjas de sus zonas o todo el
 // país si es de alcance nacional. Usa la proyección del mapa (scripts/generar-mapa.mjs).
@@ -122,9 +128,10 @@ const leerNacimiento = () => {
 /**
  * Crea el panel en `raiz` («Volver», «Anterior» y «Siguiente» están en la barra inferior).
  * personajeDe(nombre) devuelve { slug, eventos } si el personaje tiene ficha (aparece en más de un evento);
- * rutaEnMapa(evento), la dirección donde se ve en el mapa (o null); `mapa`, los lugares y zonas (mini-mapa).
+ * rutaEnMapa(evento), la dirección donde se ve en el mapa (o null); `mapa`, los lugares y zonas (mini-mapa);
+ * visto(evento), si ya se abrió en este navegador (avance de las historias).
  */
-export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = () => null, mapa = { lugares: [], zonas: [] } }) {
+export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = () => null, mapa = { lugares: [], zonas: [] }, visto = () => false }) {
   const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   const temaDe = new Map(temas.map((t) => [t.id, t.nombre]));
   const lugarDe = new Map(mapa.lugares.map((l) => [l.id, l]));
@@ -202,7 +209,22 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
     raiz.querySelector('#anio-nacimiento').value = n ?? '';
     raiz.querySelector('[data-accion="olvidar"]').hidden = !n;
     raiz.querySelector('.edad-estado').textContent = mensaje;
+    const abrir = raiz.querySelector('.edad-abrir');
+    if (abrir) abrir.hidden = Boolean(n);
   }
+
+  // «¿Qué edad tenías?» junto a la fecha abre el formulario (al final del detalle) y lleva el foco al campo.
+  raiz.addEventListener('click', (e) => {
+    if (!e.target.closest('.edad-abrir')) return;
+    const plegable = raiz.querySelector('.edad');
+    if (!plegable) return;
+    // El campo se puede enfocar recién cuando el plegable terminó de abrirse.
+    const enfocarCampo = () => raiz.querySelector('#anio-nacimiento').focus({ preventScroll: true });
+    if (plegable.open) enfocarCampo();
+    else plegable.addEventListener('toggle', enfocarCampo, { once: true });
+    plegable.open = true;
+    plegable.scrollIntoView({ block: 'center', behavior: movimientoReducido() ? 'auto' : 'smooth' });
+  });
 
   raiz.addEventListener('submit', (e) => {
     const campo = e.target.querySelector('#anio-nacimiento');
@@ -240,22 +262,29 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
 
     // Orden de lectura: título, fecha y lugar; luego la imagen (a la derecha en pantallas anchas), el texto,
     // la ficha (al lado del texto en pantallas anchas) y el resto.
-    const url = urlImagen(img.archivo, 800);
+    const grande = imagenDetalle(img.archivo);
+    const url = grande.src;
     const ruta = rutaEnMapa(ev);
     const temasDe = ev.temas.filter((t) => temaDe.get(t) !== p.nombre).map((t) => `<span class="etiqueta">${esc(temaDe.get(t))}</span>`);
+    // Bajada (en pantallas anchas): la versión breve del evento, salvo que ya sea el texto que se lee.
+    const bajada = () => (nivel === 'nino' ? '' : esc(ev.resumenNino));
     raiz.style.setProperty('--color', p.color);
     pintar(
       `
       <div class="detalle-revista">
         ${portada({
           arriba: historia ? barraHistoria(historia) : '',
-          fondo: `<img class="detalle-fondo" src="${url}" alt="" decoding="async">`,
           ceja: esc(p.nombre),
           titulo: esc(ev.titulo),
-          debajo: `<p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time> <span class="detalle-hace">${tiempo(ev)}</span></p>
-            <p class="detalle-lugar">${esc(ev.lugar)}</p>`,
+          debajo: `<p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time> <span class="detalle-hace">${tiempo(ev)}</span>${
+            ev.anio >= 1900 ? ` <button type="button" class="enlace edad-abrir"${leerNacimiento() ? ' hidden' : ''}>¿Qué edad tenías?</button>` : ''
+          }</p>
+            <p class="detalle-lugar">${esc(ev.lugar)}</p>
+            <p class="detalle-bajada">${bajada()}</p>`,
+          // El pie describe la imagen: el texto alternativo queda vacío para no leerlo dos veces.
           figura: `<figure class="detalle-figura">
-            <div class="detalle-marco"><img src="${url}" alt="${esc(img.pieDeFoto)}" fetchpriority="high" decoding="async" data-periodo="${ev.periodoId}"></div>
+            <div class="detalle-marco"><img src="${url}" srcset="${grande.srcset}" sizes="${grande.sizes}" alt=""
+              fetchpriority="high" decoding="async" data-periodo="${ev.periodoId}"></div>
             <figcaption><span class="pie">${esc(img.pieDeFoto)}</span> <span class="credito">Imagen: ${creditoImagen(img)}</span></figcaption>
           </figure>`,
         })}
@@ -295,12 +324,24 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
       </div>`,
       enfocar,
     );
+    ajustarFicha();
     alCambiarNivel = () => {
       const contenedor = raiz.querySelector('.detalle-cuerpo');
       contenedor.dataset.nivel = nivel;
       contenedor.innerHTML = cuerpo();
+      raiz.querySelector('.detalle-bajada').innerHTML = bajada();
     };
   }
+
+  // La ficha acompaña al texto al desplazar solo si cabe entera en la pantalla (si no, se cortaría).
+  function ajustarFicha() {
+    const ficha = raiz.querySelector('.detalle-ficha');
+    if (!ficha) return;
+    ficha.classList.remove('fija');
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 18;
+    ficha.classList.toggle('fija', ficha.offsetHeight + 2 * rem <= raiz.clientHeight);
+  }
+  addEventListener('resize', ajustarFicha);
 
   /** Un grupo de eventos de la misma fecha (por ejemplo, los pueblos que vivían aquí hacia 1500). */
   function mostrarGrupo(grupo, { antes, despues, nivel: nivelLectura, regla = '', enfocar = true }) {
@@ -345,19 +386,26 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
       })}
       <div class="detalle-contenido vista-lista">
         <div class="detalle-texto">
-          <ul class="fichas">${recorridos
-            .map(
-              (r) => `
-            <li><a class="ficha" href="#historia/${r.id}/1" style="--color:${colorDe(r.eventos[0])}">
-              ${mosaico(r.eventos)}
-              <span class="ficha-texto">
-                <span class="ficha-meta">${r.eventos.length} pasos · de ${formatearAnio(r.eventos[0].anio)} a ${formatearAnio(r.eventos.at(-1).anio)}</span>
-                <span class="ficha-titulo">${esc(r.titulo)}</span>
-                <span class="ficha-resumen">${esc(r.descripcion)}</span>
-                <span class="ficha-accion">Empezar <span aria-hidden="true">▶</span></span>
+          <ul class="historias-lista">${recorridos
+            .map((r) => {
+              // Avance: cuántos pasos ya se vieron; la historia sigue en el primero que falta.
+              const vistosAqui = r.eventos.filter(visto).length;
+              const siguiente = r.eventos.findIndex((ev) => !visto(ev)) + 1 || 1;
+              const accion = !vistosAqui ? 'Empezar' : vistosAqui === r.eventos.length ? 'Terminada · volver a recorrerla' : `${vistosAqui} de ${r.eventos.length} pasos vistos · seguir`;
+              return `
+            <li><a class="puerta historia-puerta" href="#historia/${r.id}/${siguiente}">
+              <span class="mosaico puerta-mosaico" aria-hidden="true">${r.eventos
+                .slice(0, 4)
+                .map((ev) => `<img src="${urlImagen(ev.imagen.archivo, 250)}" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}">`)
+                .join('')}</span>
+              <span class="puerta-texto">
+                <span class="ceja">${r.eventos.length} pasos · ${formatearAnio(r.eventos[0].anio)}-${formatearAnio(r.eventos.at(-1).anio)}</span>
+                <span class="puerta-titulo">${esc(r.titulo)}</span>
+                <span class="puerta-bajada">${esc(r.descripcion)}</span>
+                <span class="historia-avance">${accion} <span aria-hidden="true">▶</span></span>
               </span>
-            </a></li>`,
-            )
+            </a></li>`;
+            })
             .join('')}</ul>
         </div>
       </div>
