@@ -1,6 +1,7 @@
 // Genera el mapa de Chile de la app a partir de Natural Earth (dominio público):
 //   · src/chile-regiones.json: las 16 regiones como caminos SVG simplificados (se carga al abrir el mapa).
-//   · la silueta de la portada, dentro de <symbol id="silueta-chile"> en index.html.
+//   · src/chile-latitudes.json: de dónde a dónde llega cada región (en y del SVG), para el mini-mapa del detalle.
+//   · la silueta de la portada y del mini-mapa, dentro de <symbol id="silueta-chile"> en index.html.
 // Uso: node scripts/generar-mapa.mjs <ne_10m_admin_1_states_provinces.geojson>
 // Fuente (versión 5.1.2): https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_10m_admin_1_states_provinces.geojson
 // Proyección equirectangular centrada en la latitud media de Chile (36,75° S); Rapa Nui va en un recuadro
@@ -95,6 +96,7 @@ function caminoCorto(anillo) {
 }
 
 const regiones = [];
+const latitudes = {};
 let silueta = '';
 for (const f of features) {
   const codigo = f.properties.iso_3166_2.replace('CL-', '');
@@ -102,6 +104,7 @@ for (const f of features) {
   const partes = [];
   let mayor = null;
   let rapa = '';
+  let [y0, y1] = [Infinity, -Infinity];
   for (const pol of polis) {
     const exterior = pol[0];
     const lonMedia = exterior.reduce((s, c) => s + c[0], 0) / exterior.length;
@@ -118,14 +121,20 @@ for (const f of features) {
     partes.push(camino(simplificarAnillo(proyectado, isla ? 0.15 : 0.55)));
     if (!isla && a >= 25) silueta += caminoCorto(simplificarAnillo(proyectado, 2.5));
     if (!mayor || a > mayor.a) mayor = { a, c: centroide(proyectado) };
+    if (!isla) for (const [, y] of proyectado) [y0, y1] = [Math.min(y0, y), Math.max(y1, y)];
   }
   regiones.push({ codigo, d: partes.join(''), rapa, centro: mayor.c.map((v) => +v.toFixed(1)) });
+  latitudes[codigo] = [Math.floor(y0), Math.ceil(y1)];
 }
 regiones.sort((a, b) => ORDEN.indexOf(a.codigo) - ORDEN.indexOf(b.codigo));
 if (regiones.length !== 16 || regiones.some((r) => !ORDEN.includes(r.codigo))) throw new Error('No se encontraron las 16 regiones de Chile.');
 
 const datos = { ancho: +ANCHO.toFixed(1), alto: +ALTO.toFixed(1), proyeccion: { LON_MIN, LAT_MAX, K: +K.toFixed(6), S }, rapa: RAPA, regiones };
 writeFileSync(new URL('../src/chile-regiones.json', import.meta.url), `${JSON.stringify(datos)}\n`);
+writeFileSync(
+  new URL('../src/chile-latitudes.json', import.meta.url),
+  `${JSON.stringify(Object.fromEntries(ORDEN.map((c) => [c, latitudes[c]])))}\n`,
+);
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const simbolo = /(<symbol id="silueta-chile" viewBox="0 0 302 1006"><path d=")[^"]*(")/;

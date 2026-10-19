@@ -1,6 +1,9 @@
-// Panel de detalle, sobre la línea de tiempo. Muestra un evento (imagen con crédito y licencia, texto según
-// el nivel de lectura, «¿Sabías que?», personajes, «¿Qué pasó antes / después?», período y fuentes), un paso
-// de una historia guiada, un grupo de eventos, la lista de historias o la ficha de un personaje.
+// Panel de detalle, sobre la sección a la vista. Un evento se presenta como una página de revista: portada
+// sobre el océano (título, fecha y la imagen completa, con su crédito y licencia), el texto según el nivel de
+// lectura con el «¿Sabías que?» como cita, y una ficha lateral (mini-mapa, lugar, período, temas y personajes);
+// al final, «¿Qué pasó antes / después?», el período y las fuentes. También muestra un paso de una historia
+// guiada, un grupo de eventos, la lista de historias o la ficha de un personaje, con la misma portada.
+import latitudes from './chile-latitudes.json';
 import { edadEn, formatearAnio, haceCuanto } from './fechas.js';
 import { borrarPreferencia, creditoImagen, esc, externo, guardarPreferencia, leerPreferencia, nombreFuente, urlImagen } from './util.js';
 
@@ -69,6 +72,47 @@ const barraHistoria = ({ recorrido, paso }) => `
       .join('')}</ol>
   </nav>`;
 
+// Portada de cada vista, sobre el océano: ceja, título y, si hay, la imagen completa con su pie y crédito
+// (de fondo, la misma imagen difuminada). Sin imagen, curvas de nivel.
+const portada = ({ ceja, titulo, debajo = '', figura = '', fondo = '', arriba = '' }) => `
+  <header class="detalle-portada oceano${figura ? '' : ' sin-figura'}">
+    ${fondo}
+    <div class="detalle-portada-contenido">
+      ${arriba}
+      <div class="detalle-titular">
+        <p class="ceja">${ceja}</p>
+        <h2 id="detalle-titulo" tabindex="-1">${titulo}</h2>
+        ${debajo}
+      </div>
+      ${figura}
+    </div>
+  </header>`;
+
+// Mini-mapa: la silueta de Chile (index.html) con los lugares del evento, las franjas de sus zonas o todo el
+// país si es de alcance nacional. Usa la proyección del mapa (scripts/generar-mapa.mjs).
+const COS = Math.cos((36.75 * Math.PI) / 180);
+const proyectar = (lat, lon) => [(lon + 80.5) * COS * 26, (-17.4 - lat) * 26];
+const RAPA = [34, 300]; // recuadro de Rapa Nui en el mapa
+
+function miniMapa(ev, lugarDe, zonaDe) {
+  const puntos = [];
+  const franjas = [];
+  for (const u of ev.ubicaciones) {
+    const l = lugarDe.get(u);
+    if (l) puntos.push(l.id === 'rapa-nui' ? RAPA : proyectar(l.lat, l.lon));
+    for (const c of zonaDe.get(u)?.regiones ?? []) franjas.push(latitudes[c]);
+  }
+  const nacional = ev.ubicaciones.includes('chile');
+  if (!puntos.length && !franjas.length && !nacional) return '';
+  const rapa = ev.ubicaciones.includes('rapa-nui') ? `<rect class="minimapa-recuadro" x="${RAPA[0] - 30}" y="${RAPA[1] - 26}" width="60" height="52" rx="6"/>` : '';
+  return `<svg class="minimapa-chile${nacional ? ' nacional' : ''}" viewBox="-40 -10 382 1026" aria-hidden="true" focusable="false">
+    ${franjas.length ? `<clipPath id="minimapa-zona">${franjas.map(([a, b]) => `<rect x="-40" y="${a}" width="382" height="${b - a}"/>`).join('')}</clipPath>` : ''}
+    <use href="#silueta-chile" width="302" height="1006" class="minimapa-tierra"/>
+    ${franjas.length ? '<use href="#silueta-chile" width="302" height="1006" class="minimapa-zona" clip-path="url(#minimapa-zona)"/>' : ''}
+    ${rapa}${puntos.map(([x, y]) => `<circle class="minimapa-punto" cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="22"/>`).join('')}
+  </svg>`;
+}
+
 // Año de nacimiento de quien lee (opcional, solo en este navegador) para mostrar su edad desde 1900.
 const leerNacimiento = () => {
   const n = Number(leerPreferencia('nacimiento'));
@@ -78,11 +122,13 @@ const leerNacimiento = () => {
 /**
  * Crea el panel en `raiz` («Volver», «Anterior» y «Siguiente» están en la barra inferior).
  * personajeDe(nombre) devuelve { slug, eventos } si el personaje tiene ficha (aparece en más de un evento);
- * rutaEnMapa(evento), la dirección donde se ve en el mapa (o null).
+ * rutaEnMapa(evento), la dirección donde se ve en el mapa (o null); `mapa`, los lugares y zonas (mini-mapa).
  */
-export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = () => null }) {
+export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = () => null, mapa = { lugares: [], zonas: [] } }) {
   const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   const temaDe = new Map(temas.map((t) => [t.id, t.nombre]));
+  const lugarDe = new Map(mapa.lugares.map((l) => [l.id, l]));
+  const zonaDe = new Map(mapa.zonas.map((z) => [z.id, z]));
   const colorDe = (ev) => periodoDe.get(ev.periodoId).color;
   let actual = null;
   let nivel = 'general';
@@ -192,48 +238,59 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
         })}</nav>`
       : `<nav class="vecinos" aria-label="Eventos anterior y siguiente">${vecino(antes, 'antes', colorDe)}${vecino(despues, 'despues', colorDe)}</nav>`;
 
-    // Orden de lectura: fecha y título primero (en celular, antes que la imagen); en pantallas anchas
-    // la imagen va a la izquierda con la grilla.
+    // Orden de lectura: título, fecha y lugar; luego la imagen (a la derecha en pantallas anchas), el texto,
+    // la ficha (al lado del texto en pantallas anchas) y el resto.
+    const url = urlImagen(img.archivo, 800);
+    const ruta = rutaEnMapa(ev);
+    const temasDe = ev.temas.filter((t) => temaDe.get(t) !== p.nombre).map((t) => `<span class="etiqueta">${esc(temaDe.get(t))}</span>`);
     raiz.style.setProperty('--color', p.color);
     pintar(
       `
-      <div class="detalle-contenido${historia ? ' con-historia' : ''}">
-        ${historia ? barraHistoria(historia) : ''}
-        <header class="detalle-encabezado">
-          <p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time> <span class="detalle-hace">${tiempo(ev)}</span> · ${esc(ev.lugar)}${
-            rutaEnMapa(ev) ? ` <a class="ver-en-mapa" href="${rutaEnMapa(ev)}">Ver en el mapa</a>` : ''
-          }</p>
-          <h2 id="detalle-titulo" tabindex="-1">${esc(ev.titulo)}</h2>
-          <p class="etiquetas"><span class="etiqueta periodo">${esc(p.nombre)}</span>${ev.temas
-            .filter((t) => temaDe.get(t) !== p.nombre)
-            .map((t) => `<span class="etiqueta">${esc(temaDe.get(t))}</span>`)
-            .join('')}</p>
-          ${regla}
-        </header>
-        <figure class="detalle-figura">
-          <div class="detalle-marco">
-            <img src="${urlImagen(img.archivo, 800)}" alt="${esc(img.pieDeFoto)}" fetchpriority="high" decoding="async" data-periodo="${ev.periodoId}">
+      <div class="detalle-revista">
+        ${portada({
+          arriba: historia ? barraHistoria(historia) : '',
+          fondo: `<img class="detalle-fondo" src="${url}" alt="" decoding="async">`,
+          ceja: esc(p.nombre),
+          titulo: esc(ev.titulo),
+          debajo: `<p class="detalle-fecha"><time${ev.fecha.startsWith('-') ? '' : ` datetime="${ev.fecha}"`}>${esc(ev.fechaTexto)}</time> <span class="detalle-hace">${tiempo(ev)}</span></p>
+            <p class="detalle-lugar">${esc(ev.lugar)}</p>`,
+          figura: `<figure class="detalle-figura">
+            <div class="detalle-marco"><img src="${url}" alt="${esc(img.pieDeFoto)}" fetchpriority="high" decoding="async" data-periodo="${ev.periodoId}"></div>
+            <figcaption><span class="pie">${esc(img.pieDeFoto)}</span> <span class="credito">Imagen: ${creditoImagen(img)}</span></figcaption>
+          </figure>`,
+        })}
+        <div class="detalle-columnas">
+          <div class="detalle-texto">
+            <div class="detalle-cuerpo" data-nivel="${nivel}">${cuerpo()}</div>
+            ${
+              ev.sabiasQue
+                ? `<aside class="sabias-que" aria-labelledby="sabias-que-titulo"><h3 id="sabias-que-titulo">¿Sabías que…?</h3><p>${esc(ev.sabiasQue)}</p></aside>`
+                : ''
+            }
           </div>
-          <figcaption>
-            <span class="pie">${esc(img.pieDeFoto)}</span>
-            <span class="credito">Imagen: ${creditoImagen(img)}</span>
-          </figcaption>
-        </figure>
-        <div class="detalle-texto">
-          <div class="detalle-cuerpo" data-nivel="${nivel}">${cuerpo()}</div>
-          ${
-            ev.sabiasQue
-              ? `<aside class="sabias-que" aria-labelledby="sabias-que-titulo"><h3 id="sabias-que-titulo">¿Sabías que…?</h3><p>${esc(ev.sabiasQue)}</p></aside>`
-              : ''
-          }
-          ${personajes(ev)}
-          ${vecinos}
-          ${sobrePeriodo(p)}
-          ${ev.anio >= 1900 ? `<details class="plegable edad"><summary>¿Qué edad tenías?</summary>${formularioEdad()}</details>` : ''}
-          <details class="plegable">
-            <summary>Fuentes (${ev.fuentes.length})</summary>
-            <ul class="fuentes">${listaFuentes(ev.fuentes)}</ul>
-          </details>
+          <aside class="detalle-ficha" aria-labelledby="ficha-titulo">
+            <h3 id="ficha-titulo" class="ceja">Ficha del evento</h3>
+            <div class="ficha-lugar">
+              ${miniMapa(ev, lugarDe, zonaDe)}
+              <dl class="ficha-datos">
+                <div><dt>Lugar</dt><dd>${esc(ev.lugar)}</dd></div>
+                <div><dt>Período</dt><dd class="ficha-periodo">${esc(p.nombre)} <span class="ficha-fechas">${esc(p.fechasTexto)}</span></dd></div>
+              </dl>
+            </div>
+            ${ruta ? `<a class="boton chico ver-en-mapa" href="${ruta}">Ver en el mapa</a>` : ''}
+            ${regla}
+            ${temasDe.length ? `<p class="etiquetas"><span class="solo-lector">Temas: </span>${temasDe.join('')}</p>` : ''}
+            ${personajes(ev)}
+          </aside>
+          <div class="detalle-mas">
+            ${ev.anio >= 1900 ? `<details class="plegable edad"><summary>¿Qué edad tenías?</summary>${formularioEdad()}</details>` : ''}
+            ${vecinos}
+            ${sobrePeriodo(p)}
+            <details class="plegable">
+              <summary>Fuentes (${ev.fuentes.length})</summary>
+              <ul class="fuentes">${listaFuentes(ev.fuentes)}</ul>
+            </details>
+          </div>
         </div>
       </div>`,
       enfocar,
@@ -253,18 +310,18 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
     raiz.style.setProperty('--color', p.color);
     pintar(
       `
-      <div class="detalle-contenido vista-lista">
-        <header class="detalle-encabezado">
-          <p class="detalle-fecha">${esc(grupo.fechaTexto)}</p>
-          <h2 id="detalle-titulo" tabindex="-1">${esc(grupo.titulo)}</h2>
-          <p class="etiquetas"><span class="etiqueta periodo">${esc(p.nombre)}</span></p>
-          ${regla}
-          <p class="vista-intro">${esc(grupo.descripcion)}</p>
-        </header>
-        <div class="detalle-texto">
-          <ol class="fichas">${lista()}</ol>
-          <nav class="vecinos" aria-label="Eventos anterior y siguiente">${vecino(antes, 'antes', colorDe)}${vecino(despues, 'despues', colorDe)}</nav>
-          ${sobrePeriodo(p)}
+      <div class="detalle-revista">
+        ${portada({
+          ceja: `${esc(p.nombre)} · ${esc(grupo.fechaTexto)}`,
+          titulo: esc(grupo.titulo),
+          debajo: `<p class="vista-intro">${esc(grupo.descripcion)}</p>${regla}`,
+        })}
+        <div class="detalle-contenido vista-lista">
+          <div class="detalle-texto">
+            <ol class="fichas">${lista()}</ol>
+            <nav class="vecinos" aria-label="Eventos anterior y siguiente">${vecino(antes, 'antes', colorDe)}${vecino(despues, 'despues', colorDe)}</nav>
+            ${sobrePeriodo(p)}
+          </div>
         </div>
       </div>`,
       enfocar,
@@ -280,12 +337,13 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
     raiz.style.removeProperty('--color');
     pintar(
       `
+      <div class="detalle-revista">
+      ${portada({
+        ceja: 'Historias guiadas',
+        titulo: 'Elige una historia',
+        debajo: '<p class="vista-intro">Cada historia recorre, paso a paso y en orden, algunos eventos de la línea de tiempo sobre un mismo tema.</p>',
+      })}
       <div class="detalle-contenido vista-lista">
-        <header class="detalle-encabezado">
-          <p class="detalle-fecha">Historias guiadas</p>
-          <h2 id="detalle-titulo" tabindex="-1">Elige una historia</h2>
-          <p class="vista-intro">Cada historia recorre, paso a paso y en orden, algunos eventos de la línea de tiempo sobre un mismo tema.</p>
-        </header>
         <div class="detalle-texto">
           <ul class="fichas">${recorridos
             .map(
@@ -302,6 +360,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
             )
             .join('')}</ul>
         </div>
+      </div>
       </div>`,
       enfocar,
     );
@@ -317,16 +376,17 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
     raiz.style.removeProperty('--color');
     pintar(
       `
-      <div class="detalle-contenido vista-lista">
-        <header class="detalle-encabezado">
-          <p class="detalle-fecha">Personaje</p>
-          <h2 id="detalle-titulo" tabindex="-1">${esc(persona.nombre)}</h2>
-          <p class="vista-intro">Aparece en ${persona.eventos.length} eventos de esta línea de tiempo, ${rango}.</p>
-          ${regla}
-        </header>
-        <div class="detalle-texto">
-          <ol class="fichas">${lista()}</ol>
-          <p class="ayuda">Esta ficha reúne los eventos donde se nombra a ${esc(persona.nombre)}; no es una biografía.</p>
+      <div class="detalle-revista">
+        ${portada({
+          ceja: 'Personaje',
+          titulo: esc(persona.nombre),
+          debajo: `<p class="vista-intro">Aparece en ${persona.eventos.length} eventos de esta línea de tiempo, ${rango}.</p>${regla}`,
+        })}
+        <div class="detalle-contenido vista-lista">
+          <div class="detalle-texto">
+            <ol class="fichas">${lista()}</ol>
+            <p class="ayuda">Esta ficha reúne los eventos donde se nombra a ${esc(persona.nombre)}; no es una biografía.</p>
+          </div>
         </div>
       </div>`,
       enfocar,

@@ -10,6 +10,7 @@ La historia de Chile, desde el poblamiento hasta hoy, en una línea de tiempo in
 - Línea de tiempo horizontal hecha de láminas (la imagen de época a sangre, con la fecha y el título encima; más altas en los grandes hitos), con un portal de color al comienzo de cada período, el eje dibujado como escala gráfica de mapa, minimapa y zoom según la importancia de cada evento: el zoom mínimo muestra solo los grandes hitos.
 - Búsqueda por título, personaje o año, y filtros por período y tema.
 - Historias guiadas paso a paso (la Independencia, los grandes terremotos, las constituciones y las mujeres en la vida pública), fichas de los personajes que aparecen en varios eventos y los pueblos originarios reunidos de norte a sur.
+- Cada evento se presenta como una página de revista: el título y la imagen completa sobre el océano, el texto con el «¿Sabías que…?» como cita y una ficha con un mini-mapa de Chile, el lugar, el período, los temas y los personajes.
 - En cada evento: cuánto tiempo pasó («hace 147 años»), un «¿Sabías que…?» tomado del texto detallado y, si quien lee guarda su año de nacimiento (solo en su navegador), qué edad tenía.
 - Modo «Proyectar en clase» para pantallas anchas: letra grande, colores claros y Av Pág / Re Pág para avanzar con un control de presentaciones.
 - Accesible: se maneja con teclado, mouse o pantalla táctil y funciona con lector de pantalla. El texto mide al menos 18 px, hay un botón «Texto grande», el modo oscuro es automático y se respeta la preferencia de reducir el movimiento.

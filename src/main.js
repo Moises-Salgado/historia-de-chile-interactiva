@@ -127,6 +127,7 @@ const detalle = crearDetalle(elDetalle, {
   temas,
   personajeDe: (nombre) => personajes.get(slugDe(nombre)) ?? null,
   rutaEnMapa,
+  mapa: datosMapa,
 });
 const filtros = crearFiltros($('#panel-filtros'), {
   periodos,
