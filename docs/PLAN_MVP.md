@@ -208,3 +208,17 @@ Pedido del dueño (2026-10-19): dejar la app «bonita», con más animación y a
   - **La lámina crece desde cualquier miniatura:** resultados de búsqueda, eventos del mapa y destacado de la portada, no solo la línea. Al presionar se pide la imagen grande con el mismo `srcset` que el detalle.
   - **Listas escalonadas:** historias, fichas, regiones y eventos del mapa; 30 ms entre elementos, 6 escalones como máximo.
   - **Verificado** con las animaciones de la página (`getAnimations`) a los 60 ms: corren con los nombres esperados y, al terminar, no queda ningún nombre ni `data-transicion`.
+- **M5 · Buscador, listas y mapa (hecha).**
+  - **Buscador:**
+    - Campo en píldora, con lupa y botón para borrar.
+    - Filtros como chips en una fila por grupo: ninguno activado = todos. Antes eran 17 casillas marcadas bajo los resultados.
+    - Resultados compactos (título en serif) con `<mark>` que no distingue tildes: «maipu» marca «Maipú».
+    - «Sin resultados» propone búsquedas que sí encuentran algo.
+  - **Tarjetas de lista** (resultados, fichas, vecinos, eventos y regiones del mapa): el mismo borde de 1 px, la barra de color del período, el título en serif y el hover solo con puntero. El resumen de las fichas va completo, sin `line-clamp`.
+  - **Mapa:**
+    - La ruta «Chile › Tarapacá › Iquique» reemplaza al botón «◀ Región de…», que se partía en dos líneas.
+    - Costa con halo sobre el océano, el norte y una escala de 500 km norte-sur (exacta en esta proyección).
+    - Halo de cobre bajo el contorno de lo elegido.
+    - El panel entra desde la derecha si se va más adentro y desde la izquierda al volver; en el celular, la hoja sube.
+    - Una sola onda de cobre en el alfiler elegido.
+  - **Peso:** las reglas que solo usa el mapa pasaron a `src/mapa.css`, que se carga con su módulo (1,9 KB gzip), y la carga inicial bajó 0,8 KB.

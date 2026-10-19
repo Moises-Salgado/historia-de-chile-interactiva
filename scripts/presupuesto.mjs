@@ -9,7 +9,7 @@ import { gzipSync } from 'node:zlib';
 // la carga inicial puede crecer 8 KB; el mapa ya existía y conserva su peso con 1 KB de margen; cada módulo
 // nuevo a pedido, 15 KB, y 60 KB en total.
 const BASE = { inicial: 11.39 + 122.24, mapa: 21.97 };
-const TOPE = { extraInicial: 8, mapaExtra: 1, modulo: 15, modulosTotal: 60, pagina: 2 };
+const TOPE = { extraInicial: 8, mapaExtra: 1, mapaCss: 3, modulo: 15, modulosTotal: 60, pagina: 2 };
 const DIST = 'dist';
 
 const errores = [];
@@ -37,8 +37,10 @@ for (const a of activos.sort()) {
     inicial += peso;
     console.log(`  inicial  ${f(peso)}  ${a}`);
   } else if (a.startsWith('mapa-')) {
+    // Su CSS (src/mapa.css) salió de la carga inicial (mvp 5): tiene su propio tope.
+    const tope = a.endsWith('.css') ? TOPE.mapaCss : BASE.mapa + TOPE.mapaExtra;
     console.log(`  mapa     ${f(peso)}  ${a}`);
-    if (peso > BASE.mapa + TOPE.mapaExtra) errores.push(`El mapa pesa ${peso.toFixed(2)} KB (tope ${(BASE.mapa + TOPE.mapaExtra).toFixed(2)}).`);
+    if (peso > tope) errores.push(`${a} pesa ${peso.toFixed(2)} KB (tope ${tope.toFixed(2)}).`);
   } else {
     modulos += peso;
     console.log(`  a pedido ${f(peso)}  ${a}`);

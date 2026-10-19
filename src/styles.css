@@ -419,6 +419,52 @@ h2[tabindex='-1']:focus,
   }
 }
 
+/* ---- Chips (filtros del mapa y del buscador): píldoras que se activan y desactivan. Activado = invertido. ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0.25rem 0.875rem;
+  font: inherit;
+  color: var(--texto);
+  background: transparent;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: var(--pildora);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-micro) ease,
+    border-color var(--dur-micro) ease,
+    color var(--dur-micro) ease,
+    scale var(--dur-micro) ease;
+}
+
+.chip i {
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: var(--color);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.6);
+}
+
+@media (hover: hover) {
+  .chip:hover {
+    border-color: var(--acento);
+  }
+}
+
+.chip:active {
+  scale: 0.97;
+}
+
+.chip[aria-pressed='true'] {
+  font-weight: 700;
+  color: var(--superficie);
+  background: var(--texto);
+  border-color: var(--texto);
+}
+
 /* ---- Cabecera sobre el océano: marca, secciones y «Buscar» en la primera fila; nivel de lectura,
    «Texto grande» y «Proyectar en clase» en la segunda (en pantallas muy anchas, todo en una fila).
    El filete rojo es el único color de la bandera fuera de la marca. ---- */
@@ -1157,8 +1203,6 @@ body[data-vista='detalle'] .linea {
   text-transform: uppercase;
 }
 
-
-
 .inicio-cuerpo {
   display: grid;
   gap: clamp(2rem, 5vw, 3.5rem);
@@ -1453,61 +1497,6 @@ body[data-vista='detalle'] .linea {
   scrollbar-width: thin;
 }
 
-.mapa-filtro .chip {
-  flex: none;
-}
-
-.mapa-filtro .chip:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  background: var(--pacifico);
-  box-shadow: 0.75rem 0 0.75rem -0.5rem var(--pacifico);
-}
-
-.mapa-filtro .chip:first-child[aria-pressed='true'] {
-  background: var(--sobre-pacifico);
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 2.5rem;
-  padding: 0.25rem 0.875rem;
-  font: inherit;
-  color: var(--texto);
-  background: transparent;
-  border: 1px solid var(--borde-fuerte);
-  border-radius: 999px;
-  cursor: pointer;
-  transition: scale 0.12s ease;
-}
-
-.chip i {
-  flex: none;
-  width: 0.75rem;
-  height: 0.75rem;
-  background: var(--color);
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.6);
-}
-
-.chip:hover {
-  border-color: var(--acento);
-}
-
-.chip:active {
-  scale: 0.97;
-}
-
-.chip[aria-pressed='true'] {
-  font-weight: 700;
-  color: var(--pacifico);
-  background: var(--sobre-pacifico);
-  border-color: var(--sobre-pacifico);
-}
-
 .atlas-mapa {
   position: sticky;
   top: 1rem;
@@ -1516,288 +1505,8 @@ body[data-vista='detalle'] .linea {
   background: none;
 }
 
-/* Los rótulos pueden salir del recuadro del mapa (miden 18 px aunque el mapa sea chico). */
-.mapa-svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
 .mapa-nota {
   margin: 0;
-  color: var(--texto-suave);
-}
-
-/* Regiones: más cobre cuantas más eventos tienen (con el filtro, en ese período); la elegida, cobre claro y
-   con contorno oscuro encima. La tierra (#5f8287, 3,5:1 sobre el océano) y los límites claros superan 3:1. */
-.region {
-  --tierra-mapa: #5f8287;
-  fill: color-mix(in oklab, var(--cobre-vivo) var(--peso, 0%), var(--tierra-mapa));
-  stroke: #e3ece9;
-  stroke-width: 1px;
-  vector-effect: non-scaling-stroke;
-  cursor: pointer;
-  transition: fill 0.15s ease;
-}
-
-.region:hover {
-  fill: color-mix(in oklab, var(--cobre-claro) 55%, var(--tierra-mapa));
-}
-
-.contornos path,
-.contorno-foco {
-  fill: none;
-  vector-effect: non-scaling-stroke;
-  pointer-events: none;
-}
-
-.contornos path {
-  stroke: #08191f;
-  stroke-width: 2.5px;
-}
-
-.contorno-foco {
-  stroke: #fff;
-  stroke-width: 3px;
-}
-
-.region.elegida {
-  fill: var(--cobre-claro);
-}
-
-.region:focus {
-  outline: none;
-}
-
-.graticula line,
-.recuadro rect {
-  fill: none;
-  stroke: rgb(237 243 241 / 0.16);
-  stroke-dasharray: 3 4;
-  vector-effect: non-scaling-stroke;
-}
-
-.recuadro rect {
-  stroke: rgb(237 243 241 / 0.4);
-}
-
-.mapa-svg text {
-  font-family: var(--rotulo);
-  font-size: var(--letra, 18px);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  fill: var(--texto-suave);
-}
-
-.rotulos text,
-.graticula text,
-.recuadro text {
-  paint-order: stroke;
-  stroke: var(--pacifico);
-  stroke-width: calc(var(--letra, 18px) * 0.22);
-  stroke-linejoin: round;
-  pointer-events: none;
-}
-
-.rotulos text {
-  fill: var(--texto);
-}
-
-/* Lugares: el punto crece con la cantidad de eventos; el área invisible agranda lo que se puede tocar. */
-.alfiler {
-  cursor: pointer;
-}
-
-.alfiler .area {
-  fill: transparent;
-}
-
-.alfiler .punto {
-  fill: var(--sobre-pacifico);
-  stroke: var(--pacifico);
-  stroke-width: 1.4;
-  transition: r 0.2s ease;
-}
-
-.alfiler:hover .punto,
-.alfiler.elegido .punto {
-  fill: var(--cobre-claro);
-}
-
-.globo {
-  position: absolute;
-  z-index: 5;
-  padding: 0.25rem 0.625rem;
-  max-width: min(16rem, calc(100% - 1rem));
-  font-weight: 600;
-  color: var(--pacifico);
-  text-align: center;
-  pointer-events: none;
-  background: var(--sobre-pacifico);
-  border-radius: 0.375rem;
-  box-shadow: 0 6px 16px -6px rgb(0 0 0 / 0.5);
-  translate: -50% calc(-100% - 0.625rem);
-}
-
-/* Panel: como una ficha clara sobre el océano (en modo oscuro, oscura), con su propio desplazamiento. */
-.atlas-panel {
-  position: sticky;
-  top: 1rem;
-  display: grid;
-  grid-area: panel;
-  gap: 0.75rem;
-  max-height: calc(100cqh - 2rem);
-  padding: 1.25rem;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  color: var(--texto);
-  background: var(--fondo);
-  border-radius: var(--radio);
-  box-shadow: 0 18px 40px -24px rgb(0 0 0 / 0.6);
-}
-
-.atlas-panel .ceja {
-  color: var(--acento);
-}
-
-.atlas-panel h3 {
-  margin: -0.25rem 0 0;
-  font-family: var(--serif);
-  font-size: 1.75rem;
-  font-weight: 600;
-  line-height: 1.15;
-}
-
-.atlas-panel h3:focus {
-  outline: none;
-}
-
-.mapa-resumen,
-.mapa-vacio {
-  margin: 0;
-  color: var(--texto-suave);
-}
-
-.mapa-aprox {
-  font-style: italic;
-}
-
-.mapa-volver {
-  justify-self: start;
-}
-
-.mapa-accesos,
-.mapa-lugares {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.mapa-regiones {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-  gap: 0.375rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.mapa-region {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  min-height: 2.75rem;
-  padding: 0.25rem 0.75rem;
-  color: var(--texto);
-  text-decoration: none;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
-  transition: scale 0.12s ease;
-}
-
-.mapa-region:hover {
-  border-color: var(--acento);
-}
-
-.mapa-region:active,
-.mapa-evento:active {
-  scale: 0.98;
-}
-
-.mapa-region b,
-.mapa-lugares b {
-  font-family: var(--rotulo);
-  font-variant-numeric: tabular-nums;
-  color: var(--acento);
-}
-
-.mapa-eventos {
-  display: grid;
-  gap: 0.375rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.mapa-evento {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.375rem 0.75rem 0.375rem 0.375rem;
-  color: var(--texto);
-  text-decoration: none;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-left: 0.375rem solid var(--color);
-  border-radius: var(--radio);
-  transition: scale 0.12s ease;
-}
-
-.mapa-evento:hover {
-  border-color: var(--acento);
-  border-left-color: var(--color);
-}
-
-.mapa-evento-img {
-  flex: none;
-  width: 3.5rem;
-  height: 3.5rem;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
-  border-radius: 0.25rem;
-}
-
-.mapa-evento-img > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.mapa-evento-texto {
-  display: grid;
-  min-width: 0;
-}
-
-.mapa-evento-fecha {
-  font-family: var(--rotulo);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  color: var(--texto-suave);
-}
-
-.mapa-evento-titulo {
-  font-weight: 700;
-  line-height: 1.25;
-}
-
-.mapa-evento-lugar {
   color: var(--texto-suave);
 }
 
@@ -1813,8 +1522,9 @@ body[data-vista='detalle'] .linea {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  /* relative (no static): el globo y la onda del alfiler se ubican respecto del mapa. */
   .atlas-mapa {
-    position: static;
+    position: relative;
     justify-self: center;
     width: min(100%, 19rem);
   }
@@ -1822,29 +1532,6 @@ body[data-vista='detalle'] .linea {
   .mapa-lienzo {
     width: 100%;
     height: auto;
-  }
-
-  .atlas-panel {
-    position: static;
-    max-height: none;
-    overflow: visible;
-  }
-
-  /* Con la hoja abierta, la región que recibe el foco (flechas) queda sobre ella, no debajo. */
-  .mapa-desplazable:has(> .mapa-contenido:not([data-seleccion='todo'])) {
-    scroll-padding-bottom: calc(45dvh + 1rem);
-  }
-
-  .mapa-contenido:not([data-seleccion='todo']) .atlas-panel {
-    position: sticky;
-    top: auto;
-    bottom: 0;
-    z-index: 2;
-    max-height: 45dvh;
-    margin-inline: -0.5rem;
-    overflow-y: auto;
-    border-radius: var(--radio) var(--radio) 0 0;
-    box-shadow: 0 -12px 32px -12px rgb(0 0 0 / 0.7);
   }
 }
 
@@ -3348,13 +3035,17 @@ body[data-vista='detalle'] .minimapa-fila {
   color: var(--texto);
   text-decoration: none;
   background: var(--superficie);
-  border: 2px solid var(--borde);
+  border: 1px solid var(--borde);
   border-radius: var(--radio);
-  transition: scale 0.12s ease;
+  transition:
+    border-color var(--dur-micro) ease,
+    scale var(--dur-micro) ease;
 }
 
-a.vecino:hover {
-  border-color: var(--acento);
+@media (hover: hover) {
+  a.vecino:hover {
+    border-color: var(--acento);
+  }
 }
 
 .vecino.despues {
@@ -3405,7 +3096,10 @@ a.vecino:hover {
 }
 
 .vecino-titulo {
-  font-weight: 700;
+  font-family: var(--serif);
+  font-size: var(--t-2);
+  font-weight: 600;
+  line-height: 1.25;
 }
 
 .sobre-periodo {
@@ -3557,15 +3251,88 @@ a.vecino:hover {
   font-weight: 700;
 }
 
+/* Campo de búsqueda en píldora, con la lupa adentro y un botón para borrar (el del navegador se oculta). */
+.campo-caja {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.campo-caja > .icono {
+  position: absolute;
+  left: 1rem;
+  color: var(--texto-suave);
+  pointer-events: none;
+}
+
 .campo {
   width: 100%;
   min-height: 3rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 3rem 0.5rem 2.75rem;
   font: inherit;
   color: var(--texto);
   background: var(--superficie);
-  border: 2px solid var(--borde-fuerte);
-  border-radius: var(--radio);
+  border: 1px solid var(--borde-fuerte);
+  border-radius: var(--pildora);
+  box-shadow: var(--sombra-boton);
+}
+
+.campo::-webkit-search-cancel-button {
+  display: none;
+  appearance: none;
+}
+
+.campo-borrar {
+  position: absolute;
+  right: 0.25rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  color: var(--texto-suave);
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .campo-borrar:hover {
+    color: var(--texto);
+    background: var(--superficie-2);
+  }
+}
+
+/* Filtros: una fila de chips por grupo (se desplaza de lado si no cabe), así los resultados quedan a la vista. */
+.filtros-chips {
+  display: grid;
+  gap: 0.375rem;
+  margin: 0.75rem 0 0.25rem;
+}
+
+.chips-grupo {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding-bottom: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.chips-grupo .chip {
+  flex: none;
+}
+
+.chips-titulo {
+  flex: none;
+  min-width: 5.5rem;
+  font-family: var(--rotulo);
+  font-size: var(--t-1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
 }
 
 .resultados-cuenta {
@@ -3579,7 +3346,12 @@ a.vecino:hover {
 
 .resultados-grupo {
   margin: 0.75rem 0 0.375rem;
-  font-size: 1.125rem;
+  font-family: var(--rotulo);
+  font-size: var(--t-1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
 }
 
 .resultados-lista {
@@ -3590,103 +3362,100 @@ a.vecino:hover {
   list-style: none;
 }
 
+/* Resultado compacto: miniatura, período y fecha en rótulo, título en serif (y el motivo, si no está en él). */
 .resultado {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   width: 100%;
-  padding: 0.375rem 0.75rem 0.375rem 0.375rem;
+  padding: 0.3125rem 0.75rem 0.3125rem 0.3125rem;
   font: inherit;
   color: var(--texto);
   text-align: left;
   background: var(--superficie);
-  border: 2px solid var(--borde);
-  border-left: 0.375rem solid var(--color);
+  border: 1px solid var(--borde);
+  border-left: 0.3125rem solid var(--color);
   border-radius: var(--radio);
   cursor: pointer;
   transition:
     opacity 0.18s ease-out,
     translate 0.18s ease-out,
-    scale 0.12s ease;
+    border-color var(--dur-micro) ease,
+    scale var(--dur-micro) ease;
 }
 
-.resultado:hover {
-  border-color: var(--acento);
-  border-left-color: var(--color);
+@media (hover: hover) {
+  .resultado:hover {
+    border-color: var(--acento);
+    border-left-color: var(--color);
+  }
 }
 
 .resultado-img {
   flex: none;
-  width: 4rem;
-  height: 4rem;
+  width: 3.25rem;
+  height: 3.25rem;
   overflow: hidden;
   background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
-  border-radius: 0.25rem;
+  border-radius: var(--radio-s);
 }
 
 .resultado-texto {
   display: grid;
-  gap: 0.125rem;
+  gap: 0.0625rem;
   min-width: 0;
 }
 
-.resultado-meta,
+.resultado-meta {
+  font-family: var(--rotulo);
+  font-size: var(--t-1);
+  letter-spacing: 0.02em;
+  color: var(--texto-suave);
+}
+
 .resultado-motivo {
   color: var(--texto-suave);
 }
 
 .resultado-periodo {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--tinta);
 }
 
 .resultado-titulo {
-  font-weight: 700;
+  font-family: var(--serif);
+  font-size: var(--t-2);
+  font-weight: 600;
+  line-height: 1.25;
 }
 
-.opciones {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-  gap: 0 1rem;
-  margin: 1rem 0;
-  padding: 0.5rem 1rem 0.75rem;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
+/* Coincidencias resaltadas (sin importar tildes); el texto conserva su color, así el contraste no cambia. */
+.resultado mark {
+  padding: 0 0.0625rem;
+  color: inherit;
+  background: rgb(201 122 63 / 0.3);
+  border-radius: 0.125rem;
 }
 
-.opciones legend {
-  padding: 0 0.25rem;
-  font-weight: 700;
-}
-
-.opcion {
+.resultados-vacio {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.625rem;
-  min-height: 2.75rem;
-  cursor: pointer;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.opcion input {
-  flex: none;
-  width: 1.375rem;
-  height: 1.375rem;
+.resultados-vacio p {
   margin: 0;
-  accent-color: var(--acento);
 }
 
-.muestra {
-  flex: none;
-  width: 1rem;
-  height: 1rem;
-  background: var(--color);
-  border-radius: 0.25rem;
-}
-
-.opcion-fechas {
-  color: var(--texto-suave);
-  white-space: nowrap;
+.resultados-vacio ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .panel-acciones {
@@ -3727,15 +3496,19 @@ a.vecino:hover {
   color: var(--texto);
   text-decoration: none;
   background: var(--superficie);
-  border: 2px solid var(--borde);
-  border-left: 0.375rem solid var(--color);
+  border: 1px solid var(--borde);
+  border-left: 0.3125rem solid var(--color);
   border-radius: var(--radio);
-  transition: scale 0.12s ease;
+  transition:
+    border-color var(--dur-micro) ease,
+    scale var(--dur-micro) ease;
 }
 
-.ficha:hover {
-  border-color: var(--acento);
-  border-left-color: var(--color);
+@media (hover: hover) {
+  .ficha:hover {
+    border-color: var(--acento);
+    border-left-color: var(--color);
+  }
 }
 
 .ficha:active {
@@ -3782,12 +3555,9 @@ a.vecino:hover {
 }
 
 /* En la lista basta el comienzo del resumen: la ficha lleva al evento completo. */
+/* El resumen va completo: cortado, en un tema sensible podía perder «existen distintas interpretaciones». */
 .ficha-resumen {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  display: block;
 }
 
 /* En celular el texto rodea la imagen (en dos columnas quedaría de cuatro palabras por línea). */
@@ -4211,19 +3981,10 @@ a.vecino:hover {
   }
 
   .destacado-marco,
-  .mapa-evento-img,
   .vecino-img,
   .resultado-img,
   .ficha-img {
     background: var(--superficie-2);
-  }
-
-  .region {
-    fill: var(--tierra-mapa);
-  }
-
-  .region:hover {
-    fill: #8fa7a4;
   }
 
   .tarjeta {

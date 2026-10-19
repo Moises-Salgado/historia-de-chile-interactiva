@@ -5,10 +5,12 @@
 // Con el teclado: Tab llega a la región elegida, las flechas recorren las regiones de norte a sur y Enter
 // elige; los lugares de cada región están también como botones en el panel.
 import geo from './chile-regiones.json';
+import './mapa.css';
 import { curvasDeNivel } from './curvas.js';
-import { esc, icono, movimientoReducido, urlImagen } from './util.js';
+import { animar, esc, movimientoReducido, urlImagen } from './util.js';
 
 const NS = 'http://www.w3.org/2000/svg';
+const CURVA_ENTRADA = 'cubic-bezier(0.2, 0.7, 0.2, 1)'; // la de --curva-entrada (styles.css)
 const MARGEN = { izq: 4, der: 4, arriba: 8, abajo: 8 };
 // Rótulos fijos para orientarse: al oeste (sobre el mar) salvo Santiago, que va al este. Las latitudes van al
 // este, en el borde del mapa (el lado argentino no se dibuja).
@@ -72,7 +74,16 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     latitudes += `<text x="${geo.ancho}" y="${y}" dy="-0.35em" text-anchor="end">${-lat}° S</text>`;
   }
   const { x: rx, y: ry } = geo.rapa;
-  const capas = `<g class="graticula" aria-hidden="true">${rayas}</g><g class="recuadro" aria-hidden="true"><rect x="${rx - 28}" y="${ry - 22}" width="56" height="44" rx="3"/><text x="${rx - 28}" y="${ry - 22}" dy="-0.4em">Rapa Nui · otra escala</text></g>`;
+  // Oficio cartográfico: la costa con un halo sobre el océano (dos copias de la silueta, con trazo ancho), el
+  // norte y una escala gráfica norte-sur de 500 km (en esta proyección 1° de latitud = 26 unidades = 111,32 km,
+  // así que es exacta; de este a oeste solo valdría a 36,75° S, por eso no se dibuja).
+  const km500 = (500 / 111.32) * S;
+  const costa = `<g aria-hidden="true"><use href="#silueta-chile" width="${geo.ancho}" height="${geo.alto}" class="costa costa-ancha"/><use href="#silueta-chile" width="${geo.ancho}" height="${geo.alto}" class="costa costa-media"/></g>`;
+  const escala = `<g class="escala" aria-hidden="true" transform="translate(20 70)">
+    <path class="escala-norte" d="M0 -48 6 -30 0 -34 -6 -30z"/><text x="0" y="-52" text-anchor="middle">N</text>
+    <path class="escala-barra" d="M0 0V${km500.toFixed(1)}M-5 0h10M-5 ${(km500 / 2).toFixed(1)}h10M-5 ${km500.toFixed(1)}h10"/>
+    <text x="-6" y="${km500.toFixed(1)}" dy="1.1em">500 km</text></g>`;
+  const capas = `<g class="graticula" aria-hidden="true">${rayas}</g>${costa}${escala}<g class="recuadro" aria-hidden="true"><rect x="${rx - 28}" y="${ry - 22}" width="56" height="44" rx="3"/><text x="${rx - 28}" y="${ry - 22}" dy="-0.4em">Rapa Nui · otra escala</text></g>`;
   svg.innerHTML = `${capas}<g class="regiones">${geo.regiones
     .map((r) => `<path class="region" data-codigo="${r.codigo}" d="${r.d}${r.rapa}" tabindex="-1" role="button"/>`)
     .join('')}</g><g class="contornos" aria-hidden="true"></g><path class="contorno-foco" aria-hidden="true"/><g class="graticula" aria-hidden="true">${latitudes}</g><g class="alfileres" aria-hidden="true">${mapa.lugares
@@ -125,7 +136,8 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
       else el.removeAttribute('aria-current');
       if (elegida) elegidas.push(codigo);
     }
-    contornos.innerHTML = elegidas.map((c) => `<path d="${caminoDe(c)}"/>`).join('');
+    // Lo elegido lleva un halo de cobre bajo su contorno oscuro (el halo primero, para que quede debajo).
+    contornos.innerHTML = elegidas.map((c) => `<path class="halo" d="${caminoDe(c)}"/>`).join('') + elegidas.map((c) => `<path d="${caminoDe(c)}"/>`).join('');
     // Los lugares se tocan con el dedo o el mouse; con el teclado y el lector, desde la lista del panel.
     for (const [id, el] of elLugar) {
       const n = de.lugar(id).length;
@@ -152,7 +164,12 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
           .join('')}</ol>`
       : `<p class="mapa-vacio">${vacio}</p>`;
   const epoca = () => (periodo ? ` · ${esc(periodoDe.get(periodo).nombre)}` : '');
-  const volver = (ruta, texto) => `<a class="boton chico mapa-volver" href="${ruta}">${icono('anterior')}<span>${esc(texto)}</span></a>`;
+  // Ruta de lo elegido («Chile › Tarapacá › Iquique»): cada paso anterior lleva a su vista; el último es el actual.
+  // Reemplaza al botón «◀ Región de Magallanes y de la Antártica Chilena», que se partía en dos líneas.
+  const ruta = (...pasos) => `<nav class="mapa-ruta" aria-label="Estás en"><ol>${pasos
+    .map(([href, texto], i) => `<li>${i < pasos.length - 1 ? `<a href="${href}">${esc(texto)}</a>` : `<span aria-current="page">${esc(texto)}</span>`}</li>`)
+    .join('')}</ol></nav>`;
+  const CHILE = ['#mapa', 'Chile'];
   const encabezado = (ceja, titulo) => `<p class="ceja">${ceja}${epoca()}</p><h3 id="mapa-panel-titulo" tabindex="-1">${titulo}</h3>`;
   const rutaRegion = (codigo) => `#mapa/${codigo.toLowerCase()}`;
 
@@ -169,23 +186,23 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     } else if (tipo === 'region') {
       const lista = de.region(id);
       const lugares = mapa.lugares.filter((l) => l.region === id && de.lugar(l.id).length);
-      html = `${volver('#mapa', 'Todas las regiones')}${encabezado('Región', esc(nombreRegion(id)))}
+      html = `${ruta(CHILE, [rutaRegion(id), regionPorCodigo.get(id).corto])}${encabezado('Región', esc(nombreRegion(id)))}
         <p class="mapa-resumen">${plural(lista.length, 'evento', 'eventos')}${lugares.length ? `; ${plural(lugares.length, 'lugar marcado', 'lugares marcados')}:` : '.'}</p>
         ${lugares.length ? `<ul class="mapa-lugares">${lugares.map((l) => `<li><a class="boton chico" href="#lugar/${l.id}">${esc(l.nombre)} <b>${de.lugar(l.id).length}</b></a></li>`).join('')}</ul>` : ''}
         ${listaEventos(lista)}`;
     } else if (tipo === 'lugar') {
       const l = lugarPorId.get(id);
-      html = `${volver(rutaRegion(l.region), nombreRegion(l.region))}${encabezado('Lugar', esc(l.nombre))}
+      html = `${ruta(CHILE, [rutaRegion(l.region), regionPorCodigo.get(l.region).corto], [`#lugar/${id}`, l.nombre])}${encabezado('Lugar', esc(l.nombre))}
         <p class="mapa-resumen">${plural(de.lugar(id).length, 'evento', 'eventos')}.${l.aproximado ? ` <span class="mapa-aprox">Ubicación aproximada: ${esc(l.nota)}.</span>` : ''}</p>
         ${listaEventos(de.lugar(id))}`;
     } else if (tipo === 'zona') {
       const z = zonaPorId.get(id);
-      html = `${volver('#mapa', 'Todas las regiones')}${encabezado('Zona', esc(z.nombre))}
+      html = `${ruta(CHILE, [`#mapa/zona/${id}`, z.nombre])}${encabezado('Zona', esc(z.nombre))}
         <p class="mapa-resumen">Abarca ${z.regiones.length === 1 ? 'la región' : 'las regiones'} de ${esc(new Intl.ListFormat('es').format(z.regiones.map((c) => regionPorCodigo.get(c).corto)))}.</p>
         ${listaEventos(de.zona(id))}`;
     } else {
       const nacional = tipo === 'chile';
-      html = `${volver('#mapa', 'Todas las regiones')}${encabezado(nacional ? 'Alcance nacional' : 'Fuera del territorio', nacional ? 'Todo Chile' : 'Fuera de Chile')}
+      html = `${ruta(CHILE, [`#mapa/${tipo}`, nacional ? 'Todo Chile' : 'Fuera de Chile'])}${encabezado(nacional ? 'Alcance nacional' : 'Fuera del territorio', nacional ? 'Todo Chile' : 'Fuera de Chile')}
         <p class="mapa-resumen">${nacional ? 'Leyes, elecciones y procesos que alcanzaron a todo el país.' : 'Hechos de la historia de Chile ocurridos, en todo o en parte, en otros países.'}</p>
         ${listaEventos(nacional ? de.chile() : de.fuera())}`;
     }
@@ -239,14 +256,38 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     const dentro = seccion.contains(document.activeElement);
     const cambio = !pintado || nueva.tipo !== seleccion.tipo || nueva.id !== seleccion.id;
     if (cambio) {
+      const antes = pintado ? seleccion : null;
       seleccion = nueva;
       pintarMapa();
       pintarPanel();
       panel.scrollTop = 0;
       pintado = true;
-      dejarALaVista();
+      dejarALaVista(); // mide antes de animar el panel (con la hoja a medio subir mediría mal)
+      if (antes) entrarPanel(antes, nueva);
     }
     if (enfocar && (cambio || !dentro)) enfocarSeleccion(dentro);
+  }
+
+  // El panel entra según hacia dónde se va: más adentro (de Chile a una región, de la región a un lugar) desde la
+  // derecha; de vuelta, desde la izquierda. En el celular, la hoja sube al elegir algo. El alfiler elegido emite
+  // una sola onda de cobre (nunca roja: el de Iquique es también el de la matanza de 1907).
+  const PROFUNDIDAD = { todo: 0, region: 1, zona: 1, chile: 1, fuera: 1, lugar: 2 };
+  function entrarPanel(antes, nueva) {
+    if (unaColumna.matches && antes.tipo === 'todo') animar(panel, [{ translate: '0 100%' }, { translate: '0 0' }], { duration: 280, easing: CURVA_ENTRADA });
+    else {
+      const lado = Math.sign(PROFUNDIDAD[nueva.tipo] - PROFUNDIDAD[antes.tipo]) || 1;
+      animar(panel, [{ opacity: 0, translate: `${lado}rem 0` }, { opacity: 1, translate: '0 0' }], { duration: 220, easing: CURVA_ENTRADA });
+    }
+    if (nueva.tipo !== 'lugar' || movimientoReducido()) return;
+    const pin = elLugar.get(nueva.id)?.querySelector('.punto');
+    const caja = pin?.getBoundingClientRect();
+    if (!caja?.width) return;
+    const base = figura.getBoundingClientRect();
+    const onda = Object.assign(document.createElement('span'), { className: 'onda-alfiler' });
+    onda.setAttribute('aria-hidden', 'true');
+    Object.assign(onda.style, { left: `${caja.left + caja.width / 2 - base.left}px`, top: `${caja.top + caja.height / 2 - base.top}px` });
+    figura.append(onda);
+    onda.addEventListener('animationend', () => onda.remove());
   }
 
   // ---- Interacción: tocar, teclado y globo con el nombre ----
