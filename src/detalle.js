@@ -2,7 +2,7 @@
 // el nivel de lectura, «¿Sabías que?», personajes, «¿Qué pasó antes / después?», período y fuentes), un paso
 // de una historia guiada, un grupo de eventos, la lista de historias o la ficha de un personaje.
 import { edadEn, formatearAnio, haceCuanto } from './fechas.js';
-import { borrarPreferencia, esc, guardarPreferencia, leerPreferencia, nombreFuente, urlImagen, urlLicencia } from './util.js';
+import { borrarPreferencia, creditoImagen, esc, externo, guardarPreferencia, leerPreferencia, nombreFuente, urlImagen } from './util.js';
 
 // «Detallado» suma el detalle al resumen general: el detalle lo continúa, no lo repite.
 const PARRAFOS = {
@@ -10,8 +10,6 @@ const PARRAFOS = {
   general: (ev) => [ev.resumen],
   detallado: (ev) => [ev.resumen, ...ev.detalle.split(/\n\s*\n/)],
 };
-const OTRA_PESTANA = '<span class="solo-lector"> (se abre en otra pestaña)</span>';
-const externo = (url, texto) => `<a href="${esc(url)}" target="_blank" rel="noopener">${texto}${OTRA_PESTANA}</a>`;
 const ANIO_ACTUAL = new Date().getFullYear();
 const Y = new Intl.ListFormat('es', { type: 'conjunction' }); // «A, B y C»
 
@@ -179,7 +177,6 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe }) {
     iniciar(ev, nivelLectura);
     const p = periodoDe.get(ev.periodoId);
     const img = ev.imagen;
-    const licencia = urlLicencia(img.licencia) ? externo(urlLicencia(img.licencia), esc(img.licencia)) : esc(img.licencia);
     const cuerpo = () => PARRAFOS[nivel](ev).map((x) => `<p>${esc(x)}</p>`).join('');
     const r = historia?.recorrido;
     const vecinos = historia
@@ -216,7 +213,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe }) {
           </div>
           <figcaption>
             <span class="pie">${esc(img.pieDeFoto)}</span>
-            <span class="credito">Imagen: ${esc(img.autor)} · ${licencia} · ${externo(img.urlPagina, 'Wikimedia Commons')}</span>
+            <span class="credito">Imagen: ${creditoImagen(img)}</span>
           </figcaption>
         </figure>
         <div class="detalle-texto">

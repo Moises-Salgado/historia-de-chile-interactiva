@@ -1,9 +1,11 @@
-/* Estilos: colores (claro y oscuro automático), cabecera, línea de tiempo, minimapa, detalle y búsqueda.
+/* Estilos: colores (claro y oscuro automático), cabecera, portada, línea de tiempo, minimapa, detalle y búsqueda.
    Ningún texto baja de 1rem (18 px) y las medidas van en rem, así todo crece con «Texto grande».
-   Paleta «papel y tinta»: fondo cálido, tinta oscura y el color de cada período como acento. */
+   Paleta «Atlas» (docs/IDEA_MAESTRA.md): niebla para leer, el océano Pacífico en la cabecera y la portada,
+   cobre como acento y el color de cada período en sus eventos. El contraste de cada par está medido (AA). */
 
-/* Source Serif 4 SemiBold (Adobe, licencia SIL OFL 1.1: public/fonts/), solo latín, solo para títulos.
-   «optional»: si no llega a tiempo en la primera visita se usa Georgia, sin saltos del texto. */
+/* Source Serif 4 SemiBold (Adobe) para títulos y Barlow Condensed SemiBold (Jeremy Tribby) para fechas y
+   rótulos, ambas con licencia SIL OFL 1.1 (public/fonts/) y solo latín. «optional»: si no llegan a tiempo en
+   la primera visita se usa la letra de respaldo, sin saltos del texto. */
 @font-face {
   font-family: 'Source Serif 4';
   font-style: normal;
@@ -13,23 +15,42 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: optional;
+  src: url('./fonts/barlow-condensed-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   color-scheme: light dark;
-  --azul: #0039a6;
+  --acento: #9c5526; /* cobre para texto, anillos y botones activos sobre claro */
+  --sobre-acento: #ffffff;
   --rojo: #d52b1e;
-  --sobre-azul: #ffffff;
-  --fondo: #f4efe6;
-  --superficie: #fffdf8;
-  --superficie-2: #ebe4d6;
-  --texto: #1d1a16;
-  --texto-suave: #574e44;
-  --borde: #d9cfbe;
-  --borde-fuerte: #7b6f60;
-  --foco: #0039a6;
-  --sombra: 0 1px 1px rgb(58 40 18 / 0.06), 0 6px 16px -8px rgb(58 40 18 / 0.3);
-  --sombra-alta: 0 2px 4px rgb(58 40 18 / 0.08), 0 14px 32px -12px rgb(58 40 18 / 0.4);
+  --fondo: #eef2f0; /* niebla */
+  --superficie: #f9fbfa;
+  --superficie-2: #e2e9e6;
+  --texto: #142220; /* roca */
+  --texto-suave: #4f5f5b;
+  --borde: #cbd6d2;
+  --borde-fuerte: #667975;
+  --foco: #9c5526;
+  /* Océano: cabecera, portada y mapa (igual en claro y en oscuro). */
+  --pacifico: #0f2c36;
+  --pacifico-2: #173f4c;
+  --pacifico-3: #2a5664;
+  --sobre-pacifico: #edf3f1;
+  --sobre-pacifico-suave: #a8bdb8;
+  --cobre-claro: #e8a874; /* cobre sobre el océano */
+  --cobre-vivo: #c97a3f; /* solo marcas decorativas: no alcanza 3:1 sobre la niebla */
+  --tierra: #46666b;
+  --sombra: 0 1px 1px rgb(8 25 31 / 0.06), 0 6px 16px -8px rgb(8 25 31 / 0.3);
+  --sombra-alta: 0 2px 4px rgb(8 25 31 / 0.08), 0 14px 32px -12px rgb(8 25 31 / 0.4);
   --lavado: 7%; /* tinte de cada período sobre la línea: igual para los nueve */
   --serif: 'Source Serif 4', Georgia, 'Noto Serif', 'Times New Roman', serif; /* solo títulos */
+  --rotulo: 'Barlow Condensed', 'Bahnschrift Condensed', 'Avenir Next Condensed', 'Roboto Condensed', sans-serif-condensed, 'Arial Narrow', sans-serif; /* fechas y rótulos */
   --radio: 0.5rem;
   --tarjeta-ancho: 17rem; /* igual que MEDIDA en timeline.js */
   --tarjeta-alto: 6rem;
@@ -50,21 +71,41 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-clase]) {
-    --azul: #9db8ff;
+    --acento: #e8a874;
+    --sobre-acento: #1d0f05;
     --rojo: #ff8a80;
-    --sobre-azul: #0b0d10;
-    --fondo: #15130f;
-    --superficie: #1f1b16;
-    --superficie-2: #2a251e;
-    --texto: #f1eadf;
-    --texto-suave: #c4b9a8;
-    --borde: #3b342b;
-    --borde-fuerte: #8f8577;
-    --foco: #9db8ff;
+    --fondo: #0b1619;
+    --superficie: #122125;
+    --superficie-2: #1a2e33;
+    --texto: #e6eeeb;
+    --texto-suave: #a3b4b0;
+    --borde: #2a3b3f;
+    --borde-fuerte: #6a817c;
+    --foco: #e8a874;
+    --pacifico: #0e2a34;
+    --pacifico-2: #16394a;
+    --pacifico-3: #285363;
+    --cobre-vivo: #d98a4e;
     --sombra: 0 1px 3px rgb(0 0 0 / 0.6);
     --sombra-alta: 0 4px 18px rgb(0 0 0 / 0.6);
     --lavado: 12%;
   }
+}
+
+/* La cabecera y la portada van sobre el océano en los dos modos: sus controles usan esta variante. */
+.cabecera,
+.inicio-banda {
+  --texto: var(--sobre-pacifico);
+  --texto-suave: var(--sobre-pacifico-suave);
+  --superficie: var(--pacifico);
+  --superficie-2: var(--pacifico-2);
+  --borde: var(--pacifico-3);
+  --borde-fuerte: #6c8c94;
+  --acento: var(--cobre-claro);
+  --sobre-acento: #1d0f05;
+  --foco: var(--cobre-claro);
+  color: var(--texto);
+  background: var(--pacifico);
 }
 
 /* Tinta del período para puntos, anillos y textos: en oscuro se aclara para mantener el contraste. */
@@ -72,12 +113,14 @@
 .tramo,
 .cartela,
 .detalle,
-.resultado {
+.resultado,
+.epoca,
+.destacado {
   --tinta: var(--color);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-clase]) :is(.punto, .tramo, .cartela, .detalle, .resultado) {
+  :root:not([data-clase]) :is(.punto, .tramo, .cartela, .detalle, .resultado, .epoca, .destacado) {
     --tinta: color-mix(in oklab, var(--color) 55%, #fff);
   }
 }
@@ -93,9 +136,9 @@
   }
 }
 
-/* La cabecera cabe en una fila: en pantallas medianas (y en clase, con letra grande) se acortan rótulos.
+/* Rótulos que se acortan para que cada fila de la cabecera quepa (en clase, con letra grande, también).
    «Texto grande» no hace falta en clase: la letra ya es grande. */
-@media (max-width: 85em) {
+@media (max-width: 70em) {
   .clase-extra {
     position: absolute;
     width: 1px;
@@ -106,7 +149,7 @@
   }
 }
 
-@media (max-width: 80em) {
+@media (max-width: 46em) {
   .cabecera .nivel-titulo {
     position: absolute;
     width: 1px;
@@ -165,7 +208,7 @@ h3 {
 }
 
 a {
-  color: var(--azul);
+  color: var(--acento);
   text-underline-offset: 0.15em;
 }
 
@@ -217,9 +260,9 @@ h2[tabindex='-1']:focus,
   left: 1rem;
   z-index: 100;
   padding: 0.5rem 1rem;
-  color: var(--azul);
+  color: var(--acento);
   background: var(--superficie);
-  border: 2px solid var(--azul);
+  border: 2px solid var(--acento);
   border-radius: var(--radio);
   transform: translateY(-120%);
 }
@@ -230,6 +273,13 @@ h2[tabindex='-1']:focus,
 
 .sin-js {
   padding: 1rem;
+}
+
+.simbolos {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 /* ---- Botones ---- */
@@ -264,9 +314,9 @@ h2[tabindex='-1']:focus,
 
 .boton.primario,
 .boton[aria-pressed='true'] {
-  color: var(--sobre-azul);
-  background: var(--azul);
-  border-color: var(--azul);
+  color: var(--sobre-acento);
+  background: var(--acento);
+  border-color: var(--acento);
 }
 
 .boton[aria-disabled='true'] {
@@ -294,27 +344,33 @@ h2[tabindex='-1']:focus,
   stroke-linecap: round;
 }
 
-/* ---- Cabecera: en pantallas angostas, marca y «Buscar» arriba y opciones de lectura abajo ---- */
+/* ---- Cabecera sobre el océano: marca, secciones y «Buscar» en la primera fila; nivel de lectura,
+   «Texto grande» y «Proyectar en clase» en la segunda (en pantallas muy anchas, todo en una fila).
+   El filete rojo es el único color de la bandera fuera de la marca. ---- */
 .cabecera {
-  display: flex;
-  flex-wrap: wrap;
+  position: relative;
+  z-index: 30;
+  display: grid;
+  grid-template-areas:
+    'marca pestanas buscar'
+    'lectura lectura lectura';
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.5rem 1rem;
+  gap: 0.375rem 1.25rem;
   padding: max(0.5rem, env(safe-area-inset-top)) 1rem 0.5rem;
-  background: var(--superficie);
-  border-bottom: 4px solid var(--rojo);
+  border-bottom: 3px solid var(--rojo);
 }
 
 .marca {
   display: flex;
-  flex: 1 1 auto;
+  grid-area: marca;
   align-items: center;
   gap: 0.5rem;
-  order: 1;
   margin: 0;
   font-family: var(--serif);
   font-size: 1.375rem;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .marca-icono {
@@ -323,59 +379,135 @@ h2[tabindex='-1']:focus,
   height: 1.5em;
 }
 
+/* Secciones: el rótulo de la actual se subraya en cobre. Si no caben (texto grande en un teléfono),
+   la fila se desplaza de lado en vez de partirse. */
+.pestanas {
+  display: flex;
+  grid-area: pestanas;
+  gap: 0.25rem;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pestana {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 0.625rem;
+  font-family: var(--rotulo);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--texto-suave);
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: var(--radio);
+  transition: scale 0.12s ease;
+}
+
+.pestana:hover {
+  color: var(--texto);
+  background: var(--superficie-2);
+}
+
+.pestana:active {
+  scale: 0.97;
+}
+
+.pestana[aria-current='page'] {
+  color: var(--texto);
+}
+
+.pestana[aria-current='page']::after {
+  position: absolute;
+  right: 0.625rem;
+  bottom: 0.25rem;
+  left: 0.625rem;
+  height: 3px;
+  background: var(--acento);
+  border-radius: 2px;
+  content: '';
+}
+
+/* La fila de secciones recorta lo que sale de ella: el contorno de foco va por dentro. */
+.pestana:focus-visible {
+  outline-offset: -3px;
+}
+
 .buscar {
-  order: 2;
+  grid-area: buscar;
 }
 
 .lectura {
   display: flex;
-  flex: 1 1 100%;
   flex-wrap: wrap;
+  grid-area: lectura;
   align-items: center;
-  gap: 0.5rem 0.75rem;
-  order: 3;
+  justify-content: flex-end;
+  gap: 0.375rem 0.75rem;
 }
 
-@media (min-width: 62em) {
-  .lectura {
-    flex: 0 1 auto;
-    order: 2;
-  }
-
-  .buscar {
-    order: 3;
+@media (min-width: 112em) {
+  .cabecera {
+    grid-template-areas: 'marca pestanas lectura buscar';
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
   }
 }
 
-/* En pantallas angostas: marca, «A+» y lupa en una fila (la marca se parte en dos líneas si hace falta)
-   y el nivel de lectura a todo el ancho en la segunda. Así la cabecera usa dos filas también con texto grande. */
+/* Sin espacio para la marca completa queda el ícono (el nombre sigue en el título para lectores de pantalla). */
+@media (max-width: 50em) {
+  .marca-texto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* En teléfonos: ícono, secciones y lupa en la primera fila; el nivel de lectura (a todo el ancho) y «A+»
+   en la segunda. «Línea de tiempo» se acorta a «Línea» (el nombre accesible sigue completo). */
 @media (max-width: 40em) {
   .cabecera {
-    column-gap: 0.75rem;
+    column-gap: 0.5rem;
     padding-inline: 0.75rem;
   }
 
+  .pestanas {
+    gap: 0;
+  }
+
+  .pestana {
+    padding-inline: 0.375rem;
+    font-size: 1rem;
+  }
+
+  .pestana[aria-current='page']::after {
+    right: 0.375rem;
+    left: 0.375rem;
+  }
+
+  .pestana-larga {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
   .lectura {
-    display: contents;
-  }
-
-  .marca {
-    flex: 1 1 0;
-    min-width: 0;
-    font-size: 1.125rem;
-  }
-
-  #btn-texto {
-    order: 2;
-  }
-
-  .buscar {
-    order: 3;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    column-gap: 0.5rem;
   }
 
   .nivel {
-    flex: 1 1 100%;
-    order: 4;
+    flex: 1 1 auto;
   }
 
   .nivel-opciones {
@@ -389,18 +521,11 @@ h2[tabindex='-1']:focus,
   .nivel-opciones label > span {
     flex: 1;
     justify-content: center;
+    padding: 0 0.5rem;
   }
 
   .buscar {
-    padding-inline: 0.75rem;
-  }
-
-  .lectura {
-    column-gap: 0.5rem;
-  }
-
-  .nivel-opciones label > span {
-    padding: 0 0.5rem;
+    padding-inline: 0.625rem;
   }
 
   #btn-texto {
@@ -408,7 +533,35 @@ h2[tabindex='-1']:focus,
   }
 }
 
-/* En teléfonos, «Buscar» queda como lupa (el nombre accesible se mantiene): así la cabecera usa dos filas. */
+/* Teléfono con «Texto grande»: tres filas (marca, «A+» y lupa; secciones; nivel de lectura a todo el ancho). */
+@media (max-width: 40em) {
+  :root[data-texto='grande'] .cabecera {
+    grid-template-areas:
+      'marca texto buscar'
+      'pestanas pestanas pestanas'
+      'nivel nivel nivel';
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  :root[data-texto='grande'] .lectura {
+    display: contents;
+  }
+
+  :root[data-texto='grande'] .nivel {
+    grid-area: nivel;
+  }
+
+  :root[data-texto='grande'] #btn-texto,
+  :root[data-texto='grande'] #btn-clase {
+    grid-area: texto;
+  }
+
+  :root[data-texto='grande'] .nivel-opciones label > span {
+    padding: 0 0.375rem;
+  }
+}
+
+/* En teléfonos, «Buscar» queda como lupa (el nombre accesible se mantiene). */
 @media (max-width: 30em) {
   .texto-buscar {
     position: absolute;
@@ -477,9 +630,9 @@ h2[tabindex='-1']:focus,
 }
 
 .nivel-opciones input:checked + span {
-  color: var(--sobre-azul);
+  color: var(--sobre-acento);
   font-weight: 700;
-  background: var(--azul);
+  background: var(--acento);
 }
 
 .nivel-opciones input:focus-visible + span {
@@ -497,11 +650,468 @@ h2[tabindex='-1']:focus,
   overflow: hidden;
 }
 
+.principal:focus {
+  outline: none;
+}
+
 .linea {
   display: flex;
   flex: 1;
   flex-direction: column;
   min-height: 0;
+}
+
+/* Secciones (<html data-base>): la portada y el mapa tapan la línea de tiempo, que conserva su estado pero
+   no se dibuja ni pide imágenes mientras no se ve. Bajo el detalle (opaco) tampoco: así sus ajustes al
+   cambiar la barra inferior no cuentan como saltos de la página. La barra inferior es de la línea y del detalle. */
+:root:not([data-base='linea']) .linea,
+body[data-vista='detalle'] .linea {
+  content-visibility: hidden;
+}
+
+:root:not([data-base='linea']) body:not([data-vista='detalle']) .controles {
+  display: none;
+}
+
+/* ---- Portada (#inicio): bienvenida sobre el océano con curvas de nivel, tres puertas de entrada,
+   un «¿Sabías que…?» que cambia cada día y los nueve períodos ---- */
+.inicio {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--fondo);
+}
+
+:root:not([data-base='inicio']) .inicio {
+  display: none;
+}
+
+.inicio-banda {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(1.75rem, 5vw, 3.5rem) 1rem clamp(1.5rem, 4vw, 3rem);
+}
+
+/* Curvas de nivel (src/curvas.js): un dibujo fijo, sin animación. */
+.curvas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+}
+
+.curvas.lista {
+  opacity: 1;
+}
+
+.inicio-hero,
+.puertas,
+.inicio-cuerpo > * {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+.inicio-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2rem;
+}
+
+.ceja {
+  margin: 0;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--acento);
+}
+
+.inicio-hero h2 {
+  margin: 0.375rem 0 0.875rem;
+  font-family: var(--serif);
+  font-size: clamp(2.125rem, 1.2rem + 3.6vw, 4rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.inicio-bajada {
+  max-width: 38rem;
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--texto-suave);
+}
+
+/* Los dos ejes del atlas, dibujados como escalas gráficas de mapa. */
+.ejes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  list-style: none;
+}
+
+.ejes li {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.eje-icono {
+  flex: none;
+  border: 1px solid currentColor;
+}
+
+.eje-icono.horizontal {
+  width: 2.5rem;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, currentColor 0 25%, transparent 25% 50%);
+}
+
+.eje-icono.vertical {
+  width: 6px;
+  height: 2.5rem;
+  color: var(--acento);
+  background: repeating-linear-gradient(180deg, currentColor 0 25%, transparent 25% 50%);
+}
+
+.inicio-silueta {
+  width: auto;
+  height: clamp(14rem, 28vw, 21rem);
+  fill: var(--tierra);
+  stroke: var(--tierra);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+/* Puertas: la imagen ocupa toda la tarjeta y el título va encima, sobre un degradado del océano. */
+.puertas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding: 0;
+  list-style: none;
+}
+
+.puerta {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: end;
+  height: 100%;
+  min-height: 14rem;
+  overflow: hidden;
+  color: #fff;
+  text-decoration: none;
+  background: var(--pacifico-2);
+  border-radius: var(--radio);
+  box-shadow: 0 18px 32px -20px rgb(0 0 0 / 0.75);
+  transition: scale 0.12s ease;
+}
+
+.puerta > img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 0.4s ease-out;
+}
+
+.puerta::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgb(8 25 31 / 0) 25%, rgb(8 25 31 / 0.55) 48%, rgb(8 25 31 / 0.9) 70%, rgb(8 25 31 / 0.94));
+  content: '';
+}
+
+.puerta:hover > img {
+  scale: 1.04;
+}
+
+.puerta:active {
+  scale: 0.98;
+}
+
+.puerta:focus-visible {
+  outline-offset: 3px;
+}
+
+.puerta-texto {
+  display: grid;
+  gap: 0.125rem;
+  padding: 1rem 1.125rem 1.125rem;
+  text-shadow: 0 1px 2px rgb(8 25 31 / 0.8);
+}
+
+.puerta-titulo {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.puerta-bajada {
+  color: #d6e2df;
+}
+
+.puerta-mapa {
+  background:
+    radial-gradient(circle at 75% 40%, rgb(255 255 255 / 0.06), transparent 60%),
+    var(--pacifico-2);
+}
+
+/* Puerta del mapa: la silueta de Chile con sus latitudes, como en una carta. Las marcas de latitud usan las
+   mismas proporciones que la silueta (y = (−17,4 − lat) · 26 sobre 1006). */
+.puerta-mapa > .curvas {
+  z-index: -3;
+}
+
+.puerta-silueta,
+.puerta-latitudes {
+  position: absolute;
+  top: 0.75rem;
+  bottom: 0.75rem;
+  z-index: -2;
+}
+
+.puerta-silueta {
+  right: 4.75rem;
+  width: auto;
+  height: calc(100% - 1.5rem);
+  fill: var(--tierra);
+  stroke: var(--tierra);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.puerta-ciudades {
+  fill: var(--cobre-claro);
+  stroke: none;
+}
+
+.puerta-latitudes {
+  right: 0.75rem;
+  width: 3.5rem;
+  font-family: var(--rotulo);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--sobre-pacifico-suave);
+  text-shadow: none;
+}
+
+.puerta-latitudes > span {
+  position: absolute;
+  right: 0;
+  white-space: nowrap;
+  translate: 0 -50%;
+}
+
+/* Raya de la latitud hasta la silueta. */
+.puerta-latitudes > span::before {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 0.375rem);
+  width: 3rem;
+  border-top: 1px dashed rgb(237 243 241 / 0.35);
+  content: '';
+}
+
+.puerta-mapa::after {
+  background: linear-gradient(180deg, transparent 45%, rgb(8 25 31 / 0.8) 80%);
+}
+
+/* La foto de Gabriela Mistral es un perfil: se encuadra el rostro sobre el título. */
+.puerta-historias > img {
+  object-position: 50% 60%;
+}
+
+.inicio-cuerpo {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  padding: clamp(1.75rem, 5vw, 3.5rem) 1rem max(2rem, env(safe-area-inset-bottom));
+}
+
+/* «¿Sabías que…?» del día: una frase textual del detalle de un evento, con su imagen. */
+.destacado {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: center;
+  gap: 1.25rem 2.5rem;
+}
+
+.destacado-figura {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.destacado-marco {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
+  border-radius: var(--radio);
+}
+
+.destacado-marco > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Primero el evento (la frase suele omitir de quién habla) y luego el dato, como cita con filete de cobre. */
+.destacado-titulo {
+  margin: 0.375rem 0 0;
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  font-weight: 600;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.destacado-titulo a {
+  color: inherit;
+  text-decoration-color: var(--acento);
+  text-decoration-thickness: 2px;
+}
+
+.destacado-titulo a:hover {
+  color: var(--acento);
+}
+
+.destacado-fecha {
+  margin: 0.25rem 0 0;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--tinta);
+}
+
+.destacado-frase {
+  max-width: 40rem;
+  margin: 1rem 0 0;
+  padding-left: 1rem;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--texto-suave);
+  text-wrap: pretty;
+  border-left: 4px solid var(--cobre-vivo);
+}
+
+.epocas h2 {
+  margin: 0.25rem 0 1rem;
+  font-family: var(--serif);
+  font-size: clamp(1.625rem, 1.2rem + 1.5vw, 2.25rem);
+  font-weight: 600;
+}
+
+.epocas-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.epoca {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0 0.5rem;
+  height: 100%;
+  padding: 0.75rem 1rem 0.875rem 0.75rem;
+  color: var(--texto);
+  text-decoration: none;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-top: 4px solid var(--color);
+  border-radius: var(--radio);
+  transition: scale 0.12s ease;
+}
+
+.epoca:hover {
+  border-color: var(--acento);
+  border-top-color: var(--color);
+}
+
+.epoca:active {
+  scale: 0.98;
+}
+
+.epoca-num {
+  grid-row: span 2;
+  font-family: var(--rotulo);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--tinta);
+}
+
+.epoca-nombre {
+  font-family: var(--serif);
+  font-size: 1.1875rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.epoca-fechas {
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+}
+
+.inicio-creditos {
+  margin: 0;
+}
+
+/* En el celular la bienvenida se acorta (la bajada ya nombra los dos ejes): así asoma la primera puerta. */
+@media (max-width: 40em) {
+  .inicio-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .inicio-hero h2 {
+    font-size: 2rem;
+  }
+
+  .inicio-silueta,
+  .ejes {
+    display: none;
+  }
+
+  .puerta {
+    min-height: 11rem;
+  }
+
+  .destacado {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .linea-info {
@@ -589,7 +1199,11 @@ h2[tabindex='-1']:focus,
 }
 
 .cartela-orden {
-  font-weight: 700;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--tinta);
 }
 
@@ -688,7 +1302,7 @@ h2[tabindex='-1']:focus,
 .evento.actual::after {
   position: absolute;
   inset: -3px;
-  border: 3px solid var(--azul);
+  border: 3px solid var(--acento);
   border-radius: calc(var(--radio) + 3px);
   pointer-events: none;
   content: '';
@@ -752,7 +1366,7 @@ h2[tabindex='-1']:focus,
 }
 
 .evento.actual .tarjeta {
-  border-color: var(--azul);
+  border-color: var(--acento);
   border-top-color: var(--color);
   box-shadow: var(--sombra-alta);
 }
@@ -802,7 +1416,10 @@ img[data-periodo]:not(.cargada) {
 
 .tarjeta-fecha {
   overflow: hidden;
-  font-weight: 700;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--texto-suave);
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -944,14 +1561,14 @@ img[data-periodo]:not(.cargada) {
 
 /* Al elegir un evento, su punto se asienta y emite una sola onda. */
 .punto.actual {
-  box-shadow: 0 0 0 3px var(--azul);
+  box-shadow: 0 0 0 3px var(--acento);
   animation: asentar-punto 0.2s ease-out;
 }
 
 .punto.actual::after {
   position: absolute;
   inset: -3px;
-  border: 2px solid var(--azul);
+  border: 2px solid var(--acento);
   border-radius: 50%;
   opacity: 0;
   pointer-events: none;
@@ -989,6 +1606,9 @@ img[data-periodo]:not(.cargada) {
   position: absolute;
   top: 0;
   left: 0;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--texto-suave);
   white-space: nowrap;
@@ -1053,7 +1673,11 @@ img[data-periodo]:not(.cargada) {
   padding: 0 0.75rem;
   overflow: hidden;
   font: inherit;
-  font-weight: 700;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   line-height: 2.25rem;
   color: #fff;
   white-space: nowrap;
@@ -1066,7 +1690,7 @@ img[data-periodo]:not(.cargada) {
 
 .franja-fechas {
   margin-left: 0.5rem;
-  font-weight: 400;
+  opacity: 0.85;
 }
 
 .franja-nombre:focus-visible {
@@ -1235,6 +1859,9 @@ body[data-vista='detalle'] .minimapa-fila {
 .minimapa-anio {
   position: absolute;
   top: 0;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
   line-height: 1.5rem;
   color: var(--texto-suave);
   white-space: nowrap;
@@ -1396,12 +2023,18 @@ body[data-vista='detalle'] .minimapa-fila {
 
 .detalle-fecha {
   margin: 0;
-  font-weight: 700;
+  font-family: var(--rotulo);
+  font-size: 1.1875rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
   color: var(--texto-suave);
 }
 
 .detalle-hace {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1rem;
   font-weight: 400;
+  letter-spacing: 0;
 }
 
 .etiquetas {
@@ -1476,7 +2109,7 @@ body[data-vista='detalle'] .minimapa-fila {
 }
 
 a.vecino:hover {
-  border-color: var(--azul);
+  border-color: var(--acento);
 }
 
 .vecino.despues {
@@ -1514,8 +2147,12 @@ a.vecino:hover {
 }
 
 .vecino-rotulo {
-  font-weight: 700;
-  color: var(--azul);
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--acento);
 }
 
 .vecino-fecha {
@@ -1722,7 +2359,7 @@ a.vecino:hover {
 }
 
 .resultado:hover {
-  border-color: var(--azul);
+  border-color: var(--acento);
   border-left-color: var(--color);
 }
 
@@ -1784,7 +2421,7 @@ a.vecino:hover {
   width: 1.375rem;
   height: 1.375rem;
   margin: 0;
-  accent-color: var(--azul);
+  accent-color: var(--acento);
 }
 
 .muestra {
@@ -1848,7 +2485,7 @@ a.vecino:hover {
 }
 
 .ficha:hover {
-  border-color: var(--azul);
+  border-color: var(--acento);
   border-left-color: var(--color);
 }
 
@@ -1892,7 +2529,7 @@ a.vecino:hover {
 
 .ficha-accion {
   font-weight: 700;
-  color: var(--azul);
+  color: var(--acento);
 }
 
 /* En la lista basta el comienzo del resumen: la ficha lleva al evento completo. */
@@ -1965,7 +2602,11 @@ a.vecino:hover {
 }
 
 .historia-paso {
-  font-weight: 700;
+  font-family: var(--rotulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .historia-pasos {
@@ -1990,8 +2631,8 @@ a.vecino:hover {
 }
 
 .historia-pasos li.actual {
-  background: var(--azul);
-  border-color: var(--azul);
+  background: var(--acento);
+  border-color: var(--acento);
 }
 
 /* «¿Sabías que…?»: una frase textual del detalle (en «Detallado» ya está en el texto). */

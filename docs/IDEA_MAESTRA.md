@@ -46,6 +46,14 @@ Chile es una franja larga que se recorre en dos direcciones: de izquierda a dere
 | D · Detalle tipo revista | imagen de cabecera con título y crédito visible; ficha lateral con mini-mapa, lugar, período y personajes; «¿Sabías que…?» como cita | en celular, título e imagen caben en la primera pantalla |
 | E · Pulido y verificación | revisión del crítico, del director de arte y del guardián; LCP, CLS y peso en claro, oscuro y modo clase | sin errores de consola, letra mínima de 18 px, sin hallazgos graves |
 
+## Avance
+
+- **A · Identidad y portada (hecha).**
+  - La portada está en `index.html`, así se ve antes de que cargue la app. Las fotos de las puertas se precargan solo si la portada está a la vista; con un enlace directo a un evento no se descargan.
+  - Medido en el sitio construido: LCP de 1,5 s en celular con red lenta y CPU 4× más lenta, y CLS de 0.
+  - Mientras otra sección o un detalle tapan la línea de tiempo, esta no se dibuja ni pide imágenes (`content-visibility: hidden`). Eso dejó en 0 el CLS de un enlace directo a un evento en celular, que era de 0,38.
+  - El botón «Inicio» de la barra inferior pasó a llamarse «Al inicio», para no confundirse con la pestaña de la portada.
+
 ## Datos del mapa
 
 - **Regiones:** Natural Earth 10m admin-1, v5.1.2, de dominio público, filtrado a `adm0_a3 = CHL`. Trae las 16 regiones actuales, Ñuble incluida.

@@ -1,9 +1,9 @@
 # Historia de Chile Interactiva — guía del proyecto
 
 Sitio estático: Vite (solo empaquetador) + HTML + CSS + JS con ES modules. Sin frameworks ni librerías de UI o de líneas de tiempo. Interfaz en español de Chile.
-Estructura: `src/` (main.js con rutas `#evento/<id>`, `#grupo/<id>`, `#historias`, `#historia/<id>/<paso>` y `#personaje/<nombre>`, timeline.js, detalle.js, filtros.js, datos.js, fechas.js, util.js, styles.css, sw.js = plantilla del Service Worker que completa `vite.config.js` al construir) · `data/` (periodos.json, temas.json, `NN-*.json`; recorridos.json, grupos.json y sabias-que.json solo ordenan o citan eventos existentes) · `public/placeholders/` · `scripts/` · `docs/` · `.github/workflows/pages.yml`.
+Estructura: `src/` (main.js con las secciones `#inicio` (o sin #) y `#linea` y las rutas `#evento/<id>`, `#grupo/<id>`, `#historias`, `#historia/<id>/<paso>` y `#personaje/<nombre>`; inicio.js = portada, cuyo HTML está en index.html; curvas.js, timeline.js, detalle.js, filtros.js, datos.js, fechas.js, util.js, styles.css, sw.js = plantilla del Service Worker que completa `vite.config.js` al construir) · `data/` (periodos.json, temas.json, `NN-*.json`; recorridos.json, grupos.json y sabias-que.json solo ordenan o citan eventos existentes) · `public/placeholders/` · `scripts/` · `docs/` · `.github/workflows/pages.yml`.
 Esquema de datos: `data/README.md`. Comandos: `npm run dev` · `npm run build` · `npm run preview` · `npm test` (valida datos) · `npm run verificar-imagenes` · `npm run docs` (regenera docs/FUENTES.md y las listas de REVISION_PENDIENTE).
-Estado: fases 0-5 completas; mejoras visuales por olas en `docs/PLAN_MEJORAS.md` (Olas 1 a 3 hechas; la 4 requiere verificación humana); rediseño «Atlas» aprobado, por fases A-E, en `docs/IDEA_MAESTRA.md` (fuente de títulos en `src/fonts/`, licencia OFL en `public/fonts/`), con agentes en `.claude/agents/`. Al cambiar datos: editar el JSON → `npm test` → `npm run verificar-imagenes` → `npm run docs`.
+Estado: fases 0-5 completas; mejoras visuales por olas en `docs/PLAN_MEJORAS.md` (Olas 1 a 3 hechas; la 4 requiere verificación humana); rediseño «Atlas» por fases A-E en `docs/IDEA_MAESTRA.md` (A hecha; fuentes en `src/fonts/`, licencias OFL en `public/fonts/`), con agentes en `.claude/agents/`. Al cambiar datos: editar el JSON → `npm test` → `npm run verificar-imagenes` → `npm run docs`.
 
 ## Trabajo por fases (0-5) y tokens
 - Plan ≤ 8 líneas al iniciar una fase; resumen ≤ 5 líneas al cerrarla; commit corto (`fase N: ...`); esperar "continúa".
@@ -30,7 +30,7 @@ Estado: fases 0-5 completas; mejoras visuales por olas en `docs/PLAN_MEJORAS.md`
 
 ## Interfaz y accesibilidad
 - Línea de tiempo horizontal: franjas de color por período, eventos como puntos con miniatura y minimapa para saltar de siglo. Zoom según `importancia` (zoom mínimo: solo 3).
-- Arrastrar o deslizar, rueda = zoom, botones grandes "◀ Anterior / Siguiente ▶", flechas del teclado y "Inicio"; usable en celular con una mano.
+- Arrastrar o deslizar, rueda = zoom, botones grandes "◀ Anterior / Siguiente ▶", flechas del teclado y "Al inicio" (la pestaña "Inicio" es la portada); usable en celular con una mano.
 - Detalle: imagen grande con crédito, fecha, título, texto según nivel, personajes, "¿Qué pasó antes / después?" y "Volver"; la URL cambia a `#evento/<id>`.
 - Nivel de lectura siempre visible (Para niños / General / Detallado), guardado en localStorage. Filtros por período y tema; buscador por título, personaje o año.
 - Texto mín. 18 px, contraste AA, botón "Texto grande", modo oscuro automático, todo por teclado, `aria-label`, foco visible, `prefers-reduced-motion`.

@@ -11,9 +11,10 @@ const palabras = (texto) => normalizar(texto).split(/[^\p{L}\p{N}]+/u).filter(Bo
 
 /**
  * Crea el panel en `panel`; `boton` lo abre y lo cierra. alCambiar() avisa que cambió el filtro,
- * alElegir(evento) abre un resultado y alAbrirOCerrar() avisa que el panel se mostró u ocultó.
+ * alElegir(evento) abre un resultado, alAbrirOCerrar() avisa que el panel se mostró u ocultó y alVerLinea()
+ * lleva a la línea de tiempo («Ver en la línea de tiempo»).
  */
-export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar, alElegir, alAbrirOCerrar }) {
+export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar, alElegir, alAbrirOCerrar, alVerLinea }) {
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   const nombreTema = new Map(temas.map((t) => [t.id, t.nombre]));
@@ -151,7 +152,10 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
   });
   panel.addEventListener('click', (e) => {
     const b = e.target.closest('button');
-    if (b?.dataset.accion === 'cerrar') cerrar();
+    if (b?.dataset.accion === 'cerrar') {
+      cerrar({ devolverFoco: false });
+      alVerLinea();
+    }
     else if (b?.dataset.accion === 'limpiar') limpiar();
     else if (b?.dataset.id) {
       cerrar({ devolverFoco: false });

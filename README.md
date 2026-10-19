@@ -1,10 +1,11 @@
 # Historia de Chile Interactiva
 
-Línea de tiempo interactiva de la historia de Chile, desde el poblamiento hasta hoy, con imágenes históricas de Wikimedia Commons. Cada evento se puede leer en tres niveles: **Para niños**, **General** y **Detallado**, para lectores desde los 8 años hasta adultos mayores.
+La historia de Chile, desde el poblamiento hasta hoy, en una línea de tiempo interactiva, con imágenes históricas de Wikimedia Commons. Cada evento se puede leer en tres niveles: **Para niños**, **General** y **Detallado**, para lectores desde los 8 años hasta adultos mayores.
 
 ## Qué incluye
 
 - Más de 120 eventos en 9 períodos, con fecha, lugar, personajes, imagen con su crédito y las fuentes consultadas.
+- Una portada con tres entradas (la línea de tiempo, el mapa y las historias guiadas), un «¿Sabías que…?» distinto cada día y los nueve períodos, para entrar directo a uno.
 - Línea de tiempo horizontal con franjas de color por período, minimapa y zoom según la importancia de cada evento: el zoom mínimo muestra solo los grandes hitos.
 - Búsqueda por título, personaje o año, y filtros por período y tema.
 - Historias guiadas paso a paso (la Independencia, los grandes terremotos, las constituciones y las mujeres en la vida pública), fichas de los personajes que aparecen en varios eventos y los pueblos originarios reunidos de norte a sur.
@@ -39,9 +40,10 @@ El sitio queda en `http://localhost:5173`.
 ```text
 data/       períodos, temas, un JSON de eventos por período, historias guiadas, grupos y
             «¿Sabías que?» (esquema en data/README.md)
-src/        main.js (rutas #evento/<id>), timeline.js, detalle.js, filtros.js, datos.js,
-            fechas.js, util.js, styles.css, sw.js (plantilla del Service Worker) y fonts/
-public/     favicon, dibujos de respaldo por período (placeholders/) y licencia de la fuente (fonts/)
+src/        main.js (secciones y rutas: #inicio, #linea, #evento/<id>…), inicio.js (portada),
+            curvas.js (curvas de nivel), timeline.js, detalle.js, filtros.js, datos.js, fechas.js,
+            util.js, styles.css, sw.js (plantilla del Service Worker) y fonts/
+public/     favicon, dibujos de respaldo por período (placeholders/) y licencias de las fuentes (fonts/)
 scripts/    validación de datos, verificación de imágenes y generación de docs/
 docs/       FUENTES.md y REVISION_PENDIENTE.md
 ```
@@ -64,5 +66,6 @@ Sin GitHub Actions, ejecuta `npm run build` y sube el contenido de `dist/` a cua
 - [`docs/FUENTES.md`](docs/FUENTES.md) reúne las fuentes y la imagen de cada evento.
 - [`docs/REVISION_PENDIENTE.md`](docs/REVISION_PENDIENTE.md) lista los datos de menor certeza o con fuentes que no coinciden. Conviene revisarlo antes de usar el sitio en clases.
 - Las imágenes son de [Wikimedia Commons](https://commons.wikimedia.org/), con licencias de dominio público, CC0, CC BY o CC BY-SA. El autor y la licencia se muestran junto a cada imagen. Se cargan desde Commons y no se copian al repositorio; si una no carga, se muestra un dibujo del período.
-- Los títulos usan Source Serif 4 SemiBold, de Adobe, con la licencia SIL Open Font License 1.1 (texto en [`public/fonts/OFL-Source-Serif-4.txt`](public/fonts/OFL-Source-Serif-4.txt)). Se incluye solo el subconjunto latino que distribuye Google Fonts, sin modificar.
+- Los títulos usan Source Serif 4 SemiBold, de Adobe, y las fechas y rótulos, Barlow Condensed SemiBold, de Jeremy Tribby; ambas tienen la licencia SIL Open Font License 1.1 (textos en [`public/fonts/`](public/fonts/)). Se incluye solo el subconjunto latino que distribuye Google Fonts, sin modificar.
+- La silueta de Chile de la portada viene de [Natural Earth](https://www.naturalearthdata.com/) (dominio público), simplificada.
 - Para agregar o corregir eventos, edita `data/NN-*.json` según `data/README.md` y luego ejecuta `npm test`, `npm run verificar-imagenes` y `npm run docs`.

@@ -3,26 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Línea de tiempo interactiva de la historia de Chile, con imágenes históricas y textos para niños, público general y lectores que quieren profundizar." />
-    <meta name="theme-color" content="#0039a6" />
+    <meta name="description" content="La historia de Chile en una línea de tiempo y un mapa interactivos, con imágenes de época y textos para niños, público general y lectores que quieren profundizar." />
+    <meta name="theme-color" content="#0f2c36" />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" href="/src/fonts/source-serif-4-semibold-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/fonts/barlow-condensed-semibold-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preconnect" href="https://commons.wikimedia.org" />
     <link rel="preconnect" href="https://upload.wikimedia.org" />
     <title>Historia de Chile Interactiva</title>
+    <script>
+      // Antes de pintar: sin dirección (o con #inicio) se ve la portada; con otra, la línea de tiempo (main.js
+      // decide el resto al cargar). Las fotos de las puertas (loading=lazy) se piden de inmediato solo si se
+      // ve la portada: con un enlace directo a un evento no se descargan.
+      (() => {
+        const h = location.hash;
+        const base = /^#?(?:inicio)?$/.test(h) ? 'inicio' : /^#(?:mapa|lugar)(?:\/|$)/.test(h) ? 'mapa' : 'linea';
+        document.documentElement.dataset.base = base;
+        if (base !== 'inicio') return;
+        for (const archivo of ['Hodges_easter-island.jpg', 'Gabriela_Mistral_1945_(cropped).jpg']) {
+          const l = document.createElement('link');
+          Object.assign(l, { rel: 'preload', as: 'image', fetchPriority: 'high' });
+          l.href = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(archivo) + '?width=500';
+          document.head.append(l);
+        }
+      })();
+    </script>
   </head>
   <body>
-    <a class="saltar" href="#linea">Saltar a la línea de tiempo</a>
+    <svg class="simbolos" aria-hidden="true" focusable="false">
+      <!-- Silueta de Chile continental (Natural Earth, dominio público; ver docs/IDEA_MAESTRA.md). -->
+      <symbol id="silueta-chile" viewBox="0 0 302 1006"><path d="M229 3l4 12l5 2l2 22l-4 5l-13-3l-10 5l-2-22l8-2l4-7l-1-7l7-5zM240 40l11 13l-5 7l2 9l-4 1l1 9l5 5l-1 11l-19 10l-12 0l-5-59l10-5l13 3l4-4zM249 92l7 9l7 40l14 0l4 5l-7 26l-22 13l-4 8l5 8l-7 6l-6 1l-2 7l-22 2l-10 7l-3-5l7-12l-3-22l4-24l-5-2l0-7l7-9l4-37l27-6l5-8zM249 205l3 22l-4 9l6 15l-11 2l-7 21l-10 12l-3 18l-5 5l2 11l-3 1l-7-6l-4-11l-8 3l-1 5l-9-5l-1-8l13-33l-1-12l3-4l3-25l11-8l22-2l2-7l9-3zM220 320l2 13l-2 4l-5 0l-2 18l-6 7l2 13l5 3l-2 7l-13-6l-10 2l-2 4l-4-44l9-16l-4-18l9 5l1-5l8-3l6 15l8 1zM213 388l5 17l-5 5l-7-5l-9 2l-8 7l1 12l-10 4l5-10l-3-12l6-11l1-16l14-1l10 8zM217 407l6 9l-1 22l-4 1l-8-10l-8 2l-5 5l-14-5l7-5l-1-12l8-7l9-2l7 5l4-3zM218 439l-7 19l-17-5l-11 3l-8-5l5-21l17 6l5-5l8-2l8 10zM211 458l-4 6l3 3l1 18l-7 9l-15 1l-13-8l-16-2l15-34l8 5l11-3l17 5zM197 496l-3 10l2 6l-7-1l-16 4l0-5l-10-3l2-5l-7-7l5-11l34 12zM196 512l-2 15l4 12l-7-2l-7 5l-1-5l-8-1l-8-9l-12-1l-4 22l-6 0l-2-33l8 0l1-11l2-5l3 3l1-7l7 7l-2 5l10 4l-1 4l24-3zM198 539l3 15l-11 5l-3 19l-5-5l-5 8l-8 0l-12-4l0-5l-6 0l-6-24l6 0l4-21l12 0l8 9l8 1l1 5l7-5l7 2zM185 577l-4 16l3 3l-7 9l-13 0l-8-8l-15-2l0-8l7-2l3-13l6 0l0 5l12 4l8 0l5-8l3 4zM182 640l-7 6l-1 20l8 4l-4 7l5 4l-2 4l3 6l-9-1l-5-5l-10-3l-5 3l3-4l-3-7l4-8l3 2l-3-14l7 0l-6-7l5-3l3 7l-1-12l-8-2l12-6l0-7l-6 8l-8-6l-5 8l-12-1l6-6l-6 1l-3-12l4-21l15 2l10 8l14-3l-1 29l3 9zM128 673l6-38l6 2l4-3l4 13l-9 6l7 8l-4 1l4 7l-6 0l2 6l-3 2l-11-4zM182 693l-2 8l15 4l-3 7l-17 0l16 13l-9 8l3 10l-6 5l5 14l-6 3l2 10l-10 6l-4 12l5 12l-6 2l0 9l-12 12l-24-14l0-4l7 1l2-5l-16-9l5-2l4 7l-2-7l11 1l5 6l6-3l-8-4l9 1l-9-4l-2-9l-4 9l-17-4l4-4l7 5l-1-3l5-1l-11-4l5-6l7 1l-3-11l-10-2l2 1l-4 2l4 1l-11-4l2-8l-15 9l5-2l0 6l-5-2l-1-6l11-9l3 2l-1-4l6 0l3-10l4 5l2-6l5 1l-1 8l2-4l2 3l-11 3l9 0l0 3l5 1l-4-4l3-2l2 5l-4 6l5 0l8-14l-7 8l1-9l9-8l-8 3l2-9l6-4l8 4l-13-4l1-8l14-6l3-6l0-4l-3 4l-10-7l2-3l-4 1l6-10l4 1l-1-4l-4 2l15 0l12 8zM108 810l-5 4l2-2l-4-1l1-4l5 0l1 3zM125 811l-2 3l-9-3l2-4l5 0l-1-8l5 12zM111 803l-2-6l10 3l-5 7l-3-4zM112 813l-4-8l-5 1l4-3l-4 1l1-8l4 0l4 17zM109 796l10-5l1 7l-11-2zM127 794l2-3l10 2l-12 1zM120 739l-1 5l-6 2l5-2l-6-4l8-1zM125 737l4-7l2 4l-6 3zM141 723l-11-2l8-3l3 5zM137 708l-7 5l-3-4l10-1zM148 707l3 1l0-5l5 1l0-3l1 4l5 0l-11 11l-3-9zM153 828l-6 2l-3 5l1 16l8 17l8-4l10 1l-2 11l3 4l-4 8l10 11l42 1l31 9l-16-4l-9 8l-25 5l2 2l-4 25l-7 4l-17-5l-7-8l3-4l4 2l-3 3l3 0l5-5l2 5l-5 3l4-1l1-8l13-7l-5-5l-13 10l-12-1l8 2l-9 4l6 6l-18-8l-2-2l7 0l5 3l-1-3l3 0l-6-2l-1-7l5-3l0 4l6 0l6-5l14-1l-17-3l-3 4l-2-2l3-2l-10 0l-2 5l6-1l-11 11l-5-3l5-2l-7-3l6 0l3-8l4 1l-6-2l-1 6l-3-3l-6 4l4-6l-4-1l2-6l-3-5l9 5l6-4l-1 5l4 0l2-5l-2 4l-2-4l3-3l6 7l-8 6l8 0l-2-1l3-5l-4-6l4-5l-13-9l-3 2l14 7l-15-5l6 5l-4 3l6-1l-6 6l-4-11l2 13l-5-3l-2-6l5 5l-4-7l3-1l-6 2l-4-10l7 6l-2-13l-9 2l1-7l-4 0l10 1l0-8l6 0l-5-3l4-4l-10 11l-6-9l9 2l-5-3l2-2l-5 2l0-4l-4 2l-5-5l7-2l3 4l7 1l-10-8l10 3l-1-6l-2 3l-6-3l5-4l-5-2l5-2l8 4l-9-7l1-5l5 3l-4-7l4-2l-5 0l-3 13l-4-3l1-18l6 1l19 13zM247 972l-7 0l5 3l-7 1l-12-3l1-3l-6 3l-2-4l0 4l-7 0l2-3l-3 3l-8 1l6-6l-12 4l2-4l-7 1l-1-4l-3 5l-2-3l-8 2l-1-5l7 3l-4-5l6 3l-1-3l5-1l6 4l6-5l4 0l-3 7l4-5l9 4l-17-11l17 8l2-5l5 8l-1-7l6 4l1-2l6 3l-3 5l8-5l-21-9l-4-8l17-8l0-4l-17 3l-6-4l1-8l4 1l3-4l-7-4l11 3l10-11l6 6l7-3l3 2l0 56zM260 994l-2 2l-10-8l-6 3l-2-3l5-2l-5 1l4-4l-14-1l4 0l-4 4l6 5l-13-5l6-4l-7 2l-4-3l33-5l2 3l-5 3l-10-3l18 5l-11 1l12 3l3 6zM263 984l-5-1l-5-7l22 0l5 4l-4 6l-5-4l-8 2zM213 980l-6 3l-1-4l-8-2l13-2l-7 3l9 2zM221 978l3-4l12 3l-15 1zM185 954l0-4l6 1l2 5l5-2l0 5l-4 2l-5-6l-2 4l-2-5zM177 957l-5-7l12 0l-2 6l-4-4l3 8l-4-3zM209 942l3 10l-7-2l3 7l-6-2l-2-7l6 0l-2-4l5-2zM166 954l-10 0l5-2l-2-2l5-2l-4-1l-5 0l-1 6l-4-2l1-7l-7 1l0-4l13 2l-9-5l7 1l-2-2l3-1l3 7l0-6l4 6l0-3l4 1l1 4l6 1l-5 2l1 5l-4 1zM152 934l-8 0l-6-7l-9 1l-9-9l23 8l3 5l1-3l5 5zM139 918l-3-1l2-3l-6 4l3-7l6-1l-2 8zM133 910l-1-5l-5-2l9 5l-3 2zM117 900l-2 3l-2-4l5-4l-1-5l0 10zM120 883l-6 3l5-7l5 1l-1 4l-3-1zM127 873l-7 3l1-2l-6-2l7 0l0-5l5 6zM112 861l-5 1l2 6l-4-1l0-6l7 0zM129 869l-6-5l4-3l-6-1l6 0l3 5l-3 0l5 3l-3 1zM114 855l-4 4l1-3l-6 1l1-5l5 2l1-3l-6-3l9 2l-2 2l6-1l-5 4zM105 842l-3 2l0-6l4-1l5 8l-6-3zM117 824l-1 5l-6-4l2-3l5 2zM110 822l-6 1l-3-4l5-2l4 5zM110 842l-5-12l6 5l-3-7l5 3l0-4l4 4l2-7l-3-2l2-2l-3 1l2-3l-4-1l8-4l1 5l2-4l2 32l-7 3l2-3l-5 0l4-2l-3-6l4 0l-4-2l5-5l-7 3l-1 11l-4-3z" /></symbol>
+    </svg>
+    <a class="saltar" href="#principal">Saltar al contenido</a>
 
     <header class="cabecera">
       <h1 class="marca">
         <svg class="marca-icono" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" fill="#0039a6" /><path fill="#fff" d="M32 11l4.94 15.2h15.98L40 35.6l4.93 15.2L32 41.4l-12.93 9.4 4.94-15.2-12.93-9.4h15.98z" /></svg>
-        Historia de Chile
+        <span class="marca-texto">Historia de Chile</span>
       </h1>
+      <nav class="pestanas" aria-label="Secciones">
+        <a class="pestana" href="#inicio" data-seccion="inicio">Inicio</a>
+        <a class="pestana" href="#linea" data-seccion="linea"><span>Línea<span class="pestana-larga"> de tiempo</span></span></a>
+        <a class="pestana" href="#mapa" data-seccion="mapa">Mapa</a>
+        <a class="pestana" href="#historias" data-seccion="historias">Historias</a>
+      </nav>
+      <button type="button" id="btn-buscar" class="boton buscar" aria-expanded="false" aria-controls="panel-filtros">
+        <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" /></svg>
+        <span class="texto-buscar">Buscar</span>
+      </button>
       <div class="lectura">
         <fieldset class="nivel">
-          <legend class="nivel-titulo solo-ancho">Nivel de lectura</legend>
+          <legend class="nivel-titulo">Nivel de lectura</legend>
           <div class="nivel-opciones">
             <label><input type="radio" name="nivel" value="nino" /><span><span class="solo-ancho">Para niños</span><span class="solo-angosto" aria-hidden="true">Niños</span></span></label>
             <label><input type="radio" name="nivel" value="general" checked /><span>General</span></label>
@@ -37,13 +69,9 @@
           <span>Proyectar<span class="clase-extra"> en clase</span></span>
         </button>
       </div>
-      <button type="button" id="btn-buscar" class="boton buscar" aria-expanded="false" aria-controls="panel-filtros">
-        <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" /></svg>
-        <span class="texto-buscar">Buscar</span>
-      </button>
     </header>
 
-    <main id="principal" class="principal">
+    <main id="principal" class="principal" tabindex="-1">
       <section id="linea" class="linea" aria-label="Línea de tiempo" aria-describedby="ayuda-linea" tabindex="-1">
         <p id="ayuda-linea" class="solo-lector">
           Usa las flechas izquierda y derecha para recorrer los eventos, Enter para abrir uno, y las teclas más y menos para ver más o menos eventos.
@@ -56,19 +84,84 @@
           </p>
         </div>
       </section>
+
+      <section id="inicio" class="inicio" aria-labelledby="inicio-titulo">
+        <div class="inicio-banda">
+          <canvas class="curvas" aria-hidden="true"></canvas>
+          <div class="inicio-hero">
+            <div class="inicio-texto">
+              <p class="ceja">De Arica al cabo de Hornos</p>
+              <h2 id="inicio-titulo" tabindex="-1">La historia de Chile, en el tiempo y en el territorio</h2>
+              <p class="inicio-bajada">
+                Desde los primeros habitantes, <span data-cifra="antiguedad">hace unos 14.500 años</span>, hasta hoy: <span data-cifra="eventos">121</span> momentos con
+                imágenes de época y textos para niños, para todo público y para quienes quieren profundizar.
+              </p>
+              <ul class="ejes">
+                <li><span class="eje-icono horizontal" aria-hidden="true"></span>En el tiempo: de los primeros pueblos a hoy</li>
+                <li><span class="eje-icono vertical" aria-hidden="true"></span>En el territorio: de Arica al cabo de Hornos</li>
+              </ul>
+            </div>
+            <svg class="inicio-silueta" viewBox="0 0 302 1006" aria-hidden="true" focusable="false"><use href="#silueta-chile" /></svg>
+          </div>
+          <ul class="puertas">
+            <li>
+              <a class="puerta" href="#linea">
+                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hodges_easter-island.jpg?width=500" alt="" loading="lazy" decoding="async" data-evento="1500-pueblo-rapanui" />
+                <span class="puerta-texto">
+                  <span class="puerta-titulo">Recorrer la línea de tiempo</span>
+                  <span class="puerta-bajada"><span data-cifra="periodos">9</span> períodos, uno tras otro</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a class="puerta puerta-mapa" href="#mapa">
+                <canvas class="curvas" data-curvas="tenue" aria-hidden="true"></canvas>
+                <span class="puerta-latitudes" aria-hidden="true"><span style="top: 6.7%">20° S</span><span style="top: 32.6%">30° S</span><span style="top: 58.4%">40° S</span><span style="top: 84.3%">50° S</span></span>
+                <svg class="puerta-silueta" viewBox="0 0 302 1006" aria-hidden="true" focusable="false">
+                  <use href="#silueta-chile" />
+                  <g class="puerta-ciudades"><circle cx="212" cy="28" r="9" /><circle cx="210" cy="162" r="9" /><circle cx="205" cy="417" r="11" /><circle cx="155" cy="505" r="9" /><circle cx="151" cy="583" r="9" /><circle cx="200" cy="930" r="9" /></g>
+                </svg>
+                <span class="puerta-texto">
+                  <span class="puerta-titulo">Explorar el mapa</span>
+                  <span class="puerta-bajada">Lo que pasó en cada región y ciudad</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a class="puerta puerta-historias" href="#historias">
+                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gabriela_Mistral_1945_(cropped).jpg?width=500" alt="" loading="lazy" decoding="async" data-evento="1945-nobel-gabriela-mistral" />
+                <span class="puerta-texto">
+                  <span class="puerta-titulo">Seguir una historia guiada</span>
+                  <span class="puerta-bajada"><span data-cifra="historias">4</span> historias, paso a paso</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="inicio-cuerpo">
+          <section class="destacado" aria-labelledby="destacado-ceja" hidden></section>
+          <section class="epocas" aria-labelledby="epocas-titulo">
+            <p class="ceja">Para ir directo</p>
+            <h2 id="epocas-titulo">Los períodos de la historia</h2>
+            <ol class="epocas-lista"></ol>
+          </section>
+          <p class="inicio-creditos credito"></p>
+        </div>
+      </section>
+
       <article id="detalle" class="detalle" aria-labelledby="detalle-titulo" hidden></article>
       <section id="panel-filtros" class="panel-filtros" aria-labelledby="panel-titulo" hidden></section>
     </main>
 
     <nav class="controles" aria-label="Recorrer la línea de tiempo">
       <button type="button" id="btn-anterior" class="boton grande nav-anterior"><span aria-hidden="true">◀</span> Anterior</button>
-      <button type="button" id="btn-inicio" class="boton grande nav-inicio">Inicio</button>
+      <button type="button" id="btn-inicio" class="boton grande nav-inicio">Al inicio<span class="solo-lector"> de la línea de tiempo</span></button>
       <div id="minimapa" class="minimapa-fila"></div>
       <button type="button" id="btn-siguiente" class="boton grande nav-siguiente">Siguiente <span aria-hidden="true">▶</span></button>
     </nav>
 
     <p id="avisos" class="solo-lector" role="status" aria-live="polite"></p>
-    <noscript><p class="sin-js">Esta línea de tiempo necesita JavaScript activado para funcionar.</p></noscript>
+    <noscript><p class="sin-js">La línea de tiempo y el mapa necesitan JavaScript activado para funcionar.</p></noscript>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

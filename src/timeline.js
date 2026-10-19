@@ -596,11 +596,14 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     anunciar('Inicio de la línea de tiempo.');
   }
 
-  function irAPeriodo(id) {
+  // Con `enfocar` (al llegar desde la portada), queda elegida y con el foco la primera tarjeta del período.
+  function irAPeriodo(id, { suave = true, enfocar = false } = {}) {
     const fr = franjas.find((x) => x.periodo.id === id);
     seleccionar(null);
-    ventana.scrollTo({ left: (Number.isFinite(fr.desde) ? X(fr.desde) : g.margenIzq) - g.rem, behavior: conducta() });
+    ventana.scrollTo({ left: (Number.isFinite(fr.desde) ? X(fr.desde) : g.margenIzq) - g.rem, behavior: suave ? conducta() : 'auto' });
     anunciar(`Período: ${fr.periodo.nombre}, ${fr.periodo.fechasTexto}.`);
+    const primera = enfocar ? items.find((ev) => ev.pos && ev.periodoId === id) : null;
+    if (primera) seleccionar(primera, { centrar: false, enfocar: true });
   }
 
   // ---- Zoom (alrededor de un punto de la ventana, para no perder lo que se mira) ----
@@ -887,7 +890,10 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     tamano = nuevo;
     redistribuir();
   });
+  // La ventana también: la fila de avisos de arriba puede cambiar de alto (al cargar las fuentes o con
+  // texto grande) sin que cambie la sección, y el cielo se ubica según la ventana.
   observador.observe(seccion);
+  observador.observe(ventana);
   observador.observe(contenedorMinimapa);
 
   distribuir();
@@ -896,6 +902,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   return {
     mover,
     inicio,
+    irAPeriodo,
     zoom,
     seleccionar,
     redistribuir,

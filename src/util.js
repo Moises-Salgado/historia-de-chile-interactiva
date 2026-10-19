@@ -81,6 +81,17 @@ export function urlLicencia(licencia) {
   return null;
 }
 
+const OTRA_PESTANA = '<span class="solo-lector"> (se abre en otra pestaña)</span>';
+
+/** Enlace a otro sitio, en otra pestaña (avisado a los lectores de pantalla). `texto` va como HTML. */
+export const externo = (url, texto) => `<a href="${esc(url)}" target="_blank" rel="noopener">${texto}${OTRA_PESTANA}</a>`;
+
+/** Crédito de una imagen de Commons (HTML): «autor · licencia · Wikimedia Commons», con enlaces. */
+export function creditoImagen({ autor, licencia, urlPagina }) {
+  const enlace = urlLicencia(licencia);
+  return `${esc(autor)} · ${enlace ? externo(enlace, esc(licencia)) : esc(licencia)} · ${externo(urlPagina, 'Wikimedia Commons')}`;
+}
+
 // Nombre visible de las fuentes más usadas, por dominio (también vale para sus subdominios).
 const FUENTES = {
   'memoriachilena.gob.cl': 'Memoria Chilena',

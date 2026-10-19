@@ -1,9 +1,10 @@
-// Arranque de la app: preferencias, línea de tiempo, detalle, filtros y rutas por hash:
-// #evento/<id>, #grupo/<id>, #historias, #historia/<id>/<paso> y #personaje/<nombre>.
+// Arranque de la app: preferencias, secciones (portada y línea de tiempo), detalle, filtros y rutas por hash:
+// #inicio, #linea, #evento/<id>, #grupo/<id>, #historias, #historia/<id>/<paso> y #personaje/<nombre>.
 import './styles.css';
 import { cargarDatos } from './datos.js';
 import { crearDetalle } from './detalle.js';
 import { crearFiltros } from './filtros.js';
+import { crearInicio } from './inicio.js';
 import { crearLineaDeTiempo } from './timeline.js';
 import { conTransicion, guardarPreferencia, leerPreferencia, movimientoReducido, normalizar, urlPlaceholder } from './util.js';
 
@@ -94,6 +95,7 @@ let nivel = NIVELES.includes(leerPreferencia('nivel')) ? leerPreferencia('nivel'
 for (const radio of document.querySelectorAll('input[name="nivel"]')) radio.checked = radio.value === nivel;
 
 const seccionLinea = $('#linea');
+const seccionInicio = $('#inicio');
 const elDetalle = $('#detalle');
 const linea = crearLineaDeTiempo(seccionLinea, $('#minimapa'), {
   eventos,
@@ -116,6 +118,18 @@ const filtros = crearFiltros($('#panel-filtros'), {
   alCambiar: aplicarFiltros,
   alElegir: (ev) => ir(`#evento/${ev.id}`),
   alAbrirOCerrar: actualizarInert,
+  alVerLinea: () => ir('#linea'),
+});
+// Un período elegido en la portada abre la línea de tiempo en ese tramo.
+let periodoPedido = null;
+const inicio = crearInicio(seccionInicio, {
+  eventos,
+  periodos,
+  recorridos,
+  alElegirPeriodo: (id) => {
+    periodoPedido = id;
+    ir('#linea');
+  },
 });
 
 // «Ya visto»: los eventos abiertos se recuerdan en este navegador, solo para una marca discreta en la tarjeta.
@@ -147,7 +161,69 @@ $('.nivel').addEventListener('change', (e) => {
   detalle.ponerNivel(nivel);
 });
 
-// ---- Rutas: cada dirección con # muestra una vista sobre la línea de tiempo; sin #, la línea de tiempo ----
+// ---- Secciones: la portada (#inicio o sin #) y la línea de tiempo (#linea) se ven de a una; el detalle y
+// la búsqueda se abren encima de la que está. <html data-base> la indica al CSS: index.html la fija antes
+// de pintar, según la dirección, y desde ahí la cambia main.js. ----
+const BASES = {
+  inicio: { hash: '#inicio', titulo: TITULO },
+  linea: { hash: '#linea', titulo: `Línea de tiempo · ${TITULO}` },
+};
+const pestanas = [...document.querySelectorAll('.pestana')];
+let base = raiz.dataset.base in BASES ? raiz.dataset.base : 'linea';
+
+function baseDeRuta(hash) {
+  if (hash === '' || hash === '#' || hash === '#inicio') return 'inicio';
+  if (hash === '#linea') return 'linea';
+  return null;
+}
+
+function ponerBase(nueva) {
+  base = nueva;
+  raiz.dataset.base = nueva;
+  if (!detalle.abierto) document.title = BASES[nueva].titulo;
+  actualizarInert();
+  actualizarControles();
+  actualizarPestanas();
+}
+
+// La pestaña de la sección a la vista (o «Historias», con una historia abierta) queda marcada.
+function actualizarPestanas() {
+  const actual = ['historias', 'historia'].includes(vistaActual?.tipo) ? 'historias' : base;
+  for (const p of pestanas) {
+    if (p.dataset.seccion === actual) p.setAttribute('aria-current', 'page');
+    else p.removeAttribute('aria-current');
+  }
+}
+
+// El foco pasa a la sección (su título o la tarjeta elegida), para el teclado y los lectores de pantalla.
+function enfocarBase() {
+  if (base === 'inicio') inicio.enfocar();
+  else linea.enfocarActual();
+}
+
+// A la línea de tiempo se llega en el período elegido en la portada o, la primera vez en la sesión, con su
+// animación de entrada; entre secciones hay un fundido breve.
+function cambiarBase(nueva, { enfocar = true } = {}) {
+  if (nueva === base) {
+    if (enfocar) enfocarBase();
+    return;
+  }
+  const entrada = nueva === 'linea' && !periodoPedido && primeraVisita();
+  const aplicar = () => {
+    ponerBase(nueva);
+    if (nueva === 'linea' && periodoPedido) linea.irAPeriodo(periodoPedido, { suave: false, enfocar });
+    else if (enfocar) enfocarBase();
+    periodoPedido = null;
+  };
+  if (entrada) {
+    aplicar();
+    linea.entrada();
+  } else {
+    cambiarVista(aplicar, 'seccion');
+  }
+}
+
+// ---- Rutas: cada dirección con # de una vista (evento, grupo, historia, personaje) la abre sobre la sección ----
 function vistaDeRuta(hash = location.hash) {
   let m = /^#evento\/([a-z0-9-]+)$/.exec(hash);
   if (m) return porId.has(m[1]) ? { tipo: 'evento', ev: porId.get(m[1]) } : { tipo: 'desconocida' };
@@ -165,23 +241,26 @@ function vistaDeRuta(hash = location.hash) {
   if (m) return personajes.has(m[1]) ? { tipo: 'personaje', persona: personajes.get(m[1]) } : { tipo: 'desconocida' };
   return null;
 }
-const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje)\/|^#historias$/.test(hash);
+const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje)\/|^#(?:historias|inicio|linea)$/.test(hash);
 
-// Desde la línea de tiempo se agrega una entrada al historial; entre vistas se reemplaza, así «Volver»
-// (y el botón Atrás del navegador) regresa a la línea de tiempo. La ficha de un personaje sí se agrega:
-// «Volver» desde ella regresa al evento donde se eligió el nombre.
+// Desde una sección se agrega una entrada al historial; entre vistas se reemplaza, así «Volver» (y el botón
+// Atrás del navegador) regresa a la sección. La ficha de un personaje sí se agrega: «Volver» desde ella
+// regresa al evento donde se eligió el nombre. Elegir la sección que ya está a la vista solo la enfoca.
 function ir(url, { desdeBoton = false } = {}) {
-  if (location.hash !== url) {
+  const misma = !detalle.abierto && baseDeRuta(url) === base && baseDeRuta(location.hash) === base;
+  if (location.hash !== url && !misma) {
     if (detalle.abierto && !url.startsWith('#personaje/')) history.replaceState(history.state, '', url);
     else history.pushState({ app: true }, '', url);
   }
   aplicarRuta({ desdeBoton });
 }
 
-function aplicarRuta({ desdeBoton = false } = {}) {
+function aplicarRuta({ desdeBoton = false, inicial = false } = {}) {
   const vista = vistaDeRuta();
+  const destino = baseDeRuta(location.hash);
   if (vista && vista.tipo !== 'desconocida') mostrarVista(vista, desdeBoton);
-  else if (detalle.abierto) cerrarDetalle();
+  else if (detalle.abierto) cerrarDetalle(destino ?? base);
+  else if (destino) cambiarBase(destino, { enfocar: !inicial });
   if (vista?.tipo === 'desconocida') anunciar('No encontramos esa página.');
 }
 
@@ -194,11 +273,12 @@ window.addEventListener('hashchange', () => {
   sinAnimar = false;
 });
 
+// Sin historial propio (se llegó por un enlace directo), «Volver» lleva a la sección que está debajo.
 function volver() {
   if (history.state?.app) {
     history.back();
   } else {
-    history.replaceState(null, '', location.pathname + location.search);
+    history.replaceState(null, '', BASES[base].hash);
     aplicarRuta();
   }
 }
@@ -283,6 +363,7 @@ function pintarVista(vista, desdeBoton) {
   document.body.dataset.vista = 'detalle';
   document.title = `${titulo} · ${TITULO}`;
   actualizarInert();
+  actualizarPestanas();
   const marcado = vista.ev ?? vista.grupo;
   if (marcado) linea.seleccionar(marcado, { suave: false });
   if (vista.ev) marcarVisto(vista.ev);
@@ -298,8 +379,10 @@ function mostrarVista(vista, desdeBoton) {
     return void cambiarVista(aplicar, tipo);
   }
 
-  // Al abrir desde la línea de tiempo, la miniatura del evento crece hasta la lámina del detalle.
-  const miniatura = vista.ev && !filtros.abierto ? linea.miniatura(vista.ev) : null;
+  // Al abrir desde la línea de tiempo, la miniatura del evento crece hasta la lámina del detalle. Desde otra
+  // sección, se recuerda qué tenía el foco para devolverlo al cerrar.
+  focoPrevio = base !== 'linea' && seccionInicio.contains(document.activeElement) ? document.activeElement : null;
+  const miniatura = base === 'linea' && vista.ev && !filtros.abierto ? linea.miniatura(vista.ev) : null;
   if (miniatura) miniatura.style.viewTransitionName = LAMINA;
   cambiarVista(async (animado) => {
     if (miniatura) miniatura.style.viewTransitionName = '';
@@ -318,21 +401,24 @@ function mostrarVista(vista, desdeBoton) {
   });
 }
 
-function cerrarDetalle() {
+// Cierra la vista abierta y deja a la vista la sección `hacia` (por defecto, la que estaba debajo).
+let focoPrevio = null;
+function cerrarDetalle(hacia = base) {
   const ev = vistaActual?.ev;
   const lamina = laminaDetalle();
-  const vuelve = Boolean(ev && lamina?.classList.contains('cargada') && laminaALaVista(lamina));
+  const vuelve = Boolean(hacia === 'linea' && base === 'linea' && ev && lamina?.classList.contains('cargada') && laminaALaVista(lamina));
   if (vuelve) lamina.style.viewTransitionName = LAMINA;
   let miniatura = null;
   cambiarVista((animado) => {
     detalle.ocultar();
     vistaActual = null;
     nav = { antes: null, despues: null };
-    document.body.dataset.vista = 'linea';
-    document.title = TITULO;
-    actualizarInert();
-    actualizarControles();
-    linea.enfocarActual();
+    document.body.dataset.vista = 'base';
+    const misma = hacia === base;
+    ponerBase(hacia);
+    if (misma && focoPrevio?.isConnected) focoPrevio.focus({ preventScroll: true });
+    else enfocarBase();
+    focoPrevio = null;
     miniatura = animado && vuelve ? linea.miniatura(ev) : null;
     if (miniatura) miniatura.style.viewTransitionName = LAMINA;
   }, 'cerrar')?.then(() => {
@@ -341,7 +427,9 @@ function cerrarDetalle() {
 }
 
 function actualizarInert() {
-  seccionLinea.inert = detalle.abierto || filtros.abierto;
+  const tapado = detalle.abierto || filtros.abierto;
+  seccionLinea.inert = tapado || base !== 'linea';
+  seccionInicio.inert = tapado || base !== 'inicio';
   elDetalle.inert = filtros.abierto;
 }
 
@@ -354,7 +442,8 @@ document.addEventListener('click', (e) => {
   ir(enlace.getAttribute('href'));
 });
 
-// ---- Barra inferior: Anterior / Inicio (o Volver) / Siguiente ----
+// ---- Barra inferior: Anterior / Al inicio (o Volver) / Siguiente. «Al inicio» lleva al comienzo de la línea
+// de tiempo (la portada es la pestaña «Inicio»). En la portada, sin una vista abierta, la barra no se muestra. ----
 const botonAnterior = $('#btn-anterior');
 const botonSiguiente = $('#btn-siguiente');
 const botonInicio = $('#btn-inicio');
@@ -363,7 +452,7 @@ function actualizarControles() {
   const enDetalle = detalle.abierto;
   botonAnterior.setAttribute('aria-disabled', String(enDetalle ? !nav.antes : !linea.puedeMover(-1)));
   botonSiguiente.setAttribute('aria-disabled', String(enDetalle ? !nav.despues : !linea.puedeMover(1)));
-  botonInicio.textContent = enDetalle ? 'Volver' : 'Inicio';
+  botonInicio.innerHTML = enDetalle ? 'Volver' : 'Al inicio<span class="solo-lector"> de la línea de tiempo</span>';
   // En las vistas sin recorrido (historias, personaje) Anterior y Siguiente no sirven: se ocultan.
   const ocultar = enDetalle && !nav.antes && !nav.despues;
   const conFoco = [botonAnterior, botonSiguiente].includes(document.activeElement);
@@ -416,17 +505,26 @@ document.addEventListener('keydown', (e) => {
       return;
     }
   }
-  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || pagina) {
+  // En la portada las flechas desplazan la página, como siempre.
+  const enLinea = !detalle.abierto && base === 'linea';
+  if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft' || pagina) && (detalle.abierto || enLinea)) {
     e.preventDefault();
     mover(e.key === 'ArrowRight' || e.key === 'PageDown' ? 1 : -1);
-  } else if (!detalle.abierto && (e.key === '+' || e.key === '=')) {
+  } else if (enLinea && (e.key === '+' || e.key === '=')) {
     linea.zoom(1);
-  } else if (!detalle.abierto && (e.key === '-' || e.key === '_')) {
+  } else if (enLinea && (e.key === '-' || e.key === '_')) {
     linea.zoom(-1);
   }
 });
 
-// Entrada animada de la portada: solo en la primera visita de la sesión y si se llega a la línea de tiempo.
+// «Saltar al contenido» lleva el foco a lo que está a la vista (sin cambiar la dirección).
+$('.saltar').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (detalle.abierto) $('#detalle-titulo')?.focus();
+  else enfocarBase();
+});
+
+// Entrada animada de la línea de tiempo: solo la primera vez que se ve en la sesión.
 function primeraVisita() {
   try {
     if (sessionStorage.getItem('historia-chile:entrada')) return false;
@@ -438,10 +536,10 @@ function primeraVisita() {
 }
 
 history.scrollRestoration = 'manual';
-document.body.dataset.vista = 'linea';
-aplicarRuta();
-actualizarControles();
-if (!detalle.abierto && primeraVisita()) linea.entrada();
+document.body.dataset.vista = 'base';
+ponerBase(base);
+aplicarRuta({ inicial: true });
+if (!detalle.abierto && base === 'linea' && primeraVisita()) linea.entrada();
 animarCambios = true;
 
 // Sin conexión: el Service Worker (plantilla en src/sw.js) solo existe en el sitio construido.
