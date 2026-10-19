@@ -19,6 +19,7 @@ function acerca({ eventos, periodos }) {
         <h3 id="acerca-criterios">Cómo se escribe cada evento</h3>
         <ul>
           <li>Solo hechos verificables. Cada evento cita sus fuentes, de preferencia Memoria Chilena, la Biblioteca del Congreso Nacional, el Museo Histórico Nacional, el Archivo Nacional o publicaciones académicas. Wikipedia sirve solo como punto de partida para contrastar.</li>
+          <li>Los textos, las historias guiadas y el glosario se redactaron con ayuda de inteligencia artificial a partir de las fuentes citadas, y se cotejaron con ellas: cada cifra, fecha y nombre debe estar en una fuente. Las frases de «¿Sabías que…?» y de «Lo que se discute» están copiadas tal cual del texto de cada evento.</li>
           <li>Cada fecha va con la precisión que se conoce; si es incierta, lleva «c.» (cerca de).</li>
           <li>En los temas sensibles (pueblos originarios y Ocupación de la Araucanía, Guerra del Pacífico, dictadura de 1973 a 1990, estallido social de 2019) el lenguaje es neutral, las cifras son las oficiales con su fuente (como los informes Rettig y Valech) y se indica que existen distintas interpretaciones.</li>
           <li>Lo que tiene menor certeza se lista a la vista de todos, para revisarlo: ${afuera(`${REPO}/blob/main/docs/REVISION_PENDIENTE.md`, 'revisión pendiente')}. Las fuentes de cada evento: ${afuera(`${REPO}/blob/main/docs/FUENTES.md`, 'fuentes por evento')}.</li>
@@ -35,7 +36,7 @@ function acerca({ eventos, periodos }) {
       </section>
       <section class="pagina-bloque" aria-labelledby="acerca-datos">
         <h3 id="acerca-datos">Qué se guarda en este navegador</h3>
-        <p>Nada sale de tu navegador: no hay cuentas ni estadísticas. Para recordar dónde ibas, se guardan los eventos que ya abriste, el último que abriste, el nivel de lectura, si elegiste texto grande o el modo para proyectar y, solo si lo escribiste en «¿Qué edad tenías?», tu año de nacimiento. Las imágenes ya vistas quedan guardadas para usar el sitio sin conexión.</p>
+        <p>Nada sale de tu navegador: no hay cuentas ni estadísticas. Para recordar dónde ibas, se guardan los eventos que ya abriste, el último que abriste, el nivel de lectura, si elegiste texto grande o el modo para proyectar, si ya viste «Empieza aquí», la región que elegiste en «Tu región» y, solo si lo escribiste en «¿Qué edad tenías?», tu año de nacimiento. Las imágenes ya vistas y la historia que guardes para usar sin conexión quedan en el navegador.</p>
         <p><button type="button" class="boton" data-accion="borrar-datos">${icono('cerrar')}<span>Borrar mis datos</span></button></p>
       </section>
       <section class="pagina-bloque" aria-labelledby="acerca-error">
@@ -44,7 +45,7 @@ function acerca({ eventos, periodos }) {
       </section>
       <section class="pagina-bloque" aria-labelledby="acerca-citar">
         <h3 id="acerca-citar">Cómo citar el sitio</h3>
-        <p class="cita-texto"><i>Historia de Chile Interactiva</i>. ${esc(new URL('./', location.href.split('#')[0]).href)}</p>
+        <p class="cita-texto"><i>Historia de Chile Interactiva</i>. (s. f.). ${esc(new URL('./', location.href.split('#')[0]).href)}</p>
         <p>Cada evento tiene su propia cita, con la fecha de consulta, en «Cómo citar».</p>
       </section>`,
   };
@@ -115,7 +116,7 @@ function glosarioPagina({ eventos }) {
   return {
     ceja: 'Glosario',
     titulo: 'Palabras para entender',
-    intro: `${lista.length} palabras que aparecen en los textos, con una explicación breve y los eventos donde se usan. Las explicaciones están en revisión: si ves un error, avísanos (en «Acerca de»).`,
+    intro: `${lista.length} palabras que aparecen en los textos, con una explicación breve y los eventos donde se usan. Las explicaciones están en revisión: si ves un error, <a href="#acerca">avísanos</a>.`,
     html: `<dl class="glosario-pagina">${lista
       .map((g) => {
         const donde = g.eventos.map((id) => porId.get(id)).filter(Boolean);
@@ -132,6 +133,17 @@ function glosarioPagina({ eventos }) {
 
 export const pagina = (id, datos) => ({ acerca, docentes, glosario: glosarioPagina })[id]?.(datos) ?? null;
 
+// La secuencia que se está armando se recuerda en la sesión: al volver de «Ver la secuencia», sigue marcada.
+const SECUENCIA = 'historia-chile:secuencia';
+const sesion = (valor) => {
+  try {
+    if (valor === undefined) return sessionStorage.getItem(SECUENCIA) ?? '';
+    sessionStorage.setItem(SECUENCIA, valor);
+  } catch {
+    return '';
+  }
+};
+
 /** Activa los controles de la página ya pintada en `contenedor`; copiar(texto, aviso) y avisar(texto) vienen de main.js. */
 export function activar(contenedor, { eventos, copiar, avisar }) {
   const orden = new Map(eventos.map((ev, i) => [ev.id, i]));
@@ -141,6 +153,7 @@ export function activar(contenedor, { eventos, copiar, avisar }) {
 
   function actualizarSecuencia() {
     elegidos = [...contenedor.querySelectorAll('.secuencia-eventos input:checked')].map((c) => c.value).sort((a, b) => orden.get(a) - orden.get(b));
+    sesion(elegidos.join(','));
     const n = elegidos.length;
     cuenta.textContent = !n
       ? 'Todavía no elegiste eventos.'
@@ -156,6 +169,15 @@ export function activar(contenedor, { eventos, copiar, avisar }) {
     contenedor.querySelector('.secuencia-ver').setAttribute('href', ruta);
   }
 
+  if (cuenta) {
+    const previa = sesion().split(',');
+    for (const c of contenedor.querySelectorAll('.secuencia-eventos input')) {
+      if (!previa.includes(c.value)) continue;
+      c.checked = true;
+      c.closest('details').open = true;
+    }
+    actualizarSecuencia();
+  }
   contenedor.addEventListener('change', (e) => {
     if (e.target.matches('.secuencia-eventos input')) actualizarSecuencia();
   });
@@ -180,7 +202,7 @@ async function borrarDatos(boton, avisar) {
     for (const almacen of [localStorage, sessionStorage]) {
       for (const clave of Object.keys(almacen)) if (clave.startsWith('historia-chile:')) almacen.removeItem(clave);
     }
-    if ('caches' in window) await caches.delete('imagenes');
+    if ('caches' in window) await Promise.all(['imagenes', 'historia-guardada'].map((n) => caches.delete(n)));
   } catch {}
   location.reload();
 }

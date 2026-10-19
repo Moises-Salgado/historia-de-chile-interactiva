@@ -2,7 +2,6 @@
 // cargue la app; aquí se completan desde los datos: cifras, créditos de las imágenes, «Empieza aquí» (la
 // primera vez), el «¿Sabías que…?» del día, «Tu recorrido» y los períodos (cada uno lleva a su tramo de la línea).
 import { curvasDeNivel } from './curvas.js';
-import { cargarTextos } from './datos.js';
 import { haceCuanto, parseFecha } from './fechas.js';
 import { creditoImagen, esc, guardarPreferencia, icono, leerNacimiento, leerPreferencia, movimientoReducido, urlImagen, urlPlaceholder } from './util.js';
 
@@ -163,7 +162,16 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
     sesion.guardar('empieza', 'si');
     guardarPreferencia('empieza', 'visto');
     pintarEmpieza();
+  } else {
+    delete document.documentElement.dataset.primera;
   }
+  // «¿Primera vez? Empieza aquí», en la bienvenida (index.html la muestra antes de pintar con data-primera): baja
+  // hasta el bloque, que en la primera pantalla no se ve.
+  seccion.querySelector('.empieza-ir button')?.addEventListener('click', () => {
+    if (empieza.hidden) return;
+    empieza.scrollIntoView({ block: 'start', behavior: movimientoReducido() ? 'auto' : 'smooth' });
+    empieza.querySelector('#empieza-titulo').focus({ preventScroll: true });
+  });
 
   function pintarEmpieza() {
     const esencial = recorridos.find((r) => r.id === 'esencial');
@@ -189,26 +197,39 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
       aLaVista = delMes.filter((x) => elegidos.includes(x));
     }
     const resto = delMes.filter((x) => !aLaVista.includes(x));
-    // «5 de octubre de 1988 · Plebiscito de 1988… · hace 37 años»; un proceso, «Desde el 11 de septiembre de 1973»
-    // y sin «hace»; el aniversario de hoy lleva «Hoy». Todos con el filete de su período, sin imagen.
+    // «5 de octubre de 1988 · Plebiscito de 1988… · hace 37 años». Un proceso que termina en otro mes, «Comenzó el
+    // 16 de octubre de 1998» y sin «hace» (si termina en el mismo mes, como Rancagua, va como cualquier otro). El
+    // aniversario de hoy lleva «Un día como hoy». Todos con el filete de su período, sin imagen.
     const itemDelMes = ({ ev, dia }) => {
       const f = parseFecha(ev.fecha);
-      const cuando = ev.fechaFin ? `Desde ${f.dia ? `el ${f.dia} de ` : ''}${MESES[f.mes - 1]} de ${f.anio}` : ev.fechaTexto;
-      const hace = ev.fechaFin ? null : haceCuanto(ev);
+      const fin = ev.fechaFin ? parseFecha(ev.fechaFin) : null;
+      const proceso = fin && (fin.anio !== f.anio || fin.mes !== f.mes);
+      const cuando = proceso ? `Comenzó ${f.dia ? `el ${f.dia} de ` : 'en '}${MESES[f.mes - 1]} de ${f.anio}` : ev.fechaTexto;
+      const hace = proceso ? null : haceCuanto(ev);
       return `<li><a href="#evento/${ev.id}" style="--color:${periodoDe.get(ev.periodoId).color}">
-        <span class="empieza-mes-fecha">${dia === hoy.getDate() ? '<span class="empieza-hoy">Hoy</span> ' : ''}${esc(cuando.charAt(0).toUpperCase() + cuando.slice(1))}</span>
+        <span class="empieza-mes-fecha">${dia === hoy.getDate() ? '<span class="empieza-hoy">Un día como hoy</span> ' : ''}${esc(cuando.charAt(0).toUpperCase() + cuando.slice(1))}</span>
         <span class="empieza-mes-titulo">${esc(ev.titulo)}</span>
         ${hace ? `<span class="empieza-mes-hace">${hace}</span>` : ''}
       </a></li>`;
     };
-    const NIVELES = [
-      ['nino', 'Para niños', (ev) => ev.resumenNino],
-      ['general', 'General', (ev) => ev.resumen],
-      ['detallado', 'Detallado', (ev) => ev.detalle],
-    ];
+    // «Elige cómo leer»: la primera oración de cada nivel y cuántas palabras tiene en total (sin pedir el detalle:
+    // sus palabras y párrafos vienen con los datos), para que se vea la diferencia de largo.
+    const palabras = (texto) => String(texto ?? '').split(/\s+/).filter(Boolean).length;
+    const NIVELES = muestra
+      ? [
+          ['nino', 'Para niños', primeraOracion(muestra.resumenNino), palabras(muestra.resumenNino)],
+          ['general', 'General', primeraOracion(muestra.resumen), palabras(muestra.resumen)],
+          [
+            'detallado',
+            'Detallado',
+            `Todo lo de «General» y ${muestra.parrafosDetalle} ${muestra.parrafosDetalle === 1 ? 'párrafo' : 'párrafos'} más.`,
+            palabras(muestra.resumen) + muestra.palabrasDetalle,
+          ],
+        ]
+      : [];
     empieza.innerHTML = `
       <p class="ceja">Primera vez aquí</p>
-      <h2 id="empieza-titulo">Empieza aquí</h2>
+      <h2 id="empieza-titulo" tabindex="-1">Empieza aquí</h2>
       <div class="empieza-grilla">
         ${
           esencial
@@ -232,9 +253,9 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
             <legend>Elige cómo leer</legend>
             <p class="empieza-ayuda">El mismo evento, «${esc(muestra.titulo)}», en los tres niveles. Se puede cambiar cuando quieras, arriba, en «Leer».</p>
             <div class="empieza-niveles">${NIVELES.map(
-              ([valor, nombre, texto]) => `<label class="empieza-opcion">
-                <span class="empieza-opcion-fila"><input type="radio" name="empieza-nivel" value="${valor}"${valor === nivel() ? ' checked' : ''}> <span class="empieza-opcion-nombre">${nombre}</span></span>
-                <span class="empieza-opcion-texto" data-nivel="${valor}">${esc(primeraOracion(texto(muestra)) || '…')}</span>
+              ([valor, nombre, texto, n]) => `<label class="empieza-opcion">
+                <span class="empieza-opcion-fila"><input type="radio" name="empieza-nivel" value="${valor}"${valor === nivel() ? ' checked' : ''}> <span class="empieza-opcion-nombre">${nombre}</span> <span class="empieza-opcion-largo">· ${n} palabras</span></span>
+                <span class="empieza-opcion-texto">${esc(texto)}</span>
               </label>`,
             ).join('')}</div>
           </fieldset>`
@@ -256,21 +277,19 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
       </div>
       <p class="empieza-pie"><button type="button" class="boton chico empieza-ocultar">${icono('cerrar')}<span>Ocultar</span></button></p>`;
     empieza.hidden = false;
-    // El texto «Detallado» de la muestra llega con los textos de su período.
-    if (muestra) {
-      cargarTextos([muestra])
-        ?.then(() => {
-          empieza.querySelector('[data-nivel="detallado"]').textContent = primeraOracion(muestra.detalle);
-        })
-        .catch(() => {});
-    }
     empieza.addEventListener('change', (e) => {
       if (e.target.name === 'empieza-nivel') alElegirNivel?.(e.target.value);
     });
+    // Al ocultarlo, el foco pasa al título de la sección que queda en su lugar (y la pantalla lo acompaña).
     empieza.querySelector('.empieza-ocultar').addEventListener('click', () => {
       empieza.hidden = true;
       sesion.guardar('empieza', null);
-      seccion.querySelector('#inicio-titulo').focus({ preventScroll: true });
+      delete document.documentElement.dataset.primera;
+      const siguiente = ['.seguir', '.destacado', '.epocas'].map((s) => seccion.querySelector(s)).find((s) => s && !s.hidden);
+      const titulo = siguiente?.querySelector('h2');
+      if (!titulo) return;
+      titulo.tabIndex = -1;
+      titulo.focus();
     });
   }
 
@@ -327,7 +346,7 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
     if (!vistos.size) return;
     const i = eventos.findIndex((ev) => ev.id === ultimoId);
     const proximo = eventos.slice(i + 1).find((ev) => !vistos.has(ev.id)) ?? eventos.find((ev) => !vistos.has(ev.id));
-    cuenta.innerHTML = `Llevas <strong>${vistos.size} de ${eventos.length}</strong> eventos vistos en este navegador.${proximo ? '' : ' ¡Ya los viste todos!'}`;
+    cuenta.innerHTML = `Llevas <strong>${vistos.size} de ${eventos.length}</strong> eventos vistos en este navegador.${proximo ? '' : ` Ya viste los ${eventos.length}.`}`;
     enlace.hidden = !proximo;
     if (proximo) {
       enlace.href = `#evento/${proximo.id}`;

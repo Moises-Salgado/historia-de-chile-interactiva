@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { defineConfig } from 'vite';
-import { aparece } from './src/glosario-aparece.js';
+import { aparece, nivelesDe } from './src/glosario-aparece.js';
 
 // Dirección pública del sitio: las vistas previas al compartir necesitan URL absolutas.
 const SITIO = 'https://moises-salgado.github.io/historia-de-chile-interactiva/';
@@ -95,7 +95,7 @@ function textosAPedido() {
       const tomar = (ev, quedarse) => Object.fromEntries(Object.entries(ev).filter(([campo]) => TEXTOS.includes(campo) === quedarse));
       let datos;
       if (parte === 'ligero') {
-        datos = eventos.map((ev) => ({ ...tomar(ev, false), palabrasDetalle: palabras(ev.detalle) }));
+        datos = eventos.map((ev) => ({ ...tomar(ev, false), palabrasDetalle: palabras(ev.detalle), parrafosDetalle: ev.detalle.split(/\n\s*\n/).filter((p) => p.trim()).length }));
       } else {
         for (const nombre of ['se-discute.json', 'glosario.json']) this.addWatchFile(join(carpeta, nombre));
         const seDiscute = leer('se-discute.json', {});
@@ -104,8 +104,9 @@ function textosAPedido() {
           eventos.map((ev) => {
             const textos = tomar(ev, true);
             if (seDiscute[ev.id]) textos.seDiscute = seDiscute[ev.id];
+            // Cada palabra, con los niveles de lectura en que está a la vista.
             const suyas = glosario.filter((g) => aparece(g, ev));
-            if (suyas.length) textos.glosario = suyas.map(definicion);
+            if (suyas.length) textos.glosario = suyas.map((g) => ({ ...definicion(g), niveles: nivelesDe(g, ev) }));
             return [ev.id, textos];
           }),
         );

@@ -1,7 +1,6 @@
-// «Escuchar» (se carga a pedido): lee en voz alta el evento abierto con una voz en español del sistema
-// (speechSynthesis). Nunca empieza solo; main.js lo detiene al cambiar de vista o de nivel y con Escape. Sin una
-// voz en español el botón no aparece. Cómo pronuncia los nombres de los pueblos originarios está por revisar
-// (docs/REVISION_PENDIENTE.md).
+// «Escuchar»: lee en voz alta el evento abierto con una voz en español del sistema (speechSynthesis). Nunca empieza
+// solo; main.js lo detiene al cambiar de vista o de nivel y con Escape. Sin una voz en español el botón no
+// aparece. Cómo pronuncia los nombres de los pueblos originarios está por revisar (docs/REVISION_PENDIENTE.md).
 
 // Primero las voces de Chile y de América Latina; después cualquier otra en español.
 const PREFERIDAS = ['es-CL', 'es-419', 'es-US', 'es-MX', 'es-AR', 'es-CO', 'es-PE', 'es-ES'];
@@ -17,11 +16,15 @@ function vozEspanola() {
 }
 
 // Una frase por vez: algunos navegadores cortan las lecturas largas. No se corta en «c. 1500» ni en «a.C.»: la
-// frase siguiente debe empezar con mayúscula o con signo de apertura. Las abreviaturas de fecha se dicen enteras.
+// frase siguiente debe empezar con mayúscula o con signo de apertura. Las abreviaturas de fecha se dicen enteras
+// y los rangos, con «a» («1879-1884», «16 de octubre de 1998 - 2 de marzo de 2000»): el guion suena distinto
+// según la voz.
 const frases = (texto) =>
   texto
     .replace(/\bc\.\s?(?=\d)/g, 'cerca de ')
     .replace(/\ba\.\s?C\./g, 'antes de Cristo')
+    .replace(/(\d)\s*[-–]\s*(?=\d)/g, '$1 a ')
+    .replace(/\s[-–]\s/g, ' a ')
     .split(/(?<=[.!?…»])\s+(?=[A-ZÁÉÍÓÚÑ¿¡«])/u)
     .filter((f) => f.trim());
 
@@ -52,5 +55,5 @@ export function leer(partes, { alTerminar } = {}) {
 
 export function detener() {
   turno++;
-  speechSynthesis.cancel();
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
 }

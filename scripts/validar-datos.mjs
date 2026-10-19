@@ -261,8 +261,16 @@ function validarSabiasQue(mapa, ctx) {
 
 // «Lo que se discute»: una oración (o un párrafo breve) copiada textualmente del detalle del evento, sobre sus
 // distintas interpretaciones; distinta de su «¿Sabías que?». No va en los hechos que el Estado y la justicia
-// reconocen como violaciones a los derechos humanos: ahí, un recuadro de debate los relativizaría.
-const SIN_DEBATE = new Set(['1973-violaciones-derechos-humanos', '1974-dina-y-cni', '1973-exilio', '1991-informe-rettig']);
+// reconocen como violaciones a los derechos humanos ni en las matanzas: fuera de su párrafo, un recuadro de
+// debate se leería como una duda sobre los hechos.
+const SIN_DEBATE = new Set([
+  '1973-violaciones-derechos-humanos',
+  '1974-dina-y-cni',
+  '1973-exilio',
+  '1991-informe-rettig',
+  '1907-matanza-escuela-santa-maria',
+  '1938-matanza-seguro-obrero',
+]);
 function validarSeDiscute(mapa, ctx, sabiasQue) {
   if (!mapa || typeof mapa !== 'object' || Array.isArray(mapa)) return error('se-discute.json', 'debe ser un objeto { "id": "oración" }');
   for (const [id, frase] of Object.entries(mapa)) {
@@ -466,6 +474,16 @@ if (glosario) validarGlosario(glosario, ctx);
 const lugares = opcional('lugares.json');
 const ubicaciones = opcional('ubicaciones.json');
 if (lugares || ubicaciones) validarUbicaciones(ubicaciones, ctx, validarLugares(lugares));
+
+// index.html precarga la lámina del primer evento al entrar a #linea: debe ser su imagen actual.
+const RUTA_INDEX = resolve(DIR, '../index.html');
+if (existsSync(RUTA_INDEX)) {
+  const precarga = /Special:FilePath\/([^?']+)\?width=' \+ a/.exec(readFileSync(RUTA_INDEX, 'utf8'))?.[1];
+  const primero = [...ctx.eventos.values()].filter((ev) => !ev.pendienteVerificacion).sort((a, b) => (parseFecha(a.fecha)?.valor ?? 0) - (parseFecha(b.fecha)?.valor ?? 0))[0];
+  if (precarga && primero && decodeURIComponent(precarga) !== primero.imagen?.archivo) {
+    aviso('index.html', `la precarga de la línea de tiempo pide «${decodeURIComponent(precarga)}», pero el primer evento (${primero.id}) usa «${primero.imagen?.archivo}»`);
+  }
+}
 
 console.log(`Datos: ${ctx.periodos.size} períodos · ${ctx.temas.size} temas · ${total} eventos en ${archivosEventos.length} archivos`);
 console.log(`Historias: ${recorridos?.length ?? 0} · grupos: ${grupos?.length ?? 0} · «¿Sabías que?»: ${Object.keys(sabiasQue ?? {}).length} · títulos cortos: ${Object.keys(titulosCortos ?? {}).length}`);

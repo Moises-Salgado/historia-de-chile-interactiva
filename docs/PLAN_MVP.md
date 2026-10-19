@@ -35,6 +35,8 @@ Pedido del dueño (2026-10-19): dejar la app «bonita», con más animación y a
 - **Retratos de personajes y rótulo de época de cada imagen:** quedan para después del MVP, porque cada uno exige verificación uno a uno. Hasta entonces, la ficha de personaje muestra el mosaico de sus eventos.
 - **`npm run presupuesto`:** es una revisión aparte (peso, letra mínima, duraciones). `npm test` sigue siendo solo el esquema.
 
+**Pendiente de decidir por el dueño (M9):** «Acerca de» no dice quién hace el sitio ni da un contacto que no exija una cuenta de GitHub. No se inventó un nombre ni se publicó ningún correo. Las citas usan el formato de sitio sin autor: «*Historia de Chile Interactiva*. (s. f.).».
+
 ## Fases
 
 ### M1 · Base técnica (lo que hoy falla)
@@ -284,3 +286,45 @@ Pedido del dueño (2026-10-19): dejar la app «bonita», con más animación y a
     - «Otro dato» en el «¿Sabías que…?». En «Tu recorrido» se suman «Desde que naciste» y «Tu región».
   - **«Tu vida»:** un tramo de cobre sobre el eje, del año de nacimiento guardado a hoy. No se proyecta en clase.
   - **Peso:** la carga inicial queda en 106,6 KB gzip, aún 27 KB menos que antes del plan. «Lo que se discute» y el glosario viajan con los textos de cada período.
+- **M9 · Verificación (hecha).**
+  - **Matriz de 280 pantallas:** 14 vistas × 4 modos (claro, oscuro, clase y texto grande) × 5 tamaños (320 y 390 px, celular horizontal, 1366 y 1920 px), con letra mínima, desborde y errores de consola medidos en cada una. Además se recorrieron los 121 eventos a 320 px en modo clase y con texto grande.
+    - Corregido: el `<code>` de «Para docentes» salía a 14,6 px.
+    - Corregido: a 320 px, con texto grande o en clase, «¿Qué pasó antes / después?» (14 rem fijos) y las palabras largas («Independencia» en fichas y en la ficha del evento) se salían hasta 47 px.
+    - Al final: sin errores, sin desborde y con la letra mínima de cada modo (18, 22 y 22,4 px).
+  - **Mediciones** en el sitio construido, primera visita con red 4G lenta y CPU 4× más lenta:
+
+    | Vista | LCP | CLS | Peso propio |
+    |---|---|---|---|
+    | Portada, celular | 1,5 s | 0 | 153 KB |
+    | Portada, escritorio | 1,3 s | 0 | 153 KB |
+    | Línea de tiempo, celular | 2,4 a 2,5 s | 0 | 152 KB |
+    | Línea de tiempo, escritorio | 2,1 s | 0 | 152 KB |
+    | Mapa, celular | 1,0 s | 0 | 177 KB |
+    | Evento por enlace directo, celular | 3,3 s (antes del plan, 3,4 a 3,7 s) | 0,011 | 161 KB |
+
+    - La línea de tiempo llegaba a 2,8-3,1 s porque, con las láminas más grandes de M3, su primera imagen pasó a ser el LCP y se pedía recién al armarse la línea. Ahora `index.html` la precarga, como la primera puerta de la portada, y `npm test` avisa si deja de ser la imagen del primer evento.
+  - **Revisión final del crítico y del guardián** (27 hallazgos; todos los que se sostenían, corregidos):
+    - **Guardar una historia sin conexión:** caché propia, una historia a la vez, que no se recorta. Una imagen de 500 px por paso sirve para cualquier ancho (`ignoreSearch`) y se usa también si la red tarda más de 3 s. El avance se ve en el mismo botón. Antes, mirar la línea un rato borraba lo guardado.
+    - **Enlaces para compartir sin red:** `e/<id>.html` lleva al evento; antes la app quedaba en el rescate, en bucle.
+    - **Cargas a pedido:** si fallan, el aviso queda con «Recargar» (también cuando una versión nueva toma el control). Si tardan más de 300 ms, «Cargando…» se ve y se oye, y se cancela al buscar o con Escape. `vistas.css` y «Escuchar» volvieron a la carga inicial: a pedido, un fallo dejaba la vista sin estilos.
+    - **Historias:**
+      - La tarjeta lleva siempre a la presentación.
+      - Lo visto, los ✓ y «Seguir en el paso N» son personales: no se proyectan en clase.
+      - El cierre da años («de c. 1470 a 2010»).
+    - **«Volver»:** al salir de «Para docentes», «Acerca de», el glosario o el cierre de una historia, regresa ahí, y la secuencia que se estaba armando sigue marcada.
+    - **«Para niños»:** «No todos lo ven igual» muestra una frase igual para todos, y «Palabras para entender» muestra solo las palabras que están en el texto de cada nivel.
+    - **Portada:**
+      - La primera vez, la bienvenida ofrece «¿Primera vez? Empieza aquí». Se decide antes de pintar, así que no mueve nada.
+      - «Ocultar» deja el foco en la sección siguiente.
+      - «Elige cómo leer» dice cuántas palabras tiene cada nivel.
+      - «Este mes» dice «Comenzó el…» y «Un día como hoy».
+      - El cuerpo reserva una pantalla, para que nada salte en pantallas altas.
+    - **Accesibilidad:**
+      - Las regiones de estado (la respuesta del repaso, «Tu región») ya no nacen con `display: none`.
+      - Escape cierra primero el aviso.
+      - El foco se ve entero en los botones desactivados.
+      - «Tu vida» se ve en alto contraste.
+      - Los números de la silueta no bajan de 18 px.
+    - **«Escuchar»:** también lee «¿Sabías que…?» y «Lo que se discute», y dice «1879 a 1884» en vez del guion. Las voces se piden de antemano; si llegan tarde, el botón va junto a «Compartir» para no mover el texto.
+    - **Compartir y citar:** con mouse, «Compartir» copia el enlace. «Acerca de» explica que los textos se redactaron con ayuda de IA y se cotejaron con las fuentes, y lista todo lo que se guarda.
+  - **Carga inicial final:** 109,3 KB gzip, 24 KB menos que antes del plan (tope: 141,6). A pedido: los textos de cada período (63 KB en total), el mapa, `paginas.js` (7,3 KB) y el repaso (2,2 KB).

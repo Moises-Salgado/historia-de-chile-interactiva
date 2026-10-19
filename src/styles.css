@@ -387,6 +387,11 @@ h2[tabindex='-1']:focus,
   cursor: default;
 }
 
+/* Con el foco, entero: atenuado, su contorno de foco no se distinguía. */
+.boton[aria-disabled='true']:focus-visible {
+  opacity: 1;
+}
+
 .boton.chico {
   min-height: 2.5rem;
   padding: 0.125rem 0.75rem;
@@ -1341,8 +1346,13 @@ body[data-vista='detalle'] .linea {
   margin: 0;
 }
 
+/* Vacío, fuera de la vista pero en el árbol de accesibilidad: un role="status" que aparece ya lleno no se anuncia. */
 .seguir-region-dato:empty {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
 }
 
 .seguir-region {
@@ -1360,6 +1370,33 @@ body[data-vista='detalle'] .linea {
 
 .destacado-acciones {
   margin: 1rem 0 0;
+}
+
+/* «¿Primera vez? Empieza aquí», en la bienvenida: solo la primera vez (index.html pone data-primera antes de
+   pintar, así no mueve nada). */
+.empieza-ir {
+  display: none;
+  margin: 1.25rem 0 0;
+}
+
+:root[data-primera] .empieza-ir {
+  display: block;
+}
+
+/* Lo de la portada que arma inicio.js (bajo la bienvenida) no empuja lo que ya se ve: el cuerpo reserva una
+   pantalla y el título de los períodos espera a su lista (en pantallas altas, se veía saltar). */
+.inicio-cuerpo {
+  align-content: start;
+  min-height: 100svh;
+}
+
+.epocas:has(.epocas-lista:empty) {
+  visibility: hidden;
+}
+
+.empieza-opcion-largo {
+  font-weight: 400;
+  color: var(--texto-suave);
 }
 
 /* «Empieza aquí» (inicio.js): la primera vez, sin ventana encima. La historia esencial, «Elige cómo leer» (el
@@ -3041,8 +3078,11 @@ body[data-vista='detalle'] .minimapa-fila {
   color: var(--texto-suave);
 }
 
+/* Junto al mini-mapa, con texto grande en 320 px, «Independencia» no cabe entera: se parte con guion. */
 .ficha-datos dd {
   margin: 0;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 /* El período con el filete de su color y sus fechas debajo. */
@@ -3243,7 +3283,8 @@ body[data-vista='detalle'] .minimapa-fila {
 
 .vecinos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  /* min(100%, …): con texto grande en 320 px, 14 rem no caben. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
   gap: 0.75rem;
   margin: 1.5rem 0;
 }
@@ -4068,7 +4109,8 @@ body[data-vista='detalle'] .minimapa-fila {
   display: inline-flex;
 }
 
-:root[data-clase] :is(.edad, .edad-abrir, .seguir) {
+/* Lo personal (la edad, «Tu recorrido», lo visto y con qué seguir en las historias: .personal) no se proyecta. */
+:root[data-clase] :is(.edad, .edad-abrir, .seguir, .personal) {
   display: none !important;
 }
 
@@ -4604,6 +4646,12 @@ html[data-cargando] {
   .boton[aria-pressed='true'] {
     outline: 3px solid Highlight;
     outline-offset: 2px;
+  }
+
+  /* «Tu vida» es solo un fondo: en alto contraste se pinta con el color del sistema para lo resaltado. */
+  .tu-vida {
+    forced-color-adjust: none;
+    background: Highlight;
   }
 
   .minimapa-marco {

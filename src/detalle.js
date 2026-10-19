@@ -14,6 +14,7 @@ import {
   guardarPreferencia,
   icono,
   leerNacimiento,
+  leerPreferencia,
   minutosDeLectura,
   movimientoReducido,
   nombreFuente,
@@ -123,6 +124,8 @@ function tiempoEntre(a, b) {
 const PAISES = { Perú: 'el Perú', 'Reino Unido': 'el Reino Unido', 'Ciudad del Vaticano': 'la Ciudad del Vaticano', 'Varios países': 'varios países' };
 
 const NIVEL_NOMBRE = { nino: 'Para niños', general: 'General', detallado: 'Detallado' };
+// Año de inicio de un evento, con «c.» si es aproximado: «c. 1470», «1984».
+const anioDe = (ev) => `${ev.fechaAproximada ? 'c. ' : ''}${formatearAnio(ev.anio)}`;
 
 // Dirección para compartir y citar un evento: su página propia (e/<id>.html, la genera vite.config.js), que
 // lleva su título y su resumen a la vista previa de WhatsApp, Classroom o un correo, y abre el evento.
@@ -392,24 +395,13 @@ export function crearDetalle(
                 : ''
             }
             ${
+              // En «Para niños», una frase igual para todos: la del detalle, fuera de su párrafo, se entiende mal.
               ev.seDiscute
-                ? `<aside class="se-discute" aria-labelledby="se-discute-titulo"><h3 id="se-discute-titulo"><span class="para-nino">No todos lo ven igual</span><span class="no-nino">Lo que se discute</span></h3><p>${esc(ev.seDiscute)}</p></aside>`
+                ? `<aside class="se-discute" aria-labelledby="se-discute-titulo"><h3 id="se-discute-titulo"><span class="para-nino">No todos lo ven igual</span><span class="no-nino">Lo que se discute</span></h3>
+                  <p class="para-nino">Quienes estudian la historia no están de acuerdo en todo sobre este hecho. En «General» puedes leer en qué.</p><p class="no-nino">${esc(ev.seDiscute)}</p></aside>`
                 : ''
             }
-            ${
-              ev.glosario?.length
-                ? `<details class="plegable glosario-evento">
-                <summary>Palabras para entender (${ev.glosario.length})</summary>
-                <dl class="glosario-lista">${ev.glosario
-                  .map(
-                    (g) =>
-                      `<div><dt>${esc(g.termino)}</dt><dd>${esc(g.definicion)}${g.fuente ? ` <span class="glosario-fuente">${externo(g.fuente, `Fuente: ${esc(nombreFuente(g.fuente))}`)}</span>` : ''}</dd></div>`,
-                  )
-                  .join('')}</dl>
-                <p><a href="#glosario">Ver el glosario completo</a></p>
-              </details>`
-                : ''
-            }
+            ${ev.glosario?.length ? '<details class="plegable glosario-evento"></details>' : ''}
           </div>
           <aside class="detalle-ficha" aria-labelledby="ficha-titulo">
             <h3 id="ficha-titulo" class="ceja">Ficha del evento</h3>
@@ -439,7 +431,7 @@ export function crearDetalle(
             </details>
             <details class="plegable cita">
               <summary>Cómo citar</summary>
-              <p class="cita-texto">«${esc(ev.titulo)}». <i>Historia de Chile Interactiva</i>. Consultado el ${hoyTexto()}. ${esc(urlCompartir(ev))}</p>
+              <p class="cita-texto"><i>Historia de Chile Interactiva</i>. (s. f.). ${esc(ev.titulo)}. Consultado el ${hoyTexto()}, de ${esc(urlCompartir(ev))}</p>
               <p>Para un trabajo, cita también las fuentes originales (arriba).</p>
               <button type="button" class="boton chico" data-accion="copiar-cita">${icono('copiar')}<span>Copiar la cita</span></button>
             </details>
@@ -449,11 +441,28 @@ export function crearDetalle(
       enfocar,
     );
     ajustarFicha();
+    // «Palabras para entender»: las del glosario que están a la vista en el nivel elegido.
+    const pintarPalabras = () => {
+      const caja = raiz.querySelector('.glosario-evento');
+      if (!caja) return;
+      const lista = ev.glosario.filter((g) => !g.niveles || g.niveles.includes(nivel));
+      caja.hidden = !lista.length;
+      caja.innerHTML = `<summary>Palabras para entender (${lista.length})</summary>
+        <dl class="glosario-lista">${lista
+          .map(
+            (g) =>
+              `<div><dt>${esc(g.termino)}</dt><dd>${esc(g.definicion)}${g.fuente ? ` <span class="glosario-fuente">${externo(g.fuente, `Fuente: ${esc(nombreFuente(g.fuente))}`)}</span>` : ''}</dd></div>`,
+          )
+          .join('')}</dl>
+        <p><a href="#glosario">Ver el glosario completo</a></p>`;
+    };
+    pintarPalabras();
     alCambiarNivel = () => {
       const contenedor = raiz.querySelector('.detalle-cuerpo');
       contenedor.dataset.nivel = nivel;
       contenedor.innerHTML = cuerpo();
       raiz.querySelector('.detalle-bajada').innerHTML = bajada();
+      pintarPalabras();
     };
   }
 
@@ -526,18 +535,12 @@ export function crearDetalle(
         <div class="detalle-texto">
           <ul class="historias-lista escalonar">${recorridos
             .map((r) => {
-              // Avance, como dato: cuántos pasos ya se vieron. A medio camino, la puerta lleva al primero que falta;
-              // si no, a la presentación.
+              // La puerta lleva siempre a la presentación, que ofrece empezar o seguir. Cuántos de sus eventos ya se
+              // abrieron (en cualquier parte) va como dato personal: no se proyecta en clase.
               const vistosAqui = r.eventos.filter(visto).length;
-              const enCurso = vistosAqui > 0 && vistosAqui < r.eventos.length;
-              const href = enCurso ? rutaHistoria(r, r.eventos.findIndex((ev) => !visto(ev)) + 1) : rutaHistoria(r, 0);
-              const accion = !vistosAqui
-                ? 'Empezar'
-                : enCurso
-                  ? `${vistosAqui} de ${r.eventos.length} pasos vistos · seguir`
-                  : `${vistosAqui} de ${r.eventos.length} pasos vistos · volver a recorrerla`;
+              const accion = `${vistosAqui ? `<span class="personal">${vistosAqui} de ${r.eventos.length} pasos vistos · </span>` : ''}Ver la historia`;
               return `
-            <li><a class="puerta historia-puerta" href="${href}">
+            <li><a class="puerta historia-puerta" href="${rutaHistoria(r, 0)}">
               <span class="mosaico puerta-mosaico" aria-hidden="true">${r.eventos
                 .slice(0, 4)
                 .map((ev) => `<img src="${urlImagen(ev.imagen.archivo, 250)}" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}">`)
@@ -548,8 +551,7 @@ export function crearDetalle(
                 <span class="puerta-bajada">${esc(r.descripcion)}</span>
                 <span class="historia-avance">${accion} ${icono('siguiente')}</span>
               </span>
-            </a>
-            <button type="button" class="boton chico historia-guardar" data-accion="guardar-historia" data-historia="${r.id}">${icono('copiar')}<span>Guardar para usar sin conexión</span></button></li>`;
+            </a></li>`;
             })
             .join('')}</ul>
         </div>
@@ -600,20 +602,25 @@ export function crearDetalle(
     const siguiente = r.eventos.findIndex((ev) => !visto(ev)) + 1;
     const duracion = () => `unos ${minutosDeLectura(r.eventos, nivel)} min en «${NIVEL_NOMBRE[nivel]}»`;
     const ir = (n, texto, clase = 'boton') => `<a class="${clase}" href="${rutaHistoria(r, n)}"><span>${texto}</span>${icono('siguiente')}</a>`;
-    const acciones = !vistosAqui
+    // Seguir donde se quedó es personal: al proyectar en clase, solo «Empezar» (también si lo primero que falta
+    // es el paso 1).
+    const acciones = !vistosAqui || siguiente === 1
       ? ir(1, 'Empezar', 'boton primario')
-      : vistosAqui < r.eventos.length
-        ? `${ir(siguiente, `Seguir en el paso ${siguiente}`, 'boton primario')} ${ir(1, 'Empezar desde el principio')}`
-        : ir(1, 'Recorrerla de nuevo', 'boton primario');
+      : `<span class="personal">${
+          vistosAqui < r.eventos.length
+            ? `${ir(siguiente, `Seguir en el paso ${siguiente}`, 'boton primario')} ${ir(1, 'Empezar desde el principio')}`
+            : ir(1, 'Recorrerla de nuevo', 'boton primario')
+        }</span>${ir(1, 'Empezar', 'boton primario solo-clase')}`;
+    const guardada = leerPreferencia('guardada') === r.id;
     raiz.style.removeProperty('--color');
     pintar(
       `
       <div class="detalle-revista">
       ${portada({
-        ceja: `Historia guiada · ${r.eventos.length} pasos · ${formatearAnio(r.eventos[0].anio)}-${formatearAnio(r.eventos.at(-1).anio)}`,
+        ceja: `Historia guiada · ${r.eventos.length} pasos · ${anioDe(r.eventos[0])} a ${anioDe(r.eventos.at(-1))}`,
         titulo: esc(r.titulo),
         debajo: `<p class="vista-intro">${esc(r.descripcion)}</p>
-          <p class="recorrido-duracion">${icono('sonido')}<span>Leída en voz alta: <span class="recorrido-minutos">${duracion()}</span></span></p>`,
+          <p class="recorrido-duracion">Leída en voz alta: <span class="recorrido-minutos">${duracion()}</span></p>`,
       })}
       <div class="detalle-contenido vista-lista">
         <p class="recorrido-acciones">${acciones}</p>
@@ -623,13 +630,18 @@ export function crearDetalle(
               (ev, i) => `<li><a href="${rutaHistoria(r, i + 1)}" style="--color:${colorDe(ev)}">
                 <span class="recorrido-num" aria-hidden="true">${i + 1}</span>
                 <span class="recorrido-texto"><span class="recorrido-fecha">${esc(ev.fechaTexto)}</span> <span class="recorrido-titulo">${esc(ev.titulo)}</span></span>
-                ${visto(ev) ? `${icono('visto')}<span class="solo-lector"> (ya lo viste)</span>` : ''}
+                ${visto(ev) ? `<span class="personal">${icono('visto')}<span class="solo-lector"> (ya lo viste)</span></span>` : ''}
               </a></li>`,
             )
             .join('')}</ol>
           ${siluetaDePasos(r.eventos)}
         </div>
-        ${r.ruta ? '' : `<p><button type="button" class="boton chico" data-accion="guardar-historia" data-historia="${r.id}">${icono('copiar')}<span>Guardar para usar sin conexión</span></button></p>`}
+        ${
+          r.ruta
+            ? ''
+            : `<p class="recorrido-guardar"><button type="button" class="boton chico" data-accion="guardar-historia" data-historia="${r.id}">${icono('guardar')}<span>Guardar para usar sin conexión</span></button>
+          <span class="recorrido-guardada" role="status">${guardada ? 'Guardada en este navegador para usarla sin conexión.' : ''}</span></p>`
+        }
       </div>
       </div>`,
       enfocar,
@@ -658,7 +670,7 @@ export function crearDetalle(
       ${portada({
         ceja: `<a href="${r.origen?.href ?? '#historias'}">${esc(r.origen?.texto ?? 'Historias guiadas')}</a> · Fin`,
         titulo: esc(r.titulo),
-        debajo: `<p class="vista-intro">Estos fueron sus ${r.eventos.length} pasos, de ${esc(r.eventos[0].fechaTexto)} a ${esc(r.eventos.at(-1).fechaTexto)}.</p>`,
+        debajo: `<p class="vista-intro">Estos fueron sus ${r.eventos.length} pasos, de ${anioDe(r.eventos[0])} a ${anioDe(r.eventos.at(-1))}.</p>`,
       })}
       <div class="detalle-contenido vista-lista">
         <ol class="recorrido-tira escalonar">${r.eventos

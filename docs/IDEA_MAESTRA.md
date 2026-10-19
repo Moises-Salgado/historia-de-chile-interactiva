@@ -97,6 +97,14 @@ Chile es una franja larga que se recorre en dos direcciones: de izquierda a dere
     - **Cabecera:** va en una fila desde 84 em. Con texto grande en el celular ocupa tres filas, y dos al leer un evento.
     - **Historias:** el degradado va con el texto, así la ceja cobre tiene contraste AA sea cual sea el alto de la tarjeta.
   - **Revisión final de las 19 pantallas** (claro, oscuro, modo clase, texto grande, celular y escritorio): letra mínima de 18 px (22 px con texto grande y 22,4 en modo clase), sin desborde horizontal y sin errores de consola.
+- **Después del atlas: el plan MVP.** Pulido, movimiento y funciones que faltaban, en [PLAN_MVP.md](PLAN_MVP.md) (fases M1 a M9):
+  - instalar y compartir;
+  - «Acerca de» y «Para docentes»;
+  - nueve historias con presentación, cierre y repaso;
+  - glosario, «Lo que se discute» y «Escuchar»;
+  - textos a pedido.
+
+  Sus mediciones finales están en el «Avance» de M9.
 
 ## Datos del mapa
 

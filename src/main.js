@@ -3,8 +3,10 @@
 // #evento/<id>, #grupo/<id>, #historias, #historia/<id> (presentación), #historia/<id>/<paso>,
 // #historia/<id>/fin (cierre), #secuencia/<ids>/…, #personaje/<nombre>, #acerca, #docentes y #glosario.
 import './styles.css';
+import './vistas.css';
 import { cargarDatos, cargarTextos } from './datos.js';
 import { crearDetalle, imagenDetalle, rutaHistoria, urlCompartir } from './detalle.js';
+import { detener as detenerVoz, leer as leerEnVoz } from './escuchar.js';
 import { crearFiltros } from './filtros.js';
 import { crearInicio } from './inicio.js';
 import { crearLineaDeTiempo } from './timeline.js';
@@ -57,13 +59,19 @@ function anunciar(texto) {
 }
 
 // Avisos a la vista (además del lector): un enlace que no existe o la falta de conexión. Se van solos a los
-// `duracion` ms (0: hasta cerrarlo); `clave` permite retirar uno en particular (el de sin conexión).
+// `duracion` ms (0: hasta cerrarlo, también con Escape); `clave` permite retirar uno en particular (el de sin
+// conexión) y `accion` ({ texto, alHacer }) agrega un botón, como «Recargar».
 const aviso = $('#aviso');
+const botonAviso = aviso.querySelector('.aviso-accion');
 let avisoTiempo;
-function avisar(texto, { duracion = 7000, clave = '' } = {}) {
+let accionAviso = null;
+function avisar(texto, { duracion = 7000, clave = '', accion = null } = {}) {
   anunciar(texto);
   aviso.querySelector('.aviso-texto').textContent = texto;
   aviso.dataset.clave = clave;
+  accionAviso = accion;
+  botonAviso.hidden = !accion;
+  botonAviso.textContent = accion?.texto ?? '';
   aviso.hidden = false;
   clearTimeout(avisoTiempo);
   if (duracion) avisoTiempo = setTimeout(() => (aviso.hidden = true), duracion);
@@ -71,7 +79,15 @@ function avisar(texto, { duracion = 7000, clave = '' } = {}) {
 function retirarAviso(clave) {
   if (aviso.dataset.clave === clave) aviso.hidden = true;
 }
-aviso.querySelector('button').addEventListener('click', () => (aviso.hidden = true));
+aviso.querySelector('.aviso-cerrar').addEventListener('click', () => (aviso.hidden = true));
+botonAviso.addEventListener('click', () => accionAviso?.alHacer());
+const RECARGAR = { texto: 'Recargar', alHacer: () => location.reload() };
+// Algo que se carga a pedido no llegó: sin conexión o, más a menudo, porque se publicó una versión nueva mientras
+// la pestaña estaba abierta (el navegador recuerda el módulo que falló: reintentar no sirve, recargar sí).
+function sinModulo(error) {
+  console.error(error);
+  avisar('No se pudo cargar esta parte del sitio (sin conexión o porque hay una versión nueva).', { duracion: 0, clave: 'modulo', accion: RECARGAR });
+}
 
 // Copiar al portapapeles (un enlace, una cita) y decirlo; si el navegador no lo permite, se explica qué hacer.
 async function copiar(texto, mensaje) {
@@ -87,7 +103,8 @@ async function copiar(texto, mensaje) {
 // página propia (e/<id>.html), que muestra su título y su resumen al pegarlo en un chat o en Classroom.
 async function compartir(ev) {
   const url = urlCompartir(ev);
-  if (navigator.share) {
+  // Con mouse (un computador) se copia: el menú del sistema de Windows o macOS no siempre ofrece copiar.
+  if (navigator.share && matchMedia('(pointer: coarse)').matches) {
     try {
       await navigator.share({ title: `${ev.titulo} · ${TITULO}`, url });
       return;
@@ -98,34 +115,50 @@ async function compartir(ev) {
   copiar(url, 'Enlace copiado: al pegarlo se verá con el título del evento.');
 }
 
-// «Guardar para usar sin conexión»: pide las imágenes de una historia (las que usan sus láminas y su detalle) para
-// que el Service Worker las guarde; el resto del sitio ya se guarda solo. De a una, para no saturar a Commons.
-async function guardarHistoria(id) {
+// «Guardar para usar sin conexión» (en la presentación de una historia): la imagen de 500 px de cada paso va a una
+// caché propia («historia-guardada», una historia a la vez), que el Service Worker no recorta y que usa, para
+// cualquier ancho del mismo archivo, cuando falta la red o tarda. El resto del sitio ya se guarda solo. De a una,
+// para no saturar a Commons; el avance se ve en el mismo botón y el resultado, junto a él.
+const GUARDADA = 'historia-guardada';
+let guardando = false;
+async function guardarHistoria(id, boton) {
   const r = recorridoPorId.get(id);
-  if (!r) return;
-  if (!navigator.serviceWorker?.controller) {
+  if (!r || guardando) return;
+  if (!navigator.serviceWorker?.controller || !('caches' in window)) {
     avisar('Guardar sin conexión funciona en el sitio publicado, con el navegador conectado a internet.');
     return;
   }
-  avisar(`Guardando «${r.titulo}»…`, { duracion: 0, clave: 'guardar' });
+  guardando = true;
+  const rotulo = boton?.querySelector('span');
+  const textoBoton = rotulo?.textContent;
+  boton?.setAttribute('aria-disabled', 'true');
   let fallidas = 0;
-  for (const ev of r.eventos) {
-    for (const ancho of [250, 500, 800]) {
-      const ok = await new Promise((listo) => {
-        const img = new Image();
-        img.onload = () => listo(true);
-        img.onerror = () => listo(false);
-        img.src = urlImagen(ev.imagen.archivo, ancho);
-      });
-      if (!ok) fallidas++;
+  try {
+    await caches.delete(GUARDADA);
+    const cache = await caches.open(GUARDADA);
+    for (const [i, ev] of r.eventos.entries()) {
+      if (rotulo) rotulo.textContent = `Guardando… ${i + 1} de ${r.eventos.length}`;
+      const url = urlImagen(ev.imagen.archivo, 500);
+      try {
+        await cache.put(url, await fetch(url, { mode: 'no-cors' }));
+      } catch {
+        fallidas++;
+      }
     }
+    guardarPreferencia('guardada', fallidas ? '' : r.id);
+  } catch {
+    fallidas = r.eventos.length;
   }
-  avisar(
-    fallidas
-      ? `Se guardó una parte de «${r.titulo}»: ${fallidas} imágenes no llegaron. Prueba de nuevo con mejor conexión.`
-      : `Listo: «${r.titulo}» quedó guardada en este navegador. En iPhone, Safari la borra si no abres el sitio en 7 días, salvo que lo agregues a la pantalla de inicio.`,
-    { duracion: 10000, clave: 'guardar' },
-  );
+  guardando = false;
+  if (rotulo) rotulo.textContent = textoBoton;
+  boton?.removeAttribute('aria-disabled');
+  const resultado = fallidas
+    ? `Se guardó una parte de «${r.titulo}»: ${fallidas} de ${r.eventos.length} imágenes no llegaron. Prueba de nuevo con mejor conexión.`
+    : `«${r.titulo}» quedó guardada en este navegador para usarla sin conexión (una historia a la vez). En iPhone, Safari la borra si no abres el sitio en 7 días, salvo que lo agregues a la pantalla de inicio.`;
+  // Si la presentación sigue a la vista, el resultado va junto al botón; si no, en un aviso.
+  const estado = boton?.isConnected && elDetalle.querySelector('.recorrido-guardada');
+  if (estado) estado.textContent = resultado;
+  else avisar(resultado, { duracion: 10000 });
 }
 
 // Imagen que carga: aparece con un fundido sobre el tono del período (styles.css).
@@ -482,25 +515,33 @@ function vistaDeHistoria(recorrido, paso = '0') {
 }
 const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje|mapa|lugar|secuencia)\/|^#(?:historias|inicio|linea|mapa|acerca|docentes|glosario)$/.test(hash);
 
-// Las vistas en lista, el paso de una historia y las páginas de texto traen su CSS a pedido (src/vistas.css), y
-// «Acerca de» y «Para docentes», también su contenido (src/paginas.js); si no llegan, se ofrece recargar.
-const CON_ESTILOS = new Set(['historias', 'historia', 'historia-inicio', 'historia-fin', 'grupo', 'personaje', 'pagina']);
+// «Acerca de», «Para docentes» y el glosario se cargan a pedido (src/paginas.js), igual que los textos de cada
+// evento (src/datos.js); si no llegan, se ofrece recargar.
 const EN_HISTORIAS = new Set(['historias', 'historia', 'historia-inicio', 'historia-fin']);
-let estilosVistas = false;
 let paginas = null;
 let pedido = 0;
 const datosPaginas = { eventos, periodos, recorridos };
 
 // Desde una sección se agrega una entrada al historial; entre vistas se reemplaza, así «Volver» (y el botón
-// Atrás del navegador) regresa a la sección. La ficha de un personaje sí se agrega: «Volver» desde ella
-// regresa al evento donde se eligió el nombre. Elegir lo que ya está a la vista solo lo enfoca.
+// Atrás del navegador) regresa a la sección. Sí se agrega al ir a la ficha de un personaje o al glosario, y al
+// salir de una página («Para docentes», «Acerca de», el glosario) o del cierre de una historia: «Volver» regresa
+// ahí (por ejemplo, a la secuencia que se estaba armando). Elegir lo que ya está a la vista solo lo enfoca.
 function ir(url, { desdeBoton = false } = {}) {
   const misma = location.hash === url || (baseDeRuta(url) === 'inicio' && baseDeRuta(location.hash) === 'inicio');
   if (!misma) {
-    if (detalle.abierto && !url.startsWith('#personaje/')) history.replaceState(history.state, '', url);
-    else history.pushState({ app: true }, '', url);
+    const agrega = !detalle.abierto || /^#(?:personaje\/|glosario$)/.test(url) || ['pagina', 'historia-fin'].includes(vistaActual?.tipo);
+    if (agrega) history.pushState({ app: true }, '', url);
+    else history.replaceState(history.state, '', url);
   }
   aplicarRuta({ desdeBoton });
+}
+
+// Un pedido a pedido que todavía no llega se cancela al buscar o con Escape: así no cambia la vista después.
+function cancelarPedido() {
+  if (!('cargando' in raiz.dataset)) return;
+  pedido++;
+  delete raiz.dataset.cargando;
+  retirarAviso('cargando');
 }
 
 function aplicarRuta({ desdeBoton = false, inicial = false } = {}) {
@@ -710,7 +751,6 @@ const origenDe = (ev) => {
 
 function mostrarVista(vista, desdeBoton) {
   const faltan = [
-    CON_ESTILOS.has(vista.tipo) && !estilosVistas && import('./vistas.css').then(() => (estilosVistas = true)),
     vista.tipo === 'pagina' && !paginas && import('./paginas.js').then((m) => (paginas = m)),
     // El evento abierto lleva su detalle y sus fuentes.
     vista.ev && cargarTextos([vista.ev]),
@@ -718,13 +758,16 @@ function mostrarVista(vista, desdeBoton) {
   if (faltan.length) {
     const [turno, hash] = [++pedido, location.hash];
     raiz.dataset.cargando = '';
+    // Si tarda (la primera vez, con red lenta), se ve y se oye que está cargando.
+    const lento = setTimeout(() => turno === pedido && avisar('Cargando…', { duracion: 0, clave: 'cargando' }), 300);
     Promise.all(faltan)
       .then(() => turno === pedido && location.hash === hash && mostrarVista(vista, desdeBoton))
-      .catch((error) => {
-        console.error(error);
-        avisar('No se pudo cargar esta vista (sin conexión o con una versión nueva del sitio). Recarga la página para intentarlo de nuevo.');
-      })
-      .finally(() => turno === pedido && delete raiz.dataset.cargando);
+      .catch(sinModulo)
+      .finally(() => {
+        clearTimeout(lento);
+        retirarAviso('cargando');
+        if (turno === pedido) delete raiz.dataset.cargando;
+      });
     return;
   }
   const previa = vistaActual;
@@ -800,6 +843,7 @@ function cerrarDetalle(hacia = base) {
 // tapaba la barra de acciones del buscador (y el resultado con el foco) en el celular.
 const controles = $('.controles');
 function actualizarInert() {
+  if (filtros.abierto) cancelarPedido();
   const tapado = detalle.abierto || filtros.abierto;
   seccionLinea.inert = tapado || base !== 'linea';
   seccionInicio.inert = tapado || base !== 'inicio';
@@ -814,24 +858,24 @@ elDetalle.addEventListener('click', (e) => {
   const b = e.target.closest('[data-accion]');
   if (b?.dataset.accion === 'compartir') compartir(porId.get(b.dataset.id));
   else if (b?.dataset.accion === 'copiar-cita') copiar(b.closest('.cita').querySelector('.cita-texto').textContent, 'Cita copiada.');
-  else if (b?.dataset.accion === 'guardar-historia') guardarHistoria(b.dataset.historia);
+  else if (b?.dataset.accion === 'guardar-historia') guardarHistoria(b.dataset.historia, b);
   else if (b?.dataset.accion === 'escuchar') alternarLectura();
   else if (b?.dataset.accion === 'repaso') empezarRepaso();
 });
-const sinModulo = (error) => {
-  console.error(error);
-  avisar('No se pudo cargar esta parte (sin conexión o con una versión nueva del sitio). Recarga la página para intentarlo de nuevo.');
-};
-
-// «Escuchar» (src/escuchar.js, a pedido): el botón aparece solo si el sistema tiene una voz en español. Lee el
-// título, la fecha y el texto del nivel elegido; se detiene al cambiar de vista o de nivel y con Escape.
-let escuchar = null;
+// «Escuchar» (src/escuchar.js): el botón aparece solo si el sistema tiene una voz en español. Lee el título, la
+// fecha, el texto del nivel elegido y, si se ven, «¿Sabías que…?» y «Lo que se discute»; se detiene al cambiar de
+// vista o de nivel y con Escape.
 const hayVozEspanola = () => 'speechSynthesis' in window && speechSynthesis.getVoices().some((v) => /^es(?:[-_]|$)/i.test(v.lang));
-function mostrarEscuchar() {
+// Si las voces llegan con el evento ya pintado (`tarde`), el botón va con las acciones de la ficha y no sobre el
+// texto: así nada se mueve.
+function mostrarEscuchar(tarde = false) {
   const p = elDetalle.querySelector('.detalle-escuchar');
-  if (p) p.hidden = !hayVozEspanola();
+  if (!p) return;
+  const hay = hayVozEspanola();
+  if (tarde && hay && p.hidden && p.firstElementChild) elDetalle.querySelector('.ficha-acciones')?.append(p.firstElementChild);
+  else p.hidden = !hay;
 }
-if ('speechSynthesis' in window) speechSynthesis.addEventListener?.('voiceschanged', mostrarEscuchar);
+if ('speechSynthesis' in window) speechSynthesis.addEventListener?.('voiceschanged', () => mostrarEscuchar(true));
 let leyendoAhora = false;
 const leyendo = () => leyendoAhora;
 function marcarLectura(activa) {
@@ -840,21 +884,22 @@ function marcarLectura(activa) {
   if (b) b.querySelector('span').textContent = activa ? 'Detener la lectura' : 'Escuchar';
 }
 function detenerLectura() {
-  if (!escuchar) return;
-  escuchar.detener();
+  if (!leyendoAhora) return;
+  detenerVoz();
   marcarLectura(false);
 }
-async function alternarLectura() {
+function alternarLectura() {
   if (leyendo()) return detenerLectura();
-  try {
-    escuchar ??= await import('./escuchar.js');
-  } catch (error) {
-    return sinModulo(error);
-  }
   const ev = vistaActual?.ev;
   if (!ev) return;
-  const parrafos = [...elDetalle.querySelectorAll('.detalle-cuerpo p')].map((p) => p.textContent);
-  if (escuchar.leer([`${ev.titulo}.`, `${ev.fechaTexto}.`, ...parrafos], { alTerminar: () => marcarLectura(false) })) marcarLectura(true);
+  // Solo lo que se ve: en «Lo que se discute», el rótulo y la frase del nivel elegido.
+  const seVe = (el) => getComputedStyle(el).display !== 'none';
+  const parrafos = [...elDetalle.querySelectorAll('.detalle-cuerpo p')].map((p) => p.innerText);
+  const recuadros = ['.sabias-que', '.se-discute']
+    .map((s) => elDetalle.querySelector(s))
+    .filter((caja) => caja && seVe(caja))
+    .flatMap((caja) => [`${caja.querySelector('h3').innerText}.`, ...[...caja.querySelectorAll('p')].filter(seVe).map((p) => p.innerText)]);
+  if (leerEnVoz([`${ev.titulo}.`, `${ev.fechaTexto}.`, ...parrafos, ...recuadros], { alTerminar: () => marcarLectura(false) })) marcarLectura(true);
 }
 
 // Repaso sin nota al cierre de una historia (src/repaso.js, a pedido): «Otra ronda» arma otra.
@@ -918,6 +963,7 @@ botonInicio.addEventListener('click', () => (detalle.abierto ? volver() : linea.
 // ---- Filtros ----
 const estadoFiltros = $('#estado-filtros');
 function aplicarFiltros() {
+  cancelarPedido(); // se siguió buscando: la vista que no llegaba ya no se abre
   const activo = filtros.activo();
   linea.filtrar(filtros.coincide, activo);
   const n = linea.visibles.length;
@@ -932,7 +978,10 @@ $('#btn-quitar').addEventListener('click', () => filtros.limpiar());
 document.addEventListener('keydown', (e) => {
   if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
   if (e.key === 'Escape') {
-    if (leyendo()) detenerLectura(); // Escape primero detiene la lectura en voz alta
+    cancelarPedido();
+    // Primero se detiene la lectura en voz alta y se cierra el aviso a la vista (puede tapar el foco).
+    if (leyendo()) detenerLectura();
+    else if (!aviso.hidden) aviso.hidden = true;
     else if (filtros.abierto) filtros.cerrar();
     else if (detalle.abierto && !e.target.closest('input')) volver(); // en un campo, Escape solo cancela lo escrito
     return;
@@ -1010,8 +1059,17 @@ if (!navigator.onLine) avisar(SIN_CONEXION, { duracion: 0, clave: 'conexion' });
 // La app arrancó: el rescate de index.html ya no aparece aunque después falle algo.
 raiz.dataset.app = 'lista';
 
-// Sin conexión: el Service Worker (plantilla en src/sw.js) solo existe en el sitio construido.
+// Las voces se piden de antemano (Chrome las entrega recién después de la primera consulta): así «Escuchar»
+// aparece junto con el evento y no después, sobre el texto.
+if ('speechSynthesis' in window) (window.requestIdleCallback ?? setTimeout)(() => speechSynthesis.getVoices());
+
+// Sin conexión: el Service Worker (plantilla en src/sw.js) solo existe en el sitio construido. Si una versión nueva
+// toma el control con la pestaña abierta, lo que se pida a pedido puede ya no existir: se ofrece recargar.
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  const habiaVersion = Boolean(navigator.serviceWorker.controller);
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (habiaVersion) avisar('Hay una versión nueva del sitio.', { duracion: 0, clave: 'version', accion: RECARGAR });
+  });
   addEventListener('load', () => {
     navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
   });

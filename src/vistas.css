@@ -1,7 +1,7 @@
-/* Estilos de las vistas que se abren a pedido sobre la sección (src/detalle.js y src/paginas.js): la lista de
-   historias guiadas, la barra de un paso de historia, las fichas de un grupo o de un personaje y las páginas
-   «Acerca de» y «Para docentes». main.js los carga con import() antes de pintar la vista (Vite espera este CSS
-   antes de resolver el import(), así que no hay un instante sin estilos). */
+/* Estilos de las vistas que se abren sobre la sección (src/detalle.js y src/paginas.js): las historias guiadas
+   (lista, presentación, barra de cada paso, cierre y repaso), las fichas de un grupo o de un personaje y las
+   páginas «Acerca de», «Para docentes» y el glosario. main.js los importa después de styles.css (van en la carga
+   inicial: a pedido, un fallo dejaba la vista sin estilos hasta recargar). */
 
 /* Historias guiadas (detalle.js) como puertas: mosaico a sangre con las imágenes de sus primeros pasos y,
    encima, el título, la descripción y el avance. El degradado va con el texto y llega a 0,85 donde empieza
@@ -115,6 +115,14 @@
   color: var(--texto-suave);
 }
 
+/* Con texto grande en 320 px, «Independencia» no cabe entera junto a la imagen: se parte con guion. */
+.ficha-titulo,
+.tira-titulo,
+.recorrido-titulo {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
 .ficha-titulo {
   font-family: var(--serif);
   font-size: 1.25rem;
@@ -215,14 +223,19 @@
   color: var(--texto-suave);
 }
 
-.historia-guardar {
-  margin-top: 0.5rem;
-}
 
 /* ---- Páginas de texto: «Acerca de» y «Para docentes» (src/paginas.js) ---- */
 /* El titular usa el ancho de la vista; el texto, una medida de lectura. */
 .pagina > * {
   max-width: 42rem;
+}
+
+/* Las direcciones de ejemplo: a la misma letra que el texto (los navegadores achican el monoespaciado) y
+   partibles en cualquier punto, para que no se salgan en un celular. */
+.pagina code {
+  font-family: ui-monospace, Consolas, 'Liberation Mono', monospace;
+  font-size: 1em;
+  overflow-wrap: anywhere;
 }
 
 .pagina-bloque {
@@ -303,9 +316,6 @@
 
 /* ---- Presentación de una historia (paso 0): duración, acciones y los pasos, en lista y sobre la silueta ---- */
 .recorrido-duracion {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   margin-top: 0.75rem !important;
   color: var(--texto-suave);
 }
@@ -315,6 +325,23 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin: 0 0 1.5rem;
+}
+
+/* «Seguir en el paso N» va en un .personal (no se proyecta): sus botones se ordenan como los demás. */
+.recorrido-acciones .personal {
+  display: contents;
+}
+
+.recorrido-guardar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  max-width: 60rem;
+}
+
+.recorrido-guardada {
+  color: var(--texto-suave);
 }
 
 .recorrido {
@@ -390,11 +417,12 @@
   color: var(--acento);
 }
 
+/* Al menos 19 rem de alto: así sus números no bajan de 18 px (con el celular horizontal, 75vh es muy poco). */
 .recorrido-mapa {
   position: sticky;
   top: 1rem;
   width: auto;
-  height: min(34rem, 75vh);
+  height: clamp(19rem, 75vh, 34rem);
 }
 
 .recorrido-tierra {
@@ -571,8 +599,14 @@
   margin: 0.5rem 0 0;
 }
 
+/* Vacía, sin margen, pero en el árbol de accesibilidad: un role="status" que aparece ya lleno no se anuncia. */
 .pregunta-respuesta:empty {
-  display: none;
+  margin: 0;
+}
+
+.pregunta-enlaces {
+  display: block;
+  margin-top: 0.25rem;
 }
 
 .sigue-lista {
