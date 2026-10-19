@@ -58,6 +58,30 @@
   </head>
   <body>
     <svg class="simbolos" aria-hidden="true" focusable="false">
+      <!-- Íconos propios (grilla de 24, trazo; se usan con <svg class="icono"><use href="#i-…"/></svg> junto a una
+           palabra, nunca en su lugar). Reemplazan a ◀ ▶ ✓ − +, que cambiaban de peso según el sistema. -->
+      <symbol id="i-anterior" viewBox="0 0 24 24"><path d="M20 12H5m6-7-7 7 7 7" /></symbol>
+      <symbol id="i-siguiente" viewBox="0 0 24 24"><path d="M4 12h15m-6-7 7 7-7 7" /></symbol>
+      <symbol id="i-inicio" viewBox="0 0 24 24"><path d="M5 5v14M19 5l-9 7 9 7" /></symbol>
+      <symbol id="i-volver" viewBox="0 0 24 24"><path d="M9 15 4 10l5-5M4 10h10a6 6 0 0 1 0 12h-2" /></symbol>
+      <symbol id="i-cerrar" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></symbol>
+      <symbol id="i-buscar" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" /></symbol>
+      <symbol id="i-texto" viewBox="0 0 24 24"><path d="M2.5 19 8 5l5.5 14M4.6 14h6.8M19 7v8M15 11h8" /></symbol>
+      <symbol id="i-proyectar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1" /><path d="M12 16v4M8 20h8" /></symbol>
+      <symbol id="i-pantalla" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></symbol>
+      <symbol id="i-alfiler" viewBox="0 0 24 24"><path d="M12 21s-6.5-6.4-6.5-11.2a6.5 6.5 0 0 1 13 0C18.5 14.6 12 21 12 21z" /><circle cx="12" cy="9.8" r="2.3" /></symbol>
+      <symbol id="i-escala" viewBox="0 0 24 24"><path d="M3 9v8h18V9M9 13v4M15 13v4" /></symbol>
+      <symbol id="i-ruta" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5" /><circle cx="18" cy="6" r="2.5" /><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5" /></symbol>
+      <symbol id="i-persona" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" /></symbol>
+      <symbol id="i-visto" viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5" /></symbol>
+      <symbol id="i-plegar" viewBox="0 0 24 24"><path d="M9 5.5 15.5 12 9 18.5" /></symbol>
+      <symbol id="i-externo" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6" /></symbol>
+      <symbol id="i-compartir" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="m8.2 10.8 7.6-4.4m-7.6 6.8 7.6 4.4" /></symbol>
+      <symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3" /></symbol>
+      <symbol id="i-imprimir" viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 17H5a1 1 0 0 1-1-1v-5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a1 1 0 0 1-1 1h-2M7 14h10v6H7z" /></symbol>
+      <symbol id="i-sonido" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4zM16.5 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11" /></symbol>
+      <symbol id="i-mas" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="i-menos" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>
       <!-- Silueta de Chile continental (Natural Earth, dominio público; ver docs/IDEA_MAESTRA.md). -->
       <symbol id="silueta-chile" viewBox="0 0 302 1006"><path d="M229 3l4 12l5 2l2 22l-4 5l-13-3l-10 5l-2-22l8-2l4-7l-1-7l7-5zM240 40l11 13l-5 7l2 9l-4 1l1 9l5 5l-1 11l-19 10l-13 0l-4-59l10-5l13 3l4-4zM249 92l7 9l7 40l14 0l4 5l-7 26l-22 13l-4 8l5 8l-7 6l-7 1l-1 6l-22 3l-10 7l-3-5l6-12l-2-22l4-24l-5-2l0-7l7-9l4-37l27-6l5-8zM249 205l3 22l-4 8l6 16l-11 2l-7 21l-10 12l-3 18l-5 5l2 11l-3 1l-7-6l-4-11l-8 3l-1 5l-9-5l-1-8l13-33l-1-12l3-4l3-25l11-8l22-3l1-6l10-3zM220 320l2 13l-3 4l-4 0l-2 18l-6 7l2 13l5 3l-2 7l-13-6l-10 2l-2 4l-4-44l9-17l-4-17l9 5l1-5l8-3l6 15l8 1zM217 407l6 8l-1 23l-4 1l-8-10l-8 1l-5 6l-14-5l7-5l-1-12l8-7l9-2l6 5l5-3zM213 388l5 17l-6 5l-6-5l-9 2l-8 7l1 12l-10 4l5-10l-3-12l6-11l1-16l14-1l10 8zM211 458l-4 6l3 3l1 18l-7 9l-15 1l-13-8l-16-2l15-34l8 5l11-3l17 5zM218 439l-7 19l-17-5l-11 3l-8-5l5-21l17 6l5-6l8-1l8 10zM197 496l-3 10l2 6l-7-1l-16 4l0-5l-10-3l2-5l-7-7l5-11l34 12zM198 539l3 15l-11 5l-3 19l-5-5l-5 8l-8 0l-12-4l0-6l-6 1l-6-24l6 0l4-22l12 1l8 9l8 1l1 5l7-5l7 2zM196 512l-2 15l4 12l-7-2l-7 5l-1-5l-8-1l-8-9l-12-1l-4 22l-6 0l-2-33l8 0l1-11l2-5l2 3l2-7l7 7l-2 5l10 3l-1 5l24-3zM185 577l-4 16l3 3l-7 9l-13 0l-8-8l-15-2l0-8l7-2l3-13l6-1l0 6l12 4l8 0l5-8l3 4zM182 640l-8 6l0 20l8 4l-4 7l5 4l-2 4l3 6l-9-1l-5-5l-10-3l-5 3l3-4l-4-7l5-8l3 2l-3-14l7 0l-7-7l6-3l3 7l-1-12l-8-2l12-7l0-6l-6 8l-8-6l-5 8l-12-1l6-6l-6 1l-3-12l4-21l15 2l10 8l14-3l-1 29l3 9zM128 673l6-38l6 2l4-3l4 13l-9 6l7 8l-4 1l4 7l-6 0l2 6l-3 2l-11-4zM182 693l-2 8l15 4l-3 7l-17 0l16 13l-9 7l3 11l-6 5l5 14l-6 3l2 10l-10 6l-4 12l5 12l-6 2l0 9l-12 12l-24-14l0-4l7 1l2-5l-16-9l5-2l4 7l-2-7l11 1l5 6l5-3l-7-4l8 1l-8-4l-2-9l-4 9l-17-4l4-4l7 5l-1-3l5-1l-11-4l5-6l7 1l-3-11l-10-3l2 2l-4 2l4 1l-11-4l2-8l-15 9l5-2l0 6l-5-2l-1-6l10-9l4 1l-1-3l6 0l3-10l4 5l2-6l5 1l-1 8l2-4l2 3l-11 3l9 0l0 3l5 0l-4-3l3-2l2 5l-4 6l5-1l8-13l-7 8l0-9l10-8l-8 3l2-9l6-4l8 3l-13-3l1-8l14-6l3-6l0-5l-3 5l-10-7l2-3l-4 1l6-10l4 1l-1-4l-4 2l15 0l12 8zM108 810l-5 4l2-3l-4 0l1-4l5 0l1 3zM125 811l-2 3l-9-3l2-5l4 1l0-8l5 12zM111 803l-2-6l10 3l-5 7l-3-4zM111 813l-3-8l-5 1l4-3l-4 1l1-8l4 0l3 17zM109 796l10-5l1 7l-11-2zM127 794l2-3l10 2l-12 1zM120 739l-1 5l-6 2l5-2l-6-4l8-1zM125 737l4-7l2 4l-6 3zM141 723l-11-3l8-3l3 6zM137 708l-7 5l-3-4l10-1zM148 707l3 1l0-5l4 1l1-3l1 4l5 0l-11 11l-3-9zM153 828l-6 2l-3 5l1 16l8 17l8-4l10 0l-2 12l3 4l-4 8l10 11l42 1l31 9l-16-4l-9 8l-25 5l2 2l-5 25l-6 4l-17-5l-7-8l3-4l4 2l-3 3l3 0l5-6l1 6l-4 3l4-1l1-8l13-7l-5-5l-13 10l-12-1l8 2l-9 4l5 6l-17-8l-2-2l7 0l5 3l-2-3l3 0l-5-2l-1-7l5-3l0 4l6 0l6-5l14-1l-17-3l-3 4l-2-2l3-2l-10 0l-3 5l7-1l-11 11l-5-3l5-2l-7-3l6 0l3-8l4 0l-6-1l-1 6l-3-3l-6 4l4-6l-4-1l2-6l-3-5l9 5l6-4l-1 5l4 0l2-5l-2 4l-2-4l3-3l6 7l-8 6l8 0l-2-1l3-5l-4-6l4-5l-13-9l-3 2l14 7l-15-5l6 5l-4 2l6 0l-6 6l-4-11l2 13l-5-3l-2-6l5 5l-4-7l3-2l-6 3l-4-10l6 6l-1-13l-9 1l1-6l-4 0l10 1l0-8l6 0l-5-3l4-4l-10 11l-6-9l9 2l-5-3l2-2l-5 2l0-5l-4 3l-5-5l7-2l3 4l7 1l-10-8l10 3l-1-6l-2 3l-6-3l5-4l-5-2l5-2l8 4l-9-7l1-5l5 3l-4-7l4-2l-5 0l-3 13l-4-3l1-18l6 1l19 13zM247 972l-7 0l5 3l-7 1l-12-3l1-3l-6 3l-2-4l0 4l-7 0l2-3l-3 3l-8 0l6-5l-12 4l2-4l-7 1l-1-4l-3 4l-3-2l-7 2l-1-5l7 2l-4-4l6 3l-1-3l5-1l6 4l6-5l4 0l-3 7l4-5l9 4l-17-11l17 8l2-5l5 8l-1-7l6 4l1-3l6 4l-3 5l8-5l-22-9l-3-8l17-8l0-4l-17 3l-6-4l1-8l4 1l3-4l-7-4l11 3l10-11l6 6l7-3l3 2l0 56zM260 994l-2 2l-10-8l-6 3l-2-3l5-2l-5 1l4-4l-14-1l4 0l-4 4l6 5l-13-5l6-4l-7 2l-4-3l33-5l2 3l-5 3l-10-3l18 5l-11 1l12 3l3 6zM263 984l-5-1l-5-7l22 0l5 4l-4 6l-5-4l-8 2zM213 980l-6 3l-1-4l-8-2l13-2l-7 3l9 2zM221 978l3-4l12 2l-15 2zM185 954l0-4l6 1l2 5l5-2l0 5l-4 2l-5-7l-2 5l-2-5zM177 957l-5-7l12 0l-2 6l-4-4l3 8l-4-3zM209 942l3 10l-7-2l2 7l-5-2l-2-7l6 0l-2-4l5-2zM166 954l-10 0l5-2l-2-2l5-2l-4-1l-5 0l-1 6l-4-2l1-7l-7 1l0-4l13 2l-10-5l8 1l-2-2l2-1l4 7l0-6l4 6l0-3l4 1l1 4l6 1l-5 2l1 4l-4 2zM152 934l-8 0l-6-7l-9 1l-9-9l23 8l2 5l2-3l5 5zM139 918l-3-1l2-3l-6 4l3-7l6-1l-2 8zM133 910l-1-5l-5-2l9 5l-3 2zM117 900l-2 3l-2-4l5-4l-1-5l0 10zM120 883l-6 2l5-6l5 1l-1 4l-3-1zM127 873l-7 3l1-2l-6-2l7 0l0-5l5 6zM112 860l-5 2l2 6l-4-1l0-7l7 0zM129 869l-6-5l4-3l-6-1l6-1l3 6l-3 0l5 3l-3 1zM114 855l-4 4l1-4l-6 2l1-5l5 2l1-3l-6-3l9 1l-2 3l6-1l-5 4zM105 842l-3 2l0-6l4-1l5 8l-6-3zM117 824l-1 5l-6-4l2-3l5 2zM110 822l-6 1l-3-4l5-2l4 5zM110 842l-5-12l6 5l-3-7l5 3l0-4l4 4l2-7l-3-2l2-2l-3 1l2-3l-4-1l8-4l1 5l2-4l2 32l-7 3l2-3l-5 0l4-2l-3-6l4 0l-4-3l5-4l-7 3l-1 11l-4-3z" /></symbol>
     </svg>
@@ -69,29 +93,32 @@
         <span class="marca-texto">Historia de Chile</span>
       </h1>
       <nav class="pestanas" aria-label="Secciones">
+        <span class="pestanas-marca" aria-hidden="true" hidden></span>
         <a class="pestana" href="#inicio" data-seccion="inicio">Inicio</a>
         <a class="pestana" href="#linea" data-seccion="linea"><span>Línea<span class="pestana-larga"> de tiempo</span></span></a>
         <a class="pestana" href="#mapa" data-seccion="mapa">Mapa</a>
         <a class="pestana" href="#historias" data-seccion="historias">Historias</a>
       </nav>
       <button type="button" id="btn-buscar" class="boton buscar" aria-expanded="false" aria-controls="panel-filtros">
-        <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" /></svg>
+        <svg class="icono" aria-hidden="true" focusable="false"><use href="#i-buscar" /></svg>
         <span class="texto-buscar">Buscar</span>
       </button>
       <div class="lectura">
         <fieldset class="nivel">
-          <legend class="nivel-titulo">Nivel de lectura</legend>
+          <legend class="nivel-titulo">Leer<span class="solo-lector">: nivel de lectura</span></legend>
           <div class="nivel-opciones">
+            <span class="nivel-marca" aria-hidden="true"></span>
             <label><input type="radio" name="nivel" value="nino" /><span><span class="solo-ancho">Para niños</span><span class="solo-angosto" aria-hidden="true">Niños</span></span></label>
             <label><input type="radio" name="nivel" value="general" checked /><span>General</span></label>
             <label><input type="radio" name="nivel" value="detallado" /><span>Detallado</span></label>
           </div>
         </fieldset>
         <button type="button" id="btn-texto" class="boton" aria-pressed="false">
-          <span aria-hidden="true">A+</span><span class="solo-ancho"> Texto grande</span>
+          <svg class="icono" aria-hidden="true" focusable="false"><use href="#i-texto" /></svg>
+          <span>Texto<span class="solo-ancho"> grande</span></span>
         </button>
         <button type="button" id="btn-clase" class="boton solo-escritorio" aria-pressed="false">
-          <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1" /><path d="M12 16v4M8 20h8" /></svg>
+          <svg class="icono" aria-hidden="true" focusable="false"><use href="#i-proyectar" /></svg>
           <span>Proyectar<span class="clase-extra"> en clase</span></span>
         </button>
       </div>
@@ -201,10 +228,10 @@
     </main>
 
     <nav class="controles" aria-label="Recorrer la línea de tiempo">
-      <button type="button" id="btn-anterior" class="boton grande nav-anterior"><span aria-hidden="true">◀</span> <span class="nav-texto">Anterior</span></button>
-      <button type="button" id="btn-inicio" class="boton grande nav-inicio">Al inicio<span class="solo-lector"> de la línea de tiempo</span></button>
+      <button type="button" id="btn-anterior" class="boton grande nav-anterior"><svg class="icono" aria-hidden="true" focusable="false"><use href="#i-anterior" /></svg><span class="nav-texto">Anterior</span></button>
+      <button type="button" id="btn-inicio" class="boton grande nav-inicio"><svg class="icono" aria-hidden="true" focusable="false"><use href="#i-inicio" /></svg><span class="nav-texto">Al inicio</span><span class="solo-lector"> de la línea de tiempo</span></button>
       <div id="minimapa" class="minimapa-fila"></div>
-      <button type="button" id="btn-siguiente" class="boton grande nav-siguiente"><span class="nav-texto">Siguiente</span> <span aria-hidden="true">▶</span></button>
+      <button type="button" id="btn-siguiente" class="boton grande nav-siguiente"><span class="nav-texto">Siguiente</span><svg class="icono" aria-hidden="true" focusable="false"><use href="#i-siguiente" /></svg></button>
     </nav>
 
     <p id="avisos" class="solo-lector" role="status" aria-live="polite"></p>

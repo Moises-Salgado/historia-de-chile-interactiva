@@ -5,7 +5,7 @@
 // guiada, un grupo de eventos, la lista de historias o la ficha de un personaje, con la misma portada.
 import latitudes from './chile-latitudes.json';
 import { edadEn, formatearAnio, haceCuanto } from './fechas.js';
-import { borrarPreferencia, creditoImagen, esc, externo, guardarPreferencia, leerPreferencia, movimientoReducido, nombreFuente, urlImagen } from './util.js';
+import { borrarPreferencia, creditoImagen, esc, externo, guardarPreferencia, icono, leerPreferencia, movimientoReducido, nombreFuente, urlImagen } from './util.js';
 
 // «Detallado» suma el detalle al resumen general: el detalle lo continúa, no lo repite.
 const PARRAFOS = {
@@ -47,7 +47,7 @@ function vecino(ev, lado, colorDe, { href = `#evento/${ev?.id}`, rotulo, vacio }
   return `<a class="vecino ${lado}" href="${href}" style="--color:${colorDe(ev)}">
       <span class="vecino-img">${miniatura(ev.eventos?.[0] ?? ev, '4.5rem')}</span>
       <span class="vecino-texto">
-        <span class="vecino-rotulo">${lado === 'antes' ? `<span aria-hidden="true">◀</span> ${texto}` : `${texto} <span aria-hidden="true">▶</span>`}</span>
+        <span class="vecino-rotulo">${lado === 'antes' ? `${icono('anterior')} ${texto}` : `${texto} ${icono('siguiente')}`}</span>
         <span class="vecino-fecha">${esc(ev.fechaTexto)}</span>
         <span class="vecino-titulo">${esc(ev.titulo)}</span>
       </span>
@@ -402,7 +402,7 @@ export function crearDetalle(raiz, { periodos, temas, personajeDe, rutaEnMapa = 
                 <span class="ceja">${r.eventos.length} pasos · ${formatearAnio(r.eventos[0].anio)}-${formatearAnio(r.eventos.at(-1).anio)}</span>
                 <span class="puerta-titulo">${esc(r.titulo)}</span>
                 <span class="puerta-bajada">${esc(r.descripcion)}</span>
-                <span class="historia-avance">${accion} <span aria-hidden="true">▶</span></span>
+                <span class="historia-avance">${accion} ${icono('siguiente')}</span>
               </span>
             </a></li>`;
             })

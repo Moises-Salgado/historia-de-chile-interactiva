@@ -5,7 +5,7 @@
 // de la Independencia. El zoom cambia el ancho de la ranura y la importancia mínima que se muestra (zoom
 // mínimo: solo hitos); las láminas que no caben quedan como puntos sobre el eje.
 import { anioDecimal, fechaCorta, formatearAnio } from './fechas.js';
-import { animar, esc, movimientoReducido, urlImagen } from './util.js';
+import { animar, esc, icono, movimientoReducido, urlImagen } from './util.js';
 
 // Medidas en rem (crecen con «Texto grande»). Todas las láminas tienen el mismo ancho; el alto depende de
 // la importancia (los hitos, más altos) y todas se apoyan en la base de su carril. Si la pantalla es baja,
@@ -247,7 +247,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
           <p class="cartela-desc"></p>
         </div>
         <div class="cartela-acciones" hidden>
-          <button type="button" class="boton primario cartela-empezar">Empezar a leer <span aria-hidden="true">▶</span></button>
+          <button type="button" class="boton primario cartela-empezar"><span>Empezar a leer</span>${icono('siguiente')}</button>
           <a class="boton" href="#historias">Elegir una historia</a>
         </div>
       </div>
@@ -278,7 +278,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     </div>`,
   );
   contenedorMinimapa.innerHTML = `
-    <button type="button" class="boton zoom" data-zoom="-1" aria-label="Alejar: ver menos eventos" title="Alejar (−)"><span aria-hidden="true">−</span></button>
+    <button type="button" class="boton zoom" data-zoom="-1" aria-label="Alejar: ver menos eventos" title="Alejar (−)">${icono('menos')}</button>
     <div class="minimapa" role="slider" tabindex="0" aria-label="Minimapa: posición en la historia" aria-valuemin="0" aria-valuemax="100">
       <div class="minimapa-barra">${franjas
         .map((fr) => {
@@ -290,7 +290,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       <div class="minimapa-marco"></div>
       <div class="minimapa-anios" aria-hidden="true"></div>
     </div>
-    <button type="button" class="boton zoom" data-zoom="1" aria-label="Acercar: ver más eventos" title="Acercar (+)"><span aria-hidden="true">+</span></button>`;
+    <button type="button" class="boton zoom" data-zoom="1" aria-label="Acercar: ver más eventos" title="Acercar (+)">${icono('mas')}</button>`;
 
   const cielo = seccion.querySelector('.cielo');
   const cartela = cielo.querySelector('.cartela');

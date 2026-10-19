@@ -3,7 +3,7 @@
 // del día y los períodos (cada uno lleva a su tramo de la línea de tiempo).
 import { curvasDeNivel } from './curvas.js';
 import { haceCuanto } from './fechas.js';
-import { creditoImagen, esc, urlImagen, urlPlaceholder } from './util.js';
+import { creditoImagen, esc, icono, urlImagen, urlPlaceholder } from './util.js';
 
 /** alElegirPeriodo(id) se llama al elegir un período (en vez de seguir el enlace #linea). */
 export function crearInicio(seccion, { eventos, periodos, recorridos, alElegirPeriodo }) {
@@ -99,7 +99,7 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, alElegirPe
   seguir.innerHTML = `
     <h2 class="ceja" id="seguir-titulo">Tu recorrido</h2>
     <p class="seguir-cuenta"></p>
-    <a class="boton primario seguir-enlace" href="#linea"><span class="seguir-texto"></span> <span aria-hidden="true">▶</span></a>`;
+    <a class="boton primario seguir-enlace" href="#linea"><span class="seguir-texto"></span>${icono('siguiente')}</a>`;
   const cuenta = seguir.querySelector('.seguir-cuenta');
   const enlace = seguir.querySelector('.seguir-enlace');
   function mostrarAvance(vistos, ultimoId) {

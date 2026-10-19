@@ -6,6 +6,9 @@ const ENTIDADES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": 
 /** Escapa texto para insertarlo en HTML. */
 export const esc = (texto) => String(texto ?? '').replace(/[&<>"']/g, (c) => ENTIDADES[c]);
 
+/** Ícono del set de index.html (#i-<nombre>), decorativo: siempre va junto a una palabra. */
+export const icono = (nombre) => `<svg class="icono" aria-hidden="true" focusable="false"><use href="#i-${nombre}"/></svg>`;
+
 /** Minúsculas y sin tildes («Ñuñoa» → «nunoa»), para buscar sin importar cómo se escriba. */
 export const normalizar = (texto) =>
   String(texto ?? '')

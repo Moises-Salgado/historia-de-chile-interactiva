@@ -54,6 +54,27 @@
   --serif: 'Source Serif 4', Georgia, 'Noto Serif', 'Times New Roman', serif; /* solo títulos */
   --rotulo: 'Barlow Condensed', 'Bahnschrift Condensed', 'Avenir Next Condensed', 'Roboto Condensed', sans-serif-condensed, 'Arial Narrow', sans-serif; /* fechas y rótulos */
   --radio: 0.5rem;
+  --radio-s: 0.375rem;
+  --radio-l: 0.875rem;
+  --pildora: 999px;
+  --sombra-boton: 0 1px 2px rgb(8 25 31 / 0.14);
+  --acento-hover: #84461d; /* cobre al pasar el puntero sobre una acción */
+  /* Pasos de letra (1rem = 18 px es el mínimo) para lo nuevo; Barlow, más angosta, usa --t-1. */
+  --t-0: 1rem;
+  --t-1: 1.0625rem;
+  --t-2: 1.125rem;
+  --t-3: 1.25rem;
+  --t-4: 1.5rem;
+  --t-5: 2rem;
+  /* Movimiento (docs/PLAN_MVP.md): 400 ms es el tope, escalón incluido; sin rebotes. */
+  --dur-micro: 120ms; /* presionar, colores */
+  --dur-corta: 180ms; /* entradas chicas, la sección vieja que se va */
+  --dur-media: 280ms; /* vistas, láminas, la hoja del mapa */
+  --dur-larga: 400ms; /* lo que viaja lejos */
+  --escalon: 30ms; /* entre elementos de una lista, hasta 6 */
+  --curva-estandar: cubic-bezier(0.2, 0, 0, 1); /* lo que se traslada en pantalla */
+  --curva-entrada: cubic-bezier(0.2, 0.7, 0.2, 1); /* lo que llega, frenando */
+  --curva-salida: cubic-bezier(0.4, 0, 1, 1); /* lo que se va, acelerando */
   --tarjeta-ancho: 10rem; /* timeline.js la ajusta en la pista (LAMINA) */
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 112.5%; /* 18 px como mínimo */
@@ -86,6 +107,8 @@
     --pacifico-2: #16394a;
     --pacifico-3: #285363;
     --cobre-vivo: #d98a4e;
+    --acento-hover: #f2c29a;
+    --sombra-boton: 0 1px 2px rgb(0 0 0 / 0.5);
     --sombra: 0 1px 3px rgb(0 0 0 / 0.6);
     --sombra-alta: 0 4px 18px rgb(0 0 0 / 0.6);
     --lavado: 12%;
@@ -103,8 +126,10 @@
   --borde: var(--pacifico-3);
   --borde-fuerte: #6c8c94;
   --acento: var(--cobre-claro);
+  --acento-hover: #f2c29a;
   --sobre-acento: #1d0f05;
   --foco: var(--cobre-claro);
+  --sombra-boton: 0 1px 2px rgb(0 0 0 / 0.35);
   color: var(--texto);
   background: var(--pacifico);
 }
@@ -150,7 +175,7 @@
   }
 }
 
-@media (max-width: 46em) {
+@media (max-width: 30em) {
   .cabecera .nivel-titulo {
     position: absolute;
     width: 1px;
@@ -295,7 +320,9 @@ h2[tabindex='-1']:focus,
   overflow: hidden;
 }
 
-/* ---- Botones ---- */
+/* ---- Botones: un mismo sistema en toda la app. Cobre = acción principal (una por pantalla); invertido =
+   lo elegido (pestaña, nivel, «Texto», chips); filete de cobre = «estás aquí». Borde de 1px con 3:1 de
+   contraste y una sombra leve. Los enlaces con forma de botón no se subrayan: el borde ya dice que se tocan. ---- */
 .boton {
   display: inline-flex;
   align-items: center;
@@ -306,15 +333,29 @@ h2[tabindex='-1']:focus,
   font: inherit;
   color: var(--texto);
   text-align: center;
+  text-decoration: none;
   background: var(--superficie);
-  border: 2px solid var(--borde-fuerte);
+  border: 1px solid var(--borde-fuerte);
   border-radius: var(--radio);
+  box-shadow: var(--sombra-boton);
   cursor: pointer;
-  transition: scale 0.12s ease;
+  transition:
+    background-color var(--dur-micro) ease,
+    border-color var(--dur-micro) ease,
+    color var(--dur-micro) ease,
+    scale var(--dur-micro) ease;
 }
 
-.boton:hover {
-  background: var(--superficie-2);
+@media (hover: hover) {
+  .boton:hover {
+    background: var(--superficie-2);
+    border-color: var(--acento);
+  }
+
+  .boton.primario:hover {
+    background: var(--acento-hover);
+    border-color: var(--acento-hover);
+  }
 }
 
 /* Al presionar, los botones ceden un poco (respuesta inmediata al toque). */
@@ -325,15 +366,23 @@ h2[tabindex='-1']:focus,
   scale: 0.97;
 }
 
-.boton.primario,
-.boton[aria-pressed='true'] {
+.boton.primario {
   color: var(--sobre-acento);
   background: var(--acento);
   border-color: var(--acento);
 }
 
+/* Activado («Texto grande», «Proyectar»): colores invertidos, no cobre (el cobre es para actuar). */
+.boton[aria-pressed='true'] {
+  color: var(--superficie);
+  background: var(--texto);
+  border-color: var(--texto);
+}
+
 .boton[aria-disabled='true'] {
   background: var(--superficie);
+  border-color: var(--borde-fuerte);
+  box-shadow: none;
   opacity: 0.45;
   cursor: default;
 }
@@ -349,12 +398,25 @@ h2[tabindex='-1']:focus,
 }
 
 .icono {
+  flex: none;
   width: 1.25rem;
   height: 1.25rem;
   fill: none;
   stroke: currentColor;
   stroke-width: 2.5;
   stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* En una acción que lleva a otra parte, la flecha avanza un poco al pasar el puntero. */
+@media (hover: hover) {
+  .boton > .icono:last-child {
+    transition: translate var(--dur-micro) var(--curva-estandar);
+  }
+
+  .boton:hover > .icono:last-child:not(:only-child) {
+    translate: 0.1875rem 0;
+  }
 }
 
 /* ---- Cabecera sobre el océano: marca, secciones y «Buscar» en la primera fila; nivel de lectura,
@@ -395,6 +457,7 @@ h2[tabindex='-1']:focus,
 /* Secciones: el rótulo de la actual se subraya en cobre. Si no caben (texto grande en un teléfono),
    la fila se desplaza de lado en vez de partirse. */
 .pestanas {
+  position: relative;
   display: flex;
   grid-area: pestanas;
   gap: 0.25rem;
@@ -405,6 +468,7 @@ h2[tabindex='-1']:focus,
 
 .pestana {
   position: relative;
+  z-index: 1;
   display: flex;
   flex: none;
   align-items: center;
@@ -418,22 +482,41 @@ h2[tabindex='-1']:focus,
   text-decoration: none;
   white-space: nowrap;
   border-radius: var(--radio);
-  transition: scale 0.12s ease;
+  transition:
+    color var(--dur-micro) ease,
+    scale var(--dur-micro) ease;
 }
 
-.pestana:hover {
-  color: var(--texto);
-  background: var(--superficie-2);
+@media (hover: hover) {
+  .pestana:not([aria-current]):hover {
+    color: var(--texto);
+    background: var(--superficie-2);
+  }
 }
 
 .pestana:active {
   scale: 0.97;
 }
 
-/* La sección actual va en una pastilla de cobre: es lo más visible de la cabecera (los ajustes, menos). */
+/* La sección actual: en niebla sobre el océano (lo elegido va invertido) con un filete de cobre («estás
+   aquí»). La marca es un elemento aparte (main.js le da posición y ancho): en el cambio de sección se
+   desliza de una pestaña a otra con la View Transition. */
 .pestana[aria-current='page'] {
-  color: var(--sobre-acento);
-  background: var(--acento);
+  color: var(--pacifico);
+}
+
+.pestanas-marca {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ancho, 0);
+  height: 100%;
+  background: var(--sobre-pacifico);
+  border-radius: var(--radio);
+  box-shadow: inset 0 -3px 0 #9c5526;
+  translate: var(--x, 0) 0;
+  view-transition-name: pestana-marca;
+  pointer-events: none;
 }
 
 /* La fila de secciones recorta lo que sale de ella: el contorno de foco va por dentro. */
@@ -476,15 +559,19 @@ h2[tabindex='-1']:focus,
   :root:not([data-clase], [data-texto='grande']) .cabecera .nivel-opciones .solo-angosto {
     display: inline;
   }
-}
 
-/* Bordes finos en la cabecera: siete cajas con borde grueso competían con el contenido. */
-.cabecera :is(.boton, .nivel-opciones) {
-  border-width: 1px;
-}
+  /* Espacios más justos para que la fila completa quepa sin recortar las pestañas. */
+  :root:not([data-clase], [data-texto='grande']) .cabecera {
+    column-gap: 0.75rem;
+  }
 
-.cabecera .nivel-opciones label + label {
-  border-left-width: 1px;
+  :root:not([data-clase], [data-texto='grande']) .cabecera :is(.pestana, .nivel-opciones label > span) {
+    padding-inline: 0.5rem;
+  }
+
+  :root:not([data-clase], [data-texto='grande']) .cabecera .boton {
+    padding-inline: 0.75rem;
+  }
 }
 
 /* Sin espacio para la marca completa queda el ícono (el nombre sigue en el título para lectores de pantalla). */
@@ -548,10 +635,11 @@ h2[tabindex='-1']:focus,
     flex: 1;
   }
 
-  .nivel-opciones label > span {
+  /* (Con .cabecera delante: la regla general de más abajo, con su relleno de 0.75rem, ganaba.) */
+  .cabecera .nivel-opciones label > span {
     flex: 1;
     justify-content: center;
-    padding: 0 0.5rem;
+    padding: 0 0.375rem;
   }
 
   .buscar {
@@ -563,12 +651,14 @@ h2[tabindex='-1']:focus,
   }
 }
 
-/* Teléfono con «Texto grande»: tres filas (marca y «A+»; secciones y lupa; nivel de lectura a todo el ancho). */
+/* Teléfono con «Texto grande»: tres filas (marca, «Texto» y lupa; las secciones a todo el ancho; el nivel de
+   lectura a todo el ancho). Cada botón tiene su columna: si la compartiera, la lupa se estiraría al ancho de
+   «Texto» y les quitaría lugar a las secciones. */
 @media (max-width: 40em) {
   :root[data-texto='grande'] .cabecera {
     grid-template-areas:
-      'marca . texto'
-      'pestanas pestanas buscar'
+      'marca texto buscar'
+      'pestanas pestanas pestanas'
       'nivel nivel nivel';
     grid-template-columns: minmax(0, 1fr) auto auto;
   }
@@ -585,14 +675,23 @@ h2[tabindex='-1']:focus,
     display: none;
   }
 
-  /* Barra inferior en una fila: «Anterior» y «Siguiente» quedan como flechas (su nombre no cambia). */
-  :root[data-texto='grande'] .nav-texto {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+  /* Barra inferior en una fila: el ícono va sobre la palabra, así quien pidió letra grande no pierde los
+     rótulos «Anterior» y «Siguiente». */
+  :root[data-texto='grande'] .controles {
+    column-gap: 0.25rem;
+    padding-inline: 0.5rem;
+  }
+
+  :root[data-texto='grande'] .controles .boton.grande {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0;
+    padding: 0.25rem;
+    line-height: 1.15;
+  }
+
+  :root[data-texto='grande'] .controles .boton.grande .icono {
+    order: -1;
   }
 
   :root[data-texto='grande'] .lectura {
@@ -610,6 +709,32 @@ h2[tabindex='-1']:focus,
 
   :root[data-texto='grande'] .nivel-opciones label > span {
     padding: 0 0.375rem;
+  }
+}
+
+/* En teléfonos de 320 px, las cuatro secciones y la lupa no caben junto a la estrella: la marca queda solo
+   para lectores de pantalla (el título de la página ya la nombra). */
+@media (max-width: 21em) {
+  .marca {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* En teléfonos muy angostos con texto grande no caben las tres palabras: el botón del medio («Al inicio» o
+   «Volver») queda como ícono (su nombre accesible no cambia). */
+@media (max-width: 22.5em) {
+  :root[data-texto='grande'] .nav-inicio .nav-texto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 
@@ -636,26 +761,45 @@ h2[tabindex='-1']:focus,
   border: 0;
 }
 
+/* «Leer»: rótulo visible delante de los niveles (C4: que un niño sepa que esa opción es para él). */
 .nivel-titulo {
   float: left;
   padding: 0;
-  font-weight: 700;
+  font-family: var(--rotulo);
+  font-size: var(--t-1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
 }
 
+/* Nivel de lectura: la opción elegida va en una píldora invertida con filete de cobre. La píldora es un
+   elemento aparte (main.js le da posición y ancho) que se desliza al cambiar de nivel (View Transition). */
 .nivel-opciones {
+  position: relative;
   display: flex;
   overflow: hidden;
-  border: 2px solid var(--borde-fuerte);
+  border: 1px solid var(--borde-fuerte);
   border-radius: var(--radio);
+}
+
+.nivel-marca {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--ancho, 0);
+  background: var(--texto);
+  box-shadow: inset 0 -3px 0 var(--acento);
+  translate: var(--x, 0) 0;
+  view-transition-name: nivel-marca;
+  pointer-events: none;
 }
 
 .nivel-opciones label {
   position: relative;
+  z-index: 1;
   display: flex;
-}
-
-.nivel-opciones label + label {
-  border-left: 2px solid var(--borde-fuerte);
 }
 
 .nivel-opciones input {
@@ -673,19 +817,20 @@ h2[tabindex='-1']:focus,
   align-items: center;
   min-height: 2.5rem;
   padding: 0 0.75rem;
-  background: var(--superficie);
-  transition: scale 0.12s ease;
+  transition:
+    color var(--dur-micro) ease,
+    scale var(--dur-micro) ease;
 }
 
-.nivel-opciones label:hover > span {
-  background: var(--superficie-2);
+@media (hover: hover) {
+  .nivel-opciones input:not(:checked) + span:hover {
+    background: var(--superficie-2);
+  }
 }
 
 .nivel-opciones input:checked + span {
-  color: var(--texto);
+  color: var(--superficie);
   font-weight: 700;
-  background: var(--pacifico-3);
-  box-shadow: inset 0 -3px 0 var(--acento);
 }
 
 .nivel-opciones input:focus-visible + span {
@@ -2447,11 +2592,46 @@ img[data-periodo]:not(.cargada) {
   padding-inline: 0.5rem;
 }
 
-/* En pantallas angostas los tres botones caben en una fila con letra normal; con «Texto grande» también,
-   porque «Anterior» y «Siguiente» quedan como flechas (ver la cabecera). */
+/* En pantallas angostas los tres botones caben en una fila con letra normal y espacios más justos; desde
+   24em hacia abajo (y con «Texto grande», ver la cabecera) el ícono va sobre la palabra. */
 @media (max-width: 40em) {
+  .controles {
+    column-gap: 0.375rem;
+    padding-inline: 0.75rem;
+  }
+
   .controles .boton.grande {
+    gap: 0.375rem;
     font-weight: 400;
+  }
+}
+
+/* En celulares el ícono va sobre la palabra: cuesta 2 px de alto (el botón ya mide 3rem) y así «Siguiente»
+   nunca se parte en dos líneas. */
+@media (max-width: 30em) {
+  .controles .boton.grande {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0;
+    padding: 0.25rem;
+    line-height: 1.15;
+  }
+
+  .controles .boton.grande .icono {
+    order: -1;
+  }
+}
+
+@media (max-width: 24em) {
+  /* «Texto» queda como ícono: con la palabra, el nivel de lectura no cabe al lado (el nombre no cambia).
+     Con texto grande va en la primera fila, donde sí cabe. */
+  :root:not([data-texto='grande']) #btn-texto > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 
@@ -2465,6 +2645,25 @@ img[data-periodo]:not(.cargada) {
 
 .nav-siguiente {
   grid-area: siguiente;
+}
+
+.controles .boton.grande .icono {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+/* Al leer, avanzar es la acción principal: «Siguiente» va en cobre (una sola por pantalla). */
+body[data-vista='detalle'] #btn-siguiente:not([aria-disabled='true']) {
+  color: var(--sobre-acento);
+  background: var(--acento);
+  border-color: var(--acento);
+}
+
+@media (hover: hover) {
+  body[data-vista='detalle'] #btn-siguiente:not([aria-disabled='true']):hover {
+    background: var(--acento-hover);
+    border-color: var(--acento-hover);
+  }
 }
 
 .minimapa-fila {
@@ -2503,9 +2702,11 @@ body[data-vista='detalle'] .minimapa-fila {
   flex: none;
   width: 2.75rem;
   padding: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1;
+}
+
+.zoom .icono {
+  width: 1.375rem;
+  height: 1.375rem;
 }
 
 .minimapa {
@@ -3140,10 +3341,34 @@ a.vecino:hover {
   border-radius: var(--radio);
 }
 
+/* El triángulo del navegador cambia según el sistema: va un chevrón propio, que gira al abrir. */
 .plegable summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 0;
   font-weight: 700;
+  list-style: none;
   cursor: pointer;
+}
+
+.plegable summary::-webkit-details-marker {
+  display: none;
+}
+
+.plegable summary::before {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  background: currentColor;
+  content: '';
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 5.5 15.5 12 9 18.5' fill='none' stroke='%23000' stroke-width='2.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  transition: rotate var(--dur-micro) var(--curva-estandar);
+}
+
+.plegable[open] > summary::before {
+  rotate: 90deg;
 }
 
 /* Apertura suave donde el navegador sabe animar hasta «auto»; en los demás se abre de inmediato. */
@@ -3911,6 +4136,12 @@ a.vecino:hover {
   .minimapa-periodo,
   .regla-periodo {
     forced-color-adjust: none;
+  }
+
+  /* El chevrón de los plegables se dibuja con el color del texto del sistema. */
+  .plegable summary::before {
+    forced-color-adjust: none;
+    background: CanvasText;
   }
 }
 

@@ -6,7 +6,7 @@
 // elige; los lugares de cada región están también como botones en el panel.
 import geo from './chile-regiones.json';
 import { curvasDeNivel } from './curvas.js';
-import { esc, movimientoReducido, urlImagen } from './util.js';
+import { esc, icono, movimientoReducido, urlImagen } from './util.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 const MARGEN = { izq: 4, der: 4, arriba: 8, abajo: 8 };
@@ -152,7 +152,7 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
           .join('')}</ol>`
       : `<p class="mapa-vacio">${vacio}</p>`;
   const epoca = () => (periodo ? ` · ${esc(periodoDe.get(periodo).nombre)}` : '');
-  const volver = (ruta, texto) => `<a class="boton chico mapa-volver" href="${ruta}"><span aria-hidden="true">◀</span> ${esc(texto)}</a>`;
+  const volver = (ruta, texto) => `<a class="boton chico mapa-volver" href="${ruta}">${icono('anterior')}<span>${esc(texto)}</span></a>`;
   const encabezado = (ceja, titulo) => `<p class="ceja">${ceja}${epoca()}</p><h3 id="mapa-panel-titulo" tabindex="-1">${titulo}</h3>`;
   const rutaRegion = (codigo) => `#mapa/${codigo.toLowerCase()}`;
 

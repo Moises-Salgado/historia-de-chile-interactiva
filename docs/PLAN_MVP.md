@@ -182,3 +182,11 @@ Pedido del dueño (2026-10-19): dejar la app «bonita», con más animación y a
   - **Foco:** `scroll-padding` en el buscador, la hoja del mapa y los chips.
   - **Hover que mueve:** solo con puntero.
   - **`npm run presupuesto`:** base de 133,63 KB gzip, medida sobre lo publicado; el fundido de las curvas bajó de 600 a 400 ms.
+- **M2 · Sistema visual (hecha).**
+  - **Tokens:** radios, sombras, movimiento (120/180/280/400 ms y tres curvas, sin rebotes) y pasos de letra para lo nuevo. Los 24 tamaños existentes no se forzaron, para no reabrir la medición de las láminas.
+  - **Botones:** borde de 1 px (≥ 3:1) y sombra leve, sin subrayado. Lo activado va invertido, ya no en cobre. Al leer, «Siguiente» es la única acción en cobre.
+  - **22 íconos SVG propios** en lugar de ◀ ▶ − + y del triángulo de los plegables. Siempre van junto a la palabra.
+  - **Marcadores de pestaña y de nivel:** niebla con filete de cobre. Son elementos que `main.js` ubica y la View Transition desliza; el texto del detalle cambia de nivel con un fundido.
+  - **Rótulos:** «Leer» visible delante de los niveles y «A+» pasa a «Texto».
+  - **Barra inferior:** en el celular, el ícono va sobre la palabra, también con texto grande.
+  - **Cabecera:** cabe sin desbordes en 320, 360, 390, 1366 y 1920 px, con texto grande y en modo clase.

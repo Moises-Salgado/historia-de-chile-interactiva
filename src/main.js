@@ -7,7 +7,7 @@ import { crearDetalle, imagenDetalle } from './detalle.js';
 import { crearFiltros } from './filtros.js';
 import { crearInicio } from './inicio.js';
 import { crearLineaDeTiempo } from './timeline.js';
-import { conTransicion, guardarPreferencia, leerPreferencia, movimientoReducido, normalizar, urlPlaceholder } from './util.js';
+import { conTransicion, guardarPreferencia, icono, leerPreferencia, movimientoReducido, normalizar, urlPlaceholder } from './util.js';
 
 // Si se llega directo al mapa, su módulo se pide de inmediato, mientras se arma el resto de la app.
 if (document.documentElement.dataset.base === 'mapa') import('./mapa.js').catch(() => {});
@@ -124,6 +124,16 @@ ponerModoClase(leerPreferencia('clase') === 'si');
 const NIVELES = ['nino', 'general', 'detallado'];
 let nivel = NIVELES.includes(leerPreferencia('nivel')) ? leerPreferencia('nivel') : 'general';
 for (const radio of document.querySelectorAll('input[name="nivel"]')) radio.checked = radio.value === nivel;
+// La píldora del nivel elegido es un elemento aparte, del tamaño de su opción: al cambiar de nivel (View
+// Transition) se desliza y el texto del detalle cambia con un fundido.
+const marcaNivel = $('.nivel-marca');
+function marcarNivel() {
+  const elegida = $('.nivel-opciones input:checked')?.parentElement;
+  if (!elegida) return;
+  marcaNivel.style.setProperty('--x', `${elegida.offsetLeft}px`);
+  marcaNivel.style.setProperty('--ancho', `${elegida.offsetWidth}px`);
+}
+new ResizeObserver(marcarNivel).observe($('.nivel-opciones'));
 
 const seccionLinea = $('#linea');
 const seccionInicio = $('#inicio');
@@ -207,7 +217,10 @@ botonClase.addEventListener('click', () => {
 $('.nivel').addEventListener('change', (e) => {
   nivel = e.target.value;
   guardarPreferencia('nivel', nivel);
-  detalle.ponerNivel(nivel);
+  cambiarVista(() => {
+    marcarNivel();
+    detalle.ponerNivel(nivel);
+  }, 'nivel');
 });
 
 // ---- Secciones: la portada (#inicio o sin #), la línea de tiempo (#linea) y el mapa (#mapa…) se ven de a
@@ -287,13 +300,25 @@ function ponerBase(nueva) {
   actualizarPestanas();
 }
 
-// La pestaña de la sección a la vista (o «Historias», con una historia abierta) queda marcada.
+// La pestaña de la sección a la vista (o «Historias», con una historia abierta) queda marcada. La marca es
+// un elemento aparte, del tamaño de la pestaña: en el cambio de sección (View Transition) se desliza de una
+// a otra sin estirar los rótulos.
+const marcaPestana = $('.pestanas-marca');
+function ubicarMarca() {
+  const actual = pestanas.find((p) => p.hasAttribute('aria-current'));
+  marcaPestana.hidden = !actual;
+  if (!actual) return;
+  marcaPestana.style.setProperty('--x', `${actual.offsetLeft}px`);
+  marcaPestana.style.setProperty('--ancho', `${actual.offsetWidth}px`);
+}
+new ResizeObserver(ubicarMarca).observe($('.pestanas'));
 function actualizarPestanas() {
   const actual = ['historias', 'historia'].includes(vistaActual?.tipo) ? 'historias' : base;
   for (const p of pestanas) {
     if (p.dataset.seccion === actual) p.setAttribute('aria-current', 'page');
     else p.removeAttribute('aria-current');
   }
+  ubicarMarca();
 }
 
 // El foco pasa a la sección (su título o la tarjeta elegida), para el teclado y los lectores de pantalla.
@@ -567,7 +592,9 @@ function actualizarControles() {
   const enDetalle = detalle.abierto;
   botonAnterior.setAttribute('aria-disabled', String(enDetalle ? !nav.antes : !linea.puedeMover(-1)));
   botonSiguiente.setAttribute('aria-disabled', String(enDetalle ? !nav.despues : !linea.puedeMover(1)));
-  botonInicio.innerHTML = enDetalle ? 'Volver' : 'Al inicio<span class="solo-lector"> de la línea de tiempo</span>';
+  botonInicio.innerHTML = enDetalle
+    ? `${icono('volver')}<span class="nav-texto">Volver</span>`
+    : `${icono('inicio')}<span class="nav-texto">Al inicio</span><span class="solo-lector"> de la línea de tiempo</span>`;
   // En las vistas sin recorrido (historias, personaje) Anterior y Siguiente no sirven: se ocultan.
   const ocultar = enDetalle && !nav.antes && !nav.despues;
   const conFoco = [botonAnterior, botonSiguiente].includes(document.activeElement);
