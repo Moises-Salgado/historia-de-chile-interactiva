@@ -5,7 +5,7 @@
 // parciales no filtran la línea de tiempo.
 // Los filtros son chips arriba de los resultados: sin ninguno activado se ven todos; activar uno deja solo
 // ese período (o tema), y activar más los suma.
-import { esc, icono, normalizar, urlImagen } from './util.js';
+import { esc, icono, marcarDesborde, normalizar, urlImagen } from './util.js';
 
 const MAX_RESULTADOS = 30;
 // Búsquedas de ejemplo para cuando no hay resultados (se ofrecen solo las que encuentran algo).
@@ -103,6 +103,7 @@ export function crearFiltros(panel, { periodos, temas, eventos, boton, alCambiar
   const borrar = panel.querySelector('.campo-borrar');
   const cuenta = panel.querySelector('.resultados-cuenta');
   const resultados = panel.querySelector('.resultados');
+  for (const fila of panel.querySelectorAll('.chips-grupo')) marcarDesborde(fila);
 
   const pasaFiltros = (ev) =>
     (!elegidos.periodo.size || elegidos.periodo.has(ev.periodoId)) && (!elegidos.tema.size || ev.temas.some((t) => elegidos.tema.has(t)));

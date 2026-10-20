@@ -369,7 +369,8 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
   }
 
   // Lo que está bajo el pliegue aparece al entrar en pantalla, una sola vez (sin JavaScript, o con movimiento
-  // reducido, se ve quieto desde el comienzo).
+  // reducido, se ve quieto desde el comienzo). Basta con que asome su borde superior: con un porcentaje de la
+  // sección, una sección más alta que varias pantallas (celular chico, texto grande) nunca llegaba a aparecer.
   if (!movimientoReducido() && 'IntersectionObserver' in window) {
     const observador = new IntersectionObserver(
       (entradas) => {
@@ -379,7 +380,7 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
           observador.unobserve(e.target);
         }
       },
-      { threshold: 0.15 },
+      { rootMargin: '0px 0px -10% 0px' },
     );
     for (const el of seccion.querySelectorAll('.cifras, .inicio-cuerpo > section')) {
       if (el.getBoundingClientRect().top < innerHeight) continue;

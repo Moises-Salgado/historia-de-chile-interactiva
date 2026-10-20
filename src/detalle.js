@@ -466,13 +466,15 @@ export function crearDetalle(
     };
   }
 
-  // La ficha acompaña al texto al desplazar solo si cabe entera en la pantalla (si no, se cortaría).
+  // La ficha acompaña al texto al desplazar solo si va en su propia columna, al lado del texto, y cabe entera
+  // en la pantalla. En una sola columna (tablet en vertical) quedaría pegada arriba, tapando lo que se lee.
   function ajustarFicha() {
     const ficha = raiz.querySelector('.detalle-ficha');
     if (!ficha) return;
     ficha.classList.remove('fija');
+    const columnas = getComputedStyle(ficha.parentElement).gridTemplateColumns.split(' ').length;
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 18;
-    ficha.classList.toggle('fija', ficha.offsetHeight + 2 * rem <= raiz.clientHeight);
+    ficha.classList.toggle('fija', columnas > 1 && ficha.offsetHeight + 2 * rem <= raiz.clientHeight);
   }
   addEventListener('resize', ajustarFicha);
 

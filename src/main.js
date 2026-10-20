@@ -10,7 +10,7 @@ import { detener as detenerVoz, leer as leerEnVoz } from './escuchar.js';
 import { crearFiltros } from './filtros.js';
 import { crearInicio } from './inicio.js';
 import { crearLineaDeTiempo } from './timeline.js';
-import { conTransicion, guardarPreferencia, icono, leerNacimiento, leerPreferencia, movimientoReducido, normalizar, urlImagen, urlPlaceholder } from './util.js';
+import { conTransicion, guardarPreferencia, icono, leerNacimiento, leerPreferencia, marcarDesborde, movimientoReducido, normalizar, urlImagen, urlPlaceholder } from './util.js';
 
 // Si se llega directo al mapa, su módulo se pide de inmediato, mientras se arma el resto de la app.
 if (document.documentElement.dataset.base === 'mapa') import('./mapa.js').catch(() => {});
@@ -424,14 +424,21 @@ function ponerBase(nueva) {
 // un elemento aparte, del tamaño de la pestaña: en el cambio de sección (View Transition) se desliza de una
 // a otra sin estirar los rótulos.
 const marcaPestana = $('.pestanas-marca');
+const filaPestanas = $('.pestanas');
+// Si las secciones no caben (letra grande en una pantalla angosta), un degradado avisa que la fila sigue.
+const medirPestanas = marcarDesborde(filaPestanas);
 function ubicarMarca() {
   const actual = pestanas.find((p) => p.hasAttribute('aria-current'));
   marcaPestana.hidden = !actual;
+  medirPestanas();
   if (!actual) return;
   marcaPestana.style.setProperty('--x', `${actual.offsetLeft}px`);
   marcaPestana.style.setProperty('--ancho', `${actual.offsetWidth}px`);
+  // La sección actual siempre a la vista dentro de la fila.
+  const { offsetLeft: x, offsetWidth: w } = actual;
+  if (x < filaPestanas.scrollLeft || x + w > filaPestanas.scrollLeft + filaPestanas.clientWidth) filaPestanas.scrollLeft = x - 16;
 }
-new ResizeObserver(ubicarMarca).observe($('.pestanas'));
+new ResizeObserver(ubicarMarca).observe(filaPestanas);
 function actualizarPestanas() {
   const actual = EN_HISTORIAS.has(vistaActual?.tipo) ? 'historias' : base;
   for (const p of pestanas) {

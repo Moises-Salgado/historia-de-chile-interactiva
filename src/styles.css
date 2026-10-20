@@ -199,7 +199,8 @@
   display: none;
 }
 
-/* En un teléfono en modo clase (poco común), «Proyectar» queda como ícono para que quepa el nivel de lectura. */
+/* En un teléfono en modo clase (poco común), «Proyectar» queda como ícono para que quepa el nivel de lectura, y
+   «Pantalla completa», que en el teléfono no sirve, se oculta: si no, tapaba «General» y «Detallado». */
 @media (max-width: 40em) {
   :root[data-clase] #btn-clase > span {
     position: absolute;
@@ -208,6 +209,10 @@
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
+  }
+
+  :root[data-clase] #btn-pantalla {
+    display: none !important;
   }
 }
 
@@ -226,9 +231,12 @@
   display: none !important;
 }
 
+/* El contenido tiene un alto mínimo, pero nunca tanto que empuje la barra inferior fuera de la pantalla
+   (celular en horizontal, o texto grande en un celular chico). */
 body {
   display: grid;
   grid-template-rows: auto minmax(20rem, 1fr) auto;
+  grid-template-rows: auto minmax(min(20rem, 45dvh), 1fr) auto;
   grid-template-columns: minmax(0, 1fr);
   min-height: 100vh;
   min-height: 100dvh;
@@ -624,6 +632,34 @@ h2[tabindex='-1']:focus,
   }
 }
 
+/* Pantallas bajas y anchas (un celular en horizontal): la cabecera en una sola fila, con rótulos compactos
+   («Niños», «A+» y la lupa; los nombres accesibles no cambian). En clase y con texto grande, dos filas. */
+@media (max-height: 31.25em) and (min-width: 40.01em) {
+  :root:not([data-clase], [data-texto='grande']) .cabecera {
+    grid-template-areas: 'marca pestanas lectura buscar';
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    column-gap: 0.75rem;
+    padding-bottom: 0.375rem;
+  }
+
+  :root:not([data-clase], [data-texto='grande']) .cabecera :is(.marca-texto, .pestana-larga, .nivel-titulo, .nivel-opciones .solo-ancho, #btn-texto .solo-ancho, .texto-buscar) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  :root:not([data-clase], [data-texto='grande']) .cabecera .nivel-opciones .solo-angosto {
+    display: inline;
+  }
+
+  :root:not([data-clase], [data-texto='grande']) .cabecera :is(.pestana, .nivel-opciones label > span) {
+    padding-inline: 0.5rem;
+  }
+}
+
 /* Sin espacio para la marca completa queda el ícono (el nombre sigue en el título para lectores de pantalla). */
 @media (max-width: 50em) {
   .marca-texto {
@@ -701,11 +737,11 @@ h2[tabindex='-1']:focus,
   }
 }
 
-/* Teléfono con «Texto grande»: tres filas (marca, «Texto» y lupa; las secciones a todo el ancho; el nivel de
-   lectura a todo el ancho). Cada botón tiene su columna: si la compartiera, la lupa se estiraría al ancho de
-   «Texto» y les quitaría lugar a las secciones. */
+/* Teléfono con «Texto grande» (o en modo clase, con una letra igual de grande): tres filas (marca, «Texto» y
+   lupa; las secciones a todo el ancho; el nivel de lectura a todo el ancho). Cada botón tiene su columna: si la
+   compartiera, la lupa se estiraría al ancho de «Texto» y les quitaría lugar a las secciones. */
 @media (max-width: 40em) {
-  :root[data-texto='grande'] .cabecera {
+  :root:is([data-texto='grande'], [data-clase]) .cabecera {
     grid-template-areas:
       'marca texto buscar'
       'pestanas pestanas pestanas'
@@ -713,26 +749,14 @@ h2[tabindex='-1']:focus,
     grid-template-columns: minmax(0, 1fr) auto auto;
   }
 
-  /* Leyendo un evento, la fila de secciones se oculta («Volver» está abajo y deja ver la imagen) y la lupa
-     sube a la primera fila. */
-  :root[data-texto='grande'] body[data-vista='detalle'] .cabecera {
-    grid-template-areas:
-      'marca texto buscar'
-      'nivel nivel nivel';
-  }
-
-  :root[data-texto='grande'] body[data-vista='detalle'] .pestanas {
-    display: none;
-  }
-
   /* Barra inferior en una fila: el ícono va sobre la palabra, así quien pidió letra grande no pierde los
      rótulos «Anterior» y «Siguiente». */
-  :root[data-texto='grande'] .controles {
+  :root:is([data-texto='grande'], [data-clase]) .controles {
     column-gap: 0.25rem;
     padding-inline: 0.5rem;
   }
 
-  :root[data-texto='grande'] .controles .boton.grande {
+  :root:is([data-texto='grande'], [data-clase]) .controles .boton.grande {
     flex-direction: column;
     flex-wrap: nowrap;
     gap: 0;
@@ -740,25 +764,44 @@ h2[tabindex='-1']:focus,
     line-height: 1.15;
   }
 
-  :root[data-texto='grande'] .controles .boton.grande .icono {
+  :root:is([data-texto='grande'], [data-clase]) .controles .boton.grande .icono {
     order: -1;
   }
 
-  :root[data-texto='grande'] .lectura {
+  :root:is([data-texto='grande'], [data-clase]) .lectura {
     display: contents;
   }
 
-  :root[data-texto='grande'] .nivel {
+  :root:is([data-texto='grande'], [data-clase]) .nivel {
     grid-area: nivel;
   }
 
-  :root[data-texto='grande'] #btn-texto,
-  :root[data-texto='grande'] #btn-clase {
+  :root:is([data-texto='grande'], [data-clase]) #btn-texto,
+  :root:is([data-texto='grande'], [data-clase]) #btn-clase {
     grid-area: texto;
   }
 
-  :root[data-texto='grande'] .nivel-opciones label > span {
+  :root:is([data-texto='grande'], [data-clase]) .nivel-opciones label > span {
     padding: 0 0.375rem;
+  }
+}
+
+/* Con letra grande o en clase, hasta 75em, la marca queda como estrella y «Línea de tiempo» como «Línea» (los
+   nombres accesibles no cambian): así las cuatro secciones caben junto a la lupa y ninguna queda escondida. */
+@media (max-width: 74.99em) {
+  :root:is([data-clase], [data-texto='grande']) :is(.marca-texto, .pestana-larga) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 40.01em) and (max-width: 47.99em) {
+  :root:is([data-clase], [data-texto='grande']) .pestana {
+    padding-inline: 0.375rem;
   }
 }
 
@@ -1171,8 +1214,11 @@ body[data-vista='detalle'] .linea {
   object-fit: cover;
 }
 
+/* La columna nunca crece con su contenido: sin minmax(0, …), el menú «Elige una región» de «Tu recorrido»
+   la ensanchaba al largo de su opción más larga y la portada se cortaba en el celular. */
 .inicio-cuerpo {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(2rem, 5vw, 3.5rem);
   padding: clamp(1.75rem, 5vw, 3.5rem) 1rem max(2rem, env(safe-area-inset-bottom));
 }
@@ -1355,16 +1401,20 @@ body[data-vista='detalle'] .linea {
   clip-path: inset(50%);
 }
 
+/* min-width: 0: sin él, el menú (del ancho de «Región del Libertador General Bernardo O'Higgins») no deja
+   que la fila se achique y se sale de la pantalla en el celular. */
 .seguir-region {
   display: flex;
   flex-basis: 100%;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem 0.75rem;
+  min-width: 0;
 }
 
 .seguir-region .campo {
   width: auto;
+  min-width: 0;
   max-width: 100%;
 }
 
@@ -1894,8 +1944,15 @@ body[data-vista='detalle'] .linea {
   display: none;
 }
 
+/* En la cartela corta (celular), el título ocupa dos líneas como máximo y, si no cabe, termina en «…» en vez
+   de quedar cortado a media frase por las láminas. */
 .cielo[data-modo='corta'] .cartela-nombre {
+  display: -webkit-box;
+  overflow: hidden;
   font-size: 1.375rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 
 /* «Lo elegido» con un evento: la fecha en la ceja, el título y el resumen del nivel de lectura, y «Leer». */
@@ -2685,6 +2742,21 @@ body[data-vista='detalle'] #btn-siguiente:not([aria-disabled='true']) {
   min-width: 0;
 }
 
+/* Pantallas bajas y anchas (celular en horizontal): la página mide justo la pantalla (la línea se acomoda al
+   alto que queda y la barra no sale de la vista) y la barra va en una sola fila, como en el computador. */
+@media (max-height: 31.25em) and (min-width: 40.01em) {
+  body {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .controles {
+    grid-template-areas: 'anterior inicio mapa siguiente';
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    padding-block: 0.375rem max(0.375rem, env(safe-area-inset-bottom));
+  }
+}
+
 @media (min-width: 62em) {
   .controles {
     grid-template-areas: 'anterior inicio mapa siguiente';
@@ -2728,6 +2800,23 @@ body[data-vista='detalle'] .minimapa-fila {
   }
 
   .zoom-texto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* Celular angosto en horizontal: la barra va en una fila; «Menos», «Más» y «Al inicio» quedan como signo para
+   que el minimapa tenga espacio (los nombres accesibles no cambian). */
+@media (max-height: 31.25em) and (min-width: 40.01em) and (max-width: 47.99em) {
+  .zoom {
+    padding-inline: 0;
+  }
+
+  :is(.zoom-texto, .nav-inicio .nav-texto) {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -3585,6 +3674,48 @@ body[data-vista='detalle'] .minimapa-fila {
 
 .chips-grupo .chip {
   flex: none;
+}
+
+/* En pantallas anchas los chips del buscador van en varias filas: todos a la vista, sin desplazar de lado. */
+@media (min-width: 48em) {
+  .chips-grupo {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .chips-grupo .chips-titulo {
+    flex-basis: 100%;
+  }
+}
+
+/* Filas que se desplazan de lado (secciones, filtros): un degradado en el borde donde sigue habiendo
+   contenido (util.js, marcarDesborde). Al llegar con el teclado, el elemento queda lejos del degradado. */
+.pestanas,
+.chips-grupo,
+.mapa-filtro {
+  scroll-padding-inline: 2.5rem;
+}
+
+[data-desborde='fin'] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+}
+
+[data-desborde='inicio'] {
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 2.5rem), transparent);
+  mask-image: linear-gradient(to left, #000 calc(100% - 2.5rem), transparent);
+}
+
+[data-desborde='ambos'] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+}
+
+@media (forced-colors: active) {
+  [data-desborde] {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
 }
 
 .chips-titulo {

@@ -44,11 +44,36 @@ export function conTransicion(cambiar, tipo = '') {
   const n = ++transicion;
   raiz.dataset.transicion = tipo;
   const t = document.startViewTransition(() => cambiar(true));
+  // Si otra transición la interrumpe (clics rápidos), `ready` se rechaza con AbortError: no es un error.
+  t.ready.catch(() => {});
   return t.finished
     .catch(() => {})
     .finally(() => {
       if (n === transicion) delete raiz.dataset.transicion;
     });
+}
+
+/**
+ * Fila que se desplaza de lado (secciones, filtros): marca en data-desborde hacia dónde queda contenido fuera
+ * de la vista («inicio», «fin» o «ambos») para que el CSS lo insinúe con un degradado en ese borde. Devuelve la
+ * función que vuelve a medir, por si cambia lo que hay dentro.
+ */
+export function marcarDesborde(fila) {
+  if (!fila) return () => {};
+  const marcar = () => {
+    const resto = fila.scrollWidth - fila.clientWidth;
+    const antes = resto > 1 && fila.scrollLeft > 1;
+    const despues = resto > 1 && fila.scrollLeft < resto - 1;
+    const valor = antes && despues ? 'ambos' : antes ? 'inicio' : despues ? 'fin' : '';
+    if (valor) fila.dataset.desborde = valor;
+    else delete fila.dataset.desborde;
+  };
+  fila.addEventListener('scroll', marcar, { passive: true });
+  // También al mostrarse (un panel que se abre) o al cambiar de ancho; las fuentes cambian lo que mide el texto.
+  if ('ResizeObserver' in window) new ResizeObserver(marcar).observe(fila);
+  document.fonts?.ready.then(marcar);
+  marcar();
+  return marcar;
 }
 
 // localStorage puede no estar disponible (modo privado o bloqueado): la app funciona igual, sin recordar.

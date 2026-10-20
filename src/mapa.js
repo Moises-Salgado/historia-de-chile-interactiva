@@ -7,7 +7,7 @@
 import geo from './chile-regiones.json';
 import './mapa.css';
 import { curvasDeNivel } from './curvas.js';
-import { animar, esc, movimientoReducido, urlImagen } from './util.js';
+import { animar, esc, marcarDesborde, movimientoReducido, urlImagen } from './util.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 const CURVA_ENTRADA = 'cubic-bezier(0.2, 0.7, 0.2, 1)'; // la de --curva-entrada (styles.css)
@@ -55,6 +55,7 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
   filtro.innerHTML = `<button type="button" class="chip" aria-pressed="true" data-periodo="">Todos los períodos</button>${periodos
     .map((p) => `<button type="button" class="chip" aria-pressed="false" data-periodo="${p.id}" style="--color:${p.color}"><i aria-hidden="true"></i>${esc(p.nombre)}</button>`)
     .join('')}`;
+  marcarDesborde(filtro);
 
   // ---- El mapa en SVG: latitudes, recuadro de Rapa Nui, regiones, lugares y rótulos ----
   const ancho = geo.ancho + MARGEN.izq + MARGEN.der;
