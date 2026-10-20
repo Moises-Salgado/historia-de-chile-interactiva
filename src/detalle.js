@@ -844,7 +844,7 @@ export function crearDetalle(
               <ul class="sigue-lista">${siguientes
                 .map((x) => {
                   const n = x.eventos.filter(visto).length;
-                  return `<li><a class="ficha" href="${rutaHistoria(x, 0)}" style="--color:var(--cobre-vivo)">
+                  return `<li><a class="ficha" href="${rutaHistoria(x, 0)}" style="--color:var(--ocre-claro)">
                     ${mosaico(x.eventos)}
                     <span class="ficha-texto"><span class="ficha-meta">${x.eventos.length} pasos${n ? ` · ${n} vistos` : ''}</span><span class="ficha-titulo">${esc(x.titulo)}</span>
                       <span class="ficha-resumen">${esc(x.descripcion)}</span></span>

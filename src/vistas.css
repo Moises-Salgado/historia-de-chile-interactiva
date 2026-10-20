@@ -30,13 +30,13 @@
 
 .historia-puerta .ceja,
 .historia-avance {
-  color: var(--cobre-claro);
+  color: var(--ocre-claro);
 }
 
 .historia-avance {
   margin-top: 0.375rem;
   font-family: var(--rotulo);
-  font-size: 1.0625rem;
+  font-size: var(--t-18);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -124,13 +124,13 @@
 
 .ficha-titulo {
   font-family: var(--serif);
-  font-size: 1.25rem;
+  font-size: var(--t-21);
   font-weight: 600;
   line-height: 1.2;
 }
 
 .ficha-accion {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--acento);
 }
 
@@ -197,7 +197,7 @@
   position: absolute;
   top: calc(100% + 0.5rem + var(--fila) * 1.5rem);
   left: var(--x);
-  font: 600 var(--t-1) / 1.2 var(--rotulo);
+  font: 600 var(--t-18) / 1.2 var(--rotulo);
   color: var(--texto);
   translate: -50% 0;
 }
@@ -295,7 +295,7 @@
 
 .historia-paso {
   font-family: var(--rotulo);
-  font-size: 1.0625rem;
+  font-size: var(--t-18);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -338,7 +338,7 @@
 /* ---- Páginas de texto: «Acerca de» y «Para docentes» (src/paginas.js) ---- */
 /* El titular usa el ancho de la vista; el texto, una medida de lectura. */
 .pagina > * {
-  max-width: 42rem;
+  max-width: var(--medida);
 }
 
 /* Las direcciones de ejemplo: a la misma letra que el texto (los navegadores achican el monoespaciado) y
@@ -361,7 +361,7 @@
 .pagina-bloque h3 {
   margin: 0 0 0.75rem;
   font-family: var(--serif);
-  font-size: var(--t-4);
+  font-size: var(--t-26);
   font-weight: 600;
 }
 
@@ -398,7 +398,7 @@
 
 .pagina-dato {
   font-family: var(--rotulo);
-  font-size: var(--t-1);
+  font-size: var(--t-18);
   letter-spacing: 0.02em;
   color: var(--texto-suave);
 }
@@ -438,12 +438,12 @@
 .secuencia-fecha {
   display: block;
   font-family: var(--rotulo);
-  font-size: var(--t-1);
+  font-size: var(--t-18);
   color: var(--texto-suave);
 }
 
 .secuencia-cuenta {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .secuencia-acciones {
@@ -527,7 +527,7 @@
   width: 2.25rem;
   height: 2.25rem;
   font-family: var(--rotulo);
-  font-size: var(--t-3);
+  font-size: var(--t-21);
   font-weight: 600;
   color: var(--sobre-pacifico);
   background: var(--pacifico);
@@ -544,7 +544,7 @@
 
 .recorrido-titulo {
   font-family: var(--serif);
-  font-size: var(--t-3);
+  font-size: var(--t-21);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -568,7 +568,7 @@
 }
 
 .recorrido-punto {
-  fill: var(--cobre-vivo);
+  fill: var(--ocre-claro);
   stroke: var(--fondo);
   stroke-width: 8;
 }
@@ -628,7 +628,7 @@
   }
 
   .recorrido-pasos.con-imagen .recorrido-titulo {
-    font-size: var(--t-2);
+    font-size: var(--t-21);
   }
 }
 
@@ -652,7 +652,7 @@
 .sigue h3 {
   margin: 0 0 0.5rem;
   font-family: var(--serif);
-  font-size: var(--t-4);
+  font-size: var(--t-26);
   font-weight: 600;
 }
 
@@ -716,7 +716,7 @@
 .pregunta legend {
   margin-bottom: 0.5rem;
   padding: 0;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .pregunta-num {
@@ -850,7 +850,7 @@
   place-items: center;
   min-width: 2.75rem;
   min-height: 2.75rem;
-  font: 600 var(--t-3) / 1 var(--rotulo);
+  font: 600 var(--t-21) / 1 var(--rotulo);
   color: var(--acento);
   text-decoration: none;
   background: var(--superficie);
@@ -878,7 +878,7 @@
 .glosario-letra {
   margin: 0;
   padding-bottom: 0.25rem;
-  font: 600 var(--t-5) / 1.1 var(--serif);
+  font: 600 var(--t-34) / 1.1 var(--serif);
   color: var(--acento);
   border-bottom: 1px solid var(--borde);
   break-after: avoid;
@@ -907,7 +907,7 @@
 
 .glosario-pagina dt {
   font-family: var(--serif);
-  font-size: var(--t-4);
+  font-size: var(--t-26);
   font-weight: 600;
 }
 

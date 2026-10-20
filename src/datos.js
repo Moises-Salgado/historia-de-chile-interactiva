@@ -71,8 +71,25 @@ export function cargarDatos() {
   };
 }
 
+// Color de un período, más sobrio (CLAUDE.md, «Dirección de arte»: desaturado para que no compita con las
+// imágenes): la misma luz en OKLab, con el 65 % de su croma. Así el contraste medido de cada par casi no cambia.
+const lineal = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+const gamma = (c) => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055);
+export function sobrio(hex, croma = 0.65) {
+  const [r, g, b] = [1, 3, 5].map((i) => lineal(parseInt(hex.slice(i, i + 2), 16) / 255));
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  const L = 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s;
+  const A = (1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s) * croma;
+  const B = (0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s) * croma;
+  const [l2, m2, s2] = [L + 0.3963377774 * A + 0.2158037573 * B, L - 0.1055613458 * A - 0.0638541728 * B, L - 0.0894841775 * A - 1.291485548 * B].map((v) => v ** 3);
+  const rgb = [4.0767416621 * l2 - 3.3077115913 * m2 + 0.2309699292 * s2, -1.2684380046 * l2 + 2.6097574011 * m2 - 0.3413193965 * s2, -0.0041960863 * l2 - 0.7034186147 * m2 + 1.707614701 * s2];
+  return `#${rgb.map((c) => Math.round(Math.min(1, Math.max(0, gamma(c))) * 255).toString(16).padStart(2, '0')).join('')}`;
+}
+
 function cargarEventos() {
-  const periodos = archivos['../data/periodos.json'] ?? [];
+  const periodos = (archivos['../data/periodos.json'] ?? []).map((p) => ({ ...p, color: sobrio(p.color) }));
   const temas = archivos['../data/temas.json'] ?? [];
   const eventos = Object.entries(porPeriodo)
     .flatMap(([ruta, lista]) => lista.map((ev) => [ruta, ev]))

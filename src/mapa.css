@@ -31,7 +31,7 @@
    con contorno oscuro encima. La tierra (#5f8287, 3,5:1 sobre el océano) y los límites claros superan 3:1. */
 .region {
   --tierra-mapa: #5f8287;
-  fill: color-mix(in oklab, var(--cobre-vivo) var(--peso, 0%), var(--tierra-mapa));
+  fill: color-mix(in oklab, var(--ocre-claro) var(--peso, 0%), var(--tierra-mapa));
   stroke: #e3ece9;
   stroke-width: 1px;
   vector-effect: non-scaling-stroke;
@@ -70,7 +70,7 @@
 }
 
 .region:hover {
-  fill: color-mix(in oklab, var(--cobre-claro) 55%, var(--tierra-mapa));
+  fill: color-mix(in oklab, var(--ocre-claro) 55%, var(--tierra-mapa));
 }
 
 .contornos path,
@@ -87,7 +87,7 @@
 
 /* Halo de cobre bajo el contorno de lo elegido. */
 .contornos .halo {
-  stroke: var(--cobre-claro);
+  stroke: var(--ocre-claro);
   stroke-width: 8px;
   stroke-linejoin: round;
   opacity: 0.5;
@@ -141,7 +141,7 @@
   width: 1.5rem;
   height: 1.5rem;
   margin: -0.75rem 0 0 -0.75rem;
-  border: 2px solid var(--cobre-claro);
+  border: 2px solid var(--ocre-claro);
   border-radius: 50%;
   pointer-events: none;
   animation: onda-alfiler var(--dur-larga) var(--curva-salida) both;
@@ -165,7 +165,7 @@
 }
 
 .region.elegida {
-  fill: var(--cobre-claro);
+  fill: var(--ocre-claro);
 }
 
 .region:focus {
@@ -232,7 +232,7 @@
 
 .alfiler:hover .punto,
 .alfiler.elegido .punto {
-  fill: var(--cobre-claro);
+  fill: var(--ocre-claro);
 }
 
 .globo {
@@ -282,7 +282,7 @@
   --tierra-mapa: #5f8287;
   width: 1rem;
   height: 1rem;
-  background: color-mix(in oklab, var(--cobre-vivo) var(--peso, 0%), var(--tierra-mapa));
+  background: color-mix(in oklab, var(--ocre-claro) var(--peso, 0%), var(--tierra-mapa));
   border: 1px solid #e3ece9;
   border-radius: 2px;
 }
@@ -361,7 +361,7 @@
 .atlas-panel h3 {
   margin: -0.25rem 0 0;
   font-family: var(--serif);
-  font-size: 1.75rem;
+  font-size: var(--t-34);
   font-weight: 600;
   line-height: 1.15;
 }
@@ -390,7 +390,7 @@
   padding: 0;
   list-style: none;
   font-family: var(--rotulo);
-  font-size: var(--t-1);
+  font-size: var(--t-18);
   font-weight: 600;
   letter-spacing: 0.04em;
 }
@@ -524,14 +524,14 @@
 
 .mapa-evento-fecha {
   font-family: var(--rotulo);
-  font-size: 1.0625rem;
+  font-size: var(--t-18);
   font-weight: 600;
   color: var(--texto-suave);
 }
 
 .mapa-evento-titulo {
   font-family: var(--serif);
-  font-size: var(--t-2);
+  font-size: var(--t-21);
   font-weight: 600;
   line-height: 1.25;
 }
