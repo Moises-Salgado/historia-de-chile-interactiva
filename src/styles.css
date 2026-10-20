@@ -64,7 +64,7 @@
   --pacifico-3: #2a5664;
   --sobre-pacifico: #ece6da;
   --sobre-pacifico-suave: #b9b2a5;
-  --tierra: #46666b;
+  --tierra: #7c7668; /* arena: la misma tierra del mapa (mapa.css), en todas las siluetas */
   /* Curvas de nivel de los portales de período (línea de tiempo y portada). */
   --curvas-portal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300' preserveAspectRatio='none'%3E%3Cg fill='none' stroke-width='1.2'%3E%3Cg stroke='%23fff' stroke-opacity='.16'%3E%3Cpath d='M0 30c40-14 60 14 100 2s60-16 100-4'/%3E%3Cpath d='M0 55c40-12 60 16 100 4s60-14 100-2'/%3E%3Cpath d='M0 105c40-14 60 12 100 0s60-16 100-2'/%3E%3Cpath d='M0 130c40-10 60 16 100 4s60-14 100-4'/%3E%3Cpath d='M0 180c40-14 60 14 100 2s60-14 100-2'/%3E%3Cpath d='M0 205c40-12 60 16 100 4s60-16 100-4'/%3E%3Cpath d='M0 255c40-14 60 12 100 0s60-14 100-2'/%3E%3Cpath d='M0 280c40-10 60 14 100 4s60-16 100-4'/%3E%3C/g%3E%3Cg stroke='%23b8862b' stroke-opacity='.4'%3E%3Cpath d='M0 80c40-14 60 14 100 2s60-16 100-4'/%3E%3Cpath d='M0 155c40-12 60 16 100 4s60-14 100-2'/%3E%3Cpath d='M0 230c40-14 60 12 100 0s60-16 100-2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   /* Sombras suaves y cálidas (nada azul ni morado). */
@@ -498,9 +498,9 @@ h2[tabindex='-1']:focus,
   border-color: var(--texto);
 }
 
-/* ---- Cabecera sobre el océano: marca, secciones y «Buscar» en la primera fila; nivel de lectura,
-   «Texto grande» y «Proyectar en clase» en la segunda (en pantallas muy anchas, todo en una fila).
-   El filete rojo es el único color de la bandera fuera de la marca. ---- */
+/* ---- Cabecera sobre el océano, silenciosa: marca, secciones y «Buscar» en la primera fila; nivel de lectura,
+   «Texto grande» y «Proyectar en clase» en la segunda (en pantallas muy anchas, todo en una fila). Los controles
+   van sin caja y la sección actual, subrayada en ocre: el contenido manda. La bandera queda en la marca. ---- */
 .cabecera {
   position: relative;
   z-index: 30;
@@ -512,7 +512,7 @@ h2[tabindex='-1']:focus,
   align-items: center;
   gap: 0.375rem 1.25rem;
   padding: max(0.5rem, env(safe-area-inset-top)) 1rem 0.5rem;
-  border-bottom: 3px solid var(--rojo);
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
 }
 
 .marca {
@@ -581,18 +581,18 @@ h2[tabindex='-1']:focus,
    aquí»). La marca es un elemento aparte (main.js le da posición y ancho): en el cambio de sección se
    desliza de una pestaña a otra con la View Transition. */
 .pestana[aria-current='page'] {
-  color: var(--pacifico);
+  color: var(--texto);
 }
 
 .pestanas-marca {
   position: absolute;
-  top: 0;
+  bottom: 0.25rem;
   left: 0;
-  width: var(--ancho, 0);
-  height: 100%;
-  background: var(--sobre-pacifico);
-  border-radius: var(--radio);
-  box-shadow: inset 0 -3px 0 var(--ocre);
+  width: calc(var(--ancho, 0.75rem) - 0.75rem);
+  height: 3px;
+  margin-left: 0.375rem;
+  background: var(--acento);
+  border-radius: 2px;
   translate: var(--x, 0) 0;
   pointer-events: none;
 }
@@ -604,6 +604,19 @@ h2[tabindex='-1']:focus,
 
 .buscar {
   grid-area: buscar;
+}
+
+.cabecera .boton:not([aria-pressed='true']) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .cabecera .boton:not([aria-pressed='true']):hover {
+    background: var(--superficie-2);
+    border-color: transparent;
+  }
 }
 
 .lectura {
@@ -697,7 +710,8 @@ h2[tabindex='-1']:focus,
 @media (max-width: 40em) {
   .cabecera {
     column-gap: 0.5rem;
-    padding-inline: 0.75rem;
+    row-gap: 0;
+    padding: max(0.25rem, env(safe-area-inset-top)) 0.75rem 0.375rem;
   }
 
   .pestanas {
@@ -892,7 +906,7 @@ h2[tabindex='-1']:focus,
   position: relative;
   display: flex;
   overflow: hidden;
-  border: 1px solid var(--borde-fuerte);
+  border: 1px solid var(--borde);
   border-radius: var(--radio);
 }
 
@@ -902,7 +916,7 @@ h2[tabindex='-1']:focus,
   bottom: 0;
   left: 0;
   width: var(--ancho, 0);
-  background: var(--texto);
+  background: rgb(255 255 255 / 0.13);
   box-shadow: inset 0 -3px 0 var(--acento);
   translate: var(--x, 0) 0;
   pointer-events: none;
@@ -942,7 +956,7 @@ h2[tabindex='-1']:focus,
 }
 
 .nivel-opciones input:checked + span {
-  color: var(--superficie);
+  color: var(--texto);
   font-weight: 600;
 }
 
@@ -950,16 +964,15 @@ h2[tabindex='-1']:focus,
    lectura elegida y la pestaña de la sección (data-base, que index.html pone antes de pintar) llevan la píldora
    en su propio fondo. Así «General» no queda en blanco y la sección se ve marcada desde el principio. */
 :root:not([data-app]) .nivel-opciones input:checked + span {
-  background: var(--texto);
+  background: rgb(255 255 255 / 0.13);
   box-shadow: inset 0 -3px 0 var(--acento);
 }
 
 :root:not([data-app])[data-base='inicio'] .pestana[data-seccion='inicio'],
 :root:not([data-app])[data-base='linea'] .pestana[data-seccion='linea'],
 :root:not([data-app])[data-base='mapa'] .pestana[data-seccion='mapa'] {
-  color: var(--pacifico);
-  background: var(--sobre-pacifico);
-  box-shadow: inset 0 -3px 0 var(--ocre);
+  color: var(--texto);
+  box-shadow: inset 0 -3px 0 var(--acento);
 }
 
 .nivel-opciones input:focus-visible + span {
@@ -4714,7 +4727,6 @@ body[data-vista='detalle'] .minimapa-fila {
 .colofon {
   margin-top: 1rem;
   padding: clamp(1.5rem, 4vw, 2.5rem) 1rem;
-  border-top: 3px solid var(--rojo);
 }
 
 .colofon-contenido {
