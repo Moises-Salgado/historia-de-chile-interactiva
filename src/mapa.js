@@ -120,6 +120,10 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
   }).join('')}</g>`;
   lienzo.replaceChildren(svg);
   const elRegion = new Map([...svg.querySelectorAll('.region')].map((el) => [el.dataset.codigo, el]));
+  // Al filtrar por período, las regiones se tiñen de norte a sur (CLAUDE.md, «Movimiento»): 15 ms entre una y otra
+  // (mapa.regiones va de norte a sur), así las 16 terminan en menos de 400 ms. Solo al filtrar, no al pasar el puntero.
+  mapa.regiones.forEach((r, i) => elRegion.get(r.codigo)?.style.setProperty('--retraso', `${i * 15}ms`));
+  let tinte = 0;
   const elLugar = new Map([...svg.querySelectorAll('.alfiler')].map((el) => [el.dataset.lugar, el]));
   const geoRegion = new Map(geo.regiones.map((r) => [r.codigo, r]));
   // Contornos encima de todas las regiones (si no, las vecinas tapan la mitad del borde): lo elegido y el foco.
@@ -366,15 +370,13 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     if (enfocar && (cambio || !dentro)) enfocarSeleccion(dentro);
   }
 
-  // El panel entra según hacia dónde se va: más adentro (de Chile a una región, de la región a un lugar) desde la
-  // derecha; de vuelta, desde la izquierda. En el celular, la hoja sube al elegir algo. El alfiler elegido emite
+  // El panel entra deslizándose desde el lado del mapa (CLAUDE.md, «Movimiento»), a la izquierda en el computador.
+  // En el celular, la hoja sube al elegir algo. El alfiler elegido emite
   // una sola onda de cobre (nunca roja: el de Iquique es también el de la matanza de 1907).
-  const PROFUNDIDAD = { todo: 0, region: 1, zona: 1, chile: 1, fuera: 1, lugar: 2 };
   function entrarPanel(antes, nueva) {
     if (unaColumna.matches && antes.tipo === 'todo') animar(panel, [{ translate: '0 100%' }, { translate: '0 0' }], { duration: 280, easing: CURVA_ENTRADA });
     else {
-      const lado = Math.sign(PROFUNDIDAD[nueva.tipo] - PROFUNDIDAD[antes.tipo]) || 1;
-      animar(panel, [{ opacity: 0, translate: `${lado}rem 0` }, { opacity: 1, translate: '0 0' }], { duration: 180, easing: CURVA_ENTRADA });
+      animar(panel, [{ opacity: 0, translate: '-2rem 0' }, { opacity: 1, translate: '0 0' }], { duration: 250, easing: CURVA_ENTRADA });
     }
     if (nueva.tipo !== 'lugar' || movimientoReducido()) return;
     const pin = elLugar.get(nueva.id)?.querySelector('.punto');
@@ -459,6 +461,9 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     if (!b) return;
     periodo = b.dataset.periodo || null;
     for (const x of filtro.querySelectorAll('button')) x.setAttribute('aria-pressed', String(x === b));
+    svg.classList.add('tinte');
+    clearTimeout(tinte);
+    tinte = setTimeout(() => svg.classList.remove('tinte'), 450);
     pintarMapa();
     pintarPanel();
     const n = seleccion.tipo === 'todo' ? enEpoca().length : panel.querySelectorAll('.mapa-evento').length;
