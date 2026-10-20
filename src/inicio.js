@@ -1,4 +1,4 @@
-// Portada (#inicio). La bienvenida y las tres puertas están en index.html, para que se vean antes de que
+// Portada (#inicio). La bienvenida, la obra y las tres entradas están en index.html, para que se vean antes de que
 // cargue la app; aquí se completan desde los datos: cifras, créditos de las imágenes, «Empieza aquí» (la
 // primera vez), el «¿Sabías que…?» del día, «Tu recorrido» y los períodos (cada uno lleva a su tramo de la línea).
 import { curvasDeNivel } from './curvas.js';
@@ -130,7 +130,8 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
       img.dataset.periodo = ev.periodoId;
       img.srcset = `${urlImagen(archivo, 500)} 500w, ${urlImagen(archivo, 960)} 960w`;
       img.src = urlImagen(archivo, 500);
-      destacado.querySelector('.credito').innerHTML = `Imagen: ${creditoImagen(ev.imagen)}`;
+      // El pie dice qué muestra la imagen (antes, un retrato sin decir de quién) y su crédito.
+      destacado.querySelector('.credito').innerHTML = `${esc(ev.imagen.pieDeFoto)} Imagen: ${creditoImagen(ev.imagen)}`;
       destacado.querySelector('.destacado-titulo a').textContent = ev.titulo;
       destacado.querySelector('.destacado-fecha').textContent = `${ev.fechaTexto} · ${periodo.nombre}`;
       destacado.querySelector('.destacado-frase').textContent = ev.sabiasQue;
@@ -200,8 +201,9 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
     const esencial = recorridos.find((r) => r.id === 'esencial');
     const muestra = porId.get(MUESTRA);
     // Este mes en la historia: los eventos de fecha conocida (no aproximada) en el mes de hoy, todos con el mismo
-    // trato y en orden de calendario (los que solo tienen mes, al final). Si son más de 6, se ven los 6 más
-    // cercanos a hoy (primero los que vienen) sin separar los de un mismo día; el resto, en un desplegable.
+    // trato y en orden de calendario (los que solo tienen mes, al final). Si son más de 4, se ven los 4 más
+    // cercanos a hoy (primero los que vienen) sin separar los de un mismo día; el resto, en un desplegable (así la
+    // columna no se alarga más que las otras dos de «Empieza aquí»).
     const hoy = new Date();
     const mes = hoy.getMonth() + 1;
     const delMes = eventos
@@ -209,12 +211,12 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
       .map((ev) => ({ ev, dia: parseFecha(ev.fecha).dia }))
       .sort((a, b) => (a.dia ?? 32) - (b.dia ?? 32) || a.ev.t - b.ev.t);
     let aLaVista = delMes;
-    if (delMes.length > 6) {
+    if (delMes.length > 4) {
       const conDia = delMes.filter((x) => x.dia);
       const cercanos = [...conDia.filter((x) => x.dia >= hoy.getDate()), ...conDia.filter((x) => x.dia < hoy.getDate()).reverse()];
       const elegidos = [];
       for (const x of cercanos) {
-        if (elegidos.length >= 6 && x.dia !== elegidos.at(-1).dia) break;
+        if (elegidos.length >= 4 && x.dia !== elegidos.at(-1).dia) break;
         elegidos.push(x);
       }
       aLaVista = delMes.filter((x) => elegidos.includes(x));

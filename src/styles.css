@@ -1032,8 +1032,7 @@ body[data-vista='detalle'] .linea {
 .inicio-banda {
   position: relative;
   isolation: isolate;
-  padding: clamp(1.25rem, 5vh, 3.5rem) 1rem clamp(1.5rem, 4vw, 3rem);
-  padding-top: clamp(1.25rem, 5cqh, 3.5rem);
+  padding: 0 0 clamp(1.25rem, 3vh, 2rem);
 }
 
 /* Curvas de nivel (src/curvas.js): un dibujo fijo, sin animación. */
@@ -1052,25 +1051,39 @@ body[data-vista='detalle'] .linea {
   opacity: 1;
 }
 
-/* Una sola medida para todo lo de la portada: el héroe, las puertas, las cifras y lo de abajo quedan alineados
-   (en 1920 px, las cifras empezaban en el borde izquierdo y el héroe al centro). */
-.inicio-hero,
-.puertas,
-.empieza-ir,
-.cifras,
+/* Una sola medida para todo lo de la portada (72rem): el texto del héroe, las entradas, las cifras y lo de abajo
+   quedan alineados. Las entradas llevan su propio margen lateral (la banda va a sangre). */
 .inicio-cuerpo > * {
   width: 100%;
   max-width: 72rem;
   margin-inline: auto;
 }
 
-/* Portada (CLAUDE.md, «Dirección de arte»): una obra de época grande al lado del título y la frase, y debajo las
-   tres entradas, todo a la vista sin bajar, en el escritorio y en el celular. Las cifras van después. */
+.entradas,
+.empieza-ir {
+  width: 100%;
+  max-width: 74rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/* Portada (CLAUDE.md, «Dirección de arte»): una sala de entrada. La obra cuelga a sangre a la derecha y se funde
+   con el océano por su borde izquierdo; el título y la frase, a la izquierda; abajo, las tres entradas como el
+   índice de un museo. Todo a la vista sin bajar; las cifras van después, sobre el papel. En pantallas angostas,
+   la obra arriba y el texto debajo. */
 .inicio-hero {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(16rem, 1fr) auto;
   align-items: center;
-  gap: 1.5rem 3rem;
+  min-height: clamp(24rem, 100vh - 22rem, 40rem);
+  min-height: clamp(24rem, 100cqh - 17rem, 40rem);
+  padding: clamp(1.5rem, 4cqh, 3rem) max(1rem, (100% - 72rem) / 2) 5.75rem;
+}
+
+.inicio-texto {
+  position: relative;
+  z-index: 1;
+  max-width: min(30rem, 40%);
 }
 
 .ceja {
@@ -1084,7 +1097,7 @@ body[data-vista='detalle'] .linea {
 }
 
 .inicio-hero h2 {
-  margin: 0.375rem 0 0.875rem;
+  margin: 0.5rem 0 1rem;
   font-family: var(--serif);
   font-size: var(--t-34);
   font-weight: 600;
@@ -1100,65 +1113,144 @@ body[data-vista='detalle'] .linea {
   color: var(--texto-suave);
 }
 
-/* La obra cuelga entera, con su proporción (inicio.js la toma de las medidas de la imagen: sin saltos al cargar),
-   y su pie y crédito van en una banda debajo, del mismo ancho, nunca encima. Su alto sale del de la pantalla,
-   para que las puertas también quepan. */
+/* La obra ocupa el 60 % derecho del héroe, a toda su altura (se recorta arriba y abajo, nunca a los lados: la
+   escena queda entera) y se funde con el océano por la izquierda. Su pie y crédito van en la franja de abajo,
+   sobre el océano, nunca sobre la obra. */
 .inicio-obra {
-  --alto: clamp(12rem, 100vh - 30rem, 23rem);
-  --alto: clamp(12rem, 100cqh - 23.5rem, 23rem);
-  /* Ancho explícito (no un porcentaje): así la columna de la obra no toma el ancho natural de la imagen. Nunca
-     más que lo que deja el texto (16rem, más el margen y el espacio entre ambos). */
-  width: min(var(--alto) * var(--proporcion, 1.365), 100vw - 21rem);
-  max-width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 5.25rem;
+  width: 60%;
   margin: 0;
-  justify-self: end;
 }
 
 .inicio-obra img {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: var(--proporcion, 1.365);
+  height: 100%;
   object-fit: cover;
+  object-position: 50% 45%;
   background: var(--pacifico-2);
-  border-radius: 2px;
-  box-shadow:
-    0 1px 0 rgb(255 255 255 / 0.08),
-    0 30px 50px -30px rgb(0 0 0 / 0.9);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 35%);
+  mask-image: linear-gradient(to right, transparent, #000 35%);
 }
 
 .inicio-obra figcaption {
-  margin-top: 0.5rem;
+  position: absolute;
+  top: 100%;
+  right: max(1rem, (100vw - 72rem) / 2);
+  left: 8%;
+  padding-top: 0.5rem;
   color: var(--texto-suave);
+  text-align: right;
 }
 
 .obra-pie a {
   color: var(--texto);
 }
 
-/* Puertas: la imagen ocupa toda la tarjeta y el título va encima, sobre un degradado del océano. En la tablet,
-   una ancha y dos debajo (en 2 + 1 quedaba un hueco). */
-.puertas {
+@media (min-width: 80em) and (min-height: 50.01em) {
+  .inicio-hero h2 {
+    font-size: var(--t-48);
+  }
+}
+
+/* Hasta 62em, la obra arriba (a sangre, apaisada) con su crédito debajo, y el texto después. */
+@media (max-width: 61.99em) {
+  .inicio-hero {
+    display: block;
+    min-height: 0;
+    padding: 0 0 1.25rem;
+  }
+
+  .inicio-obra {
+    position: static;
+    width: auto;
+  }
+
+  .inicio-obra img {
+    height: auto;
+    aspect-ratio: 16 / 10;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .inicio-obra figcaption {
+    position: static;
+    padding: 0.375rem 1rem 0;
+    text-align: left;
+  }
+
+  .inicio-texto {
+    max-width: 44rem;
+    padding: 1.25rem 1rem 0;
+  }
+}
+
+/* Las tres entradas, como el índice de un museo: un filete de ocre arriba, el nombre, una línea y una flecha que
+   avanza al pasar el puntero. Desde 48em, en una fila; en el celular, una debajo de otra. */
+.entradas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 1rem;
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
-  padding: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 2rem;
+  margin-block: 0;
   list-style: none;
 }
 
-/* Desde la tablet, las tres en una fila (en 1 + 2 quedaban bajo el pliegue); en el celular, teselas (abajo). */
 @media (min-width: 48em) {
-  .puertas {
+  .entradas {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 62em) {
-  .puertas .puerta {
-    min-height: clamp(10rem, 100vh - 40rem, 15rem);
-    min-height: clamp(10rem, 100cqh - 34rem, 15rem);
+.entrada {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.125rem 1rem;
+  height: 100%;
+  min-height: 2.75rem;
+  padding: 0.875rem 0 0.375rem;
+  color: var(--texto);
+  text-decoration: none;
+  border-top: 1px solid var(--ocre-claro);
+}
+
+.entrada-titulo {
+  font-family: var(--serif);
+  font-size: var(--t-26);
+  font-weight: 600;
+  line-height: 1.15;
+  transition: color var(--dur-micro) ease;
+}
+
+.entrada-bajada {
+  grid-column: 1;
+  color: var(--texto-suave);
+}
+
+.entrada .icono {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--acento);
+  transition: translate var(--dur-micro) var(--curva-estandar);
+}
+
+@media (hover: hover) {
+  .entrada:hover .entrada-titulo {
+    color: var(--acento);
   }
+
+  .entrada:hover .icono {
+    translate: 0.25rem 0;
+  }
+}
+
+.entrada:focus-visible {
+  outline-offset: 4px;
 }
 
 /* Las miniaturas se recortan con el punto de enfoque arriba del centro: un retrato conserva la cabeza y los
@@ -1235,76 +1327,6 @@ body[data-vista='detalle'] .linea {
   color: #e5ddcf;
 }
 
-.puerta-mapa {
-  background:
-    radial-gradient(circle at 75% 40%, rgb(255 255 255 / 0.06), transparent 60%),
-    var(--pacifico-2);
-}
-
-/* Puerta del mapa: la silueta de Chile con sus latitudes, como en una carta. Las marcas de latitud usan las
-   mismas proporciones que la silueta (y = (−17,4 − lat) · 26 sobre 1006). */
-.puerta-mapa > .curvas {
-  z-index: -3;
-}
-
-.puerta-silueta,
-.puerta-latitudes {
-  position: absolute;
-  top: 0.75rem;
-  bottom: 0.75rem;
-  z-index: -2;
-}
-
-.puerta-silueta {
-  right: 4.75rem;
-  width: auto;
-  height: calc(100% - 1.5rem);
-  fill: color-mix(in oklab, var(--tierra) 70%, #fff);
-  stroke: color-mix(in oklab, var(--tierra) 70%, #fff);
-  stroke-width: 2;
-  stroke-linejoin: round;
-}
-
-.puerta-ciudades {
-  fill: var(--ocre-claro);
-  stroke: none;
-}
-
-.puerta-latitudes {
-  right: 0.75rem;
-  width: 3.5rem;
-  font-family: var(--rotulo);
-  font-weight: 600;
-  line-height: 1;
-  color: var(--sobre-pacifico-suave);
-  text-shadow: none;
-}
-
-.puerta-latitudes > span {
-  position: absolute;
-  right: 0;
-  white-space: nowrap;
-  translate: 0 -50%;
-}
-
-/* Raya de la latitud hasta la silueta. */
-.puerta-latitudes > span::before {
-  position: absolute;
-  top: 50%;
-  right: calc(100% + 0.375rem);
-  width: 3rem;
-  border-top: 1px dashed rgb(237 243 241 / 0.35);
-  content: '';
-}
-
-.puerta-mapa::after {
-  background: linear-gradient(90deg, rgb(8 25 31 / 0.88) 0 40%, transparent 75%);
-}
-
-.puerta-mapa .puerta-texto {
-  max-width: 65%;
-}
-
 /* Mosaico de imágenes de una puerta: la de «Historias» en la portada y las de cada historia guiada
    (src/vistas.css). */
 .puerta-mosaico {
@@ -1333,9 +1355,11 @@ body[data-vista='detalle'] .linea {
 /* «¿Sabías que…?» del día: una frase textual del detalle de un evento, con su imagen. */
 .destacado {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
   align-items: center;
   gap: 1.25rem 2.5rem;
+  padding-top: clamp(1.25rem, 3vw, 2rem);
+  border-top: 1px solid var(--ocre-claro);
 }
 
 .destacado-figura {
@@ -1409,54 +1433,60 @@ body[data-vista='detalle'] .linea {
 
 .epocas-lista {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-  gap: 0.625rem;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 2rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-/* La regla de eventos de cada período, siempre al pie de su tarjeta: los títulos de dos líneas no la desalinean. */
+/* Cada período, una entrada del índice: el filete de su color arriba, su número grande, el nombre y las fechas;
+   la regla de sus eventos, siempre al pie (los títulos de dos líneas no la desalinean). Sin fotos: ningún período
+   se ve más lúgubre o más épico que otro. */
 .epoca {
   display: grid;
   grid-template-rows: auto auto 1fr;
-  grid-template-columns: 2.25rem minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: baseline;
-  gap: 0 0.5rem;
+  gap: 0.125rem 1rem;
   height: 100%;
-  min-height: 7.5rem;
-  padding: 0.875rem 1rem 1rem 0.75rem;
-  color: #fff;
+  padding: 1rem 0.75rem 1.25rem 0.25rem;
+  color: var(--texto);
   text-decoration: none;
-  background: var(--curvas-portal) center / 100% 100% no-repeat, var(--color);
-  border-radius: var(--radio);
-  box-shadow: var(--sombra);
-  transition:
-    scale 0.12s ease,
-    box-shadow 0.15s ease;
+  border-top: 3px solid var(--color);
+  transition: background-color var(--dur-micro) ease;
 }
 
-.epoca:hover {
-  box-shadow: var(--sombra-alta);
+@media (hover: hover) {
+  .epoca:hover {
+    background: var(--superficie);
+  }
+
+  .epoca:hover .epoca-nombre {
+    color: var(--acento);
+  }
 }
 
 .epoca:active {
-  scale: 0.98;
+  scale: 0.99;
 }
 
 .epoca-num {
-  grid-row: span 2;
+  grid-row: span 3;
+  align-self: start;
   font-family: var(--rotulo);
-  font-size: var(--t-26);
+  font-size: var(--t-48);
   font-weight: 600;
-  line-height: 1;
+  line-height: 0.85;
+  color: var(--tinta-periodo);
 }
 
 .epoca-nombre {
   font-family: var(--serif);
-  font-size: var(--t-21);
+  font-size: var(--t-26);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.15;
+  transition: color var(--dur-micro) ease;
 }
 
 .epoca-fechas {
@@ -1464,10 +1494,16 @@ body[data-vista='detalle'] .linea {
   font-size: var(--t-18);
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: #ece6da;
+  color: var(--texto-suave);
 }
 
-@media (min-width: 48em) {
+@media (min-width: 40em) {
+  .epocas-lista {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 62em) {
   .epocas-lista {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1535,13 +1571,24 @@ body[data-vista='detalle'] .linea {
    antes de pintar, así no mueve nada), con una flecha hacia «Empieza aquí», que está más abajo. */
 .empieza-ir {
   display: none;
-  margin: 1.25rem 0 0;
+  margin-top: 1rem;
+  margin-bottom: 0;
 }
 
 .empieza-ir .boton {
-  min-height: 3rem;
-  padding-inline: 1.25rem;
-  font-weight: 600;
+  min-height: 2.75rem;
+  padding-inline: 0;
+  color: var(--acento);
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .empieza-ir .boton:hover {
+    color: var(--acento-hover);
+    background: none;
+  }
 }
 
 .empieza-ir .icono {
@@ -1592,24 +1639,21 @@ body[data-vista='detalle'] .linea {
 
 .empieza-esencial {
   display: grid;
-  overflow: hidden;
   color: var(--texto);
   text-decoration: none;
-  background: var(--fondo);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
-  transition: border-color var(--dur-micro) ease;
 }
 
 @media (hover: hover) {
-  .empieza-esencial:hover {
-    border-color: var(--acento);
+  .empieza-esencial:hover .empieza-esencial-titulo {
+    color: var(--acento);
   }
 }
 
 .empieza-mosaico {
   aspect-ratio: 16 / 9;
+  overflow: hidden;
   background: var(--superficie-2);
+  border-radius: var(--radio-s);
 }
 
 .empieza-mosaico > img {
@@ -1623,7 +1667,7 @@ body[data-vista='detalle'] .linea {
   display: grid;
   justify-items: start;
   gap: 0.375rem;
-  padding: 0.875rem 1rem 1rem;
+  padding: 0.875rem 0 0;
 }
 
 .empieza-esencial-titulo,
@@ -1707,22 +1751,20 @@ body[data-vista='detalle'] .linea {
 
 .empieza-mes ul {
   display: grid;
-  gap: 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
+  border-top: 1px solid var(--borde);
 }
 
 .empieza-mes a {
   display: grid;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.25rem 0.5rem 0.875rem;
   color: var(--texto);
   text-decoration: none;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-left: 0.3125rem solid var(--color);
-  border-radius: var(--radio);
-  transition: border-color var(--dur-micro) ease;
+  border-bottom: 1px solid var(--borde);
+  box-shadow: inset 3px 0 0 var(--color);
+  transition: background-color var(--dur-micro) ease;
 }
 
 .empieza-mes-hace {
@@ -1746,8 +1788,7 @@ body[data-vista='detalle'] .linea {
 
 @media (hover: hover) {
   .empieza-mes a:hover {
-    border-color: var(--acento);
-    border-left-color: var(--color);
+    background: var(--superficie);
   }
 }
 
@@ -1784,16 +1825,8 @@ body[data-vista='detalle'] .linea {
 /* En el celular, todo en la primera pantalla: la obra arriba, a sangre y apaisada (16:9, centrada en las figuras)
    con su crédito; el título y la frase (sin la ceja, que repite la marca), y las tres entradas como teselas de
    una fila, solo con su título. */
+/* En el celular: el título, la obra a sangre (apaisada) con su crédito, y las tres entradas, una debajo de otra. */
 @media (max-width: 47.99em) {
-  .inicio-banda {
-    padding-top: 0;
-  }
-
-  .inicio-hero {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
-  }
-
   .inicio-hero .ceja,
   .obra-pie {
     display: none;
@@ -1803,58 +1836,35 @@ body[data-vista='detalle'] .linea {
     margin-top: 0;
   }
 
+  /* La frase queda para el lector de pantalla: las cifras la dicen justo después. */
   .inicio-bajada {
-    font-size: var(--t-18);
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
-  .inicio-obra {
-    order: -1;
-    width: auto;
-    max-width: none;
-    margin: 0 -1rem;
-    justify-self: stretch;
+  .inicio-texto {
+    padding-bottom: 1rem;
   }
 
   .inicio-obra img {
     aspect-ratio: 16 / 9;
     object-position: 50% 40%;
-    border-radius: 0;
-    box-shadow: none;
   }
 
-  .inicio-obra figcaption {
-    margin-top: 0.375rem;
-    padding-inline: 1rem;
+  .entrada {
+    padding-block: 0.625rem;
   }
 
-  .puertas {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.5rem;
-    margin-top: 1.25rem;
+  .entrada-titulo {
+    font-size: var(--t-21);
   }
 
-  .puertas .puerta {
-    min-height: 7rem;
-  }
-
-  .puerta-texto {
-    padding: 0.5rem;
-  }
-
-  .puerta-titulo {
-    font-size: var(--t-18);
-  }
-
-  .puerta-bajada,
-  .puerta-latitudes {
+  .entrada-bajada {
     display: none;
-  }
-
-  /* Sin las latitudes, la silueta va al centro de su tesela. */
-  .puerta-silueta {
-    right: auto;
-    left: 50%;
-    translate: -50% 0;
   }
 }
 
@@ -1865,8 +1875,12 @@ body[data-vista='detalle'] .linea {
     aspect-ratio: 2;
   }
 
-  .puertas .puerta {
-    min-height: 6.5rem;
+  .inicio-hero h2 {
+    font-size: var(--t-26);
+  }
+
+  .entrada {
+    padding-block: 0.4rem;
   }
 
   .inicio-bajada {
@@ -4388,53 +4402,47 @@ body[data-vista='detalle'] .minimapa-fila {
 
 /* ---- Portada (mvp 6): la puerta de la línea de tiempo pesa el doble (es la entrada principal), una franja de
    cifras, la escala de eventos de cada período y la barra de «Tu recorrido». ---- */
-@media (min-width: 62em) {
-  .puertas {
-    grid-template-columns: 2fr 1fr 1fr;
-  }
-}
-
-/* Las cifras, como una escala gráfica: un filete arriba y uno entre cada una. */
+/* Las cifras, como la placa de una sala: el número grande en ocre sobre su rótulo, entre filetes. De a dos en el
+   celular y en una fila desde 48em. */
 .cifras {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 2rem;
-  margin-top: clamp(1.25rem, 3vw, 2rem);
-  margin-bottom: 0;
-  padding: 0.75rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-block: 0;
+  padding: 0;
   list-style: none;
   color: var(--texto-suave);
   border-top: 1px solid var(--ocre-claro);
 }
 
-/* En la tablet, de a dos (así ningún filete queda al comienzo de una línea); desde 62em, en una sola fila. */
-@media (min-width: 40em) and (max-width: 61.99em) {
-  .cifras {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: start;
-  }
-
-  .cifras li:nth-child(even) {
-    padding-left: 2rem;
-    border-left: 1px solid var(--borde);
-  }
+.cifras li {
+  display: grid;
+  align-content: start;
+  gap: 0.375rem;
+  padding: 1rem 1rem 1rem 0;
 }
 
-@media (min-width: 62em) {
+.cifras li:nth-child(even) {
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--borde);
+}
+
+@media (min-width: 48em) {
+  .cifras {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .cifras li + li {
-    padding-left: 2rem;
+    padding-left: 1.25rem;
     border-left: 1px solid var(--borde);
   }
 }
 
 .cifras b {
-  margin-right: 0.375rem;
   font-family: var(--rotulo);
-  font-size: var(--t-26);
+  font-size: var(--t-48);
   font-weight: 600;
   line-height: 1;
-  color: var(--ocre-claro);
+  color: var(--acento);
 }
 
 /* Escala de cada período: una marca por evento, en su año (sin fotos: ningún período se ve más lúgubre o más
@@ -4444,8 +4452,8 @@ body[data-vista='detalle'] .minimapa-fila {
   grid-column: 2;
   align-self: end;
   height: 0.75rem;
-  margin-top: 0.625rem;
-  border-bottom: 1px solid rgb(255 255 255 / 0.5);
+  margin-top: 0.75rem;
+  border-bottom: 1px solid var(--borde-fuerte);
 }
 
 .epoca-escala i {
@@ -4454,8 +4462,7 @@ body[data-vista='detalle'] .minimapa-fila {
   width: 2px;
   height: 100%;
   margin-left: -1px;
-  background: #fff;
-  opacity: 0.85;
+  background: var(--tinta-periodo);
 }
 
 /* «Tu recorrido»: una barra por período con lo visto en él (un dato, no un logro; el nombre y «5 de 12» van
@@ -5132,11 +5139,6 @@ html[data-cargando] {
    var() dentro, la declaración se anula al calcular y no cae a la anterior (la portada del detalle quedaba
    sin océano, con texto claro sobre niebla). Aquí van colores planos. */
 @supports not (color: color-mix(in srgb, red, red)) {
-  .puerta-silueta {
-    fill: #84999c;
-    stroke: #84999c;
-  }
-
   .destacado-marco,
   .vecino-img,
   .resultado-img {

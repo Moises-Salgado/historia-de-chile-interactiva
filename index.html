@@ -32,8 +32,8 @@
     <script>
       // Antes de pintar: sin dirección (o con #inicio) se ve la portada; con otra, la línea de tiempo (main.js
       // decide el resto al cargar). «Acerca de», «Para docentes» y el glosario se abren sobre la portada, que
-      // los enlaza en su pie. Las fotos de las puertas (loading=lazy) se piden de inmediato solo si se ve la
-      // portada: con un enlace directo a un evento no se descargan.
+      // los enlaza en su pie. La obra de la portada se pide de inmediato solo si se ve la portada: con un enlace
+      // directo a un evento no se descarga.
       (() => {
         const h = location.hash;
         const portada = /^#?(?:inicio)?$/.test(h);
@@ -63,7 +63,7 @@
         // que su <img> (inicio.js los completa desde su evento si cambia la imagen en los datos).
         const obra = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent('Jura_Independencia_Chile-Cosme_San_Martín.jpg');
         const l = document.createElement('link');
-        Object.assign(l, { rel: 'preload', as: 'image', fetchPriority: 'high', imageSizes: '(max-width: 47.99em) 100vw, 30rem' });
+        Object.assign(l, { rel: 'preload', as: 'image', fetchPriority: 'high', imageSizes: '(min-width: 62em) 60vw, 100vw' });
         l.imageSrcset = obra + '?width=500 500w, ' + obra + '?width=800 960w, ' + obra + '?width=1280 1280w';
         document.head.append(l);
       })();
@@ -184,7 +184,6 @@
 
       <section id="inicio" class="inicio" aria-labelledby="inicio-titulo">
         <div class="inicio-banda">
-          <canvas class="curvas" aria-hidden="true"></canvas>
           <div class="inicio-hero">
             <div class="inicio-texto">
               <p class="ceja">Un atlas de la historia de Chile</p>
@@ -198,7 +197,7 @@
               <img
                 src="https://commons.wikimedia.org/wiki/Special:FilePath/Jura_Independencia_Chile-Cosme_San_Mart%C3%ADn.jpg?width=800"
                 srcset="https://commons.wikimedia.org/wiki/Special:FilePath/Jura_Independencia_Chile-Cosme_San_Mart%C3%ADn.jpg?width=500 500w, https://commons.wikimedia.org/wiki/Special:FilePath/Jura_Independencia_Chile-Cosme_San_Mart%C3%ADn.jpg?width=800 960w, https://commons.wikimedia.org/wiki/Special:FilePath/Jura_Independencia_Chile-Cosme_San_Mart%C3%ADn.jpg?width=1280 1280w"
-                sizes="(max-width: 47.99em) 100vw, 30rem"
+                sizes="(min-width: 62em) 60vw, 100vw"
                 width="4044"
                 height="2963"
                 alt=""
@@ -209,49 +208,38 @@
               <figcaption class="credito">«Jura de la Independencia de Chile», óleo de Cosme San Martín (fines del siglo XIX).</figcaption>
             </figure>
           </div>
-          <ul class="puertas">
+          <ul class="entradas">
             <li>
-              <a class="puerta" href="#linea">
-                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hodges_easter-island.jpg?width=500" alt="" loading="lazy" decoding="async" data-evento="1500-pueblo-rapanui" />
-                <span class="puerta-texto">
-                  <span class="puerta-titulo">Recorrer la línea de tiempo</span>
-                  <span class="puerta-bajada"><span data-cifra="periodos">9</span> períodos, uno tras otro</span>
-                </span>
+              <a class="entrada" href="#linea">
+                <span class="entrada-titulo">Recorrer la línea de tiempo</span>
+                <span class="entrada-bajada"><span data-cifra="periodos">9</span> períodos, uno tras otro</span>
+                <svg class="icono" aria-hidden="true" focusable="false"><use href="#i-siguiente" /></svg>
               </a>
             </li>
             <li>
-              <a class="puerta puerta-mapa" href="#mapa">
-                <canvas class="curvas" data-curvas="tenue" aria-hidden="true"></canvas>
-                <span class="puerta-latitudes" aria-hidden="true"><span style="top: 6.7%">20° S</span><span style="top: 32.6%">30° S</span><span style="top: 58.4%">40° S</span><span style="top: 84.3%">50° S</span></span>
-                <svg class="puerta-silueta" viewBox="0 0 302 1006" aria-hidden="true" focusable="false">
-                  <use href="#silueta-chile" />
-                  <g class="puerta-ciudades"><circle cx="212" cy="28" r="9" /><circle cx="210" cy="162" r="9" /><circle cx="205" cy="417" r="11" /><circle cx="155" cy="505" r="9" /><circle cx="151" cy="583" r="9" /><circle cx="200" cy="930" r="9" /></g>
-                </svg>
-                <span class="puerta-texto">
-                  <span class="puerta-titulo">Explorar el mapa</span>
-                  <span class="puerta-bajada">Lo que pasó en cada región y ciudad</span>
-                </span>
+              <a class="entrada" href="#mapa">
+                <span class="entrada-titulo">Explorar el mapa</span>
+                <span class="entrada-bajada">Lo que pasó en cada región y ciudad</span>
+                <svg class="icono" aria-hidden="true" focusable="false"><use href="#i-siguiente" /></svg>
               </a>
             </li>
             <li>
-              <a class="puerta puerta-historias" href="#historias">
-                <span class="mosaico puerta-mosaico" aria-hidden="true"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Abdications_of_Bayonne_(F._Per%C3%A9z%2C_c._1846).jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1808-crisis-de-la-monarquia" data-ancho="250" /><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Se%C3%B1or_de_Mayo_-_terremoto_1647.jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1647-terremoto-de-santiago" data-ancho="250" /><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Manuscrito_original_de_la_Constituci%C3%B3n_Pol%C3%ADtica_de_la_Rep%C3%BAblica_de_Chile_de_1833._Archivo_Nacional_de_Chile.jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1833-constitucion" data-ancho="250" /><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Elo%C3%ADsa_Diaz_(1900).jpg?width=250" alt="" loading="lazy" decoding="async" data-evento="1877-decreto-amunategui" data-ancho="250" /></span>
-                <span class="puerta-texto">
-                  <span class="puerta-titulo">Seguir una historia guiada</span>
-                  <span class="puerta-bajada"><span data-cifra="historias">9</span> historias, paso a paso</span>
-                </span>
+              <a class="entrada" href="#historias">
+                <span class="entrada-titulo">Seguir una historia guiada</span>
+                <span class="entrada-bajada"><span data-cifra="historias">9</span> historias, paso a paso</span>
+                <svg class="icono" aria-hidden="true" focusable="false"><use href="#i-siguiente" /></svg>
               </a>
             </li>
           </ul>
           <p class="empieza-ir"><button type="button" class="boton">¿Primera vez? Empieza aquí<svg class="icono" aria-hidden="true" focusable="false"><use href="#i-siguiente" /></svg></button></p>
+        </div>
+        <div class="inicio-cuerpo">
           <ul class="cifras" aria-label="La historia en cifras">
             <li><b data-cifra="eventos">121</b> eventos con imagen y fuentes</li>
             <li><b data-cifra="periodos">9</b> períodos</li>
             <li><b data-cifra="lugares">34</b> lugares en el mapa</li>
             <li><b data-cifra="historias">9</b> historias guiadas</li>
           </ul>
-        </div>
-        <div class="inicio-cuerpo">
           <section class="empieza" aria-labelledby="empieza-titulo" hidden></section>
           <section class="seguir" aria-labelledby="seguir-titulo" hidden></section>
           <section class="destacado" aria-labelledby="destacado-ceja" hidden></section>
