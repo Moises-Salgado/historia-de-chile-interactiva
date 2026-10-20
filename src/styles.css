@@ -3861,9 +3861,14 @@ body[data-vista='detalle'] .minimapa-fila {
 /* Filas que se desplazan de lado (secciones, filtros): un degradado en el borde donde sigue habiendo
    contenido (util.js, marcarDesborde). Al llegar con el teclado, el elemento queda lejos del degradado. */
 .pestanas,
-.chips-grupo,
-.mapa-filtro {
+.chips-grupo {
   scroll-padding-inline: 2.5rem;
+}
+
+/* El filtro del mapa conserva su margen de comienzo (12rem, arriba): ahí queda fijo «Todos los períodos», y un
+   chip enfocado no debe quedar escondido bajo él. */
+.mapa-filtro {
+  scroll-padding-inline-end: 2.5rem;
 }
 
 [data-desborde='fin'] {
