@@ -1,9 +1,11 @@
 // Repaso sin nota (se carga a pedido, al cierre de una historia): cinco preguntas armadas con los datos de sus
-// eventos —qué pasó primero, en qué siglo, dónde y quién aparece—, con botones (nada que arrastrar) y la
-// respuesta siempre en texto, sin puntaje, rachas ni tiempo. Nunca pregunta quién ganó, ni cifras, ni causas de
-// muerte, ni por eventos de temas sensibles (paraRepaso, src/sensibles.js), y como máximo una pregunta por ronda
-// es sobre una guerra.
-import { esSensible, paraRepaso } from './sensibles.js';
+// eventos —qué pasó primero, en qué siglo, dónde y quién aparece— y las escritas a mano para los temas sensibles
+// y los pueblos originarios (data/preguntas.json), con botones (nada que arrastrar) y la respuesta siempre en
+// texto, sin puntaje, rachas ni tiempo. Nunca pregunta quién ganó, ni cifras, ni causas de muerte (src/sensibles.js
+// dice qué eventos entran en cada tipo), y en una ronda van como máximo una pregunta sobre una guerra y dos sobre
+// temas sensibles.
+import PREGUNTAS from '../data/preguntas.json';
+import { enRepaso, esSensible, paraRepaso } from './sensibles.js';
 import { esc, icono, normalizar, urlImagen } from './util.js';
 
 const azar = (lista) => {
@@ -53,9 +55,10 @@ function orden(eventos, { nino, usados }) {
 }
 
 // En qué siglo: un evento de fecha conocida, después de Cristo, que no pasa de un siglo a otro y cuyo título no
-// trae el año. Las opciones son su siglo y los vecinos.
-function enQueSiglo(eventos, { usados }) {
-  for (const ev of azar(eventos.filter((x) => !x.fechaAproximada && x.anio > 0 && siglo(x.anio) === siglo(x.anioFin) && !conAnio(x.titulo) && !usados.has(x)))) {
+// trae el año. Las opciones son su siglo y los vecinos. En «Para niños» no va: pide números romanos.
+function enQueSiglo(eventos, { nino, usados }) {
+  if (nino) return null;
+  for (const ev of azar(eventos.filter((x) => paraRepaso(x) && !x.fechaAproximada && x.anio > 0 && siglo(x.anio) === siglo(x.anioFin) && !conAnio(x.titulo) && !usados.has(x)))) {
     const s = siglo(ev.anio);
     if (s < 2 || s > 21) continue;
     const opciones = s === 21 ? [19, 20, 21] : [s - 1, s, s + 1];
@@ -78,7 +81,7 @@ function donde(eventos, { lugares, regiones, usados }) {
   const regionDe = new Map(regiones.map((r) => [r.codigo, r]));
   const nombre = (l) => l.corto ?? l.nombre;
   const lejos = (a, b) => a.region !== b.region && Math.hypot(a.lat - b.lat, a.lon - b.lon) > 3;
-  for (const ev of azar(eventos.filter((x) => !usados.has(x)))) {
+  for (const ev of azar(eventos.filter((x) => paraRepaso(x) && !usados.has(x)))) {
     const l = ev.ubicaciones.length === 1 ? lugarDe.get(ev.ubicaciones[0]) : null;
     if (!l || delata(ev.titulo, nombre(l))) continue;
     const otros = azar(lugares.filter((x) => lejos(x, l) && !delata(ev.titulo, nombre(x)))).slice(0, 2);
@@ -114,7 +117,7 @@ function nombrada(ev, nombre) {
 function quien(eventos, { nino, todos, vetados, usados }) {
   const anios = new Map();
   for (const x of todos) for (const n of x.personajes) anios.set(n, [...(anios.get(n) ?? []), x.anio]);
-  for (const ev of azar(eventos.filter((x) => x.personajes.length && !usados.has(x)))) {
+  for (const ev of azar(eventos.filter((x) => paraRepaso(x) && x.personajes.length && !usados.has(x)))) {
     const suyos = new Set(ev.personajes.map(normalizar));
     const correcto = azar(ev.personajes).find((n) => !vetados.has(n) && !delata(ev.titulo, n) && (!nino || nombrada(ev, n)));
     const otraEpoca = (n) => !vetados.has(n) && !suyos.has(normalizar(n)) && !delata(ev.titulo, n) && anios.get(n).every((a) => Math.abs(a - ev.anio) > 80);
@@ -133,17 +136,46 @@ function quien(eventos, { nino, todos, vetados, usados }) {
   return null;
 }
 
+// La oración que responde una pregunta escrita a mano en el nivel de lectura: en «Para niños», `fraseNino`; en
+// General, `frase` si está en el resumen; en Detallado, también si está en el detalle (npm test comprueba que
+// esté en uno de los dos). Sin oración para el nivel, la pregunta no va.
+function fraseDe(q, ev, nivel) {
+  if (nivel === 'nino') return q.fraseNino ?? null;
+  if (!q.frase) return null;
+  return ev.resumen.includes(q.frase) || nivel === 'detallado' ? q.frase : null;
+}
+
+// Escrita a mano (data/preguntas.json): sobre un hecho que el texto del evento responde, con su oración como
+// respuesta. Así entran los temas sensibles, con preguntas respetuosas, y no solo los eventos «fáciles».
+function escrita(eventos, { nivel, usados }) {
+  for (const ev of azar(eventos.filter((x) => PREGUNTAS[x.id] && !usados.has(x)))) {
+    const posibles = PREGUNTAS[ev.id].filter((q) => fraseDe(q, ev, nivel));
+    if (!posibles.length) continue;
+    const q = azar(posibles)[0];
+    usados.add(ev);
+    return {
+      eventos: [ev],
+      texto: q.pregunta,
+      opciones: azar([q.correcta, ...q.otras]).map((texto) => ({ texto, correcta: texto === q.correcta })),
+      respuesta: esc(fraseDe(q, ev, nivel)),
+      enlaces: [[`#evento/${ev.id}`, ev.titulo]],
+    };
+  }
+  return null;
+}
+
 /** Eventos de una historia que pueden entrar al repaso (si son menos de 3, no se ofrece). */
-export const aptos = (historia) => historia.filter(paraRepaso);
+export const aptos = (historia) => historia.filter(enRepaso);
 
 /**
  * Arma una ronda de hasta cinco preguntas con los eventos de una historia; para las opciones usa todos los
- * eventos, los lugares y las regiones. `nino`: nivel «Para niños».
+ * eventos, los lugares y las regiones. `nivel`: el de lectura («nino», «general» o «detallado»).
  */
-export function preguntas(historia, { eventos, lugares, regiones, nino = false }) {
+export function preguntas(historia, { eventos, lugares, regiones, nivel = 'general' }) {
   const elegibles = aptos(historia);
   const ctx = {
-    nino,
+    nino: nivel === 'nino',
+    nivel,
     lugares,
     regiones,
     // Todos los eventos (para saber en qué años aparece cada persona); las personas de temas sensibles, nunca.
@@ -153,12 +185,16 @@ export function preguntas(historia, { eventos, lugares, regiones, nino = false }
   };
   const ronda = [];
   let guerras = 0;
-  for (const armar of azar([orden, orden, enQueSiglo, donde, quien])) {
-    // Como máximo una pregunta sobre una guerra: si ya hay una, se arma sin esos eventos.
-    const lista = guerras ? elegibles.filter((ev) => !ev.temas.includes('guerra')) : elegibles;
+  let delicadas = 0;
+  // Una escrita a mano primero (si la historia tiene), así sus temas no dependen del azar; el resto, al azar.
+  for (const armar of [escrita, ...azar([orden, orden, enQueSiglo, donde, quien, escrita])]) {
+    if (ronda.length === 5) break;
+    // Como máximo una pregunta sobre una guerra y dos sobre temas sensibles: al llegar al tope, sin esos eventos.
+    const lista = elegibles.filter((ev) => !(guerras && ev.temas.includes('guerra')) && !(delicadas >= 2 && !paraRepaso(ev)));
     const p = armar(lista, ctx);
     if (!p) continue;
     if (p.eventos.some((ev) => ev.temas.includes('guerra'))) guerras++;
+    if (p.eventos.some((ev) => !paraRepaso(ev))) delicadas++;
     ronda.push(p);
   }
   return ronda;

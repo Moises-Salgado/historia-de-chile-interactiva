@@ -424,6 +424,42 @@ function validarMedidas(medidas, ctx) {
   for (const archivo of Object.keys(medidas)) if (!usados.has(archivo)) aviso('imagenes-medidas.json', `«${archivo}» ya no la usa ningún evento: ejecuta node scripts/medir-imagenes.mjs`);
 }
 
+// Preguntas de repaso escritas a mano (preguntas.json, src/repaso.js), para los temas sensibles y los pueblos
+// originarios que las preguntas automáticas no tocan. Cada una la responde una oración copiada del evento: `frase`,
+// de su resumen (General y Detallado) o de su detalle (solo Detallado), y `fraseNino`, de su texto para niños.
+// Las opciones van sin cifras, y las palabras de la respuesta correcta (comparando sus 5 primeras letras, para
+// aceptar «abandonar» y «abandonaron») salen de esas oraciones o de la pregunta.
+const raicesCortas = (texto) => new Set(sinTildes(texto).split(/[^\p{L}\p{N}]+/u).filter((p) => p.length >= 5).map((p) => p.slice(0, 5)));
+function validarPreguntas(mapa, ctx) {
+  if (!mapa || typeof mapa !== 'object' || Array.isArray(mapa)) return error('preguntas.json', 'debe ser un objeto { "id": [preguntas] }');
+  for (const [id, lista] of Object.entries(mapa)) {
+    const ev = ctx.eventos.get(id);
+    if (!ev) {
+      error(`preguntas.json [${id}]`, 'el evento no existe');
+      continue;
+    }
+    if (!Array.isArray(lista) || !lista.length) {
+      error(`preguntas.json [${id}]`, 'debe ser una lista con al menos una pregunta');
+      continue;
+    }
+    lista.forEach((q, i) => {
+      const d = `preguntas.json [${id}] ${i + 1}`;
+      if (!esTexto(q.pregunta) || !/¿[^?]+\?$/.test(q.pregunta)) error(d, '"pregunta" debe llevar ¿ y terminar en ?');
+      const opciones = [q.correcta, ...(Array.isArray(q.otras) ? q.otras : [])];
+      if (!Array.isArray(q.otras) || q.otras.length !== 2 || !opciones.every(esTexto) || new Set(opciones).size !== 3) {
+        return error(d, 'lleva "correcta" y dos "otras", distintas entre sí');
+      }
+      if (opciones.some((o) => /\d/.test(o))) error(d, 'las opciones no llevan cifras');
+      if (!q.frase && !q.fraseNino) error(d, 'falta "frase" o "fraseNino"');
+      if (q.frase && !(ev.resumen.includes(q.frase) || ev.detalle.includes(q.frase))) error(d, '"frase" debe estar copiada del resumen o del detalle');
+      if (q.fraseNino && !ev.resumenNino.includes(q.fraseNino)) error(d, '"fraseNino" debe estar copiada del texto para niños');
+      const fuente = new Set([q.pregunta, q.frase, q.fraseNino].filter(Boolean).flatMap((t) => [...raicesCortas(t)]));
+      const ajenas = [...raicesCortas(q.correcta)].filter((r) => !fuente.has(r));
+      if (ajenas.length) error(d, `la respuesta correcta tiene palabras que no están en la pregunta ni en sus frases: ${ajenas.join(', ')}`);
+    });
+  }
+}
+
 if (!existsSync(DIR)) {
   console.error(`No existe la carpeta de datos: ${DIR}`);
   process.exit(1);
@@ -431,7 +467,7 @@ if (!existsSync(DIR)) {
 
 const nombres = readdirSync(DIR).filter((n) => n.endsWith('.json')).sort();
 const archivosEventos = nombres.filter((n) => ARCHIVO_EVENTOS.test(n));
-const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json', 'lugares.json', 'ubicaciones.json', 'titulos-cortos.json', 'se-discute.json', 'glosario.json', 'imagenes-medidas.json'];
+const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json', 'lugares.json', 'ubicaciones.json', 'titulos-cortos.json', 'se-discute.json', 'glosario.json', 'imagenes-medidas.json', 'preguntas.json'];
 for (const n of nombres) {
   if (!ARCHIVO_EVENTOS.test(n) && !['periodos.json', 'temas.json', ...OPCIONALES].includes(n)) aviso(n, 'archivo no reconocido (la app lo ignora)');
 }
@@ -488,6 +524,8 @@ const ubicaciones = opcional('ubicaciones.json');
 if (lugares || ubicaciones) validarUbicaciones(ubicaciones, ctx, validarLugares(lugares));
 const medidas = opcional('imagenes-medidas.json');
 if (medidas) validarMedidas(medidas, ctx);
+const preguntasRepaso = opcional('preguntas.json');
+if (preguntasRepaso) validarPreguntas(preguntasRepaso, ctx);
 
 // La ficha de un personaje (2 o más eventos) «reúne los eventos donde se nombra»: quien la tiene debe figurar en
 // cada evento cuyo texto lo nombra con su nombre completo (si no, la ficha queda incompleta y puede leerse sesgada).
@@ -515,7 +553,7 @@ if (existsSync(RUTA_INDEX)) {
 
 console.log(`Datos: ${ctx.periodos.size} períodos · ${ctx.temas.size} temas · ${total} eventos en ${archivosEventos.length} archivos`);
 console.log(`Historias: ${recorridos?.length ?? 0} · grupos: ${grupos?.length ?? 0} · «¿Sabías que?»: ${Object.keys(sabiasQue ?? {}).length} · títulos cortos: ${Object.keys(titulosCortos ?? {}).length}`);
-console.log(`«Lo que se discute»: ${Object.keys(seDiscute ?? {}).length} · glosario: ${glosario?.length ?? 0} palabras`);
+console.log(`«Lo que se discute»: ${Object.keys(seDiscute ?? {}).length} · glosario: ${glosario?.length ?? 0} palabras · preguntas de repaso escritas a mano: ${Object.values(preguntasRepaso ?? {}).flat().length}`);
 if (lugares?.lugares) console.log(`Mapa: ${lugares.lugares.length} lugares (${lugares.lugares.filter((l) => l.aproximado).length} aproximados) · ${lugares.zonas?.length ?? 0} zonas · ${Object.keys(ubicaciones ?? {}).length} eventos ubicados`);
 if (ctx.pendientes.length) console.log(`Ocultos por pendienteVerificacion (${ctx.pendientes.length}): ${ctx.pendientes.join(', ')}`);
 if (ctx.recientes.length) console.log(`Posteriores a 2023 visibles, confirmar certeza (${ctx.recientes.length}): ${ctx.recientes.join(', ')}`);

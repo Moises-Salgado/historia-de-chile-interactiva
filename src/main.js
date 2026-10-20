@@ -1075,7 +1075,7 @@ async function empezarRepaso() {
   if (!r || !caja) return;
   try {
     const repaso = await import('./repaso.js');
-    repaso.pintar(caja, repaso.preguntas(r.eventos, { eventos, lugares: datosMapa.lugares, regiones: datosMapa.regiones, nino: nivel === 'nino' }));
+    repaso.pintar(caja, repaso.preguntas(r.eventos, { eventos, lugares: datosMapa.lugares, regiones: datosMapa.regiones, nivel }));
   } catch (error) {
     return sinModulo(error);
   }

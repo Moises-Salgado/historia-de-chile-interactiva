@@ -5,7 +5,7 @@
 // guiada, un grupo de eventos, la lista de historias o la ficha de un personaje, con la misma portada.
 import latitudes from './chile-latitudes.json';
 import { edadEn, formatearAnio, haceCuanto, parseFecha } from './fechas.js';
-import { paraRepaso } from './sensibles.js';
+import { enRepaso } from './sensibles.js';
 import {
   borrarPreferencia,
   creditoImagen,
@@ -794,7 +794,8 @@ export function crearDetalle(
 
   /**
    * Cierre de una historia, como espejo de su presentación: sus pasos (con imagen) y la silueta, el repaso (si
-   * tiene eventos que no son de temas sensibles) y otras historias para seguir (primero las empezadas).
+   * tiene al menos 3 eventos que pueden entrar: src/sensibles.js, enRepaso) y otras historias para seguir
+   * (primero las empezadas).
    */
   function mostrarFinHistoria(r, { enfocar = true, otras = [], regla = '' }) {
     iniciar({ recorrido: r, fin: true });
@@ -803,7 +804,7 @@ export function crearDetalle(
       return n === x.eventos.length ? 2 : n ? 0 : 1;
     };
     const siguientes = [...otras].sort((a, b) => avance(a) - avance(b)).slice(0, 3);
-    const preguntables = r.eventos.filter(paraRepaso);
+    const preguntables = r.eventos.filter(enRepaso);
     raiz.style.removeProperty('--color');
     pintar(
       `

@@ -155,6 +155,10 @@ Fuera de este plan quedan:
     - `data/README.md`, con el esquema de las medidas, el mapa de los grupos y la regla de los personajes;
     - `REVISION_PENDIENTE.md`, con las latitudes del mapa de los pueblos, las láminas que siguen sin ser de época, los 12 originales chicos y los apellidos;
     - en `AUDITORIA_EXTERNA.md`, «29 originales chicos» se corrigió a 12.
+  - **Decisiones del dueño** (sección 11), el 2026-10-20:
+    - **Atrás** y el **eje de la línea** se resolvieron al arreglar (A2 y A3).
+    - **Temas sensibles en el repaso: sí.** Entran en «¿Qué pasó primero?» y con 19 preguntas escritas a mano (`data/preguntas.json`): cada una pregunta un hecho que responde una oración copiada del evento, sin cifras, muertes ni quién ganó. Por ronda van como máximo dos sobre temas sensibles y una sobre una guerra, y `npm test` las valida.
+    - **Firma:** los responsables son Moises Salgado y Miguel Salgado («Acerca de», el pie de la portada, `<meta name="author">` y el README).
   - **Queda fuera** (necesita fuentes, revisión humana o una decisión del dueño):
     - reemplazar las láminas que no son de época y los originales chicos;
     - el trabajo editorial de la sección 6 de la auditoría;

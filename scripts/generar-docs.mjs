@@ -86,6 +86,16 @@ try {
   // Sin glosario todavía.
 }
 const deDonde = (g) => (g.fuente ? enlace(nombreFuente(g.fuente), g.fuente) : `del texto de \`${g.deTexto?.evento}\`: «${md(g.deTexto?.frase ?? '')}»`);
+// Repaso: las preguntas escritas a mano (temas sensibles y pueblos originarios) esperan revisión humana.
+let preguntas = {};
+try {
+  preguntas = leer('preguntas.json');
+} catch {
+  // Sin preguntas escritas a mano todavía.
+}
+const listaPreguntas = Object.entries(preguntas).flatMap(([id, qs]) =>
+  qs.map((q) => `- \`${id}\`: ${md(q.pregunta)} **${md(q.correcta)}** (otras: ${q.otras.map(md).join(' · ')})${q.fraseNino ? '' : ' · no va en «Para niños»'}${q.frase ? '' : ' · solo en «Para niños»'}`),
+);
 const seccion = [
   INICIO,
   '## Listas automáticas',
@@ -104,6 +114,10 @@ const seccion = [
   `### Glosario: explicaciones por revisar (${glosario.length})`,
   '',
   ...(glosario.length ? glosario.map((g) => `- **${md(g.termino)}**: ${md(g.definicion)} (${deDonde(g)})`) : ['Ninguna.']),
+  '',
+  `### Repaso: preguntas escritas a mano por revisar (${listaPreguntas.length})`,
+  '',
+  ...(listaPreguntas.length ? listaPreguntas : ['Ninguna.']),
   FIN,
 ].join('\n');
 const ruta = join(RAIZ, 'docs/REVISION_PENDIENTE.md');

@@ -2,6 +2,8 @@
 
 La historia de Chile, desde el poblamiento hasta hoy, en una línea de tiempo interactiva, con imágenes históricas de Wikimedia Commons. Cada evento se puede leer en tres niveles: **Para niños**, **General** y **Detallado**, para lectores desde los 8 años hasta adultos mayores.
 
+Responsables: Moises Salgado y Miguel Salgado.
+
 ## Qué incluye
 
 - Más de 120 eventos en 9 períodos, con fecha, lugar, personajes, imagen con su crédito y las fuentes consultadas.
@@ -14,7 +16,7 @@ La historia de Chile, desde el poblamiento hasta hoy, en una línea de tiempo in
 - Nueve historias guiadas paso a paso: «Lo esencial de Chile», la Independencia, los grandes terremotos, las constituciones, las mujeres en la vida pública, la educación, los libros y la poesía, la minería y las fronteras.
   - Cada una tiene una presentación, con su duración y los pasos sobre la silueta de Chile.
   - Entre pasos se indica cuánto tiempo pasó y dónde ocurre: «57 años después · en Curalaba».
-  - Al final hay un cierre con lo recorrido y un repaso sin nota, sin preguntas sobre temas sensibles.
+  - Al final hay un cierre con lo recorrido y un repaso sin nota. Los temas sensibles entran con preguntas de hechos escritas a mano, que el texto de cada evento responde, sin cifras ni muertes.
 - Fichas de los personajes que aparecen en varios eventos y los pueblos originarios reunidos de norte a sur.
 - Cada evento se presenta como una página de revista: el título y la imagen completa sobre el océano, el texto con el «¿Sabías que…?» como cita y una ficha con un mini-mapa de Chile, el lugar, el período, los temas y los personajes.
 - En cada evento:

@@ -15,6 +15,10 @@ function acerca({ eventos, periodos }) {
     titulo: 'Sobre este proyecto',
     intro: `Un atlas de la historia de Chile: ${eventos.length} eventos en ${periodos.length} períodos, en una línea de tiempo y un mapa, con textos para niños, para todo público y para quienes quieren profundizar. Sin publicidad, sin registro y sin seguimiento.`,
     html: `
+      <section class="pagina-bloque" aria-labelledby="acerca-responsables">
+        <h3 id="acerca-responsables">Quiénes lo hacen</h3>
+        <p>Responsables del proyecto: Moises Salgado y Miguel Salgado.</p>
+      </section>
       <section class="pagina-bloque" aria-labelledby="acerca-criterios">
         <h3 id="acerca-criterios">Cómo se escribe cada evento</h3>
         <ul>

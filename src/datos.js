@@ -4,8 +4,8 @@
 import { parseFecha } from './fechas.js';
 
 // «Lo que se discute» y el glosario tampoco van en la carga inicial: viajan con los textos de cada evento y en
-// virtual:glosario (vite.config.js).
-const archivos = import.meta.glob(['../data/*.json', '!../data/[0-9][0-9]-*.json', '!../data/se-discute.json', '!../data/glosario.json'], {
+// virtual:glosario (vite.config.js). Las preguntas escritas a mano viajan con el repaso (src/repaso.js).
+const archivos = import.meta.glob(['../data/*.json', '!../data/[0-9][0-9]-*.json', '!../data/se-discute.json', '!../data/glosario.json', '!../data/preguntas.json'], {
   eager: true,
   import: 'default',
 });

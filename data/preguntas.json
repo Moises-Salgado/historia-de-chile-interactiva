@@ -1,0 +1,164 @@
+{
+  "1598-batalla-de-curalaba": [
+    {
+      "pregunta": "¿Qué pasó con las ciudades españolas al sur del río Biobío después de la batalla de Curalaba?",
+      "correcta": "Los españoles las abandonaron",
+      "otras": ["Recibieron más colonos españoles", "Siguieron igual que antes"],
+      "frase": "La victoria dio paso a un alzamiento general que destruyó o hizo abandonar las ciudades españolas al sur del río Biobío.",
+      "fraseNino": "Después, los españoles tuvieron que abandonar sus ciudades al sur del río Biobío."
+    }
+  ],
+  "1641-parlamento-de-quilin": [
+    {
+      "pregunta": "¿Qué río se acordó como frontera en el Parlamento de Quilín?",
+      "correcta": "El río Biobío",
+      "otras": ["El río Maule", "El río Mapocho"],
+      "frase": "Según el cronista Diego de Rosales, se acordó que el río Biobío sería el límite entre ambos territorios y que los mapuche serían libres, sin esclavitud ni encomienda.",
+      "fraseNino": "Acordaron que el río Biobío sería la frontera entre ambos."
+    }
+  ],
+  "1569-la-araucana": [
+    {
+      "pregunta": "¿Quién escribió el poema La Araucana?",
+      "correcta": "Alonso de Ercilla",
+      "otras": ["Pedro de Valdivia", "Gabriela Mistral"],
+      "frase": "En 1569 se publicó en Madrid la primera parte de La Araucana, un poema épico de Alonso de Ercilla sobre la Guerra de Arauco.",
+      "fraseNino": "Un soldado y poeta español, Alonso de Ercilla, escribió un largo poema sobre la guerra entre españoles y mapuche."
+    }
+  ],
+  "1843-fuerte-bulnes": [
+    {
+      "pregunta": "¿Qué pueblos vivían en la zona del estrecho de Magallanes cuando llegó la expedición chilena en 1843?",
+      "correcta": "Los aónikenk y los kawésqar",
+      "otras": ["Los aymara y los atacameños", "Los diaguitas y los mapuche"],
+      "frase": "La zona estaba habitada por pueblos originarios como los aónikenk (tehuelches) y los kawésqar (alacalufes).",
+      "fraseNino": "En esa región ya vivían pueblos originarios, como los aónikenk y los kawésqar."
+    }
+  ],
+  "1861-ocupacion-de-la-araucania": [
+    {
+      "pregunta": "¿Qué perdió el pueblo mapuche con la ocupación de la Araucanía?",
+      "correcta": "Gran parte de sus tierras",
+      "otras": ["Sus minas de salitre del norte", "Sus islas en el océano Pacífico"],
+      "frase": "Para el pueblo mapuche significó la pérdida de la mayor parte de sus tierras y su radicación en reducciones.",
+      "fraseNino": "Los mapuche perdieron gran parte de sus tierras, y hoy esta historia se recuerda y se discute."
+    }
+  ],
+  "1879-guerra-del-pacifico": [
+    {
+      "pregunta": "¿Con qué países se enfrentó Chile en la Guerra del Pacífico?",
+      "correcta": "Con Bolivia y el Perú",
+      "otras": ["Con Argentina y Bolivia", "Con el Perú y Ecuador"],
+      "frase": "La Guerra del Pacífico enfrentó a Chile con Bolivia y el Perú entre 1879 y 1884.",
+      "fraseNino": "Chile tuvo una guerra con Perú y Bolivia por territorios del desierto ricos en salitre, un mineral que se usaba como abono."
+    }
+  ],
+  "1883-tratado-de-ancon": [
+    {
+      "pregunta": "¿Qué provincia cedió el Perú a Chile en el Tratado de Ancón?",
+      "correcta": "Tarapacá",
+      "otras": ["Antofagasta", "Tacna"],
+      "frase": "El Perú cedió a Chile a perpetuidad la provincia de Tarapacá.",
+      "fraseNino": "Perú entregó a Chile la provincia de Tarapacá."
+    }
+  ],
+  "1884-pacto-de-tregua-con-bolivia": [
+    {
+      "pregunta": "¿Qué territorio quedó bajo el gobierno de Chile con el Pacto de Tregua de 1884?",
+      "correcta": "La costa que había sido de Bolivia",
+      "otras": ["La provincia de Tarapacá", "La Patagonia oriental"],
+      "frase": "No era un tratado de paz definitivo: establecía que, mientras durara la tregua, Chile seguiría gobernando el antiguo litoral boliviano, entre el paralelo 23° y la desembocadura del río Loa.",
+      "fraseNino": "La costa que había sido de Bolivia quedó bajo el gobierno de Chile."
+    }
+  ],
+  "1888-incorporacion-de-rapa-nui": [
+    {
+      "pregunta": "¿Por qué se discute hasta hoy el acuerdo de 1888 entre Chile y el pueblo rapanui?",
+      "correcta": "Sus textos en castellano y en rapanui no dicen lo mismo",
+      "otras": ["Lo firmó solo el gobierno de Chile", "Se firmó en Santiago, lejos de la isla"],
+      "frase": "El documento se redactó en castellano y en rapanui mezclado con tahitiano antiguo, y ambos textos no dicen lo mismo, por lo que su interpretación se discute hasta hoy.",
+      "fraseNino": "Hoy se discute qué significaba ese acuerdo, porque sus textos en castellano y en rapanui no dicen lo mismo."
+    }
+  ],
+  "1907-matanza-escuela-santa-maria": [
+    {
+      "pregunta": "¿Qué pedían los trabajadores del salitre que llegaron a Iquique en diciembre de 1907?",
+      "correcta": "Mejores sueldos y condiciones de trabajo",
+      "otras": ["Que cerraran las oficinas salitreras", "Tierras para cultivar en el sur"],
+      "frase": "En diciembre de 1907, miles de trabajadores del salitre se declararon en huelga y llegaron a Iquique para pedir mejores salarios y condiciones de trabajo.",
+      "fraseNino": "Miles de trabajadores del salitre llegaron a Iquique para pedir mejores sueldos y se reunieron en una escuela."
+    }
+  ],
+  "1973-golpe-de-estado": [
+    {
+      "pregunta": "¿Quién gobernó Chile después del golpe de Estado de 1973?",
+      "correcta": "Una Junta Militar",
+      "otras": ["El Congreso Nacional", "Un presidente elegido por votación"],
+      "frase": "El poder quedó en manos de una Junta Militar presidida por el general Augusto Pinochet, que asumió los poderes del Estado y disolvió el Congreso Nacional.",
+      "fraseNino": "Desde entonces, y por casi 17 años, Chile fue gobernado por militares."
+    }
+  ],
+  "1973-violaciones-derechos-humanos": [
+    {
+      "pregunta": "Durante la dictadura, ¿qué organismos denunciaron las violaciones a los derechos humanos?",
+      "correcta": "El Comité Pro Paz y la Vicaría de la Solidaridad",
+      "otras": ["Las comisiones Rettig y Valech", "El Instituto Nacional de Derechos Humanos"],
+      "frase": "Estos hechos son reconocidos oficialmente por el Estado de Chile y, durante la dictadura, fueron denunciados por organismos como el Comité Pro Paz y la Vicaría de la Solidaridad."
+    }
+  ],
+  "1978-crisis-del-beagle": [
+    {
+      "pregunta": "¿Quién ayudó a evitar una guerra entre Chile y Argentina en 1978?",
+      "correcta": "El papa Juan Pablo II",
+      "otras": ["La reina Isabel II", "El presidente de Estados Unidos"],
+      "frase": "En diciembre de 1978 la tensión llegó a su punto más alto y se recurrió a la mediación del papa Juan Pablo II.",
+      "fraseNino": "El papa Juan Pablo II ayudó a que ambos países resolvieran el conflicto conversando."
+    }
+  ],
+  "1980-constitucion": [
+    {
+      "pregunta": "¿Cómo se aprobó la Constitución de 1980?",
+      "correcta": "En un plebiscito sin padrón electoral",
+      "otras": ["Por votación del Congreso Nacional", "En una asamblea elegida para redactarla"],
+      "frase": "Se aprobó en un plebiscito realizado el 11 de septiembre de 1980, sin padrón electoral y bajo severas restricciones a la libertad de expresión, información y reunión, según Memoria Chilena."
+    }
+  ],
+  "1984-tratado-paz-amistad": [
+    {
+      "pregunta": "¿Dónde firmaron Chile y Argentina el Tratado de Paz y Amistad de 1984?",
+      "correcta": "En el Vaticano",
+      "otras": ["En Buenos Aires", "En Santiago"],
+      "frase": "El 29 de noviembre de 1984 ambos países firmaron en el Vaticano el Tratado de Paz y Amistad, que puso fin al diferendo austral."
+    },
+    {
+      "pregunta": "¿Qué disputa resolvió el tratado de paz y amistad que firmaron Chile y Argentina en 1984?",
+      "correcta": "La del canal Beagle",
+      "otras": ["La de la Patagonia oriental", "La de la salida al mar de Bolivia"],
+      "fraseNino": "Con la ayuda del papa Juan Pablo II, Chile y Argentina firmaron un tratado de paz y amistad que resolvió su disputa por el canal Beagle."
+    }
+  ],
+  "1988-plebiscito": [
+    {
+      "pregunta": "¿Qué se votó en el plebiscito del 5 de octubre de 1988?",
+      "correcta": "Si Augusto Pinochet seguía gobernando",
+      "otras": ["Una nueva Constitución", "La elección de los alcaldes"],
+      "frase": "La Constitución de 1980 establecía que en 1988 se haría un plebiscito para aprobar o rechazar al candidato propuesto por las Fuerzas Armadas para un nuevo período presidencial, y el candidato fue Augusto Pinochet.",
+      "fraseNino": "En 1988 los chilenos votaron para decidir si Augusto Pinochet seguía gobernando."
+    }
+  ],
+  "2019-estallido-social": [
+    {
+      "pregunta": "¿Qué alza de precio dio origen a las primeras protestas de octubre de 2019?",
+      "correcta": "La del pasaje del Metro de Santiago",
+      "otras": ["La del precio del pan", "La de las cuentas de la luz"],
+      "frase": "Desde el 18 de octubre de 2019, tras las evasiones masivas del pasaje del Metro de Santiago en protesta por un alza de 30 pesos, hubo manifestaciones masivas en Santiago y en regiones."
+    },
+    {
+      "pregunta": "¿Qué acordaron los partidos políticos en noviembre de 2019?",
+      "correcta": "Preguntar a la gente si quería una nueva Constitución",
+      "otras": ["Adelantar las elecciones presidenciales", "Cambiar el himno nacional"],
+      "frase": "El 15 de noviembre de 2019, diversas fuerzas políticas firmaron el Acuerdo por la Paz Social y la Nueva Constitución, que propuso un plebiscito para abril de 2020 en el que la ciudadanía decidiría si quería o no una nueva Constitución y qué órgano debía redactarla.",
+      "fraseNino": "Hubo grandes marchas pacíficas y también hechos de violencia, y los partidos políticos acordaron preguntar a la gente si quería una nueva Constitución."
+    }
+  ]
+}
