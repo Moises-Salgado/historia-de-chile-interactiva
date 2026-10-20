@@ -3246,10 +3246,8 @@ body[data-vista='detalle'] .minimapa-fila {
   isolation: isolate;
   overflow: hidden;
   padding: clamp(1rem, 3vw, 2rem) 1rem;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='none'%3E%3Cg fill='none' stroke-width='1'%3E%3Cg stroke='%23ece6da' stroke-opacity='.08'%3E%3Cpath d='M0 20c80-14 120 14 200 2s120-16 200-4'/%3E%3Cpath d='M0 45c80-12 120 16 200 4s120-14 200-2'/%3E%3Cpath d='M0 95c80-14 120 12 200 0s120-16 200-2'/%3E%3Cpath d='M0 120c80-10 120 16 200 4s120-14 200-4'/%3E%3Cpath d='M0 170c80-14 120 14 200 2s120-14 200-2'/%3E%3C/g%3E%3Cg stroke='%23b8862b' stroke-opacity='.25'%3E%3Cpath d='M0 70c80-14 120 14 200 2s120-16 200-4'/%3E%3Cpath d='M0 145c80-12 120 16 200 4s120-14 200-2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
-      center / 100% 100% no-repeat,
-    color-mix(in oklab, var(--color, var(--pacifico)) 14%, var(--pacifico));
+  /* El océano, liso, con un leve tinte del período: la obra cuelga sola, como en una sala. */
+  background: color-mix(in oklab, var(--color, var(--pacifico)) 14%, var(--pacifico));
 }
 
 /* La cartela (ceja, título, fecha y bajada) a la izquierda y la obra a la derecha, con todo el ancho que sobra. */
@@ -3457,10 +3455,29 @@ body[data-vista='detalle'] .minimapa-fila {
   }
 }
 
-/* Un retrato (vertical) toma la columna que necesita y el título se queda con el resto. */
+/* Un retrato (vertical) cuelga a la izquierda, a toda la altura del escenario, y su cartela (título, fecha y
+   bajada) va a su lado, como en una sala de retratos: así no queda un vacío entre el título y la obra. */
 @media (min-width: 60em) {
+  .detalle-portada[data-forma='vertical'] {
+    --escenario: min(72cqh, 44rem);
+  }
+
   .detalle-portada[data-forma='vertical'] .detalle-portada-contenido {
-    grid-template-columns: minmax(0, 1fr) max(18rem, var(--escenario) * var(--proporcion));
+    grid-template-areas: 'figura titular';
+    grid-template-columns: max(18rem, var(--escenario) * var(--proporcion)) minmax(0, 1fr);
+    gap: 1rem 3.5rem;
+  }
+
+  .detalle-portada[data-forma='vertical'] .detalle-figura {
+    grid-area: figura;
+  }
+
+  .detalle-portada[data-forma='vertical'] .detalle-titular {
+    grid-area: titular;
+  }
+
+  .detalle-portada[data-forma='vertical'] .detalle-bajada {
+    max-width: 34rem;
   }
 }
 
@@ -3502,9 +3519,9 @@ body[data-vista='detalle'] .minimapa-fila {
     'texto ficha'
     'mas ficha';
   grid-template-rows: auto 1fr;
-  grid-template-columns: minmax(0, 38rem) minmax(15rem, 20rem);
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 21rem);
   align-items: start;
-  gap: 1.5rem 3rem;
+  gap: 1.5rem 4rem;
   max-width: 76rem;
   margin: 0 auto;
   padding: 1.5rem 1rem 2rem;
@@ -3512,10 +3529,23 @@ body[data-vista='detalle'] .minimapa-fila {
 
 .detalle-texto {
   grid-area: texto;
+  max-width: var(--medida);
 }
 
 .detalle-mas {
   grid-area: mas;
+  max-width: var(--medida);
+}
+
+/* Capitular: la primera letra del texto, grande y en ocre, como en una publicación (no en «Para niños»). */
+.detalle-cuerpo:not([data-nivel='nino']) > p:first-child::first-letter {
+  float: left;
+  margin: 0.06em 0.12em 0 0;
+  font-family: var(--serif);
+  font-size: 3.4em;
+  font-weight: 600;
+  line-height: 0.82;
+  color: var(--acento);
 }
 
 /* Fija al desplazar solo si cabe entera (detalle.js le pone .fija). */
@@ -3523,10 +3553,8 @@ body[data-vista='detalle'] .minimapa-fila {
   display: grid;
   grid-area: ficha;
   gap: 0.875rem;
-  padding: 1rem 1.125rem 1.125rem;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
+  padding: 0.25rem 0 0.5rem 1.5rem;
+  border-left: 1px solid var(--borde);
 }
 
 .detalle-ficha.fija {
@@ -3743,11 +3771,13 @@ body[data-vista='detalle'] .minimapa-fila {
 /* En el celular la obra va primero (después de la barra de una historia) y a sangre por los lados. */
 @media (max-width: 39.99em) {
   .detalle-portada {
-    --escenario: 60cqh;
+    --escenario: 52cqh;
   }
 
-  .detalle-figura {
-    order: -1;
+  /* El título primero: con la obra arriba, en un retrato el título quedaba fuera de la pantalla. */
+  .detalle-portada[data-forma]:not([data-forma='vertical']) .detalle-figura,
+  .detalle-portada .detalle-figura {
+    order: 0;
     margin-inline: -1rem;
   }
 
@@ -3850,17 +3880,12 @@ body[data-vista='detalle'] .minimapa-fila {
   padding: 0.5rem;
   color: var(--texto);
   text-decoration: none;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
-  transition:
-    border-color var(--dur-micro) ease,
-    scale var(--dur-micro) ease;
+  transition: scale var(--dur-micro) ease;
 }
 
 @media (hover: hover) {
-  a.vecino:hover {
-    border-color: var(--acento);
+  a.vecino:hover .vecino-titulo {
+    color: var(--acento);
   }
 }
 
@@ -3895,7 +3920,7 @@ body[data-vista='detalle'] .minimapa-fila {
 
 .vecino.vacio {
   color: var(--texto-suave);
-  border-style: dashed;
+  border-top: 1px dashed var(--borde-fuerte);
 }
 
 .vecino-rotulo {
@@ -3943,11 +3968,14 @@ body[data-vista='detalle'] .minimapa-fila {
 }
 
 .plegable {
-  margin: 0.75rem 0;
-  padding: 0 1rem;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--borde);
+}
+
+.plegable:last-child,
+.plegable:has(+ :not(.plegable)) {
+  border-bottom: 1px solid var(--borde);
 }
 
 /* El triángulo del navegador cambia según el sistema: va un chevrón propio, que gira al abrir. */
@@ -3955,6 +3983,7 @@ body[data-vista='detalle'] .minimapa-fila {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  min-height: 2.75rem;
   padding: 0.5rem 0;
   font-weight: 600;
   list-style: none;
@@ -4583,7 +4612,7 @@ body[data-vista='detalle'] .minimapa-fila {
 /* ---- Detalle (mvp 6): la ficha lleva el filete del color del período; los vecinos, la imagen arriba (como
    pasar la página); «Sobre el período», como un portal. ---- */
 .detalle-ficha {
-  border-top: 3px solid var(--color, var(--borde));
+  border-left: 3px solid var(--color, var(--borde));
 }
 
 .vecino,
@@ -4599,22 +4628,23 @@ body[data-vista='detalle'] .minimapa-fila {
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
-  border-radius: 0;
+  border-radius: var(--radio-s);
 }
 
 .vecino-texto {
-  padding: 0.625rem 0.875rem 0.875rem;
+  padding: 0.625rem 0 0.5rem;
 }
 
 .sobre-periodo {
-  --texto-suave: #ece6da;
-  color: #fff;
-  background: var(--curvas-portal) center / 100% 100% no-repeat, var(--color);
+  padding: 1rem 0 0.25rem;
+  background: none;
+  border-top: 3px solid var(--color);
   border-left: 0;
+  border-radius: 0;
 }
 
-.sobre-periodo-fechas {
-  color: var(--texto-suave);
+.sobre-periodo h3 {
+  font-size: var(--t-26);
 }
 
 /* ---- «Para niños» (C4): el mismo diseño y la misma sobriedad, con letra más grande, la imagen primero en el
@@ -4645,11 +4675,6 @@ body[data-vista='detalle'] .minimapa-fila {
   display: none;
 }
 
-@media (max-width: 60em) {
-  .detalle[data-nivel='nino'] .detalle-figura {
-    order: -1;
-  }
-}
 
 /* ---- «Para niños» con diseño propio: se ve solo lo que está escrito para niños (los demás módulos vuelven cuando
    tengan su versión revisada), la obra más grande, «Escuchar» como botón grande, «hace 147 años» como línea
