@@ -36,3 +36,30 @@ Inconsistencias entre vistas vistas en las capturas, para las pasadas siguientes
   - la dirección de arte pide separar con filetes finos en ocre; las marcas del color del período (borde izquierdo) sí corresponden.
 - **Lo que las capturas no muestran:** solo toman la primera pantalla. El cuerpo del evento (texto, ficha, «¿Qué pasó antes / después?»), la cartela completa de la línea y el pie de la portada hay que revisarlos en su pasada, desplazando la vista.
 - **Línea de tiempo:** el portal del período y la banda inferior usan el color sobrio del período, y la cartela, el ocre. Falta el movimiento que pide CLAUDE.md: el eje se desplaza al cambiar de período y las láminas entran escalonadas.
+
+## Pasadas (continuación)
+
+5. **Línea de tiempo:** los saltos largos (un período, el minimapa, «Al inicio») ya no se funden: la pista llega deslizándose desde el lado del viaje, y los puntos y las franjas a la vista entran escalonados (30 ms, a lo más 10).
+6. **Mapa:**
+   - tierra de arena cálida (#7c7668) con la escala de cantidad en ocre;
+   - al filtrar, las regiones se tiñen de norte a sur (15 ms entre una y otra);
+   - el panel entra deslizándose desde el lado del mapa;
+   - la lista de regiones va en filas con filete;
+   - el chip «Todos los períodos» lleva un fundido a su derecha.
+7. **Historias:** el conector se revela con un trazo que se dibuja (`stroke-dashoffset`, la excepción que pide la dirección de arte), y el paso siguiente entra desde abajo (al retroceder, desde arriba).
+
+## Auditoría 2 (después de las pasadas 4 a 7)
+
+- **Mapa:** el fundido del chip fijo (2,5rem) todavía deja leer el chip que pasa por debajo («…ista y Colonia»). Hace falta un tramo opaco antes del degradado.
+- **Siguen como cajas:**
+  - el índice del glosario (16 cuadros con borde);
+  - «Este mes en la historia» y «Elige cómo leer», en la portada;
+  - la barra de una historia.
+
+  Con la dirección de arte, las listas y los índices llevan filetes o van sueltos; las cajas quedan para lo que se toca como un botón.
+- **Resuelto desde la auditoría 1:** la tierra del mapa, la lista de regiones y el movimiento de la línea de tiempo.
+- **Coherente entre vistas:**
+  - las cejas en ocre (ocre luminoso sobre el océano);
+  - los títulos en 34/48 px según el ancho;
+  - la navegación en Barlow;
+  - el texto en Source Serif.
