@@ -131,3 +131,51 @@ La mejor pantalla del sitio es la línea de tiempo en el tramo de la Independenc
 - el encabezado del evento con una obra apaisada;
 - las transiciones sin parpadeos;
 - la barra Anterior / Volver / Siguiente.
+
+## Rediseño (2026-10-20, a partir de la auditoría 3)
+
+El dueño pidió cambiar «todo lo que sea mejoría», colores incluidos. Siete pasadas, cada una con su commit:
+
+1. **Cabecera silenciosa:**
+   - los controles van sin caja y la sección actual se subraya en ocre;
+   - sin la raya roja de lado a lado (la bandera queda en la marca);
+   - en el celular, 16 px más baja;
+   - la tierra de todas las siluetas es la arena del mapa (antes, verde azulado en las historias y en las fichas).
+2. **Portada como sala de entrada:**
+   - la «Jura de la Independencia» a sangre, en el 60 % derecho, fundida con el océano;
+   - el título y la frase a la izquierda, y el pie de la obra en una franja debajo;
+   - las tres entradas como el índice de un museo (filete de ocre, nombre, línea y flecha), sin las tarjetas con imagen;
+   - las cifras grandes sobre el papel;
+   - «Empieza aquí» abierto, sin cajas;
+   - los períodos como un índice con su número grande, sin losas de color;
+   - el «¿Sabías que…?» con el pie de su imagen (antes, un retrato sin decir de quién).
+3. **Línea de tiempo como muro de láminas:**
+   - con alto de sobra, dos carriles (más eventos con su imagen y menos marcas «+N»);
+   - las pilas «+N eventos» muestran las miniaturas de lo que guardan;
+   - las portadillas de período llevan su número grande, sin curvas;
+   - el lavado del período ya no cruza la cartela;
+   - un año por punto (antes, «1938 1938»);
+   - en el celular, «Leer» va junto al título (antes lo tapaban las láminas).
+4. **Ficha de evento:**
+   - el retrato va a la izquierda con su cartela al lado (antes, un vacío de 335 px);
+   - el océano liso, sin curvas, detrás de la obra;
+   - capitular en el texto;
+   - la ficha, los vecinos, «Sobre el período» y los plegables sin cajas, con filetes;
+   - en el celular, el título primero y la obra después.
+5. **Buscador:** los resultados primero, como filas con miniatura (con «terremoto» se ven 6 de 7, antes 2,5), y los filtros en un plegable que dice cuántos hay activos.
+6. **Mapa:**
+   - la columna mide lo que mide Chile (la leyenda la ensanchaba al doble y dejaba un mar vacío);
+   - el mapa es más grande y el conjunto va centrado;
+   - en el celular, el mapa casi de entrada.
+7. **Historias y fichas:**
+   - la presentación abre con la imagen de su primer paso, con su pie y su crédito;
+   - la silueta de los pasos lleva un pie que explica sus números;
+   - las tarjetas son como libros (imagen arriba, entera; texto debajo);
+   - las fichas de personaje y de grupo, en filas con filete;
+   - en el celular, el texto de una ficha vuelve a rodear su imagen: `align-content` hacía del bloque un contexto propio.
+
+**Verificación:**
+- contraste, letra mínima, objetivos táctiles y desborde, sin problemas en claro y oscuro, en 1440 × 900 y 390 × 844, en once vistas;
+- teclado con foco visible;
+- colores forzados legibles;
+- carga inicial de 120,94 KB (tope 141,63).
