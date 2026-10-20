@@ -54,3 +54,20 @@ Fuera de este plan quedan:
     - las mayúsculas se aceptan («#Linea»);
     - el aviso se retira al navegar.
   - **Períodos:** cada uno tiene su dirección, `#linea/NN`.
+- **A3 (hecha).**
+  - **Buscador:**
+    - sin apóstrofos («ohiggins»), con plurales («mapuches»), sinónimos («maremoto»), palabras vacías («del»), años de dos cifras («del 60») y números con punto de miles («12.500»);
+    - busca también en la región y en el resumen, con un extracto;
+    - ordena primero lo que coincide en el título;
+    - la cuenta es la misma que la de la línea;
+    - Escape cierra el panel sin borrar la búsqueda.
+  - **Detalle con filtro:** «Anterior» y «Siguiente» dicen que recorren la búsqueda, y «Ver todos los eventos» quita el filtro.
+  - **Línea de tiempo:**
+    - la marca «+N eventos» también al final;
+    - al volver de un evento sin lámina se acerca lo justo para mostrarlo;
+    - el eje es una «Escala por eventos»: el año de cada evento en su punto, con leyenda y sin décadas interpoladas;
+    - cartela de museo (fecha, título y «Leer»);
+    - grupos como pila de láminas;
+    - en el celular, láminas de 14rem y tramos vacíos más cortos;
+    - Monte Verde con una sola fecha y franjas con nombre accesible.
+  - **Teclado:** con las flechas el foco pasa al título nuevo, y Av Pág desplaza el texto del evento.

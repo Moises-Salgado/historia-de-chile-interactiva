@@ -41,7 +41,7 @@
         // se pide ya, con el mismo srcset y sizes que le pone timeline.js, sin esperar a que se arme la línea.
         if (h === '#linea') {
           const l = document.createElement('link');
-          Object.assign(l, { rel: 'preload', as: 'image', fetchPriority: 'high', imageSizes: '11rem' });
+          Object.assign(l, { rel: 'preload', as: 'image', fetchPriority: 'high', imageSizes: '(max-width: 40em) 14rem, 11rem' });
           l.imageSrcset = [250, 330, 500].map((a) => 'https://commons.wikimedia.org/wiki/Special:FilePath/Monte_Verde_2012.jpg?width=' + a + ' ' + a + 'w').join(', ');
           document.head.append(l);
         }
@@ -172,7 +172,7 @@
     <main id="principal" class="principal" tabindex="-1">
       <section id="linea" class="linea" aria-label="Línea de tiempo" aria-describedby="ayuda-linea" tabindex="-1">
         <p id="ayuda-linea" class="solo-lector">
-          Usa las flechas izquierda y derecha para recorrer los eventos, Enter para abrir uno, y las teclas más y menos para ver más o menos eventos.
+          Usa las flechas izquierda y derecha para recorrer los eventos, Enter para abrir uno, y las teclas más y menos para ver más o menos eventos. La escala va por eventos: los años sin eventos se acortan, y cada año escrito en el eje es el de un evento.
         </p>
         <div class="linea-info">
           <p class="estado-vista solo-lector"></p>

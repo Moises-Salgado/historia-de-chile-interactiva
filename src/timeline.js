@@ -51,7 +51,9 @@ function crearEscala(eventos, periodos, grupoDe) {
     const n = cuantos.get(t) ?? 0;
     anclas.push({ t, u, n });
     u += n;
-    if (i < tiempos.length - 1) u += 1.2 * Math.log10(1 + (tiempos[i + 1] - t) / 5);
+    // Un tramo sin eventos mide 2,5 ranuras como máximo: deslizar nunca deja una pantalla entera de «miles de
+    // años» (las barras oblicuas del eje siguen marcando el salto).
+    if (i < tiempos.length - 1) u += Math.min(2.5, 1.2 * Math.log10(1 + (tiempos[i + 1] - t) / 5));
   });
 
   // Ranura de un instante: el inicio de su ancla o un punto del tramo de tiempo entre dos anclas.
@@ -101,26 +103,21 @@ function calcularFranjas(periodos, eventos, escala) {
   return orden.map((periodo, i) => ({ periodo, desde: i ? limites[i - 1] : -Infinity, hasta: limites[i] ?? Infinity }));
 }
 
-// Años candidatos a etiqueta en el eje, con prioridad según lo «redondo» que es el año. Los de paso fino
-// (cada 1, 5, 10 o 50 años) guardan `du`, lo que mide su paso en ranuras: solo se muestran donde la escala
-// alcanza para esa precisión (así no aparece «1471» en un tramo comprimido).
-function aniosCandidatos(escala) {
-  const PASOS = [1000, 500, 100, 50, 10, 5];
-  const anios = [];
-  // Prehistoria: solo miles redondos a.C.; desde 1400 (los primeros eventos d.C.), cada año.
-  for (let a = Math.ceil(escala.anclas[0].t / 1000) * 1000; a < 0; a += 1000) anios.push(a);
-  // Desde 1400, solo las décadas: el año exacto de cada evento está en su lámina.
-  for (let a = 1400; a <= Math.floor(escala.hoy); a += 10) anios.push(a);
-  return anios
-    .map((a) => {
-      const r = PASOS.findIndex((m) => a % m === 0);
-      const prioridad = r < 0 ? 0 : 6 - r;
-      const du = prioridad <= 3 ? escala.uDe(a + (PASOS[r] ?? 1)) - escala.uDe(a) : Infinity;
-      return { u: escala.uDe(a), du, texto: formatearAnio(a), prioridad };
-    })
+// La fecha corta de una lámina y del eje. Si el evento se fecha en «años atrás» (Monte Verde), la misma forma
+// que en su detalle y en su nombre accesible: no «c. 12.500 a.C.» en un lado y «c. 14.500 años atrás» en otro.
+const fechaLamina = (ev) => (/años atrás/.test(ev.fechaTexto) ? ev.fechaTexto : fechaCorta(ev));
+
+// Escala por eventos: el eje no es proporcional al tiempo (cada evento ocupa su ranura y los años sin eventos se
+// comprimen), así que no rotula décadas, que harían creer que lo es. Cada año rotulado es el de un evento, justo
+// en su punto; la prioridad sigue a su importancia. Además, «Hoy» y los saltos de «miles de años».
+function aniosCandidatos(escala, eventos) {
+  // En el eje, el año de inicio (donde está el punto), no el rango.
+  const anioEje = (ev) => (/años atrás/.test(ev.fechaTexto) ? ev.fechaTexto : `${ev.fechaAproximada ? 'c. ' : ''}${formatearAnio(ev.anio)}`);
+  return eventos
+    .map((ev) => ({ u: ev.u, du: Infinity, texto: anioEje(ev), prioridad: 2 * ev.importancia, ev }))
     .concat({ u: escala.total, du: Infinity, texto: 'Hoy', prioridad: 9 })
     .concat(saltos(escala).map((u) => ({ u, du: Infinity, texto: 'miles de años', prioridad: 10, clase: 'salto' })))
-    .sort((a, b) => b.prioridad - a.prioridad);
+    .sort((a, b) => b.prioridad - a.prioridad || a.u - b.u);
 }
 
 // Ranuras donde la escala salta muchos años sin eventos (centro del tramo entre dos anclas).
@@ -185,8 +182,8 @@ const tarjeta = (ev, color) => {
     <li class="evento imp-${ev.importancia}" data-id="${ev.id}" style="--color:${color}" hidden>
       <button type="button" class="tarjeta" tabindex="-1" aria-label="${esc(`${ev.fechaTexto}: ${ev.titulo}`)}">
         <span class="tarjeta-img"><img src="${urlImagen(archivo, 250)}" srcset="${[250, 330, 500].map((a) => `${urlImagen(archivo, a)} ${a}w`).join(', ')}"
-          sizes="${LAMINA.ancho}rem" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}"></span>
-        <span class="tarjeta-texto"><span class="tarjeta-fecha">${esc(fechaCorta(ev))}</span><span class="tarjeta-titulo${titulo.length > 40 ? ' largo' : ''}">${esc(titulo)}</span></span>
+          sizes="(max-width: 40em) 14rem, ${LAMINA.ancho}rem" alt="" loading="lazy" decoding="async" draggable="false" data-periodo="${ev.periodoId}"></span>
+        <span class="tarjeta-texto"><span class="tarjeta-fecha">${esc(fechaLamina(ev))}</span><span class="tarjeta-titulo${titulo.length > 40 ? ' largo' : ''}">${esc(titulo)}</span></span>
       </button>
     </li>`;
 };
@@ -215,7 +212,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
   const grupoDe = new Map(grupos.flatMap((grupo) => grupo.eventos.map((ev) => [ev, grupo])));
   const escala = crearEscala(eventos, periodos, grupoDe);
   const franjas = calcularFranjas(periodos, eventos, escala);
-  const candidatosAnio = aniosCandidatos(escala);
+  const candidatosAnio = aniosCandidatos(escala, eventos);
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const colorDe = new Map(periodos.map((p) => [p.id, p.color]));
   const periodoPorId = new Map(periodos.map((p) => [p.id, p]));
@@ -270,10 +267,11 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
         <div class="franjas">${franjas
           .map(
             ({ periodo: p }) => `<div class="franja" style="--color:${p.color}"><button type="button" class="franja-nombre" data-periodo="${p.id}"
-              tabindex="-1">${esc(p.nombre)}<span class="franja-fechas">${esc(p.fechasTexto)}</span></button></div>`,
+              tabindex="-1" aria-label="${esc(`${p.nombre}, ${p.fechasTexto}`)}">${esc(p.nombre)}<span class="franja-fechas">${esc(p.fechasTexto)}</span></button></div>`,
           )
           .join('')}</div>
         <div class="anios" aria-hidden="true"></div>
+        <span class="eje-leyenda" aria-hidden="true">Escala por eventos</span>
         <div class="eje" aria-hidden="true"><div class="eje-linea"><div class="eje-decadas"></div></div><span class="tramo" hidden></span>${saltos(escala)
           .map((u) => `<span class="salto-marca" data-u="${u}"></span>`)
           .join('')}${eventos
@@ -384,14 +382,16 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     const yAnios = yFranjas - MEDIDA.anios * rem;
     const hueco = MEDIDA.hueco * rem;
     const base = yAnios - MEDIDA.eje * rem - hueco; // borde inferior del carril más bajo
-    // Escala de las láminas: completa si la más alta cabe con la cartela corta encima; si no, menor.
+    // Escala de las láminas: completa si la más alta cabe con la cartela corta encima; si no, menor. En el
+    // celular (pista angosta) la lámina es más ancha y puede crecer un poco: es lo principal de la pantalla.
+    const angosta = ventana.clientWidth < 640;
     const libre = base - CARTELA.corta * rem;
-    const s = limitar(libre / (LAMINA.alto[3] * rem), LAMINA.minimo, 1);
+    const s = limitar(libre / (LAMINA.alto[3] * rem), LAMINA.minimo, angosta ? 1.15 : 1);
     Object.assign(g, {
       rem,
       s,
       // En pantallas angostas con texto grande, la lámina no puede ser más ancha que la vista.
-      w: Math.min(LAMINA.ancho * rem, ventana.clientWidth - 2 * MEDIDA.margen * rem),
+      w: Math.min((angosta ? 14 : LAMINA.ancho) * rem, ventana.clientWidth - 2 * MEDIDA.margen * rem),
       h: LAMINA.alto[3] * rem * s, // alto del carril: el de la lámina más alta
       hueco,
       tallo: MEDIDA.tallo * rem,
@@ -417,7 +417,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       el.style.transform = `translate(${posPortales[i].toFixed(1)}px, ${yCarril(g.carriles - 1).toFixed(1)}px)`;
     });
     const finTarjetas = items.reduce((max, ev) => (ev.pos ? Math.max(max, ev.pos.x + g.w) : max), 0);
-    g.ancho = Math.ceil(Math.max(X(escala.total) + g.w, finTarjetas) + MEDIDA.margen * rem);
+    g.ancho = Math.ceil(Math.max(X(escala.total) + g.w, finTarjetas, g.finHuecos ?? 0) + MEDIDA.margen * rem);
     pista.style.width = `${g.ancho}px`;
     pista.style.setProperty('--tarjeta-ancho', `${g.w}px`);
     pista.style.setProperty('--s', s.toFixed(3));
@@ -429,7 +429,8 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     dibujarEventos();
     dibujarConectores(alto);
     for (const el of elSaltos) el.style.transform = `translateX(${X(Number(el.dataset.u)).toFixed(1)}px)`;
-    const aptos = candidatosAnio.filter((c) => c.du * g.z >= 2 * mitadEtiqueta(c.texto, rem));
+    // Solo los años de los eventos que se ven en el eje (con un filtro, los que quedan).
+    const aptos = candidatosAnio.filter((c) => (!c.ev || (enFiltro.has(c.ev) && !puntosOcultos.has(c.ev))) && c.du * g.z >= 2 * mitadEtiqueta(c.texto, rem));
     capaAnios.innerHTML = elegirEtiquetas(aptos, X, rem)
       .map(({ x, texto, clase }) => `<span class="anio${clase ? ` ${clase}` : ''}" style="transform:translateX(${x.toFixed(1)}px)">${texto}</span>`)
       .join('');
@@ -508,10 +509,17 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       else union.push([a, b]);
     }
     const sinLamina = items.filter((ev) => !ev.pos);
+    g.finHuecos = 0;
     const alto = LAMINA.alto[1] * g.rem * g.s * 0.5;
     const base = yCarril(0) + g.h;
     huecos = [];
     let html = '';
+    const marcar = (x, ancho, dentro) => {
+      huecos.push({ centro: x + ancho / 2, importancia: Math.max(...dentro.map((ev) => ev.importancia)) });
+      const n = dentro.length;
+      html += `<div class="hueco" data-i="${huecos.length - 1}" style="--color:${colorDe.get(dentro[0].periodoId)};width:${ancho.toFixed(1)}px;height:${alto.toFixed(1)}px;transform:translate(${x.toFixed(1)}px, ${(base - alto).toFixed(1)}px)">
+        <span class="hueco-cuenta">+${n}</span><span class="hueco-texto">${n === 1 ? 'evento' : 'eventos'}</span><span class="hueco-accion">${icono('mas')}Acercar</span></div>`;
+    };
     for (let i = 0; i < union.length - 1; i++) {
       const [izq, der] = [union[i][1], union[i + 1][0]];
       const libre = der - izq - 2 * hueco;
@@ -519,11 +527,17 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       const dentro = sinLamina.filter((ev) => X(ev.u) > izq && X(ev.u) < der);
       if (!dentro.length) continue;
       const ancho = Math.min(libre, 0.75 * w);
-      const x = izq + hueco + (libre - ancho) / 2;
-      huecos.push({ centro: x + ancho / 2, importancia: Math.max(...dentro.map((ev) => ev.importancia)) });
-      const n = dentro.length;
-      html += `<div class="hueco" data-i="${huecos.length - 1}" style="width:${ancho.toFixed(1)}px;height:${alto.toFixed(1)}px;transform:translate(${x.toFixed(1)}px, ${(base - alto).toFixed(1)}px)">
-        <span class="hueco-cuenta">+${n}</span><span class="hueco-texto">${n === 1 ? 'evento' : 'eventos'}</span><span class="hueco-accion">${icono('mas')}Acercar</span></div>`;
+      marcar(izq + hueco + (libre - ancho) / 2, ancho, dentro);
+    }
+    // Al final: los eventos sin lámina posteriores a la última (la elección de 2025, cuyo punto queda bajo la
+    // lámina anterior) llevan su marca después de ella; la pista se alarga lo necesario. Así se llega a ellos.
+    const conLamina = items.filter((ev) => ev.pos);
+    const ultima = conLamina.at(-1);
+    const tras = ultima ? sinLamina.filter((ev) => ev.u > ultima.u) : [];
+    if (tras.length) {
+      const x = (union.at(-1)?.[1] ?? 0) + hueco;
+      marcar(x, 0.75 * w, tras);
+      g.finHuecos = x + 0.75 * w + hueco;
     }
     capaHuecos.innerHTML = html;
   }
@@ -608,9 +622,10 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     const p = elegido ? periodoPorId.get(elegido.periodoId) : periodo;
     const fr = franjas.find((x) => x.periodo === p);
     const n = franjas.indexOf(fr) + 1;
-    const resumen = elegido && (elegido.esGrupo ? elegido.descripcion : nivel() === 'nino' ? elegido.resumenNino : elegido.resumen);
+    // Cartela de museo: con un evento elegido, su fecha, su título y «Leer» (el resumen se lee al abrirlo: la
+    // cartela no debe pesar más que las láminas); con un período, su nombre, sus fechas y su descripción.
     const [orden, nombre, fechas, desc] = elegido
-      ? [elegido.fechaTexto, elegido.titulo, elegido.fechaTexto, resumen]
+      ? [elegido.fechaTexto, elegido.titulo, elegido.fechaTexto, '']
       : [`Período ${n} de ${franjas.length} · ${p.fechasTexto}`, p.nombre, p.fechasTexto, p.descripcion];
     cielo.dataset.tipo = elegido ? 'evento' : 'periodo';
     cartela.style.setProperty('--color', p.color);
@@ -1162,7 +1177,17 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
       alCambiar();
     },
     /** Devuelve el foco a la tarjeta actual (o a la primera a la vista) y la centra. */
+    // Al volver de un evento que a este zoom no tiene lámina, se acerca lo justo para que la tenga: así queda
+    // marcado y con el foco ese mismo evento, no la lámina más cercana.
     enfocarActual() {
+      if (actual && !actual.pos && items.includes(actual)) {
+        for (const nivel of [ZOOM.hitos, ZOOM.todos, ZOOM.max]) {
+          if (actual.pos) break;
+          if (f >= nivel) continue;
+          f = nivel;
+          distribuir();
+        }
+      }
       if (actual) centrarEn(actual, false);
       actualizarTabindex();
       enfocable?.focus({ preventScroll: true });

@@ -1893,9 +1893,12 @@ body[data-vista='detalle'] .linea {
   gap: 0.5rem 1.5rem;
 }
 
+/* Cartela de museo: un filete del color del período a la izquierda, la fecha, el título y «Leer». */
 .cartela-info {
   min-width: 0;
-  max-width: 52rem;
+  max-width: 40rem;
+  padding-left: 0.875rem;
+  border-left: 0.25rem solid var(--tinta);
 }
 
 .cartela p {
@@ -1922,10 +1925,40 @@ body[data-vista='detalle'] .linea {
   color: var(--texto-suave);
 }
 
-/* Completa o nada (timeline.js la oculta si no cabe): cortada podía dejar una afirmación sin su fuente. */
+/* Completa o nada (timeline.js la oculta si no cabe): cortada podía dejar una afirmación sin su fuente. Solo la
+   lleva un período, y solo en pantallas anchas. */
 .cartela-desc {
   margin-top: 0.25rem !important;
   color: var(--texto-suave);
+}
+
+.cartela-desc:empty {
+  display: none;
+}
+
+/* «Escala por eventos», como la escala de una carta, al comienzo del eje (timeline.js): los años rotulados son
+   los de los eventos y los tramos sin eventos se acortan. En pantallas angostas no cabe junto al primer año. */
+.eje-leyenda {
+  position: absolute;
+  top: var(--y-anios);
+  left: 1.25rem;
+  font-family: var(--rotulo);
+  font-size: var(--t-1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.pista.angosta .eje-leyenda {
+  display: none;
+}
+
+@media (max-width: 59.99em) {
+  .cartela-desc {
+    display: none;
+  }
 }
 
 .cartela-acciones {
@@ -1988,34 +2021,47 @@ body[data-vista='detalle'] .linea {
   font-size: var(--t-1);
   font-weight: 600;
   line-height: 1.1;
-  color: var(--texto-suave);
+  color: var(--texto);
   text-align: center;
-  border: 1px dashed var(--borde-fuerte);
+  /* Una pila de láminas chicas del color del período (no un recuadro punteado, que parecía una imagen rota). */
+  background: var(--superficie-2);
+  background: color-mix(in srgb, var(--color, var(--borde)) 12%, var(--superficie));
+  border: 0;
+  border-top: 3px solid var(--color, var(--borde-fuerte));
   border-radius: var(--radio);
+  box-shadow:
+    5px -5px 0 -1px var(--fondo),
+    5px -5px 0 0 var(--borde-fuerte),
+    10px -10px 0 -1px var(--fondo),
+    10px -10px 0 0 var(--borde),
+    var(--sombra);
   cursor: zoom-in;
   pointer-events: auto;
-  transition:
-    color var(--dur-micro) ease,
-    border-color var(--dur-micro) ease;
+  transition: translate var(--dur-micro) ease;
 }
 
 @media (hover: hover) {
   .hueco:hover {
-    color: var(--texto);
-    border-color: var(--acento);
+    translate: 0 -2px;
   }
 }
 
 .hueco-cuenta {
-  font-size: var(--t-4);
+  font-family: var(--serif);
+  font-size: var(--t-5);
   line-height: 1;
   color: var(--texto);
 }
 
+/* El cobre sobre el tinte no llega a 4,5:1: el texto va en el color del texto y solo el signo en cobre. */
 .hueco-accion {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+  color: var(--texto);
+}
+
+.hueco-accion .icono {
   color: var(--acento);
 }
 

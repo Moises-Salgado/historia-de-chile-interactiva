@@ -334,7 +334,8 @@ export function crearDetalle(
   });
 
   /** Un evento; con `historia` ({ recorrido, paso }), como paso de una historia guiada. */
-  function mostrar(ev, { antes, despues, nivel: nivelLectura, regla = '', enfocar = true, historia = null }) {
+  // `filtro` ({ n }): «Anterior» y «Siguiente» recorren solo los eventos de una búsqueda o de un filtro, y se dice.
+  function mostrar(ev, { antes, despues, nivel: nivelLectura, regla = '', enfocar = true, historia = null, filtro = null }) {
     iniciar(ev, nivelLectura);
     const p = periodoDe.get(ev.periodoId);
     const img = ev.imagen;
@@ -350,7 +351,14 @@ export function crearDetalle(
           rotulo: 'Paso siguiente',
           vacio: `Este es el último paso de «${esc(r.titulo)}». <a class="boton chico vecino-salida" href="${rutaHistoria(r, 'fin')}">Terminar la historia</a>`,
         })}</nav>`
-      : `<nav class="vecinos" aria-label="Eventos anterior y siguiente">${vecino(antes, 'antes', colorDe)}${vecino(despues, 'despues', colorDe)}</nav>`;
+      : filtro
+        ? `<nav class="vecinos" aria-label="Eventos anterior y siguiente de la búsqueda">${vecino(antes, 'antes', colorDe, {
+            vacio: `Es el primero de ${filtro.n === 1 ? 'tu búsqueda' : `los ${filtro.n} eventos de tu búsqueda o filtro`}.`,
+          })}${vecino(despues, 'despues', colorDe, {
+            vacio: `Es el último de ${filtro.n === 1 ? 'tu búsqueda' : `los ${filtro.n} eventos de tu búsqueda o filtro`}.`,
+          })}</nav>
+          <p class="vecinos-filtro">«Anterior» y «Siguiente» recorren solo ${filtro.n === 1 ? 'el evento' : `los ${filtro.n} eventos`} de tu búsqueda o filtro. <button type="button" class="boton chico" data-accion="quitar-filtro">Ver todos los eventos</button></p>`
+        : `<nav class="vecinos" aria-label="Eventos anterior y siguiente">${vecino(antes, 'antes', colorDe)}${vecino(despues, 'despues', colorDe)}</nav>`;
     // En una historia: cuánto pasó desde el paso anterior y dónde ocurre este (si es otro lugar que el anterior).
     const lugar = historia ? dondeOcurre(ev) : '';
     const partes = historia ? [antes && tiempoEntre(antes, ev), lugar !== (antes ? dondeOcurre(antes) : '') && lugar].filter(Boolean).join(' · ') : '';

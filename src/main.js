@@ -272,10 +272,18 @@ const detalle = crearDetalle(elDetalle, {
   alCambiarNacimiento: (anio) => linea.ponerNacimiento(anio),
 });
 linea.ponerNacimiento(leerNacimiento());
+// Regiones donde ocurre cada evento (por sus lugares o zonas): así se lo encuentra buscando «Ñuble» o «Biobío».
+const regionCorta = new Map(datosMapa.regiones.map((r) => [r.codigo, r.corto]));
+const regionesDeUbicacion = new Map([
+  ...datosMapa.lugares.map((l) => [l.id, [l.region]]),
+  ...datosMapa.zonas.map((z) => [z.id, z.regiones ?? []]),
+]);
+const regionesDe = (ev) => [...new Set(ev.ubicaciones.flatMap((u) => regionesDeUbicacion.get(u) ?? []))].map((c) => regionCorta.get(c)).filter(Boolean);
 const filtros = crearFiltros($('#panel-filtros'), {
   periodos,
   temas,
   eventos,
+  regionesDe,
   boton: $('#btn-buscar'),
   alCambiar: aplicarFiltros,
   alElegir: (ev) => ir(`#evento/${ev.id}`),
@@ -691,7 +699,9 @@ function vecinosDe(ev) {
     const g = grupoDeEvento.get(x);
     return g && g !== grupoDeEvento.get(ev) && g.eventos.filter((m) => lista.includes(m)).length > 1 ? g : x;
   };
-  return { antes: lista[i - 1] ? comoItem(lista[i - 1]) : null, despues: lista[i + 1] ? comoItem(lista[i + 1]) : null };
+  // Con una búsqueda o un filtro, el detalle lo dice (y ofrece ver todos).
+  const filtro = lista.length < eventos.length ? { n: lista.length } : null;
+  return { antes: lista[i - 1] ? comoItem(lista[i - 1]) : null, despues: lista[i + 1] ? comoItem(lista[i + 1]) : null, filtro };
 }
 const rutaEvento = (item) => (!item ? null : item.esGrupo ? `#grupo/${item.id}` : `#evento/${item.id}`);
 
@@ -702,8 +712,8 @@ function pintarVista(vista, desdeBoton) {
   filtros.cerrar({ devolverFoco: false });
   if (vista.tipo === 'evento') {
     const { ev } = vista;
-    const { antes, despues } = vecinosDe(ev);
-    detalle.mostrar(ev, { antes, despues, nivel, regla: linea.regla(ev), enfocar });
+    const { antes, despues, filtro } = vecinosDe(ev);
+    detalle.mostrar(ev, { antes, despues, nivel, regla: linea.regla(ev), enfocar, filtro });
     nav = { antes: rutaEvento(antes), despues: rutaEvento(despues) };
     titulo = ev.titulo;
     if (desdeBoton) anunciar(`${ev.fechaTexto}: ${ev.titulo}`);
@@ -929,6 +939,13 @@ elDetalle.addEventListener('click', (e) => {
   else if (b?.dataset.accion === 'guardar-historia') guardarHistoria(b.dataset.historia, b);
   else if (b?.dataset.accion === 'escuchar') alternarLectura();
   else if (b?.dataset.accion === 'repaso') empezarRepaso();
+  else if (b?.dataset.accion === 'quitar-filtro' && vistaActual) {
+    // Sin búsqueda ni filtro, «Anterior» y «Siguiente» vuelven a recorrer todos los eventos.
+    filtros.limpiar();
+    pintarVista(vistaActual, true);
+    $('#detalle-titulo')?.focus({ preventScroll: true });
+    anunciar('Se quitaron la búsqueda y los filtros: se recorren todos los eventos.');
+  }
 });
 // «Escuchar» (src/escuchar.js): el botón aparece solo si el sistema tiene una voz en español. Lee el título, la
 // fecha, el texto del nivel elegido y, si se ven, «¿Sabías que…?» y «Lo que se discute»; se detiene al cambiar de
@@ -1017,10 +1034,12 @@ function actualizarControles() {
   if (ocultar && conFoco) $('#detalle-titulo')?.focus({ preventScroll: true });
 }
 
+// Con los botones, el foco se queda en el botón (para seguir avanzando); con las flechas del teclado pasa al
+// título del evento nuevo: si no, quedaba en la página y Av Pág ya no desplazaba el texto.
 function mover(dir) {
   if (!detalle.abierto) return linea.mover(dir);
   const url = dir > 0 ? nav.despues : nav.antes;
-  if (url) ir(url, { desdeBoton: true });
+  if (url) ir(url, { desdeBoton: [botonAnterior, botonSiguiente].includes(document.activeElement) });
 }
 
 // aria-disabled en vez de disabled: el botón conserva el foco al llegar al primer o último evento.
@@ -1050,14 +1069,25 @@ document.addEventListener('keydown', (e) => {
     // Primero se detiene la lectura en voz alta y se cierra el aviso a la vista (puede tapar el foco).
     if (leyendo()) detenerLectura();
     else if (!aviso.hidden) aviso.hidden = true;
-    else if (filtros.abierto) filtros.cerrar();
-    else if (detalle.abierto && !e.target.closest('input')) volver(); // en un campo, Escape solo cancela lo escrito
+    else if (filtros.abierto) {
+      // El campo de búsqueda borraría lo escrito con Escape, pero el filtro seguiría puesto: se cierra el panel
+      // y la búsqueda queda entera (texto y filtro), como al pulsar «Ver en la línea de tiempo».
+      e.preventDefault();
+      filtros.cerrar();
+    } else if (detalle.abierto && !e.target.closest('input')) volver(); // en un campo, Escape solo cancela lo escrito
     return;
   }
   if (filtros.abierto || e.target.closest('input, select, textarea, [contenteditable="true"]')) return;
   // Los controles remotos para presentaciones envían Av Pág y Re Pág: primero recorren el texto del
   // detalle y, al llegar al final (o al comienzo), pasan al evento siguiente (o al anterior).
   const pagina = 'clase' in raiz.dataset && (e.key === 'PageDown' || e.key === 'PageUp');
+  // Fuera del modo clase, Av Pág y Re Pág desplazan el texto del evento aunque el foco esté fuera de él (en la
+  // barra inferior, o en la página después de cambiar de evento).
+  if (!pagina && detalle.abierto && (e.key === 'PageDown' || e.key === 'PageUp') && !elDetalle.contains(document.activeElement)) {
+    e.preventDefault();
+    elDetalle.scrollBy({ top: (e.key === 'PageDown' ? 0.8 : -0.8) * elDetalle.clientHeight, behavior: movimientoReducido() ? 'auto' : 'smooth' });
+    return;
+  }
   if (pagina && detalle.abierto) {
     const abajo = e.key === 'PageDown';
     const queda = abajo ? elDetalle.scrollHeight - elDetalle.clientHeight - elDetalle.scrollTop : elDetalle.scrollTop;
