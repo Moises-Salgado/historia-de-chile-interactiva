@@ -412,6 +412,18 @@ function validarTitulosCortos(mapa, ctx) {
   }
 }
 
+// Medidas de las imágenes (imagenes-medidas.json, de scripts/medir-imagenes.mjs): cada imagen de un evento debe
+// tener su ancho y alto en píxeles (el detalle compone la obra según su forma, sin saltos al cargar).
+function validarMedidas(medidas, ctx) {
+  if (!medidas || typeof medidas !== 'object' || Array.isArray(medidas)) return error('imagenes-medidas.json', 'debe ser un objeto { "Archivo.jpg": [ancho, alto] }');
+  for (const [archivo, m] of Object.entries(medidas)) {
+    if (!Array.isArray(m) || m.length !== 2 || !m.every((n) => Number.isInteger(n) && n > 0)) error(`imagenes-medidas.json [${archivo}]`, 'debe ser [ancho, alto] en píxeles');
+  }
+  const usados = new Set([...ctx.eventos.values()].map((ev) => ev.imagen?.archivo).filter(Boolean));
+  for (const archivo of usados) if (!medidas[archivo]) aviso('imagenes-medidas.json', `falta la medida de «${archivo}»: ejecuta node scripts/medir-imagenes.mjs`);
+  for (const archivo of Object.keys(medidas)) if (!usados.has(archivo)) aviso('imagenes-medidas.json', `«${archivo}» ya no la usa ningún evento: ejecuta node scripts/medir-imagenes.mjs`);
+}
+
 if (!existsSync(DIR)) {
   console.error(`No existe la carpeta de datos: ${DIR}`);
   process.exit(1);
@@ -419,7 +431,7 @@ if (!existsSync(DIR)) {
 
 const nombres = readdirSync(DIR).filter((n) => n.endsWith('.json')).sort();
 const archivosEventos = nombres.filter((n) => ARCHIVO_EVENTOS.test(n));
-const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json', 'lugares.json', 'ubicaciones.json', 'titulos-cortos.json', 'se-discute.json', 'glosario.json'];
+const OPCIONALES = ['recorridos.json', 'grupos.json', 'sabias-que.json', 'lugares.json', 'ubicaciones.json', 'titulos-cortos.json', 'se-discute.json', 'glosario.json', 'imagenes-medidas.json'];
 for (const n of nombres) {
   if (!ARCHIVO_EVENTOS.test(n) && !['periodos.json', 'temas.json', ...OPCIONALES].includes(n)) aviso(n, 'archivo no reconocido (la app lo ignora)');
 }
@@ -474,6 +486,8 @@ if (glosario) validarGlosario(glosario, ctx);
 const lugares = opcional('lugares.json');
 const ubicaciones = opcional('ubicaciones.json');
 if (lugares || ubicaciones) validarUbicaciones(ubicaciones, ctx, validarLugares(lugares));
+const medidas = opcional('imagenes-medidas.json');
+if (medidas) validarMedidas(medidas, ctx);
 
 // index.html precarga la lámina del primer evento al entrar a #linea: debe ser su imagen actual.
 const RUTA_INDEX = resolve(DIR, '../index.html');

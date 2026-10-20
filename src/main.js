@@ -225,6 +225,7 @@ ponerModoClase(leerPreferencia('clase') === 'si');
 
 const NIVELES = ['nino', 'general', 'detallado'];
 let nivel = NIVELES.includes(leerPreferencia('nivel')) ? leerPreferencia('nivel') : 'general';
+raiz.dataset.nivel = nivel; // (index.html ya lo puso antes de pintar; aquí, con un valor válido)
 for (const radio of document.querySelectorAll('input[name="nivel"]')) radio.checked = radio.value === nivel;
 // La píldora del nivel elegido es un elemento aparte, del tamaño de su opción: al cambiar de nivel (View
 // Transition) se desliza y el texto del detalle cambia con un fundido.
@@ -337,6 +338,7 @@ botonClase.addEventListener('click', () => {
 // El nivel se elige arriba («Leer») o en «Empieza aquí», en la portada: los dos quedan marcados.
 function ponerNivel(valor) {
   nivel = valor;
+  raiz.dataset.nivel = nivel;
   guardarPreferencia('nivel', nivel);
   detenerLectura();
   inicio.ponerNivel(nivel);
@@ -917,6 +919,24 @@ function cerrarDetalle(hacia = base) {
   });
 }
 
+// «Ver más grande»: la obra pasa a una columna, del alto de la pantalla, en la misma página (sin una capa encima);
+// el mismo botón o Escape la devuelven. Pide también la versión de 1280 px, y la lámina crece con la transición.
+function ampliarLamina(boton, ampliar = boton?.getAttribute('aria-pressed') !== 'true') {
+  const cabeza = elDetalle.querySelector('.detalle-portada');
+  const img = laminaDetalle();
+  if (!boton || !cabeza || !img || !vistaActual?.ev) return;
+  boton.setAttribute('aria-pressed', String(ampliar));
+  if (ampliar) Object.assign(img, imagenDetalle(vistaActual.ev.imagen.archivo, { ampliada: true }), { src: img.src });
+  img.style.viewTransitionName = LAMINA;
+  conTransicion(() => {
+    if (ampliar) cabeza.dataset.ampliada = '';
+    else delete cabeza.dataset.ampliada;
+  }, 'ampliar').then(() => {
+    img.style.viewTransitionName = '';
+    if (ampliar) cabeza.scrollIntoView({ block: 'nearest', behavior: movimientoReducido() ? 'auto' : 'smooth' });
+  });
+}
+
 // Mientras se busca, la barra inferior se oculta: movería la línea de tiempo que está debajo, sin verla, y
 // tapaba la barra de acciones del buscador (y el resultado con el foco) en el celular.
 const controles = $('.controles');
@@ -939,6 +959,7 @@ elDetalle.addEventListener('click', (e) => {
   else if (b?.dataset.accion === 'guardar-historia') guardarHistoria(b.dataset.historia, b);
   else if (b?.dataset.accion === 'escuchar') alternarLectura();
   else if (b?.dataset.accion === 'repaso') empezarRepaso();
+  else if (b?.dataset.accion === 'ampliar') ampliarLamina(b);
   else if (b?.dataset.accion === 'quitar-filtro' && vistaActual) {
     // Sin búsqueda ni filtro, «Anterior» y «Siguiente» vuelven a recorrer todos los eventos.
     filtros.limpiar();
@@ -1074,7 +1095,8 @@ document.addEventListener('keydown', (e) => {
       // y la búsqueda queda entera (texto y filtro), como al pulsar «Ver en la línea de tiempo».
       e.preventDefault();
       filtros.cerrar();
-    } else if (detalle.abierto && !e.target.closest('input')) volver(); // en un campo, Escape solo cancela lo escrito
+    } else if (detalle.abierto && elDetalle.querySelector('.detalle-portada[data-ampliada]')) ampliarLamina(elDetalle.querySelector('[data-accion="ampliar"]'), false);
+    else if (detalle.abierto && !e.target.closest('input')) volver(); // en un campo, Escape solo cancela lo escrito
     return;
   }
   if (filtros.abierto || e.target.closest('input, select, textarea, [contenteditable="true"]')) return;

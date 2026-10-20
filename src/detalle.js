@@ -138,9 +138,9 @@ const urlReporte = (ev) =>
   )}`;
 
 // Portada de cada vista, sobre el océano con curvas de nivel: ceja, título y, si hay, la imagen completa con
-// su pie y crédito.
-const portada = ({ ceja, titulo, debajo = '', figura = '', arriba = '' }) => `
-  <header class="detalle-portada oceano${figura ? '' : ' sin-figura'}">
+// su pie y crédito. `atributos` lleva la forma de la obra (formaDe).
+const portada = ({ ceja, titulo, debajo = '', figura = '', arriba = '', atributos = '' }) => `
+  <header class="detalle-portada oceano${figura ? '' : ' sin-figura'}"${atributos}>
     <div class="detalle-portada-contenido">
       ${arriba}
       <div class="detalle-titular">
@@ -152,12 +152,23 @@ const portada = ({ ceja, titulo, debajo = '', figura = '', arriba = '' }) => `
     </div>
   </header>`;
 
-/** Imagen del detalle: 500 px en pantallas angostas y 800 (que Commons sirve en 960) en las anchas. */
-export const imagenDetalle = (archivo) => ({
+/**
+ * Imagen del detalle: 500 px en pantallas angostas y 800 (que Commons sirve en 960) en las demás; ampliada («Ver
+ * más grande»), también 1280 (tamaños estándar de Commons).
+ */
+export const imagenDetalle = (archivo, { ampliada = false } = {}) => ({
   src: urlImagen(archivo, 800),
-  srcset: `${urlImagen(archivo, 500)} 500w, ${urlImagen(archivo, 800)} 960w`,
-  sizes: '(max-width: 60em) calc(100vw - 2rem), min(36rem, 46vw)',
+  srcset: `${urlImagen(archivo, 500)} 500w, ${urlImagen(archivo, 800)} 960w${ampliada ? `, ${urlImagen(archivo, 1280)} 1280w` : ''}`,
+  sizes: ampliada ? 'min(100vw, 76rem)' : '(max-width: 40em) 100vw, (max-width: 60em) calc(100vw - 2rem), calc(min(100vw, 76rem) - 30rem)',
 });
+
+// «Lámina en el muro»: la forma de la obra (sus medidas en los datos) compone el encabezado. Su proporción reserva
+// el espacio exacto (sin saltos al cargar) y la imagen no se amplía más de 1,5 veces su original.
+function formaDe({ ancho, alto }) {
+  if (!ancho || !alto) return '';
+  const forma = alto > ancho * 1.15 ? 'vertical' : ancho > alto * 1.15 ? 'horizontal' : 'cuadrada';
+  return ` data-forma="${forma}" style="--proporcion:${(ancho / alto).toFixed(3)};--ancho-max:${Math.round(ancho * 1.5)}px"`;
+}
 
 // Mini-mapa: la silueta de Chile (index.html) con los lugares del evento, las franjas de sus zonas o todo el
 // país si es de alcance nacional. Usa la proyección del mapa (scripts/generar-mapa.mjs).
@@ -271,10 +282,10 @@ export function crearDetalle(
   }
 
   // «hace 147 años» y, si se guardó el año de nacimiento, la edad de quien lee.
+  // Sin paréntesis: los pone el CSS en General y Detallado; en «Para niños», «hace 147 años» es una línea propia.
   const tiempo = (ev) => {
     const hace = /años atrás/.test(ev.fechaTexto) ? null : haceCuanto(ev); // «c. 14.500 años atrás» ya lo dice
-    const partes = [hace, edadEn(ev, leerNacimiento())].filter(Boolean);
-    return partes.length ? `(${partes.join(' · ')})` : '';
+    return [hace, edadEn(ev, leerNacimiento())].filter(Boolean).join(' · ');
   };
 
   const formularioEdad = () => {
@@ -385,11 +396,15 @@ export function crearDetalle(
           }</p>
             <p class="detalle-lugar">${esc(ev.lugar)}</p>
             <p class="detalle-bajada">${bajada()}</p>`,
-          // El pie describe la imagen: el texto alternativo queda vacío para no leerlo dos veces.
+          // El pie describe la imagen: el texto alternativo queda vacío para no leerlo dos veces. «Ver más grande»
+          // (solo si el original mide 1280 px o más, y en pantallas anchas) agranda la obra en la misma página.
+          atributos: formaDe(img),
           figura: `<figure class="detalle-figura">
-            <div class="detalle-marco"><img src="${url}" srcset="${grande.srcset}" sizes="${grande.sizes}" alt=""
+            <div class="detalle-marco"><img src="${url}" srcset="${grande.srcset}" sizes="${grande.sizes}" alt=""${img.ancho ? ` width="${img.ancho}" height="${img.alto}"` : ''}
               fetchpriority="high" decoding="async" data-periodo="${ev.periodoId}"></div>
-            <figcaption><span class="pie">${esc(img.pieDeFoto)}</span> <span class="credito">Imagen: ${creditoImagen(img)}</span></figcaption>
+            <figcaption><span class="pie">${esc(img.pieDeFoto)}</span> <span class="credito">Imagen: ${creditoImagen(img)}</span>${
+              img.ancho >= 1280 ? ` <button type="button" class="enlace ampliar" data-accion="ampliar" aria-pressed="false">${icono('mas')}Ver más grande</button>` : ''
+            }</figcaption>
           </figure>`,
         })}
         <div class="detalle-columnas">
@@ -412,7 +427,7 @@ export function crearDetalle(
             ${ev.glosario?.length ? '<details class="plegable glosario-evento"></details>' : ''}
           </div>
           <aside class="detalle-ficha" aria-labelledby="ficha-titulo">
-            <h3 id="ficha-titulo" class="ceja">Ficha del evento</h3>
+            <h3 id="ficha-titulo" class="ceja"><span class="no-nino">Ficha del evento</span><span class="para-nino">Dónde y cuándo</span></h3>
             <div class="ficha-lugar">
               ${miniMapa(ev, lugarDe, zonaDe)}
               <dl class="ficha-datos">

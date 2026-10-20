@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "test": "node scripts/validar-datos.mjs",
     "verificar-imagenes": "node scripts/verificar-imagenes.mjs",
+    "medir-imagenes": "node scripts/medir-imagenes.mjs",
     "docs": "node scripts/generar-docs.mjs",
     "presupuesto": "node scripts/presupuesto.mjs"
   },

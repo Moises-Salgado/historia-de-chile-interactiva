@@ -2954,6 +2954,7 @@ body[data-vista='detalle'] .minimapa-fila {
   overflow-y: auto;
   overscroll-behavior: contain;
   background: var(--fondo);
+  container-type: size; /* la obra del encabezado mide su alto contra el detalle (cqh) */
 }
 
 /* Portada de cada vista: el titular y la imagen completa (sin recortar, en un paspartú, con su pie y crédito)
@@ -2962,6 +2963,9 @@ body[data-vista='detalle'] .minimapa-fila {
 .detalle-portada {
   --texto-suave: #c8d6d2;
   --acento: #f2c9a4;
+  /* Alto máximo de la obra («escenario»), medido contra el detalle; vh, donde no hay unidades cq. */
+  --escenario: min(56vh, 42rem);
+  --escenario: min(70cqh, 42rem);
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -2972,17 +2976,23 @@ body[data-vista='detalle'] .minimapa-fila {
     color-mix(in oklab, var(--color, var(--pacifico)) 14%, var(--pacifico));
 }
 
+/* La cartela (ceja, título, fecha y bajada) a la izquierda y la obra a la derecha, con todo el ancho que sobra. */
 .detalle-portada-contenido {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+  grid-template-columns: minmax(18rem, 26rem) minmax(0, 1fr);
   align-items: center;
   gap: 1rem 2.5rem;
   max-width: 76rem;
   margin: 0 auto;
 }
 
+.detalle-portada.sin-figura .detalle-portada-contenido {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .detalle-portada-contenido > .historia-barra {
   grid-column: 1 / -1;
+  order: -2;
 }
 
 .detalle-titular {
@@ -3048,47 +3058,90 @@ body[data-vista='detalle'] .minimapa-fila {
   margin-top: 1rem;
 }
 
+/* «Lámina en el muro»: la obra cuelga entera y grande sobre el océano, sin caja alrededor, y su pie va debajo,
+   del mismo ancho. El marco mide lo que mide la obra (su proporción viene de los datos: sin saltos al cargar),
+   nunca la recorta y no la amplía más de 1,5 veces su original (detalle.js, formaDe). Mientras carga, el marco
+   muestra el tono del período con la forma de la obra; la imagen aparece con un fundido. */
 .detalle-figura {
-  max-width: min(36rem, 46vw);
+  --ancho-obra: min(100%, var(--escenario) * var(--proporcion, 1.5), var(--ancho-max, 100%));
+  display: grid;
+  justify-items: center;
+  max-width: none;
   margin: 0;
 }
 
-/* Alto reservado (sin saltos al cargar); la imagen se ve entera. Mientras carga, el marco muestra el tono
-   del período, y la imagen aparece con un fundido. */
+.detalle-marco,
+.detalle-figura figcaption {
+  width: var(--ancho-obra);
+}
+
+.detalle-figura figcaption {
+  min-width: min(100%, 18rem);
+}
+
 .detalle-marco {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: min(40vh, 24rem);
-  padding: 0.75rem;
-  background: rgb(237 243 241 / 0.06);
-  border: 1px solid rgb(237 243 241 / 0.14);
-  border-radius: var(--radio);
-}
-
-.detalle-marco::before {
-  position: absolute;
-  inset: 0;
+  aspect-ratio: var(--proporcion, 1.5);
+  max-height: var(--escenario);
   background: color-mix(in srgb, var(--color) 30%, transparent);
-  border-radius: var(--radio);
-  opacity: 0;
-  transition: opacity 0.25s ease-out;
-  content: '';
+  border-radius: 2px;
 }
 
-.detalle-marco:has(img:not(.cargada))::before {
-  opacity: 1;
+.detalle-marco:has(img.cargada) {
+  background: none;
 }
 
 .detalle-marco img {
   position: relative;
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  border-radius: 0.25rem;
-  box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.85);
+  border-radius: 2px;
+}
+
+.detalle-portada[data-forma] .detalle-marco img {
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.08),
+    0 30px 50px -30px rgb(0 0 0 / 0.9);
+}
+
+/* Un retrato (vertical) toma la columna que necesita y el título se queda con el resto. */
+@media (min-width: 60em) {
+  .detalle-portada[data-forma='vertical'] .detalle-portada-contenido {
+    grid-template-columns: minmax(0, 1fr) max(18rem, var(--escenario) * var(--proporcion));
+  }
+}
+
+/* «Ver más grande» (detalle.js): la obra pasa a una columna, del alto de la pantalla, en la misma página. */
+.ampliar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  justify-self: start;
+}
+
+.ampliar .icono {
+  width: 1rem;
+  height: 1rem;
+}
+
+.ampliar[aria-pressed='true'] .icono {
+  rotate: 45deg;
+}
+
+.detalle-portada[data-ampliada] {
+  --escenario: calc(100cqh - 4rem);
+}
+
+.detalle-portada[data-ampliada] .detalle-portada-contenido {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (max-width: 59.99em) {
+  .ampliar {
+    display: none;
+  }
 }
 
 /* El texto y, al lado, la ficha del evento (en una columna: texto, ficha y el resto). */
@@ -3249,16 +3302,13 @@ body[data-vista='detalle'] .minimapa-fila {
 }
 
 @media (max-width: 60em) {
+  .detalle-portada {
+    --escenario: min(40vh, 34rem);
+    --escenario: min(52cqh, 34rem);
+  }
+
   .detalle-portada-contenido {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .detalle-figura {
-    max-width: none;
-  }
-
-  .detalle-marco {
-    height: min(34vh, 22rem);
   }
 
   .detalle-columnas {
@@ -3337,6 +3387,22 @@ body[data-vista='detalle'] .minimapa-fila {
   display: grid;
   gap: 0.25rem;
   margin-top: 0.5rem;
+}
+
+/* En el celular la obra va primero (después de la barra de una historia) y a sangre por los lados. */
+@media (max-width: 39.99em) {
+  .detalle-portada {
+    --escenario: 60cqh;
+  }
+
+  .detalle-figura {
+    order: -1;
+    margin-inline: -1rem;
+  }
+
+  .detalle-figura figcaption {
+    padding-inline: 1rem;
+  }
 }
 
 .sin-imagen {
@@ -4277,6 +4343,51 @@ body[data-vista='detalle'] .minimapa-fila {
   }
 }
 
+/* ---- «Para niños» con diseño propio: se ve solo lo que está escrito para niños (los demás módulos vuelven cuando
+   tengan su versión revisada), la obra más grande, «Escuchar» como botón grande, «hace 147 años» como línea
+   propia y los rótulos como frases, sin versalitas. <html data-nivel> lo pone index.html antes de pintar. ---- */
+:root[data-nivel='nino'] :is(.destacado, .empieza-mes),
+.detalle[data-nivel='nino'] :is(.sabias-que, .glosario-evento, .sobre-periodo, .cita, [data-accion='compartir'], .personajes .ayuda, .personaje-cuenta) {
+  display: none !important;
+}
+
+.detalle[data-nivel='nino'] :is(.detalle-ficha > .ceja, .personajes h3, .se-discute h3, .vecino-rotulo) {
+  font-family: var(--serif);
+  font-size: var(--t-3);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.detalle[data-nivel='nino'] .detalle-hace {
+  display: block;
+  margin-top: 0.125rem;
+  font-family: var(--rotulo);
+  font-size: var(--t-4);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--texto);
+}
+
+.detalle:not([data-nivel='nino']) .detalle-hace:not(:empty)::before {
+  content: '(';
+}
+
+.detalle:not([data-nivel='nino']) .detalle-hace:not(:empty)::after {
+  content: ')';
+}
+
+.detalle[data-nivel='nino'] .detalle-escuchar .boton {
+  min-height: 3rem;
+  padding-inline: 1.25rem;
+  font-weight: 700;
+}
+
+@media (min-width: 40em) {
+  .detalle[data-nivel='nino'] .detalle-portada {
+    --escenario: min(76cqh, 46rem);
+  }
+}
+
 /* ---- Modo clase (C5): la cabecera en una fila desde 75em (la marca queda como estrella y el nivel con
    rótulos cortos), «Pantalla completa», la imagen más grande y nada personal a la vista. ---- */
 .solo-clase {
@@ -4292,8 +4403,27 @@ body[data-vista='detalle'] .minimapa-fila {
   display: none !important;
 }
 
-:root[data-clase] .detalle-marco {
-  height: min(56vh, 34rem);
+/* En clase, el encabezado del evento también va claro (como promete «Para docentes»): papel claro con los
+   tokens del modo claro, que tienen el contraste AA medido, y un filete del color del período abajo. */
+:root[data-clase] .detalle-portada {
+  --texto: #142220;
+  --texto-suave: #4f5f5b;
+  --superficie: #f9fbfa;
+  --superficie-2: #e2e9e6;
+  --borde: #cbd6d2;
+  --borde-fuerte: #667975;
+  --acento: #9c5526;
+  --acento-hover: #84461d;
+  --sobre-acento: #fff;
+  --foco: #9c5526;
+  --escenario: min(62cqh, 40rem);
+  color: var(--texto);
+  background: var(--superficie);
+  border-bottom: 0.375rem solid var(--color, var(--borde-fuerte));
+}
+
+:root[data-clase] .detalle-marco img {
+  box-shadow: var(--sombra-alta);
 }
 
 @media (min-width: 75em) {
@@ -4798,6 +4928,15 @@ html[data-cargando] {
 
   .detalle-marco img {
     max-height: 9cm;
+  }
+
+  /* Estático, el detalle mediría 0 de alto como contenedor: la obra va con una medida fija. */
+  .detalle {
+    container-type: normal;
+  }
+
+  .detalle-portada {
+    --escenario: 9cm;
   }
 
   figure,

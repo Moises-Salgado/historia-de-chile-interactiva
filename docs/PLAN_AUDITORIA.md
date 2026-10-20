@@ -77,3 +77,20 @@ Fuera de este plan quedan:
   - **Filtro:** clases fijas de cantidad, achurado donde no hay eventos y una leyenda con cuántos eventos hay en cuántas regiones.
   - **Recuadro:** la región elegida aparece ampliada en el panel, con sus lugares rotulados (sin animar el mapa).
   - **Créditos y rótulos:** los créditos van al pie; Copiapó y Juan Fernández ya no chocan con otros rótulos; en colores forzados, los rótulos van sin halo.
+- **A5 (hecha).**
+  - **Encabezado «Lámina en el muro»:**
+    - la obra se ve entera y grande, sin marco dentro del marco, con su proporción;
+    - el alto se mide contra el detalle (`cqh`);
+    - en escritorio, en 1366 × 768, Iquique pasa de 413 × 278 a 650 × 437 y la Araucanía, de 181 × 278 a 284 × 437;
+    - los retratos van en su propia columna;
+    - en el celular, la obra va primero y a sangre;
+    - ninguna se amplía más de 1,5 veces su original.
+  - **Medidas de las imágenes:** las mide `npm run medir-imagenes` y quedan en `data/imagenes-medidas.json`, que valida `npm test`. Solo 12 originales miden menos de 500 px.
+  - **«Ver más grande»:** con originales de 1280 px o más, la obra pasa a una columna en la misma página; el mismo botón o Escape la devuelven.
+  - **Modo clase:** el encabezado del evento va claro.
+  - **«Para niños»:**
+    - sin los módulos escritos para adultos («¿Sabías que…?», glosario, «Sobre el período», cita, compartir);
+    - «hace N años» como línea propia, «Escuchar» grande y «Dónde y cuándo».
+  - **Imágenes reemplazadas:**
+    - Maipú, por el mismo Rugendas sin marco ni reflejo;
+    - la crisis de 1982, por una foto de época (olla común, La Victoria, 1984) en vez de un gráfico de 2024.

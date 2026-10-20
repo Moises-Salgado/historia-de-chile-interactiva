@@ -37,6 +37,10 @@
         const portada = /^#?(?:inicio)?$/.test(h);
         const base = portada || /^#(?:acerca|docentes|glosario)$/.test(h) ? 'inicio' : /^#(?:mapa|lugar)(?:\/|$)/.test(h) ? 'mapa' : 'linea';
         document.documentElement.dataset.base = base;
+        // El nivel de lectura, antes de pintar: en «Para niños» se ocultan los módulos escritos para adultos (styles.css).
+        try {
+          document.documentElement.dataset.nivel = localStorage.getItem('historia-chile:nivel') || 'general';
+        } catch {}
         // La línea de tiempo empieza por su primer evento: su lámina (lo más grande de la pantalla en el celular)
         // se pide ya, con el mismo srcset y sizes que le pone timeline.js, sin esperar a que se arme la línea.
         if (h === '#linea') {

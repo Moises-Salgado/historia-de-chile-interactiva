@@ -51,10 +51,14 @@ export function cargarDatos() {
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const ubicaciones = archivos['../data/ubicaciones.json'] ?? {};
   const titulosCortos = archivos['../data/titulos-cortos.json'] ?? {};
+  // Ancho y alto del original de cada imagen (scripts/medir-imagenes.mjs): el detalle la compone según su forma.
+  const medidas = archivos['../data/imagenes-medidas.json'] ?? {};
   for (const ev of eventos) {
     ev.sabiasQue = sabiasQue[ev.id] ?? null;
     ev.ubicaciones = ubicaciones[ev.id] ?? [];
     ev.tituloCorto = titulosCortos[ev.id] ?? null; // solo para la lámina de la línea de tiempo
+    const medida = medidas[ev.imagen?.archivo];
+    if (medida) ev.imagen = { ...ev.imagen, ancho: medida[0], alto: medida[1] };
   }
   const conEventos = (lista) => (lista ?? []).map((x) => ({ ...x, eventos: x.eventos.map((id) => porId.get(id)).filter(Boolean) }));
   return {
