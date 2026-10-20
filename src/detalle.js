@@ -201,6 +201,107 @@ function miniMapa(ev, lugarDe, zonaDe) {
   </svg>${viajero}</div>`;
 }
 
+// Mapa de un grupo (los pueblos de c. 1500): la silueta con una llave en las latitudes de cada zona o un punto en
+// cada lugar, y el nombre a la derecha, de norte a sur, unido con una raya; Rapa Nui, en su recuadro. Una zona
+// abarca regiones actuales completas: las llaves marcan latitudes, no fronteras (lo dice el pie).
+const LINEA = 56; // alto de una línea de nombre (letra de 50 unidades: 18 px o más con el mapa de 21rem)
+function mapaGrupo(eventos, lugarDe, zonaDe) {
+  const piezas = [];
+  let rapa = null;
+  for (const ev of eventos) {
+    const u = ev.ubicaciones[0];
+    const l = lugarDe.get(u);
+    const franjas = (zonaDe.get(u)?.regiones ?? []).map((c) => latitudes[c]);
+    const nombre = ev.titulo.replace(/^Pueblo\s+/i, '');
+    // «Atacameño (lickanantay)» va en dos líneas.
+    const lineas = (nombre[0].toUpperCase() + nombre.slice(1)).split(/ (?=\()/);
+    if (l?.id === 'rapa-nui') rapa = lineas.join(' ');
+    else if (l) {
+      const [x, y] = proyectar(l.lat, l.lon);
+      piezas.push({ x, y, medio: y, lineas });
+    } else if (franjas.length) {
+      const a = Math.min(...franjas.map((f) => f[0]));
+      const b = Math.max(...franjas.map((f) => f[1]));
+      piezas.push({ a, b, medio: (a + b) / 2, lineas });
+    }
+  }
+  if (piezas.length < 2) return '';
+  // Las llaves que se tocan van en carriles distintos, a la derecha de la silueta.
+  const carriles = [];
+  for (const p of piezas.filter((p) => p.a !== undefined).sort((p, q) => p.a - q.a)) {
+    let c = carriles.findIndex((fin) => p.a > fin + 12);
+    if (c < 0) c = carriles.length;
+    carriles[c] = p.b;
+    p.x = 316 + c * 18;
+  }
+  const texto = 330 + carriles.length * 18;
+  // Los nombres, centrados en su llave o su punto y sin encimarse: primero hacia abajo y, si el último se sale
+  // del mapa, de vuelta hacia arriba.
+  piezas.sort((p, q) => p.medio - q.medio);
+  let piso = -6;
+  for (const p of piezas) {
+    p.alto = p.lineas.length * LINEA;
+    p.tope = Math.max(p.medio - p.alto / 2, piso);
+    piso = p.tope + p.alto;
+  }
+  let techo = 1012;
+  for (const p of piezas.toReversed()) {
+    p.tope = Math.min(p.tope, techo - p.alto);
+    techo = p.tope;
+  }
+  const n = (v) => v.toFixed(0);
+  return `<figure class="grupo-mapa" aria-hidden="true">
+    <svg viewBox="-40 -10 700 1026" focusable="false">
+      <use href="#silueta-chile" width="302" height="1006" class="grupo-tierra"/>
+      ${piezas
+        .map((p) => {
+          const y = p.tope + LINEA / 2;
+          const marca = p.a === undefined
+            ? `<circle class="grupo-punto" cx="${n(p.x)}" cy="${n(p.y)}" r="13"/>`
+            : `<path class="grupo-llave" d="M${n(p.x - 10)} ${n(p.a)}H${n(p.x)}V${n(p.b)}H${n(p.x - 10)}"/>`;
+          const desde = p.a === undefined ? p.x + 16 : p.x;
+          return `${marca}<path class="grupo-raya" d="M${n(desde)} ${n(p.medio)}L${n(texto - 12)} ${n(y)}"/>
+            <text class="grupo-nombre" x="${texto}" y="${n(y)}">${p.lineas.map((t, i) => `<tspan x="${texto}" dy="${i ? LINEA : 0}">${esc(t)}</tspan>`).join('')}</text>`;
+        })
+        .join('')}
+      ${
+        rapa
+          ? `<rect class="minimapa-recuadro" x="${RAPA[0] - 30}" y="${RAPA[1] - 26}" width="60" height="52" rx="6"/>
+            <circle class="grupo-punto" cx="${RAPA[0]}" cy="${RAPA[1]}" r="13"/>
+            <text class="grupo-nombre" x="${RAPA[0] - 30}" y="${RAPA[1] + 64}">${esc(rapa)}</text>`
+          : ''
+      }
+    </svg>
+    <figcaption>Ubicación aproximada hacia 1500${rapa ? '; Rapa Nui, en un recuadro aparte' : ''}. Las llaves marcan franjas de latitud, no fronteras, y abarcan regiones actuales completas.</figcaption>
+  </figure>`;
+}
+
+// «Sus apariciones» (ficha de un personaje): sus eventos a escala de años, del primero al último con un año de
+// margen a cada lado. Un punto del color del período por evento (los del mismo año, apilados) y, debajo, cada año
+// en una de dos filas para que no choquen; si no cabe en ninguna, va sin rótulo (la lista dice cada fecha).
+function vida(eventos, colorDe) {
+  const primero = eventos[0].anio;
+  const ultimo = eventos.at(-1).anio;
+  const x = (a) => ((a - primero + 1) / (ultimo - primero + 2)) * 100;
+  const pila = new Map();
+  const puntos = eventos.map((ev) => {
+    const n = pila.get(ev.anio) ?? 0;
+    pila.set(ev.anio, n + 1);
+    return `<span class="vida-punto" style="--x:${x(ev.anio).toFixed(1)}%;--n:${n};--color:${colorDe(ev)}"></span>`;
+  });
+  const ultimoEnFila = [-Infinity, -Infinity];
+  const anios = [...pila.keys()].map((a) => {
+    const fila = ultimoEnFila.findIndex((u) => x(a) - u >= 14);
+    if (fila < 0) return '';
+    ultimoEnFila[fila] = x(a);
+    return `<span class="vida-anio" style="--x:${x(a).toFixed(1)}%;--fila:${fila}">${formatearAnio(a)}</span>`;
+  });
+  return `<figure class="vida" aria-hidden="true">
+    <div class="vida-pista">${puntos.join('')}${anios.join('')}</div>
+    <figcaption>Cada punto es un evento donde aparece, en su año.</figcaption>
+  </figure>`;
+}
+
 /**
  * Crea el panel en `raiz` («Volver», «Anterior» y «Siguiente» están en la barra inferior).
  * personajeDe(nombre) devuelve { slug, eventos } si el personaje tiene ficha (aparece en más de un evento);
@@ -516,6 +617,7 @@ export function crearDetalle(
           ceja: `${esc(p.nombre)} · ${esc(grupo.fechaTexto)}`,
           titulo: esc(grupo.titulo),
           debajo: `<p class="vista-intro">${esc(grupo.descripcion)}</p>${regla}`,
+          figura: mapaGrupo(grupo.eventos, lugarDe, zonaDe),
         })}
         <div class="detalle-contenido vista-lista">
           <div class="detalle-texto">
@@ -623,7 +725,7 @@ export function crearDetalle(
   }
 
   /** Presentación de una historia (paso 0): de qué trata, cuánto toma según el nivel y sus pasos. */
-  function mostrarInicioHistoria(r, { nivel: nivelLectura, enfocar = true }) {
+  function mostrarInicioHistoria(r, { nivel: nivelLectura, enfocar = true, regla = '' }) {
     iniciar({ recorrido: r, inicio: true }, nivelLectura);
     const vistosAqui = r.eventos.filter(visto).length;
     const siguiente = r.eventos.findIndex((ev) => !visto(ev)) + 1;
@@ -647,7 +749,7 @@ export function crearDetalle(
         ceja: `Historia guiada · ${r.eventos.length} pasos · ${anioDe(r.eventos[0])} a ${anioDe(r.eventos.at(-1))}`,
         titulo: esc(r.titulo),
         debajo: `<p class="vista-intro">${esc(r.descripcion)}</p>
-          <p class="recorrido-duracion">Leída en voz alta: <span class="recorrido-minutos">${duracion()}</span></p>`,
+          <p class="recorrido-duracion">Leída en voz alta: <span class="recorrido-minutos">${duracion()}</span></p>${regla}`,
       })}
       <div class="detalle-contenido vista-lista">
         <p class="recorrido-acciones">${acciones}</p>
@@ -679,10 +781,10 @@ export function crearDetalle(
   }
 
   /**
-   * Cierre de una historia: la tira de sus pasos, el repaso (si tiene eventos que no son de temas sensibles) y
-   * otras historias para seguir (primero las empezadas, después las nuevas).
+   * Cierre de una historia, como espejo de su presentación: sus pasos (con imagen) y la silueta, el repaso (si
+   * tiene eventos que no son de temas sensibles) y otras historias para seguir (primero las empezadas).
    */
-  function mostrarFinHistoria(r, { enfocar = true, otras = [] }) {
+  function mostrarFinHistoria(r, { enfocar = true, otras = [], regla = '' }) {
     iniciar({ recorrido: r, fin: true });
     const avance = (x) => {
       const n = x.eventos.filter(visto).length;
@@ -697,17 +799,21 @@ export function crearDetalle(
       ${portada({
         ceja: `<a href="${r.origen?.href ?? '#historias'}">${esc(r.origen?.texto ?? 'Historias guiadas')}</a> · Fin`,
         titulo: esc(r.titulo),
-        debajo: `<p class="vista-intro">Estos fueron sus ${r.eventos.length} pasos, de ${anioDe(r.eventos[0])} a ${anioDe(r.eventos.at(-1))}.</p>`,
+        debajo: `<p class="vista-intro">Estos fueron sus ${r.eventos.length} pasos, de ${anioDe(r.eventos[0])} a ${anioDe(r.eventos.at(-1))}.</p>${regla}`,
       })}
       <div class="detalle-contenido vista-lista">
-        <ol class="recorrido-tira escalonar">${r.eventos
-          .map(
-            (ev, i) => `<li><a href="${rutaHistoria(r, i + 1)}" style="--color:${colorDe(ev)}">
-              <span class="tira-img">${miniatura(ev, '10rem')}</span>
-              <span class="tira-texto"><span class="tira-paso">Paso ${i + 1} · ${esc(formatearAnio(ev.anio))}</span><span class="tira-titulo">${esc(ev.titulo)}</span></span>
-            </a></li>`,
-          )
-          .join('')}</ol>
+        <div class="recorrido">
+          <ol class="recorrido-pasos con-imagen escalonar">${r.eventos
+            .map(
+              (ev, i) => `<li><a href="${rutaHistoria(r, i + 1)}" style="--color:${colorDe(ev)}">
+                <span class="recorrido-num" aria-hidden="true">${i + 1}</span>
+                <span class="tira-img">${miniatura(ev, '7rem')}</span>
+                <span class="recorrido-texto"><span class="recorrido-fecha"><span class="solo-lector">Paso ${i + 1}: </span>${esc(ev.fechaTexto)}</span> <span class="recorrido-titulo">${esc(ev.titulo)}</span></span>
+              </a></li>`,
+            )
+            .join('')}</ol>
+          ${siluetaDePasos(r.eventos)}
+        </div>
         ${
           preguntables.length >= 3
             ? `<section class="repaso" aria-labelledby="repaso-titulo">
@@ -758,6 +864,7 @@ export function crearDetalle(
           ceja: 'Personaje',
           titulo: esc(persona.nombre),
           debajo: `<p class="vista-intro">Aparece en ${persona.eventos.length} eventos de esta línea de tiempo, ${rango}.</p>${regla}`,
+          figura: vida(persona.eventos, colorDe),
         })}
         <div class="detalle-contenido vista-lista">
           <div class="detalle-texto">

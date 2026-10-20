@@ -105,3 +105,21 @@ Fuera de este plan quedan:
   - **Cambio de sección:** la nueva entra cuando la vieja ya se fue.
   - **Llegada a la portada:** 400 ms con escalones de 30 ms, y no se repite al volver a la portada.
   - **Presupuesto:** la carga inicial pesa 116,33 KB (tope 141,63). El margen del mapa sube de 1 a 2 KB por el recuadro, la leyenda y las clases de la A4 (23,73 KB).
+- **A7 (hecha).**
+  - **Portada:**
+    - «¿Primera vez? Empieza aquí» es el botón primario, con su flecha;
+    - el héroe, las puertas y las cifras comparten el mismo ancho (en 1920 px, todos desde x = 312);
+    - en la tablet, una puerta ancha y dos debajo, y las cifras de a dos;
+    - los moáis y las miniaturas se encuadran desde arriba;
+    - las reglas de los períodos quedan alineadas abajo aunque el título ocupe dos líneas.
+  - **Personaje:** «Sus apariciones» a escala de años en el lugar de la obra: un punto del color del período por evento (los del mismo año, apilados) y los años en dos filas.
+  - **Pueblos de c. 1500:** un mapa con la silueta, una llave por zona y los nombres de norte a sur (letra de 18 px o más), y Rapa Nui en su recuadro. El pie aclara que las llaves marcan latitudes, no fronteras, y que abarcan regiones actuales completas.
+  - **Historias:** el cierre es el espejo de la presentación (los pasos con imagen junto a la silueta), y las dos llevan la regla del tiempo.
+  - **Repaso:**
+    - tarjetas de a dos o tres por fila, con la imagen de su evento;
+    - en «¿Qué pasó primero?», cada opción es una lámina;
+    - la respuesta entra con un fundido de 180 ms, y abajo dice cuántas van;
+    - en «Para niños», la pregunta «¿quién aparece?» solo nombra a alguien que su texto menciona.
+  - **Glosario:** índice de letras, las palabras agrupadas por inicial en dos columnas y el aviso de revisión al pie. Se corrigió la errata de «Cabildo abierto».
+  - **«Acerca de» y «Para docentes»:** en pantallas anchas, las secciones van en dos columnas.
+  - **Línea de tiempo:** con alto de sobra (tablet en vertical, 1366 × 768, pantallas grandes), las láminas crecen hasta 1,2 veces en vez de dejar un hueco vacío encima. Las pantallas bajas no cambian.

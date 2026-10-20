@@ -737,13 +737,13 @@ function pintarVista(vista, desdeBoton, { previa = null } = {}) {
     anunciar(`${r.titulo}, paso ${paso} de ${r.eventos.length}${desdeBoton ? `: ${ev.fechaTexto}, ${ev.titulo}` : ''}`);
   } else if (vista.tipo === 'historia-inicio') {
     const { recorrido: r } = vista;
-    detalle.mostrarInicioHistoria(r, { nivel, enfocar });
+    detalle.mostrarInicioHistoria(r, { nivel, enfocar, regla: linea.regla(r.eventos) });
     nav = { antes: null, despues: rutaHistoria(r, 1) };
     titulo = r.titulo;
     if (desdeBoton) anunciar(`${r.titulo}: presentación`);
   } else if (vista.tipo === 'historia-fin') {
     const { recorrido: r } = vista;
-    detalle.mostrarFinHistoria(r, { enfocar, otras: r.ruta ? [] : recorridos.filter((x) => x !== r) });
+    detalle.mostrarFinHistoria(r, { enfocar, otras: r.ruta ? [] : recorridos.filter((x) => x !== r), regla: linea.regla(r.eventos) });
     nav = { antes: rutaHistoria(r, r.eventos.length), despues: null };
     titulo = `Fin · ${r.titulo}`;
     if (desdeBoton) anunciar(`Fin de ${r.titulo}`);

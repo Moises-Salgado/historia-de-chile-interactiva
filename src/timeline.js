@@ -386,13 +386,19 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     // celular (pista angosta) la lámina es más ancha y puede crecer un poco: es lo principal de la pantalla.
     const angosta = ventana.clientWidth < 640;
     const libre = base - CARTELA.corta * rem;
-    const s = limitar(libre / (LAMINA.alto[3] * rem), LAMINA.minimo, angosta ? 1.15 : 1);
+    const alto3 = LAMINA.alto[3] * rem;
+    let s = limitar(libre / alto3, LAMINA.minimo, angosta ? 1.15 : 1);
+    const carriles = limitar(Math.floor((libre + hueco) / (alto3 * s + hueco)), 1, MAX_CARRILES);
+    // Con alto de sobra (una tablet en vertical, una pantalla grande), las láminas crecen —ancho y alto juntos,
+    // hasta 1,2 veces— para llenar sus carriles, en vez de dejar un hueco vacío encima (con 1rem de aire).
+    if (!angosta) s = Math.max(s, Math.min(((libre - rem + hueco) / carriles - hueco) / alto3, 1.2));
     Object.assign(g, {
       rem,
       s,
+      carriles,
       // En pantallas angostas con texto grande, la lámina no puede ser más ancha que la vista.
-      w: Math.min((angosta ? 14 : LAMINA.ancho) * rem, ventana.clientWidth - 2 * MEDIDA.margen * rem),
-      h: LAMINA.alto[3] * rem * s, // alto del carril: el de la lámina más alta
+      w: Math.min((angosta ? 14 : LAMINA.ancho * Math.max(1, s)) * rem, ventana.clientWidth - 2 * MEDIDA.margen * rem),
+      h: alto3 * s, // alto del carril: el de la lámina más alta
       hueco,
       tallo: MEDIDA.tallo * rem,
       // En pantallas angostas el portal solo lleva el número y las fechas: así cabe también una lámina.
@@ -403,7 +409,6 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     g.margenIzq = MEDIDA.margen * rem + g.portal + g.hueco + g.tallo;
     g.ejeY = yAnios - (MEDIDA.eje * rem) / 2;
     const fila = g.h + g.hueco;
-    g.carriles = limitar(Math.floor((libre + g.hueco) / fila), 1, MAX_CARRILES);
     g.z = (f * (g.w + g.hueco)) / g.carriles;
     ubicarCielo(base - g.carriles * fila + g.hueco, rem);
     g.minImp = filtroActivo ? 1 : f < ZOOM.hitos ? 3 : f < ZOOM.todos ? 2 : 1;

@@ -3,7 +3,7 @@
 // proyecto (CLAUDE.md), de las licencias del README, de lo que la app guarda de verdad en el navegador y de
 // data/glosario.json (con los eventos donde aparece cada palabra: virtual:glosario, vite.config.js).
 import glosario from 'virtual:glosario';
-import { esc, externo, icono, minutosDeLectura, nombreFuente, PALABRAS_POR_MINUTO } from './util.js';
+import { esc, externo, icono, minutosDeLectura, movimientoReducido, nombreFuente, normalizar, PALABRAS_POR_MINUTO } from './util.js';
 
 const REPO = 'https://github.com/Moises-Salgado/historia-de-chile-interactiva';
 const afuera = (url, texto) => `<a href="${url}" target="_blank" rel="noopener">${texto}<span class="solo-lector"> (se abre en otra pestaña)</span></a>`;
@@ -108,26 +108,42 @@ function docentes({ eventos, periodos, recorridos }) {
 }
 
 // Glosario: cada palabra con su definición breve, su fuente (si no sale del propio texto) y los eventos donde
-// aparece. Las definiciones esperan revisión humana (docs/REVISION_PENDIENTE.md) y la página lo dice.
+// aparece, agrupadas por su inicial (sin tilde) con un índice de letras arriba. Las definiciones esperan revisión
+// humana (docs/REVISION_PENDIENTE.md): lo dice el pie de la página.
 function glosarioPagina({ eventos }) {
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const lista = [...glosario].sort((a, b) => a.termino.localeCompare(b.termino, 'es'));
   const MAX = 6;
+  const letras = new Map();
+  for (const g of lista) {
+    const l = normalizar(g.termino).charAt(0).toUpperCase();
+    letras.set(l, [...(letras.get(l) ?? []), g]);
+  }
+  const entrada = (g) => {
+    const donde = g.eventos.map((id) => porId.get(id)).filter(Boolean);
+    const enlaces = donde.slice(0, MAX).map((ev) => `<a href="#evento/${ev.id}">${esc(ev.titulo)}</a>`);
+    return `<div class="glosario-entrada" id="glosario-${g.id}">
+      <dt>${esc(g.termino)}</dt>
+      <dd>${esc(g.definicion)}${g.fuente ? ` <span class="glosario-fuente">${externo(g.fuente, `Fuente: ${esc(nombreFuente(g.fuente))}`)}</span>` : ''}
+        ${donde.length ? `<p class="glosario-eventos">Aparece en: ${enlaces.join(' · ')}${donde.length > MAX ? ` y ${donde.length - MAX} más` : ''}.</p>` : ''}</dd>
+    </div>`;
+  };
   return {
     ceja: 'Glosario',
     titulo: 'Palabras para entender',
-    intro: `${lista.length} palabras que aparecen en los textos, con una explicación breve y los eventos donde se usan. Las explicaciones están en revisión: si ves un error, <a href="#acerca">avísanos</a>.`,
-    html: `<dl class="glosario-pagina">${lista
-      .map((g) => {
-        const donde = g.eventos.map((id) => porId.get(id)).filter(Boolean);
-        const enlaces = donde.slice(0, MAX).map((ev) => `<a href="#evento/${ev.id}">${esc(ev.titulo)}</a>`);
-        return `<div class="pagina-bloque" id="glosario-${g.id}">
-          <dt>${esc(g.termino)}</dt>
-          <dd>${esc(g.definicion)}${g.fuente ? ` <span class="glosario-fuente">${externo(g.fuente, `Fuente: ${esc(nombreFuente(g.fuente))}`)}</span>` : ''}
-            ${donde.length ? `<p class="glosario-eventos">Aparece en: ${enlaces.join(' · ')}${donde.length > MAX ? ` y ${donde.length - MAX} más` : ''}.</p>` : ''}</dd>
-        </div>`;
-      })
-      .join('')}</dl>`,
+    intro: `${lista.length} palabras que aparecen en los textos, con una explicación breve y los eventos donde se usan.`,
+    html: `<nav class="glosario-indice" aria-label="Letras del glosario">${[...letras.keys()]
+      .map((l) => `<a href="#glosario" data-ir="letra-${l}">${l}</a>`)
+      .join('')}</nav>
+      <div class="glosario-pagina">${[...letras]
+        .map(
+          ([l, grupo]) => `<section aria-labelledby="letra-${l}">
+            <h3 class="glosario-letra" id="letra-${l}" tabindex="-1">${l}</h3>
+            <dl>${grupo.map(entrada).join('')}</dl>
+          </section>`,
+        )
+        .join('')}</div>
+      <p class="glosario-nota">Las explicaciones están en revisión: si ves un error, <a href="#acerca">avísanos</a>.</p>`,
   };
 }
 
@@ -182,6 +198,15 @@ export function activar(contenedor, { eventos, copiar, avisar }) {
     if (e.target.matches('.secuencia-eventos input')) actualizarSecuencia();
   });
   contenedor.addEventListener('click', (e) => {
+    // Índice del glosario: baja a la letra y le pasa el foco, sin cambiar la dirección (sigue en #glosario).
+    const letra = e.target.closest('[data-ir]');
+    if (letra) {
+      e.preventDefault();
+      const destino = contenedor.querySelector(`#${letra.dataset.ir}`);
+      destino?.focus({ preventScroll: true });
+      destino?.scrollIntoView({ block: 'start', behavior: movimientoReducido() ? 'auto' : 'smooth' });
+      return;
+    }
     const b = e.target.closest('button');
     if (!b) return;
     if (b.dataset.accion === 'copiar-secuencia') copiar(contenedor.querySelector('#secuencia-enlace').value, 'Enlace de la secuencia copiado.');

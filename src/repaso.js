@@ -4,7 +4,7 @@
 // muerte, ni por eventos de temas sensibles (paraRepaso, src/sensibles.js), y como máximo una pregunta por ronda
 // es sobre una guerra.
 import { esSensible, paraRepaso } from './sensibles.js';
-import { esc, icono, normalizar } from './util.js';
+import { esc, icono, normalizar, urlImagen } from './util.js';
 
 const azar = (lista) => {
   const copia = [...lista];
@@ -43,7 +43,8 @@ function orden(eventos, { nino, usados }) {
     return {
       eventos: [a, b],
       texto: '¿Qué pasó primero?',
-      opciones: azar([primero, despues]).map((ev) => ({ texto: ev.titulo, correcta: ev === primero })),
+      // Cada opción es una lámina, con la imagen de su evento.
+      opciones: azar([primero, despues]).map((ev) => ({ texto: ev.titulo, correcta: ev === primero, ev })),
       respuesta: `Primero fue «${esc(primero.titulo)}», ${esc(fecha(primero))}, y después «${esc(despues.titulo)}», ${esc(fecha(despues))}.`,
       enlaces: [primero, despues].map((ev) => [`#evento/${ev.id}`, ev.titulo]),
     };
@@ -98,15 +99,24 @@ function donde(eventos, { lugares, regiones, usados }) {
   return null;
 }
 
+// En «Para niños», la persona tiene que estar en el texto que leyeron (con su nombre completo o su apellido).
+const palabras = (texto) => ` ${normalizar(texto).replace(/[^a-z0-9]+/g, ' ').trim()} `;
+function nombrada(ev, nombre) {
+  const texto = palabras(ev.resumenNino);
+  const completo = palabras(nombre);
+  const apellido = completo.trim().split(' ').at(-1);
+  return texto.includes(completo) || (apellido.length >= 5 && texto.includes(` ${apellido} `));
+}
+
 // Quién aparece: una de sus personas y dos de otra época (todos sus eventos a más de 80 años de este: alguien
 // de la misma época podría haber estado aunque los datos no lo nombren). Nunca alguien que aparece en un tema
 // sensible, ni la persona que nombra el título.
-function quien(eventos, { todos, vetados, usados }) {
+function quien(eventos, { nino, todos, vetados, usados }) {
   const anios = new Map();
   for (const x of todos) for (const n of x.personajes) anios.set(n, [...(anios.get(n) ?? []), x.anio]);
   for (const ev of azar(eventos.filter((x) => x.personajes.length && !usados.has(x)))) {
     const suyos = new Set(ev.personajes.map(normalizar));
-    const correcto = azar(ev.personajes).find((n) => !vetados.has(n) && !delata(ev.titulo, n));
+    const correcto = azar(ev.personajes).find((n) => !vetados.has(n) && !delata(ev.titulo, n) && (!nino || nombrada(ev, n)));
     const otraEpoca = (n) => !vetados.has(n) && !suyos.has(normalizar(n)) && !delata(ev.titulo, n) && anios.get(n).every((a) => Math.abs(a - ev.anio) > 80);
     const otros = azar([...anios.keys()].filter(otraEpoca)).slice(0, 2);
     if (!correcto || otros.length < 2) continue;
@@ -154,21 +164,38 @@ export function preguntas(historia, { eventos, lugares, regiones, nino = false }
   return ronda;
 }
 
-/** Pinta la ronda en `contenedor`; cada pregunta se responde una vez y muestra su respuesta. */
+// Imagen de un evento (tamaños estándar de Commons; si no carga, el placeholder de su período: main.js). En un
+// recorte apaisado, un retrato (original vertical) se mira desde arriba: si no, queda la cara cortada.
+const imagen = (ev, sizes) =>
+  `<img src="${urlImagen(ev.imagen.archivo, 330)}" srcset="${[250, 330, 500].map((a) => `${urlImagen(ev.imagen.archivo, a)} ${a}w`).join(', ')}"
+    sizes="${sizes}" alt="" loading="lazy" decoding="async" data-periodo="${ev.periodoId}"${ev.imagen.alto > ev.imagen.ancho * 1.15 ? ' style="--foco:50% 8%"' : ''}>`;
+
+/**
+ * Pinta la ronda en `contenedor`: cada pregunta es una tarjeta con la imagen de su evento (en «¿Qué pasó
+ * primero?», cada opción es una lámina). Se responde una vez y muestra su respuesta; abajo, cuántas van.
+ */
 export function pintar(contenedor, ronda) {
   const total = ronda.length;
   contenedor.innerHTML = `${ronda
-    .map(
-      (p, i) => `<fieldset class="pregunta">
-        <legend><span class="pregunta-num">Pregunta ${i + 1} de ${total}</span> ${esc(p.texto)}</legend>
-        <div class="pregunta-opciones">${p.opciones
-          .map((o, j) => `<button type="button" class="boton opcion" data-pregunta="${i}" data-opcion="${j}">${esc(o.texto)}</button>`)
-          .join('')}</div>
-        <p class="pregunta-respuesta" role="status"></p>
-      </fieldset>`,
-    )
+    .map((p, i) => {
+      const laminas = p.opciones.some((o) => o.ev);
+      return `<div class="pregunta${laminas ? ' con-laminas' : ''}">
+        ${laminas ? '' : `<span class="pregunta-img">${imagen(p.eventos[0], '(max-width: 40em) 90vw, 26rem')}</span>`}
+        <fieldset>
+          <legend><span class="pregunta-num">Pregunta ${i + 1} de ${total}</span> ${esc(p.texto)}</legend>
+          <div class="pregunta-opciones">${p.opciones
+            .map(
+              (o, j) =>
+                `<button type="button" class="boton opcion" data-pregunta="${i}" data-opcion="${j}">${o.ev ? `<span class="opcion-img">${imagen(o.ev, '(max-width: 40em) 45vw, 13rem')}</span>` : ''}<span class="opcion-texto">${esc(o.texto)}</span></button>`,
+            )
+            .join('')}</div>
+          <p class="pregunta-respuesta" role="status"></p>
+        </fieldset>
+      </div>`;
+    })
     .join('')}
-    <p class="repaso-fin"><button type="button" class="boton" data-accion="repaso"><span>Otra ronda</span></button></p>`;
+    <p class="repaso-fin"><span class="repaso-avance"></span> <button type="button" class="boton" data-accion="repaso"><span>Otra ronda</span></button></p>`;
+  let respondidas = 0;
   contenedor.onclick = (e) => {
     const b = e.target.closest('.opcion');
     if (!b || b.getAttribute('aria-disabled') === 'true') return;
@@ -179,11 +206,13 @@ export function pintar(contenedor, ronda) {
       otra.setAttribute('aria-disabled', 'true');
       if (p.opciones[otra.dataset.opcion].correcta) {
         otra.classList.add('correcta');
-        otra.insertAdjacentHTML('afterbegin', icono('visto'));
+        otra.querySelector('.opcion-texto').insertAdjacentHTML('afterbegin', icono('visto'));
       }
     }
     b.classList.add('elegida');
-    caja.querySelector('.pregunta-respuesta').innerHTML = `<b>${elegida.correcta ? 'Así es.' : 'La respuesta es otra.'}</b> ${p.respuesta}
-      <span class="pregunta-enlaces">Ver: ${p.enlaces.map(([href, texto]) => `<a href="${href}">${esc(texto)}</a>`).join(' · ')}</span>`;
+    // La respuesta entra con un fundido breve (vistas.css); el foco se queda en la opción tocada.
+    caja.querySelector('.pregunta-respuesta').innerHTML = `<span class="respuesta"><b>${elegida.correcta ? 'Así es.' : 'La respuesta es otra.'}</b> ${p.respuesta}
+      <span class="pregunta-enlaces">Ver: ${p.enlaces.map(([href, texto]) => `<a href="${href}">${esc(texto)}</a>`).join(' · ')}</span></span>`;
+    contenedor.querySelector('.repaso-avance').textContent = `Respondiste ${++respondidas} de ${total}.`;
   };
 }

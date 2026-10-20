@@ -1000,8 +1000,11 @@ body[data-vista='detalle'] .linea {
   opacity: 1;
 }
 
+/* Una sola medida para todo lo de la portada: el héroe, las puertas, las cifras y lo de abajo quedan alineados
+   (en 1920 px, las cifras empezaban en el borde izquierdo y el héroe al centro). */
 .inicio-hero,
 .puertas,
+.cifras,
 .inicio-cuerpo > * {
   width: 100%;
   max-width: 72rem;
@@ -1051,7 +1054,8 @@ body[data-vista='detalle'] .linea {
   stroke-linejoin: round;
 }
 
-/* Puertas: la imagen ocupa toda la tarjeta y el título va encima, sobre un degradado del océano. */
+/* Puertas: la imagen ocupa toda la tarjeta y el título va encima, sobre un degradado del océano. En la tablet,
+   una ancha y dos debajo (en 2 + 1 quedaba un hueco). */
 .puertas {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -1059,6 +1063,29 @@ body[data-vista='detalle'] .linea {
   margin-top: clamp(1.5rem, 3vw, 2.5rem);
   padding: 0;
   list-style: none;
+}
+
+@media (min-width: 40em) and (max-width: 61.99em) {
+  .puertas {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .puertas > li:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 62em) {
+  .puertas .puerta {
+    min-height: 16rem;
+  }
+}
+
+/* Las miniaturas se recortan con el punto de enfoque arriba del centro: un retrato conserva la cabeza y los
+   moáis de la puerta, su parte de arriba. */
+:is(.tarjeta-img, .vecino-img, .ficha-img, .tira-img, .resultado-img, .mapa-evento-img, .destacado-marco, .mosaico) > img,
+.puerta > img {
+  object-position: var(--foco, 50% 25%);
 }
 
 .puerta {
@@ -1309,8 +1336,10 @@ body[data-vista='detalle'] .linea {
   list-style: none;
 }
 
+/* La regla de eventos de cada período, siempre al pie de su tarjeta: los títulos de dos líneas no la desalinean. */
 .epoca {
   display: grid;
+  grid-template-rows: auto auto 1fr;
   grid-template-columns: 2.25rem minmax(0, 1fr);
   align-items: baseline;
   gap: 0 0.5rem;
@@ -1424,9 +1453,21 @@ body[data-vista='detalle'] .linea {
 
 /* «¿Primera vez? Empieza aquí», en la bienvenida: solo la primera vez (index.html pone data-primera antes de
    pintar, así no mueve nada). */
+/* La llamada principal de la primera visita: el único botón primario de la primera pantalla, con una flecha
+   hacia «Empieza aquí», que está más abajo. */
 .empieza-ir {
   display: none;
   margin: 1.25rem 0 0;
+}
+
+.empieza-ir .boton {
+  min-height: 3rem;
+  padding-inline: 1.25rem;
+  font-weight: 700;
+}
+
+.empieza-ir .icono {
+  rotate: 90deg;
 }
 
 :root[data-primera] .empieza-ir {
@@ -4120,14 +4161,38 @@ body[data-vista='detalle'] .minimapa-fila {
   }
 }
 
+/* Las cifras, como una escala gráfica: un filete arriba y uno entre cada una. */
 .cifras {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 2rem;
-  margin: clamp(1.25rem, 3vw, 2rem) 0 0;
-  padding: 0;
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  margin-bottom: 0;
+  padding: 0.75rem 0 0;
   list-style: none;
   color: var(--texto-suave);
+  border-top: 1px solid var(--borde);
+}
+
+/* En la tablet, de a dos (así ningún filete queda al comienzo de una línea); desde 62em, en una sola fila. */
+@media (min-width: 40em) and (max-width: 61.99em) {
+  .cifras {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+  }
+
+  .cifras li:nth-child(even) {
+    padding-left: 2rem;
+    border-left: 1px solid var(--borde);
+  }
+}
+
+@media (min-width: 62em) {
+  .cifras li + li {
+    padding-left: 2rem;
+    border-left: 1px solid var(--borde);
+  }
 }
 
 .cifras b {
@@ -4144,6 +4209,7 @@ body[data-vista='detalle'] .minimapa-fila {
 .epoca-escala {
   position: relative;
   grid-column: 2;
+  align-self: end;
   height: 0.75rem;
   margin-top: 0.625rem;
   border-bottom: 1px solid rgb(255 255 255 / 0.5);

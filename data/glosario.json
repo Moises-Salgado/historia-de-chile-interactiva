@@ -10,7 +10,7 @@
     "id": "cabildo-abierto",
     "termino": "Cabildo abierto",
     "formas": ["cabildo abierto", "cabildos abiertos"],
-    "definicion": "Reunión de los vecinos de una ciudad para tratar un asunto muy importante. En el del 18 de septiembre de 1810, en Santiago, se reunieron unos 400 vecinos.",
+    "definicion": "Reunión de los vecinos de una ciudad para tratar un asunto muy importante. El 18 de septiembre de 1810, unos 400 vecinos se reunieron en un cabildo abierto en Santiago.",
     "deTexto": { "evento": "1810-primera-junta-de-gobierno", "frase": "El 18 de septiembre de 1810, unos 400 vecinos se reunieron en un cabildo abierto en el edificio del Real Tribunal del Consulado, en Santiago." },
     "eventos": ["1808-crisis-de-la-monarquia", "1810-primera-junta-de-gobierno", "1817-batalla-de-chacabuco", "1823-abdicacion-de-ohiggins"]
   },
