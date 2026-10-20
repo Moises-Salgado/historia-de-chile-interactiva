@@ -220,7 +220,7 @@ Todo lo de esta sección está confirmado (✔). Son errores, no opiniones, y ca
 
 - **V-02 · La imagen de época se ve como una estampilla** ✔.
   - En 1366 × 768, las imágenes verticales de la Araucanía y del Primer Congreso miden 181 × 278 px y ocupan entre el 26 y el 27 % de su marco.
-  - En 29 de los 121 eventos, el archivo original de Commons mide menos de 500 px de ancho. En 1920 px, «Reforma agraria» se ve de 150 px dentro de un marco enorme.
+  - En 12 de los 121 eventos, el archivo original de Commons mide menos de 500 px de ancho (medido con la API de Commons en `data/imagenes-medidas.json`; una primera versión de este informe decía 29, porque contaba la miniatura que eligió el navegador y no el original). En 1920 px, «Reforma agraria» se ve de 150 px dentro de un marco enorme.
   - El README promete «una página de revista». Los referentes (Google Arts & Culture y los especiales del NYT o de The Guardian) abren con la imagen a sangre.
   - **Qué hacer:** encabezado con la imagen a sangre, ajustada al ancho y con un punto de enfoque por imagen; un visor para ampliarla, y reemplazar los originales chicos cuando haya algo mejor.
 - **V-03 · Muchas «láminas de época» no son de época** ✔. Los propios pies de foto lo dicen:
@@ -393,7 +393,7 @@ Todo lo de esta sección está confirmado (✔). Son errores, no opiniones, y ca
 3. **Imágenes.**
    - Reemplazar las láminas que no son de época, empezando por las primeras de la línea (Monte Verde y Chinchorro) y por la crisis de 1982.
    - Encabezado de evento con la imagen grande.
-   - Revisar los 29 originales de menos de 500 px.
+   - Revisar los 12 originales de menos de 500 px.
 4. **Trabajo editorial con revisión humana.**
    - Un nivel «Para niños» completo, con su entorno.
    - «Lo que se discute» con posturas atribuidas a su fuente, y causas en el nivel General del golpe.

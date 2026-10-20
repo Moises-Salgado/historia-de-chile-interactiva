@@ -489,6 +489,20 @@ if (lugares || ubicaciones) validarUbicaciones(ubicaciones, ctx, validarLugares(
 const medidas = opcional('imagenes-medidas.json');
 if (medidas) validarMedidas(medidas, ctx);
 
+// La ficha de un personaje (2 o más eventos) «reúne los eventos donde se nombra»: quien la tiene debe figurar en
+// cada evento cuyo texto lo nombra con su nombre completo (si no, la ficha queda incompleta y puede leerse sesgada).
+{
+  const visibles = [...ctx.eventos.values()].filter((ev) => !ev.pendienteVerificacion);
+  const cuenta = new Map();
+  for (const ev of visibles) for (const p of ev.personajes ?? []) cuenta.set(p, (cuenta.get(p) ?? 0) + 1);
+  for (const ev of visibles) {
+    const texto = [ev.resumenNino, ev.resumen, ev.detalle].join(' ');
+    for (const [p, n] of cuenta) {
+      if (n >= 2 && !ev.personajes.includes(p) && texto.includes(p)) aviso(ev.id, `su texto nombra a «${p}», que tiene ficha: agrégalo a "personajes"`);
+    }
+  }
+}
+
 // index.html precarga la lámina del primer evento al entrar a #linea: debe ser su imagen actual.
 const RUTA_INDEX = resolve(DIR, '../index.html');
 if (existsSync(RUTA_INDEX)) {

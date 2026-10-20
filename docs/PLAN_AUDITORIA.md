@@ -130,7 +130,7 @@ Fuera de este plan quedan:
     - los números chicos, en palabras;
     - con una fecha aproximada, «Unos 30 años después» (el paso 9 de «Lo esencial» ya tiene conector).
   - **Tratado de 1881, «Para niños»:** dice que la frontera sigue las cumbres más altas «que separan las aguas que corren hacia cada lado», como los otros niveles.
-  - **Personajes:** quien tiene ficha figura en todos los eventos cuyo texto lo nombra, como promete la ficha. Se agregaron 16: Pinochet en cuatro (violaciones a los derechos humanos, crisis de 1982, protestas de 1983 y reformas de 2005), Allende en dos, y otros diez de todos los períodos.
+  - **Personajes:** quien tiene ficha figura en todos los eventos cuyo texto lo nombra, como promete la ficha. Se agregaron 19 menciones: Pinochet en cuatro eventos (violaciones a los derechos humanos, crisis de 1982, protestas de 1983 y reformas de 2005), Allende en dos y otras 13, de doce personas de todos los períodos.
   - **Porcentajes:** los 69 de los textos llevan espacio duro («54,7 %»), así el signo no queda solo en otra línea.
   - **«Borrar mis datos»:**
     - el segundo paso dice «Sí, borrar mis datos», sin «toca»;
@@ -143,3 +143,19 @@ Fuera de este plan quedan:
   - **Portada:** «hace miles de años» en vez de «hace unos 14.500 años», cuya cifra está en debate según el propio evento de Monte Verde.
   - **Carga lenta:** antes de que llegue el JavaScript, la opción de lectura elegida y la pestaña de la sección ya se ven marcadas.
   - **README:** la primera carga pesa 118,69 KB de JavaScript y CSS, unos 172 KB con el HTML y las dos tipografías.
+- **A9 (hecha).**
+  - **Barrido:** once vistas nuevas o cambiadas, en 320, 820 y 1366 px:
+    - sin desborde horizontal, letra mínima de 18 px, sin controles sin nombre ni objetivos chicos;
+    - los únicos «textos cortados» son 2 o 3 px de rasgos bajo la última línea, no texto truncado;
+    - en el sitio construido, sin errores de consola y con el Service Worker activo.
+  - **Presupuesto:** carga inicial de 118,69 KB (tope 141,63), módulos a pedido 10,27 KB y mapa 23,73 KB (tope 23,97).
+  - **`npm test`:** avisa si un evento nombra con su nombre completo a alguien con ficha que no figura en «personajes». Comparar solo apellidos daba falsos positivos (Valdivia, Fuerte Bulnes, Plaza Baquedano), así que eso queda para revisión a mano.
+  - **Documentos:**
+    - `CLAUDE.md`, con `#linea/<NN>`, `npm run medir-imagenes` e `imagenes-medidas.json`;
+    - `data/README.md`, con el esquema de las medidas, el mapa de los grupos y la regla de los personajes;
+    - `REVISION_PENDIENTE.md`, con las latitudes del mapa de los pueblos, las láminas que siguen sin ser de época, los 12 originales chicos y los apellidos;
+    - en `AUDITORIA_EXTERNA.md`, «29 originales chicos» se corrigió a 12.
+  - **Queda fuera** (necesita fuentes, revisión humana o una decisión del dueño):
+    - reemplazar las láminas que no son de época y los originales chicos;
+    - el trabajo editorial de la sección 6 de la auditoría;
+    - las decisiones de la sección 11.

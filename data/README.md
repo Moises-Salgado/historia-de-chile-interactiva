@@ -66,7 +66,7 @@ JSON en UTF-8. `src/datos.js` los incluye en el sitio y `npm test` (`scripts/val
 | `resumenNino` | sí | 1-2 oraciones, vocabulario simple, sin fechas complejas. |
 | `resumen` | sí | 3-4 oraciones para público general. |
 | `detalle` | sí | 1-3 párrafos separados por una línea en blanco (`\n\n`). |
-| `personajes` | sí | Lista de nombres; puede ir vacía. |
+| `personajes` | sí | Lista de nombres; puede ir vacía. Quien aparece en 2 o más eventos tiene ficha (`#personaje/<nombre>`), que reúne los eventos donde se lo nombra: debe figurar en cada evento cuyo texto lo nombra con su nombre completo (`npm test` avisa si falta). |
 | `imagen` | sí | Ver la tabla siguiente. |
 | `fuentes` | sí | 1 o más URL `https`. Preferir Memoria Chilena, BCN, Museo Histórico Nacional, Archivo Nacional o académicas; Wikipedia ES solo como apoyo. |
 | `pendienteVerificacion` | no | `true` = el evento no se muestra en la app (reemplaza al comentario `// pendiente de verificación`). |
@@ -83,6 +83,8 @@ JSON en UTF-8. `src/datos.js` los incluye en el sitio y `npm test` (`scripts/val
 
 La app la carga desde `https://commons.wikimedia.org/wiki/Special:FilePath/<archivo>?width=800`, muestra siempre autor, licencia y enlace a Commons, y si falla usa `public/placeholders/periodo-NN.svg`.
 
+**Medidas de las imágenes (`imagenes-medidas.json`, opcional).** `{ "<archivo>": [ancho, alto] }`, en píxeles del original en Commons. Las escribe `npm run medir-imagenes` (la API de Commons, de a 50); no se editan a mano. Con ellas, el encabezado de cada evento reserva el espacio exacto de la obra (sin saltos al cargar), no la amplía más de 1,5 veces su original, decide si va como retrato y ofrece «Ver más grande» desde 1280 px. Sin la medida, la obra usa una proporción de 3:2. `npm test` avisa si a una imagen en uso le falta su medida o si sobra alguna: tras cambiar o agregar una imagen, ejecutar `npm run medir-imagenes`.
+
 ## Historias guiadas, grupos, «¿Sabías que?», «Lo que se discute», glosario y títulos cortos (opcionales)
 
 No agregan hechos nuevos: solo ordenan o citan los eventos que ya existen. La excepción es el glosario, que explica palabras y por eso lleva su propia fuente.
@@ -90,7 +92,7 @@ No agregan hechos nuevos: solo ordenan o citan los eventos que ya existen. La ex
 | Archivo | Contenido | Reglas |
 |---|---|---|
 | `recorridos.json` | Historias guiadas: `{ "id", "titulo", "descripcion", "eventos": [ids] }`. `#historia/<id>` es su presentación (duración y pasos sobre la silueta), `#historia/<id>/<paso>` cada paso y `#historia/<id>/fin` el cierre (lo recorrido, el repaso y otras historias). La de id `esencial` es la que propone «Empieza aquí» en la portada. | Al menos 3 pasos, en orden cronológico, con eventos que existen y se muestran. La descripción no puede afirmar nada que no digan esos eventos. |
-| `grupos.json` | Eventos de una misma fecha que la línea de tiempo muestra en una sola tarjeta (`#grupo/<id>`): `{ "id", "titulo", "miembros" (plural, ej. "pueblos"), "descripcion", "eventos": [ids] }`. | Al menos 2 eventos, todos con la misma `fecha`; un evento no puede estar en dos grupos. El orden de `eventos` es el de la lista (ej. de norte a sur). |
+| `grupos.json` | Eventos de una misma fecha que la línea de tiempo muestra en una sola tarjeta (`#grupo/<id>`): `{ "id", "titulo", "miembros" (plural, ej. "pueblos"), "descripcion", "eventos": [ids] }`. Si sus eventos tienen ubicación, la portada del grupo los muestra en un mapa: una llave por zona (con las latitudes de sus regiones actuales completas) o un punto por lugar, con el título sin «Pueblo». | Al menos 2 eventos, todos con la misma `fecha`; un evento no puede estar en dos grupos. El orden de `eventos` es el de la lista (ej. de norte a sur). |
 | `sabias-que.json` | `{ "<id del evento>": "<oración>" }`: una oración del `detalle` que se muestra como «¿Sabías que…?» en los niveles Para niños y General. | La oración debe estar copiada textualmente del `detalle` y entenderse sola (sin «él», «ese año» ni «horas más tarde»). No se usa en temas sensibles, porque una ficha de curiosidades no corresponde ahí: guerras de la Conquista y de la Araucanía, guerras del período 05 (incluida la del Pacífico), todo el período 08 (dictadura), matanzas y estallido social. `npm test` lo comprueba. |
 | `se-discute.json` | `{ "<id del evento>": "<oración>" }`: una oración del `detalle` que dice que hay distintas interpretaciones o debate; se muestra como «Lo que se discute» en Para niños y General (en Detallado ya está en el texto). | Copiada textualmente del `detalle`. `npm test` lo comprueba. |
 | `glosario.json` | Lista de `{ "id", "termino", "formas"? (otras maneras de escribirla, como el plural), "definicion", "fuente"? (URL), "deTexto"? ({ "evento", "frase" }), "eventos"? }`. Cada evento muestra en «Palabras para entender» las que aparecen en sus textos, y `#glosario` las reúne todas, con sus eventos. | Cada palabra lleva una fuente (https) o sale de una oración copiada de los textos de un evento (`deTexto`), y debe aparecer en algún evento. Si en otros textos tiene otro sentido, `eventos` limita dónde vale. Todas esperan revisión humana: `npm run docs` las lista en `docs/REVISION_PENDIENTE.md`. |
