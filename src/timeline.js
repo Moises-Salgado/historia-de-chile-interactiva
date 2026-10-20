@@ -701,29 +701,39 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     irA(x - ventana.clientWidth / 2, suave);
   }
 
-  // Saltos largos (más de dos pantallas: «Al inicio», un período, el minimapa con el teclado): la vista se
-  // funde, salta y entra desde el lado del viaje, en vez de recorrer la pista (y pedir a Commons las
-  // imágenes de todo lo que hay en medio). Los saltos cortos siguen siendo un desplazamiento suave.
+  // Saltos largos (más de dos pantallas: «Al inicio», un período, el minimapa): la vista salta y la pista llega
+  // deslizándose desde el lado del viaje, sin fundirse (CLAUDE.md, «Movimiento»: el eje se desplaza, no
+  // desaparece y reaparece), en vez de recorrer la pista entera (y pedir a Commons las imágenes de todo lo que
+  // hay en medio). Los saltos cortos siguen siendo un desplazamiento suave.
   let salto = null;
   function irA(left, suave = true) {
     left = limitar(left, 0, Math.max(0, g.ancho - ventana.clientWidth));
     const distancia = left - ventana.scrollLeft;
     if (!suave || movimientoReducido() || Math.abs(distancia) <= 2 * ventana.clientWidth) {
-      salto = null;
       ventana.scrollTo({ left, behavior: suave ? conducta() : 'auto' });
       return;
     }
-    const sale = animar(pista, [{ opacity: 1 }, { opacity: 0 }], { duration: 120, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' });
-    salto = sale;
-    sale?.finished.then(
-      () => {
-        if (salto !== sale) return; // otro salto lo reemplazó
-        ventana.scrollTo({ left, behavior: 'auto' });
-        sale.cancel();
-        animar(pista, [{ opacity: 0, translate: `${Math.sign(distancia) * 1.5}rem 0` }, { opacity: 1, translate: '0 0' }], { duration: 200, easing: CURVA });
-      },
-      () => {},
-    );
+    ventana.scrollTo({ left, behavior: 'auto' });
+    llegarDeslizando(distancia);
+  }
+
+  // La pista recorre a lo más un tercio de pantalla (350 ms, frenando) y los puntos y las franjas a la vista entran
+  // escalonados en el sentido del viaje: 30 ms entre uno y otro, a lo más 10.
+  function llegarDeslizando(distancia) {
+    if (movimientoReducido()) return;
+    salto?.cancel();
+    const desde = Math.sign(distancia) * Math.min(Math.abs(distancia), ventana.clientWidth / 3);
+    salto = animar(pista, [{ translate: `${desde.toFixed(0)}px 0` }, { translate: '0 0' }], { duration: 350, easing: CURVA });
+    const izq = ventana.scrollLeft;
+    const aLaVista = (x) => x >= izq && x <= izq + ventana.clientWidth;
+    const llegan = [
+      ...visibles.filter((ev) => !elPunto.get(ev.id).hidden && aLaVista(X(ev.u))).map((ev) => ({ el: elPunto.get(ev.id), x: X(ev.u) })),
+      ...elFranjas.filter((el) => el.offsetWidth && aLaVista(Math.max(el.offsetLeft, izq))).map((el) => ({ el, x: Math.max(el.offsetLeft, izq) })),
+    ];
+    llegan
+      .sort((a, b) => (distancia > 0 ? a.x - b.x : b.x - a.x))
+      .slice(0, 10)
+      .forEach(({ el }, i) => animar(el, [{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: i * 30, easing: 'ease-out', fill: 'backwards' }));
   }
 
   // Solo una tarjeta entra en el orden de Tab (la actual o la primera a la vista); las flechas recorren el resto.
@@ -1081,7 +1091,10 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     if (e.button !== 0) return;
     e.preventDefault();
     minimapa.setPointerCapture(e.pointerId);
+    // Un toque lejos (otro siglo) llega deslizándose, como un salto; al arrastrar, la vista sigue al dedo.
+    const antes = ventana.scrollLeft;
     irAlPuntero(e);
+    if (Math.abs(ventana.scrollLeft - antes) > ventana.clientWidth) llegarDeslizando(ventana.scrollLeft - antes);
   });
   minimapa.addEventListener('pointermove', (e) => {
     if (minimapa.hasPointerCapture(e.pointerId)) irAlPuntero(e);
