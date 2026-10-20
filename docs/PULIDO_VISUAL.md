@@ -63,3 +63,15 @@ Inconsistencias entre vistas vistas en las capturas, para las pasadas siguientes
   - los títulos en 34/48 px según el ancho;
   - la navegación en Barlow;
   - el texto en Source Serif.
+
+## Pasadas (cierre)
+
+9. **Páginas de texto:** el índice del glosario es como el de un diccionario (letras sueltas sobre un filete en ocre, de 44 px para tocarlas), y el resumen de las fichas de personaje y de grupo se limita a la medida de lectura.
+10. **Arreglos de la auditoría 2:**
+    - la barra de una historia, sin caja, sobre un filete en ocre;
+    - el chip «Todos los períodos» lleva un tramo opaco antes de su fundido;
+    - al elegir un período, su chip queda a la vista justo después del fundido.
+
+**Verificación final:** contraste, letra mínima, objetivos táctiles y desborde, sin problemas en claro y oscuro, en 1440 × 900 y en 390 × 844, en la portada, la línea, un evento, un paso de historia, el glosario, el mapa, un personaje y la lista de historias. Sin errores de consola.
+
+**Queda para una próxima ronda:** «Este mes en la historia» y «Elige cómo leer», en la portada, siguen como cajas. Allí cada fila se toca como un botón, así que se pueden quedar.

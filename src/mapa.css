@@ -20,9 +20,9 @@
   top: -1px;
   bottom: -1px;
   left: 100%;
-  width: 2.5rem;
+  width: 3.5rem;
   content: '';
-  background: linear-gradient(to right, var(--pacifico), transparent);
+  background: linear-gradient(to right, var(--pacifico) 45%, transparent);
   pointer-events: none;
 }
 

@@ -280,15 +280,14 @@
 
 /* Paso de una historia guiada: barra con el nombre, «Paso N de M» y la posición en el recorrido (arriba de
    la portada). */
+/* Sin caja: la barra es un contenedor, no algo que se toca; la separa del encabezado un filete fino en ocre. */
 .historia-barra {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.25rem 1rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
+  padding: 0 0 0.625rem;
+  border-bottom: 1px solid var(--ocre-claro);
 }
 
 .historia-barra p {

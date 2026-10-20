@@ -461,6 +461,11 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     if (!b) return;
     periodo = b.dataset.periodo || null;
     for (const x of filtro.querySelectorAll('button')) x.setAttribute('aria-pressed', String(x === b));
+    // El elegido queda después de «Todos los períodos» (fijo) y de su fundido (mapa.css, 3,5rem): el anterior se
+    // esconde bajo ellos, y el elegido se ve entero.
+    const fijo = filtro.firstElementChild;
+    const fundido = 3.5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    if (b !== fijo) filtro.scrollTo({ left: b.offsetLeft - fijo.offsetLeft - fijo.offsetWidth - fundido, behavior: movimientoReducido() ? 'auto' : 'smooth' });
     svg.classList.add('tinte');
     clearTimeout(tinte);
     tinte = setTimeout(() => svg.classList.remove('tinte'), 450);
