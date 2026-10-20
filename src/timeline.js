@@ -388,10 +388,15 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     const libre = base - CARTELA.corta * rem;
     const alto3 = LAMINA.alto[3] * rem;
     let s = limitar(libre / alto3, LAMINA.minimo, angosta ? 1.15 : 1);
-    const carriles = limitar(Math.floor((libre + hueco) / (alto3 * s + hueco)), 1, MAX_CARRILES);
-    // Con alto de sobra (una tablet en vertical, una pantalla grande), las láminas crecen —ancho y alto juntos,
-    // hasta 1,2 veces— para llenar sus carriles, en vez de dejar un hueco vacío encima (con 1rem de aire).
-    if (!angosta) s = Math.max(s, Math.min(((libre - rem + hueco) / carriles - hueco) / alto3, 1.2));
+    let carriles = limitar(Math.floor((libre + hueco) / (alto3 * s + hueco)), 1, MAX_CARRILES);
+    // Con alto de sobra, un muro de láminas: si caben dos carriles con láminas de al menos 0,85, van dos (más
+    // eventos con su imagen y menos marcas «+N»); si no, las láminas crecen para llenar los carriles que hay
+    // (un carril, hasta 1,35 veces; más, hasta 1,2), en vez de dejar un hueco vacío encima (con 1rem de aire).
+    const llenar = (n) => ((libre - rem + hueco) / n - hueco) / alto3;
+    if (!angosta && carriles === 1 && llenar(2) >= 0.85) {
+      carriles = 2;
+      s = Math.min(llenar(2), 1.2);
+    } else if (!angosta) s = Math.max(s, Math.min(llenar(carriles), carriles === 1 ? 1.35 : 1.2));
     Object.assign(g, {
       rem,
       s,
@@ -411,6 +416,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     const fila = g.h + g.hueco;
     g.z = (f * (g.w + g.hueco)) / g.carriles;
     ubicarCielo(base - g.carriles * fila + g.hueco, rem);
+    pista.style.setProperty('--y-cielo', `${Math.max(0, base - g.carriles * fila + g.hueco)}px`);
     g.minImp = filtroActivo ? 1 : f < ZOOM.hitos ? 3 : f < ZOOM.todos ? 2 : 1;
     const yCarril = (c) => base - g.h - c * (g.h + g.hueco);
 
@@ -437,6 +443,7 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     // Solo los años de los eventos que se ven en el eje (con un filtro, los que quedan).
     const aptos = candidatosAnio.filter((c) => (!c.ev || (enFiltro.has(c.ev) && !puntosOcultos.has(c.ev))) && c.du * g.z >= 2 * mitadEtiqueta(c.texto, rem));
     capaAnios.innerHTML = elegirEtiquetas(aptos, X, rem)
+      .filter((p, i, puestas) => i === 0 || p.texto !== puestas[i - 1].texto)
       .map(({ x, texto, clase }) => `<span class="anio${clase ? ` ${clase}` : ''}" style="transform:translateX(${x.toFixed(1)}px)">${texto}</span>`)
       .join('');
     franjas.forEach((fr, i) => {
@@ -515,15 +522,22 @@ export function crearLineaDeTiempo(seccion, contenedorMinimapa, { eventos, perio
     }
     const sinLamina = items.filter((ev) => !ev.pos);
     g.finHuecos = 0;
-    const alto = LAMINA.alto[1] * g.rem * g.s * 0.5;
+    const alto = LAMINA.alto[1] * g.rem * g.s * 0.75;
     const base = yCarril(0) + g.h;
     huecos = [];
     let html = '';
     const marcar = (x, ancho, dentro) => {
       huecos.push({ centro: x + ancho / 2, importancia: Math.max(...dentro.map((ev) => ev.importancia)) });
       const n = dentro.length;
-      html += `<div class="hueco" data-i="${huecos.length - 1}" style="--color:${colorDe.get(dentro[0].periodoId)};width:${ancho.toFixed(1)}px;height:${alto.toFixed(1)}px;transform:translate(${x.toFixed(1)}px, ${(base - alto).toFixed(1)}px)">
-        <span class="hueco-cuenta">+${n}</span><span class="hueco-texto">${n === 1 ? 'evento' : 'eventos'}</span><span class="hueco-accion">${icono('mas')}Acercar</span></div>`;
+      // Hasta cuatro de sus imágenes (las de los eventos más importantes), en miniatura: el hueco se ve como lo que
+      // es, una pila de láminas que se abre al acercar.
+      const muestra = [...dentro].sort((a, b) => b.importancia - a.importancia || a.u - b.u).slice(0, 4);
+      const imgs = muestra
+        .map((ev) => (ev.eventos?.[0] ?? ev).imagen)
+        .map((img) => `<img src="${urlImagen(img.archivo, 120)}" alt="" loading="lazy" decoding="async" draggable="false">`)
+        .join('');
+      html += `<div class="hueco" data-i="${huecos.length - 1}" data-n="${Math.min(muestra.length, 4)}" style="--color:${colorDe.get(dentro[0].periodoId)};width:${ancho.toFixed(1)}px;height:${alto.toFixed(1)}px;transform:translate(${x.toFixed(1)}px, ${(base - alto).toFixed(1)}px)">
+        <span class="hueco-imgs">${imgs}</span><span class="hueco-texto"><span class="hueco-cuenta">+${n}</span> ${n === 1 ? 'evento' : 'eventos'}</span><span class="hueco-accion">${icono('mas')}Acercar</span></div>`;
     };
     for (let i = 0; i < union.length - 1; i++) {
       const [izq, der] = [union[i][1], union[i + 1][0]];
