@@ -3,9 +3,8 @@
    páginas «Acerca de», «Para docentes» y el glosario. main.js los importa después de styles.css (van en la carga
    inicial: a pedido, un fallo dejaba la vista sin estilos hasta recargar). */
 
-/* Historias guiadas (detalle.js) como puertas: mosaico a sangre con las imágenes de sus primeros pasos y,
-   encima, el título, la descripción y el avance. El degradado va con el texto y llega a 0,85 donde empieza
-   la ceja, sea cual sea el alto de la tarjeta (en el celular la descripción ocupa más líneas). */
+/* Historias guiadas (detalle.js) como libros: arriba, el mosaico con las imágenes de sus primeros pasos, a la
+   vista; debajo, sobre el océano, la ceja, el título, la descripción y el avance. */
 .historias-lista {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
@@ -16,16 +15,34 @@
 }
 
 .historia-puerta {
-  min-height: 18rem;
+  grid-template-rows: auto 1fr;
+  align-content: stretch;
+  min-height: 0;
+  background: var(--pacifico);
 }
 
 .historia-puerta::after {
-  background: rgb(8 25 31 / 0.15);
+  display: none;
+}
+
+.historia-puerta .puerta-mosaico {
+  position: relative;
+  inset: auto;
+  z-index: 0;
+  aspect-ratio: 16 / 9;
 }
 
 .historia-puerta .puerta-texto {
-  padding-top: 3rem;
-  background: linear-gradient(180deg, rgb(8 25 31 / 0), rgb(8 25 31 / 0.85) 2.5rem, rgb(8 25 31 / 0.95));
+  align-content: start;
+  padding-top: 0.875rem;
+  text-shadow: none;
+  border-top: 3px solid var(--ocre-claro);
+}
+
+@media (hover: hover) {
+  .historia-puerta:hover .puerta-titulo {
+    color: var(--ocre-luz);
+  }
 }
 
 .historia-puerta .ceja,
@@ -56,31 +73,32 @@
 
 .fichas {
   display: grid;
-  gap: 0.75rem;
   margin: 0 0 1.5rem;
   padding: 0;
   list-style: none;
+  border-top: 1px solid var(--borde);
 }
 
+/* Cada ficha, una fila del índice con un filete fino (no una caja); el color del período, al pie de su imagen. */
 .ficha {
   display: flex;
-  gap: 1rem;
-  padding: 0.75rem;
+  gap: 1.25rem;
+  padding: 1rem 0.25rem;
   color: var(--texto);
   text-decoration: none;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-left: 0.3125rem solid var(--color);
-  border-radius: var(--radio);
+  border-bottom: 1px solid var(--borde);
   transition:
-    border-color var(--dur-micro) ease,
+    background-color var(--dur-micro) ease,
     scale var(--dur-micro) ease;
 }
 
 @media (hover: hover) {
   .ficha:hover {
-    border-color: var(--acento);
-    border-left-color: var(--color);
+    background: var(--superficie);
+  }
+
+  .ficha:hover .ficha-titulo {
+    color: var(--acento);
   }
 }
 
@@ -90,11 +108,12 @@
 
 .ficha-img {
   flex: none;
-  width: 6rem;
-  height: 6rem;
+  width: 7.5rem;
+  height: 5.5rem;
   overflow: hidden;
   background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
   border-radius: 0.25rem;
+  box-shadow: inset 0 -3px 0 var(--color);
 }
 
 .ficha-img > img {
@@ -163,6 +182,11 @@
   .ficha-texto,
   .ficha-texto > span:not(.ficha-resumen) {
     display: block;
+  }
+
+  /* align-content distinto de «normal» hace del bloque un contexto propio, que no rodea la imagen flotante. */
+  .ficha-texto {
+    align-content: normal;
   }
 }
 
@@ -594,10 +618,32 @@
   color: var(--acento);
 }
 
-/* Al menos 19 rem de alto: así sus números no bajan de 18 px (con el celular horizontal, 75vh es muy poco). */
-.recorrido-mapa {
+.detalle-portada[data-portada-historia] {
+  --escenario: min(52cqh, 26rem);
+}
+
+.historia-figura .detalle-marco img {
+  object-fit: cover;
+}
+
+/* Al menos 19 rem de alto: así sus números no bajan de 18 px (con el celular horizontal, 75vh es muy poco). La
+   silueta va con su pie, que explica los números. */
+.recorrido-figura {
   position: sticky;
   top: 1rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  max-width: 16rem;
+  margin: 0;
+}
+
+.recorrido-figura figcaption {
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.recorrido-mapa {
   width: auto;
   height: clamp(19rem, 75vh, 34rem);
 }
@@ -629,10 +675,13 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .recorrido-mapa {
+  .recorrido-figura {
     position: static;
     order: -1;
     justify-self: center;
+  }
+
+  .recorrido-mapa {
     height: 16rem;
   }
 

@@ -728,7 +728,7 @@ export function crearDetalle(
       }
       return t.map(([a, b]) => (a === b ? a : `${a}-${b}`)).join(', ');
     };
-    return `<svg class="recorrido-mapa" viewBox="-40 -10 560 1026" aria-hidden="true" focusable="false">
+    return `<figure class="recorrido-figura" aria-hidden="true"><svg class="recorrido-mapa" viewBox="-40 -10 560 1026" focusable="false">
       <use href="#silueta-chile" width="302" height="1006" class="recorrido-tierra"/>
       ${puntos.some((p) => p.rapa) ? `<rect class="minimapa-recuadro" x="${RAPA[0] - 30}" y="${RAPA[1] - 26}" width="60" height="52" rx="6"/>` : ''}
       ${puntos
@@ -737,7 +737,7 @@ export function crearDetalle(
             `<circle class="recorrido-punto" cx="${p.x.toFixed(0)}" cy="${p.y.toFixed(0)}" r="14"/><text class="recorrido-numero" x="${(p.x + 28).toFixed(0)}" y="${(p.y + 16).toFixed(0)}">${tramos(p.pasos)}</text>`,
         )
         .join('')}
-    </svg>`;
+    </svg><figcaption>Cada número es un paso, en el lugar donde ocurrió.</figcaption></figure>`;
   }
 
   /** Presentación de una historia (paso 0): de qué trata, cuánto toma según el nivel y sus pasos. */
@@ -757,6 +757,14 @@ export function crearDetalle(
             : ir(1, 'Recorrerla de nuevo', 'boton primario')
         }</span>${ir(1, 'Empezar', 'boton primario solo-clase')}`;
     const guardada = leerPreferencia('guardada') === r.id;
+    // La portada de la historia: la imagen de su primer paso (con su pie y su crédito), junto al título.
+    const primero = r.eventos[0];
+    const img = primero.imagen;
+    const grande = imagenDetalle(img.archivo);
+    const figura = `<figure class="detalle-figura historia-figura" style="--proporcion:${img.ancho ? (img.ancho / img.alto).toFixed(3) : 1.5};--ancho-max:${img.ancho ? `${Math.round(img.ancho * 1.5)}px` : '100%'}">
+        <div class="detalle-marco"><img src="${grande.src}" srcset="${grande.srcset}" sizes="${grande.sizes}" alt=""${img.ancho ? ` width="${img.ancho}" height="${img.alto}"` : ''} decoding="async" data-periodo="${primero.periodoId}"></div>
+        <figcaption><span class="pie">Paso 1: ${esc(primero.titulo)}.</span> <span class="credito">Imagen: ${creditoImagen(img)}</span></figcaption>
+      </figure>`;
     raiz.style.removeProperty('--color');
     pintar(
       `
@@ -766,6 +774,8 @@ export function crearDetalle(
         titulo: esc(r.titulo),
         debajo: `<p class="vista-intro">${esc(r.descripcion)}</p>
           <p class="recorrido-duracion">Leída en voz alta: <span class="recorrido-minutos">${duracion()}</span></p>${regla}`,
+        figura,
+        atributos: ' data-portada-historia',
       })}
       <div class="detalle-contenido vista-lista">
         <p class="recorrido-acciones">${acciones}</p>

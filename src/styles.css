@@ -3554,11 +3554,14 @@ body[data-vista='detalle'] .minimapa-fila {
 
 .detalle-texto {
   grid-area: texto;
-  max-width: var(--medida);
 }
 
 .detalle-mas {
   grid-area: mas;
+}
+
+/* En un evento, el texto a la medida de lectura (las listas de historias, grupos y personajes usan el ancho). */
+.detalle-columnas > :is(.detalle-texto, .detalle-mas) {
   max-width: var(--medida);
 }
 
