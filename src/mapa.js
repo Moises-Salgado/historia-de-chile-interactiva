@@ -12,10 +12,27 @@ import { animar, esc, marcarDesborde, movimientoReducido, urlImagen } from './ut
 const NS = 'http://www.w3.org/2000/svg';
 const CURVA_ENTRADA = 'cubic-bezier(0.2, 0.7, 0.2, 1)'; // la de --curva-entrada (styles.css)
 const MARGEN = { izq: 4, der: 4, arriba: 8, abajo: 8 };
-// Rótulos fijos para orientarse: al oeste (sobre el mar) salvo Santiago, que va al este. Las latitudes van al
-// este, en el borde del mapa (el lado argentino no se dibuja).
-const ROTULOS = [['arica'], ['iquique'], ['antofagasta'], ['copiapo'], ['valparaiso', 'Valparaíso'], ['santiago', 'Santiago', 'este'], ['concepcion'], ['valdivia'], ['monte-verde'], ['chiloe', 'Chiloé', 'este'], ['estrecho', 'Estrecho']];
+// Rótulos fijos para orientarse: al oeste (sobre el mar) salvo los que irían encima de otro (al este) y Juan
+// Fernández, bajo su punto (al oeste chocaba con Valparaíso). Las latitudes van al este, en el borde del mapa.
+const ROTULOS = [
+  ['arica'],
+  ['iquique'],
+  ['antofagasta'],
+  ['copiapo', 'Copiapó', 'este'],
+  ['valparaiso', 'Valparaíso'],
+  ['juan-fernandez', 'Juan Fernández', 'sur'],
+  ['santiago', 'Santiago', 'este'],
+  ['concepcion'],
+  ['valdivia'],
+  ['monte-verde'],
+  ['chiloe', 'Chiloé', 'este'],
+  ['estrecho', 'Estrecho'],
+];
 const plural = (n, una, varias) => `${n} ${n === 1 ? una : varias}`;
+// Clases fijas de cantidad (no relativas a la región con más eventos: así el filtro por período se nota). Sin
+// eventos va achurado, la convención de «sin datos»; nunca se pinta con el color del período.
+const claseDe = (n) => (n === 0 ? 0 : n === 1 ? 1 : n <= 3 ? 2 : n <= 6 ? 3 : 4);
+const LEYENDA = ['sin eventos', '1', '2 a 3', '4 a 6', '7 o más'];
 
 /**
  * Crea el mapa en `seccion`. alElegir(ruta) navega (por ejemplo, a «#mapa/rm»); anunciar(texto) avisa a los
@@ -85,9 +102,10 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     <path class="escala-barra" d="M0 0V${km500.toFixed(1)}M-5 0h10M-5 ${(km500 / 2).toFixed(1)}h10M-5 ${km500.toFixed(1)}h10"/>
     <text x="-6" y="${km500.toFixed(1)}" dy="1.1em">500 km</text></g>`;
   const capas = `<g class="graticula" aria-hidden="true">${rayas}</g>${costa}${escala}<g class="recuadro" aria-hidden="true"><rect x="${rx - 28}" y="${ry - 22}" width="56" height="44" rx="3"/><text x="${rx - 28}" y="${ry - 22}" dy="-0.4em">Rapa Nui · otra escala</text></g>`;
-  svg.innerHTML = `${capas}<g class="regiones">${geo.regiones
+  const achurado = `<defs><pattern id="sin-eventos" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="achurado-fondo"/><line x1="0" y1="0" x2="0" y2="6" class="achurado-raya"/></pattern></defs>`;
+  svg.innerHTML = `${achurado}${capas}<g class="regiones" id="mapa-regiones">${geo.regiones
     .map((r) => `<path class="region" data-codigo="${r.codigo}" d="${r.d}${r.rapa}" tabindex="-1" role="button"/>`)
-    .join('')}</g><g class="contornos" aria-hidden="true"></g><path class="contorno-foco" aria-hidden="true"/><g class="graticula" aria-hidden="true">${latitudes}</g><g class="alfileres" aria-hidden="true">${mapa.lugares
+    .join('')}</g><g class="contornos" id="mapa-contornos" aria-hidden="true"></g><path class="contorno-foco" aria-hidden="true"/><g class="graticula" aria-hidden="true">${latitudes}</g><g class="alfileres" aria-hidden="true">${mapa.lugares
     .map((l) => {
       const [x, y] = xy(l);
       return `<g class="alfiler" data-lugar="${l.id}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><circle class="area" r="9"/><circle class="punto" r="3"/></g>`;
@@ -96,6 +114,7 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     const l = lugarPorId.get(id);
     if (!l) return '';
     const [x, y] = xy(l);
+    if (lado === 'sur') return `<text x="${x.toFixed(1)}" y="${(y + 11).toFixed(1)}" dy="0.8em" text-anchor="middle">${esc(texto ?? l.nombre)}</text>`;
     const este = lado === 'este';
     return `<text x="${(x + (este ? 9 : -9)).toFixed(1)}" y="${y.toFixed(1)}" dy="0.35em" text-anchor="${este ? 'start' : 'end'}">${esc(texto ?? l.nombre)}</text>`;
   }).join('')}</g>`;
@@ -119,16 +138,28 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
 
   // ---- Pintar: color de cada región según cuántos eventos tiene, tamaño de los alfileres y lo elegido ----
   const nombreRegion = (codigo) => regionPorCodigo.get(codigo)?.nombre ?? codigo;
+  // Bajo el mapa: la leyenda de los colores y cuántos eventos hay en cuántas regiones (con el período elegido).
+  const leyenda = figura.querySelector('.mapa-leyenda');
+  function pintarLeyenda(cuenta) {
+    if (!leyenda) return;
+    const conEventos = [...cuenta.values()].filter(Boolean).length;
+    leyenda.innerHTML = `<ul class="mapa-clases">${LEYENDA.map((t, i) => `<li><i data-clase="${i}" aria-hidden="true"></i>${t}</li>`).join('')}</ul>
+      <p class="mapa-cuenta">${periodo ? esc(periodoDe.get(periodo).nombre) : 'Todos los períodos'} · ${plural(enEpoca().length, 'evento', 'eventos')} en ${plural(conEventos, 'región', 'regiones')} · límites actuales</p>`;
+  }
   function pintarMapa() {
     const cuenta = new Map(mapa.regiones.map((r) => [r.codigo, de.region(r.codigo).length]));
-    const max = Math.max(1, ...cuenta.values());
     const zona = seleccion.tipo === 'zona' ? new Set(zonaPorId.get(seleccion.id).regiones) : null;
     const regionElegida = seleccion.tipo === 'region' ? seleccion.id : seleccion.tipo === 'lugar' ? lugarPorId.get(seleccion.id).region : null;
+    // Los lugares se tocan solo dentro de la región elegida: en todo el mapa, el toque es para la región (antes, el
+    // punto de Negrete se quedaba con el toque del Biobío). Sus eventos están siempre en la lista de la región.
+    if (regionElegida) svg.dataset.region = regionElegida;
+    else delete svg.dataset.region;
+    pintarLeyenda(cuenta);
     const elegidas = [];
     for (const [codigo, el] of elRegion) {
       const n = cuenta.get(codigo);
       const elegida = codigo === regionElegida || Boolean(zona?.has(codigo));
-      el.style.setProperty('--peso', `${Math.round((n / max) * 70)}%`);
+      el.dataset.clase = claseDe(n);
       el.setAttribute('aria-label', `${nombreRegion(codigo)}: ${plural(n, 'evento', 'eventos')}`);
       el.dataset.globo = `${regionPorCodigo.get(codigo)?.corto ?? codigo}: ${plural(n, 'evento', 'eventos')}`;
       el.classList.toggle('elegida', elegida);
@@ -147,6 +178,7 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
       el.querySelector('.punto').setAttribute('r', (2.6 + Math.sqrt(n) * 1.7).toFixed(1));
       el.dataset.globo = `${l.nombre}: ${plural(n, 'evento', 'eventos')}${l.aproximado ? ' (ubicación aproximada)' : ''}`;
       el.classList.toggle('elegido', seleccion.tipo === 'lugar' && seleccion.id === id);
+      el.classList.toggle('en-region', l.region === regionElegida);
     }
     const foco = regionElegida ?? zona?.values().next().value ?? 'AP';
     for (const [codigo, el] of elRegion) el.tabIndex = codigo === foco ? 0 : -1;
@@ -174,6 +206,70 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
   const encabezado = (ceja, titulo) => `<p class="ceja">${ceja}${epoca()}</p><h3 id="mapa-panel-titulo" tabindex="-1">${titulo}</h3>`;
   const rutaRegion = (codigo) => `#mapa/${codigo.toLowerCase()}`;
 
+  // Recuadro de la región elegida, como en un atlas: la región ampliada (las vecinas asoman en los bordes), con
+  // sus lugares y sus nombres. Es un dibujo: los lugares se eligen en la lista de abajo. La caja se mide sin el
+  // recuadro de Rapa Nui, que agrandaría la de Valparaíso.
+  const cajas = new Map();
+  function cajaDe(codigo) {
+    if (!cajas.has(codigo)) {
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', geoRegion.get(codigo).d);
+      svg.append(p);
+      cajas.set(codigo, p.getBBox());
+      p.remove();
+    }
+    return cajas.get(codigo);
+  }
+  function recuadro(codigo, elegido = null) {
+    const b = cajaDe(codigo);
+    const m = 0.15;
+    const vb = [b.x - b.width * m, b.y - b.height * m, b.width * (1 + 2 * m), b.height * (1 + 2 * m)];
+    const lugares = mapa.lugares.filter((l) => l.region === codigo && l.id !== 'rapa-nui' && de.lugar(l.id).length);
+    const marcas = lugares
+      .map((l, i) => {
+        const [x, y] = xy(l);
+        const este = i % 2 === 1; // los nombres, alternados a cada lado del punto
+        return `<g class="alfiler${l.id === elegido ? ' elegido' : ''}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><circle class="punto"/>
+          <text class="recuadro-nombre" x="0" y="0" dx="${este ? '0.6em' : '-0.6em'}" dy="0.35em" text-anchor="${este ? 'start' : 'end'}">${esc(l.nombre)}</text></g>`;
+      })
+      .join('');
+    return `<svg class="mapa-svg mapa-recuadro" viewBox="${vb.map((v) => v.toFixed(1)).join(' ')}" aria-hidden="true" focusable="false"><use href="#mapa-regiones"/><use href="#mapa-contornos"/>${marcas}</svg>`;
+  }
+  // Letra y puntos del recuadro a 18 px y 5 px en pantalla, según cuánto se amplió.
+  const ajustarRecuadro = () => {
+    const r = panel.querySelector('.mapa-recuadro');
+    const caja = r?.getBoundingClientRect();
+    if (!caja?.width) return;
+    const [, , w, h] = r.getAttribute('viewBox').split(' ').map(Number);
+    const unidad = Math.max(w / caja.width, h / caja.height); // unidades del mapa por píxel (con «meet»)
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 18;
+    r.style.setProperty('--letra', `${(rem * unidad).toFixed(3)}px`);
+    for (const c of r.querySelectorAll('.punto')) c.setAttribute('r', (5 * unidad).toFixed(3));
+    // Si un nombre choca con otro ya puesto, pasa al otro lado de su punto y, si aún choca, baja una línea.
+    const puestos = [];
+    const cajaTexto = (t) => {
+      const b = t.getBBox();
+      const m = t.closest('g').transform.baseVal.consolidate()?.matrix;
+      return { x: b.x + (m?.e ?? 0), y: b.y + (m?.f ?? 0), w: b.width, h: b.height };
+    };
+    const choca = (a) => puestos.some((b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h);
+    for (const t of r.querySelectorAll('.recuadro-nombre')) {
+      let c = cajaTexto(t);
+      if (choca(c)) {
+        const este = t.getAttribute('text-anchor') === 'start';
+        t.setAttribute('text-anchor', este ? 'end' : 'start');
+        t.setAttribute('dx', este ? '-0.6em' : '0.6em');
+        c = cajaTexto(t);
+        if (choca(c)) {
+          t.setAttribute('dy', '1.4em');
+          c = cajaTexto(t);
+        }
+      }
+      puestos.push(c);
+    }
+  };
+  new ResizeObserver(ajustarRecuadro).observe(panel);
+
   function pintarPanel() {
     const { tipo, id } = seleccion;
     let html;
@@ -187,13 +283,13 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     } else if (tipo === 'region') {
       const lista = de.region(id);
       const lugares = mapa.lugares.filter((l) => l.region === id && de.lugar(l.id).length);
-      html = `${ruta(CHILE, [rutaRegion(id), regionPorCodigo.get(id).corto])}${encabezado('Región', esc(nombreRegion(id)))}
+      html = `${ruta(CHILE, [rutaRegion(id), regionPorCodigo.get(id).corto])}${encabezado('Región', esc(nombreRegion(id)))}${recuadro(id)}
         <p class="mapa-resumen">${plural(lista.length, 'evento', 'eventos')}${lugares.length ? `; ${plural(lugares.length, 'lugar marcado', 'lugares marcados')}:` : '.'}</p>
         ${lugares.length ? `<ul class="mapa-lugares">${lugares.map((l) => `<li><a class="boton chico" href="#lugar/${l.id}">${esc(l.nombre)} <b>${de.lugar(l.id).length}</b></a></li>`).join('')}</ul>` : ''}
         ${listaEventos(lista)}`;
     } else if (tipo === 'lugar') {
       const l = lugarPorId.get(id);
-      html = `${ruta(CHILE, [rutaRegion(l.region), regionPorCodigo.get(l.region).corto], [`#lugar/${id}`, l.nombre])}${encabezado('Lugar', esc(l.nombre))}
+      html = `${ruta(CHILE, [rutaRegion(l.region), regionPorCodigo.get(l.region).corto], [`#lugar/${id}`, l.nombre])}${encabezado('Lugar', esc(l.nombre))}${id === 'rapa-nui' ? '' : recuadro(l.region, id)}
         <p class="mapa-resumen">${plural(de.lugar(id).length, 'evento', 'eventos')}.${l.aproximado ? ` <span class="mapa-aprox">Ubicación aproximada: ${esc(l.nota)}.</span>` : ''}</p>
         ${listaEventos(de.lugar(id))}`;
     } else if (tipo === 'zona') {
@@ -209,6 +305,7 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     }
     panel.innerHTML = html;
     contenido.dataset.seleccion = tipo;
+    ajustarRecuadro();
   }
 
   const titulo = ({ tipo, id }) =>
@@ -226,14 +323,14 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
   const enfocarSeleccion = (desdeDentro = false) =>
     (seleccion.tipo === 'todo' && !desdeDentro ? seccion.querySelector('#mapa-titulo') : panel.querySelector('#mapa-panel-titulo'))?.focus({ preventScroll: true });
 
-  // En el celular (una columna, styles.css), lo elegido aparece en una hoja fija abajo. Si en el mapa queda
-  // tapado por ella o fuera de la pantalla (al llegar por un enlace), el mapa se desplaza lo justo; si se ve,
-  // no se mueve.
+  // En el celular (una columna, styles.css), lo elegido aparece en una hoja fija abajo; en el computador, el mapa
+  // es un rollo de norte a sur junto al panel. Si lo elegido queda tapado por la hoja o fuera de la pantalla (al
+  // llegar por un enlace o desde la lista), el mapa se desplaza lo justo; si se ve, no se mueve.
   const desplazable = seccion.querySelector('.mapa-desplazable');
   const unaColumna = matchMedia('(max-width: 52em)');
   function dejarALaVista() {
     const ctm = svg.getScreenCTM();
-    if (!unaColumna.matches || !ctm || !desplazable.clientHeight) return;
+    if (!ctm || !desplazable.clientHeight) return;
     let centro;
     if (seleccion.tipo === 'lugar') centro = xy(lugarPorId.get(seleccion.id));
     else if (seleccion.tipo === 'region' || seleccion.tipo === 'zona') {
@@ -242,7 +339,7 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     } else return;
     const { y } = new DOMPoint(...centro).matrixTransform(ctm);
     const arriba = desplazable.getBoundingClientRect().top;
-    const abajo = panel.getBoundingClientRect().top;
+    const abajo = unaColumna.matches ? panel.getBoundingClientRect().top : desplazable.getBoundingClientRect().bottom;
     const margen = 48;
     if (y > arriba + margen && y < abajo - margen) return;
     desplazable.scrollBy({ top: y - (arriba + (abajo - arriba) * 0.45), behavior: movimientoReducido() ? 'auto' : 'smooth' });
@@ -277,7 +374,7 @@ export function crearMapa(seccion, { eventos, periodos, mapa, alElegir, anunciar
     if (unaColumna.matches && antes.tipo === 'todo') animar(panel, [{ translate: '0 100%' }, { translate: '0 0' }], { duration: 280, easing: CURVA_ENTRADA });
     else {
       const lado = Math.sign(PROFUNDIDAD[nueva.tipo] - PROFUNDIDAD[antes.tipo]) || 1;
-      animar(panel, [{ opacity: 0, translate: `${lado}rem 0` }, { opacity: 1, translate: '0 0' }], { duration: 220, easing: CURVA_ENTRADA });
+      animar(panel, [{ opacity: 0, translate: `${lado}rem 0` }, { opacity: 1, translate: '0 0' }], { duration: 180, easing: CURVA_ENTRADA });
     }
     if (nueva.tipo !== 'lugar' || movimientoReducido()) return;
     const pin = elLugar.get(nueva.id)?.querySelector('.punto');

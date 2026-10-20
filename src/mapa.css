@@ -39,6 +39,36 @@
   transition: fill 0.15s ease;
 }
 
+/* Clases fijas de cantidad (mapa.js): el filtro por período se nota. Sin eventos, achurado («sin datos»). */
+.region[data-clase='1'] {
+  --peso: 22%;
+}
+
+.region[data-clase='2'] {
+  --peso: 40%;
+}
+
+.region[data-clase='3'] {
+  --peso: 58%;
+}
+
+.region[data-clase='4'] {
+  --peso: 75%;
+}
+
+.region[data-clase='0'] {
+  fill: url(#sin-eventos);
+}
+
+.achurado-fondo {
+  fill: #5f8287;
+}
+
+.achurado-raya {
+  stroke: #87a3a6;
+  stroke-width: 2;
+}
+
 .region:hover {
   fill: color-mix(in oklab, var(--cobre-claro) 55%, var(--tierra-mapa));
 }
@@ -176,9 +206,17 @@
   fill: var(--texto);
 }
 
-/* Lugares: el punto crece con la cantidad de eventos; el área invisible agranda lo que se puede tocar. */
+/* Lugares: el punto crece con la cantidad de eventos; el área invisible agranda lo que se puede tocar. Se tocan
+   solo dentro de la región elegida (mapa.js): en todo el mapa, el toque es para la región que está debajo. */
 .alfiler {
   cursor: pointer;
+}
+
+/* (También sus círculos: .punto es además la clase de los puntos de la línea de tiempo, que sí reciben el toque.) */
+.mapa-svg:not([data-region]) :is(.alfiler, .alfiler *),
+.mapa-svg[data-region] :is(.alfiler:not(.en-region), .alfiler:not(.en-region) *) {
+  cursor: default;
+  pointer-events: none;
 }
 
 .alfiler .area {
@@ -210,6 +248,93 @@
   border-radius: 0.375rem;
   box-shadow: 0 6px 16px -6px rgb(0 0 0 / 0.5);
   translate: -50% calc(-100% - 0.625rem);
+}
+
+/* Bajo el mapa: la leyenda de las clases, cuántos eventos hay en cuántas regiones y los créditos. */
+.mapa-pie {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.mapa-leyenda {
+  display: grid;
+  gap: 0.375rem;
+}
+
+.mapa-clases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.875rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--texto-suave);
+}
+
+.mapa-clases li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.mapa-clases i {
+  --tierra-mapa: #5f8287;
+  width: 1rem;
+  height: 1rem;
+  background: color-mix(in oklab, var(--cobre-vivo) var(--peso, 0%), var(--tierra-mapa));
+  border: 1px solid #e3ece9;
+  border-radius: 2px;
+}
+
+.mapa-clases i[data-clase='0'] {
+  background: repeating-linear-gradient(45deg, #5f8287 0 3px, #87a3a6 3px 5px);
+}
+
+.mapa-clases i[data-clase='1'] {
+  --peso: 22%;
+}
+
+.mapa-clases i[data-clase='2'] {
+  --peso: 40%;
+}
+
+.mapa-clases i[data-clase='3'] {
+  --peso: 58%;
+}
+
+.mapa-clases i[data-clase='4'] {
+  --peso: 75%;
+}
+
+.mapa-cuenta {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Recuadro de la región elegida en el panel (mapa.js), sobre el mismo océano. En una columna el mapa ya se ve
+   entero encima de la hoja: no hace falta. */
+.mapa-recuadro {
+  width: 100%;
+  height: clamp(12rem, 30cqh, 20rem);
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--pacifico);
+  border-radius: var(--radio);
+}
+
+.mapa-recuadro .recuadro-nombre {
+  fill: var(--sobre-pacifico);
+  paint-order: stroke;
+  stroke: var(--pacifico);
+  stroke-width: calc(var(--letra, 18px) * 0.22);
+  stroke-linejoin: round;
+}
+
+@media (max-width: 52em) {
+  .mapa-recuadro {
+    display: none;
+  }
 }
 
 /* Panel: como una ficha clara sobre el océano (en modo oscuro, oscura), con su propio desplazamiento. */
@@ -439,6 +564,13 @@
     overflow-y: auto;
     border-radius: var(--radio) var(--radio) 0 0;
     box-shadow: 0 -12px 32px -12px rgb(0 0 0 / 0.7);
+  }
+}
+
+/* En colores forzados, el halo de los rótulos (un trazo del color del océano) los ensuciaba. */
+@media (forced-colors: active) {
+  .mapa-svg text {
+    stroke: none;
   }
 }
 

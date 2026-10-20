@@ -1705,10 +1705,12 @@ body[data-vista='detalle'] .linea {
   padding: 2rem 0;
 }
 
-/* Espacio reservado con la proporción del mapa (viewBox de mapa.js), así no salta al cargar. */
+/* Espacio reservado con la proporción del mapa (viewBox de mapa.js), así no salta al cargar. En el computador es
+   un rollo de norte a sur, de 62rem de alto como mínimo: Chile mide 0,3 de ancho por 1 de alto, y a la altura de la
+   pantalla quedaba una franja de unos 230 px. El panel queda fijo al lado mientras se recorre. */
 .mapa-lienzo {
   width: auto;
-  height: calc(100cqh - 2.5rem);
+  height: max(calc(100cqh - 2.5rem), 62rem);
   aspect-ratio: 310 / 1022;
 }
 
@@ -1774,8 +1776,7 @@ body[data-vista='detalle'] .linea {
 }
 
 .atlas-mapa {
-  position: sticky;
-  top: 1rem;
+  position: relative;
   grid-area: figura;
   margin: 0;
   background: none;

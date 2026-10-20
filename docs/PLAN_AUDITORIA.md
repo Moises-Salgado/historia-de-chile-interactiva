@@ -71,3 +71,9 @@ Fuera de este plan quedan:
     - en el celular, láminas de 14rem y tramos vacíos más cortos;
     - Monte Verde con una sola fecha y franjas con nombre accesible.
   - **Teclado:** con las flechas el foco pasa al título nuevo, y Av Pág desplaza el texto del evento.
+- **A4 (hecha).**
+  - **Mapa en escritorio:** es un rollo de norte a sur, de al menos 62rem: en 1366 px, 339 × 1116 en vez de unos 187 × 616.
+  - **Toques:** los lugares responden solo dentro de la región elegida, así el primer toque es para la región.
+  - **Filtro:** clases fijas de cantidad, achurado donde no hay eventos y una leyenda con cuántos eventos hay en cuántas regiones.
+  - **Recuadro:** la región elegida aparece ampliada en el panel, con sus lugares rotulados (sin animar el mapa).
+  - **Créditos y rótulos:** los créditos van al pie; Copiapó y Juan Fernández ya no chocan con otros rótulos; en colores forzados, los rótulos van sin halo.
