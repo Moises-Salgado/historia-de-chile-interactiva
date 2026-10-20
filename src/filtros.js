@@ -4,7 +4,8 @@
 // La búsqueda va por niveles: primero las palabras completas («Prat» → Arturo Prat) y aparte las que solo
 // empiezan igual («Prat» → Carlos Prats), con el motivo a la vista. Si hay coincidencias completas, las
 // parciales no filtran la línea de tiempo (y la cuenta lo dice). Arriba va lo que coincide en el título.
-// Los filtros son chips arriba de los resultados: sin ninguno activado se ven todos; activar uno deja solo
+// Los filtros son chips en un plegable bajo los resultados (lo que se busca va primero): sin ninguno activado se
+// ven todos; activar uno deja solo
 // ese período (o tema), y activar más los suma.
 import { esc, icono, marcarDesborde, normalizar, urlImagen } from './util.js';
 
@@ -141,12 +142,15 @@ export function crearFiltros(panel, { periodos, temas, eventos, regionesDe = () 
         <input id="buscar" class="campo" type="search" autocomplete="off" spellcheck="false" placeholder="Ej.: Prat, 1879, terremoto">
         <button type="button" class="campo-borrar" data-accion="borrar" aria-label="Borrar la búsqueda" hidden>${icono('cerrar')}</button>
       </div>
-      <div class="filtros-chips">
-        <div class="chips-grupo" role="group" aria-labelledby="chips-periodo"><span id="chips-periodo" class="chips-titulo">Períodos</span>${periodos.map((p) => chip('periodo', p)).join('')}</div>
-        <div class="chips-grupo" role="group" aria-labelledby="chips-tema"><span id="chips-tema" class="chips-titulo">Temas</span>${temas.map((t) => chip('tema', t)).join('')}</div>
-      </div>
       <p class="resultados-cuenta" role="status"></p>
       <div class="resultados"></div>
+      <details class="plegable filtros-plegable">
+        <summary>Filtrar por período o tema<span class="filtros-activos"></span></summary>
+        <div class="filtros-chips">
+          <div class="chips-grupo" role="group" aria-labelledby="chips-periodo"><span id="chips-periodo" class="chips-titulo">Períodos</span>${periodos.map((p) => chip('periodo', p)).join('')}</div>
+          <div class="chips-grupo" role="group" aria-labelledby="chips-tema"><span id="chips-tema" class="chips-titulo">Temas</span>${temas.map((t) => chip('tema', t)).join('')}</div>
+        </div>
+      </details>
       <p class="panel-historias">¿Prefieres un recorrido paso a paso? <a href="#historias">Elegir una historia guiada</a></p>
       <div class="panel-acciones">
         <button type="button" class="boton" data-accion="limpiar">Quitar filtros</button>
@@ -223,7 +227,10 @@ export function crearFiltros(panel, { periodos, temas, eventos, regionesDe = () 
       .join('')}</ul></div>`;
   }
 
+  const activos = panel.querySelector('.filtros-activos');
   function actualizar() {
+    const nFiltros = elegidos.periodo.size + elegidos.tema.size;
+    activos.textContent = nFiltros ? ` (${nFiltros} ${nFiltros === 1 ? 'activo' : 'activos'})` : '';
     encontrados = hayBusqueda() ? buscarEventos() : [];
     const completos = encontrados.filter((r) => !r.parcial);
     const parciales = encontrados.filter((r) => r.parcial);

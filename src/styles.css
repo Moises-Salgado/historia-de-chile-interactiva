@@ -4149,11 +4149,19 @@ body[data-vista='detalle'] .minimapa-fila {
   }
 }
 
-/* Filtros: una fila de chips por grupo (se desplaza de lado si no cabe), así los resultados quedan a la vista. */
+/* Filtros: en un plegable bajo los resultados (lo que se busca va primero), con una fila de chips por grupo. */
+.filtros-plegable {
+  margin-top: 0.75rem;
+}
+
+.filtros-activos {
+  color: var(--acento);
+}
+
 .filtros-chips {
   display: grid;
   gap: 0.375rem;
-  margin: 0.75rem 0 0.25rem;
+  margin: 0.25rem 0 1rem;
 }
 
 .chips-grupo {
@@ -4248,10 +4256,10 @@ body[data-vista='detalle'] .minimapa-fila {
 
 .resultados-lista {
   display: grid;
-  gap: 0.375rem;
   margin: 0 0 1rem;
   padding: 0;
   list-style: none;
+  border-top: 1px solid var(--borde);
 }
 
 /* Resultado compacto: miniatura, período y fecha en rótulo, título en serif (y el motivo, si no está en él). */
@@ -4260,14 +4268,13 @@ body[data-vista='detalle'] .minimapa-fila {
   align-items: center;
   gap: 0.75rem;
   width: 100%;
-  padding: 0.3125rem 0.75rem 0.3125rem 0.3125rem;
+  padding: 0.5rem 0.5rem 0.5rem 0;
   font: inherit;
   color: var(--texto);
   text-align: left;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-left: 0.3125rem solid var(--color);
-  border-radius: var(--radio);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--borde);
   cursor: pointer;
   transition:
     opacity 0.18s ease-out,
@@ -4278,15 +4285,19 @@ body[data-vista='detalle'] .minimapa-fila {
 
 @media (hover: hover) {
   .resultado:hover {
-    border-color: var(--acento);
-    border-left-color: var(--color);
+    background: var(--superficie);
+  }
+
+  .resultado:hover .resultado-titulo {
+    color: var(--acento);
   }
 }
 
 .resultado-img {
   flex: none;
-  width: 3.25rem;
-  height: 3.25rem;
+  width: 5.5rem;
+  height: 4rem;
+  box-shadow: inset 0 -3px 0 var(--color);
   overflow: hidden;
   background: color-mix(in srgb, var(--color) 25%, var(--superficie-2));
   border-radius: var(--radio-s);
@@ -4490,11 +4501,8 @@ body[data-vista='detalle'] .minimapa-fila {
 }
 
 .panel-historias {
-  margin: 0 0 1rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
+  margin: 0.75rem 0 1rem;
+  color: var(--texto-suave);
 }
 
 /* ---- Portada (mvp 6): la puerta de la línea de tiempo pesa el doble (es la entrada principal), una franja de
