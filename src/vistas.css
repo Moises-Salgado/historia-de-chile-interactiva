@@ -329,9 +329,47 @@
 
 /* «57 años después · en Curalaba»: en su propia línea, al final de la barra. */
 .historia-conector {
+  display: flex;
   flex-basis: 100%;
   order: 1;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--texto-suave);
+}
+
+/* El conector se revela con un trazo que se dibuja (CLAUDE.md, «Movimiento»): el tiempo que pasó entre un paso y
+   el otro. Es la excepción que la dirección de arte pide a «solo transform y opacity» (stroke-dashoffset). */
+.conector-trazo {
+  flex: none;
+  width: 2.25rem;
+  height: 0.625rem;
+  overflow: visible;
+}
+
+.conector-trazo path {
+  fill: none;
+  stroke: var(--acento);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .conector-trazo path {
+    animation: trazo var(--dur-media) var(--curva-entrada) both;
+  }
+
+  .historia-conector > span {
+    animation: aparecer var(--dur-corta) var(--curva-entrada) var(--dur-micro) both;
+  }
+}
+
+@keyframes trazo {
+  from {
+    stroke-dashoffset: 1;
+  }
 }
 
 

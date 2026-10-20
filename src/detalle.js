@@ -88,7 +88,11 @@ const barraHistoria = ({ recorrido, paso }, conector = '') => `
   <nav class="historia-barra" aria-label="Historia guiada">
     <p class="historia-nombre"><a href="${recorrido.origen?.href ?? '#historias'}">${esc(recorrido.origen?.texto ?? 'Historias guiadas')}</a> <span aria-hidden="true">›</span> <a href="${rutaHistoria(recorrido, 0)}">${esc(recorrido.titulo)}</a></p>
     <p class="historia-paso">Paso ${paso} de ${recorrido.eventos.length}</p>
-    ${conector ? `<p class="historia-conector">${conector}</p>` : ''}
+    ${
+      conector
+        ? `<p class="historia-conector"><svg class="conector-trazo" viewBox="0 0 40 10" aria-hidden="true" focusable="false"><path d="M1 5H37M32 1L37 5L32 9" pathLength="1"/></svg><span>${conector}</span></p>`
+        : ''
+    }
     <ol class="historia-pasos" aria-hidden="true">${recorrido.eventos
       .map((_, i) => `<li${i + 1 === paso ? ' class="actual"' : i + 1 < paso ? ' class="antes"' : ''}></li>`)
       .join('')}</ol>

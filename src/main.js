@@ -672,13 +672,14 @@ const esperar = (ms) => new Promise((listo) => setTimeout(listo, ms));
 const laminaDetalle = () => elDetalle.querySelector('.detalle-marco img');
 const posicion = (vista) => vista?.ev?.u ?? vista?.grupo?.u ?? null;
 // Hacia dónde pasa la página: dentro de una historia, según el paso (la presentación es el 0 y el cierre va
-// al final); entre eventos, según su lugar en la línea de tiempo. Entre una historia y otra cosa, sin lado.
+// al final), y con «paso-historia», que la hace entrar desde abajo (styles.css); entre eventos, según su lugar en
+// la línea de tiempo. Entre una historia y otra cosa, sin lado.
 function lado(previa, vista) {
   const historia = (v) => (v?.recorrido ? rutaHistoria(v.recorrido, 0) : null);
   if (historia(previa) || historia(vista)) {
     if (historia(previa) !== historia(vista)) return '';
     const n = (v) => (v.tipo === 'historia-inicio' ? 0 : v.tipo === 'historia-fin' ? Infinity : v.paso);
-    return n(vista) > n(previa) ? 'siguiente' : n(vista) < n(previa) ? 'anterior' : '';
+    return n(vista) > n(previa) ? 'siguiente paso-historia' : n(vista) < n(previa) ? 'anterior paso-historia' : '';
   }
   const [a, b] = [posicion(previa), posicion(vista)];
   return a === null || b === null || a === b ? '' : b > a ? 'siguiente' : 'anterior';

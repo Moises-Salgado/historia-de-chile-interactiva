@@ -4890,6 +4890,34 @@ body[data-vista='detalle'] .minimapa-fila {
   animation: var(--dur-corta) var(--curva-entrada) var(--dur-micro) both entrar-izquierda;
 }
 
+/* En una historia guiada (main.js, lado: «paso-historia»), el paso siguiente entra desde abajo (CLAUDE.md,
+   «Movimiento») y, al retroceder, desde arriba; el anterior solo se funde. */
+:root[data-transicion~='paso-historia']::view-transition-old(pagina) {
+  animation: var(--dur-micro) var(--curva-salida) both desvanecer;
+}
+
+:root[data-transicion~='paso-historia'][data-transicion~='siguiente']::view-transition-new(pagina) {
+  animation: var(--dur-corta) var(--curva-entrada) var(--dur-micro) both entrar-abajo;
+}
+
+:root[data-transicion~='paso-historia'][data-transicion~='anterior']::view-transition-new(pagina) {
+  animation: var(--dur-corta) var(--curva-entrada) var(--dur-micro) both entrar-arriba;
+}
+
+@keyframes entrar-abajo {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+@keyframes entrar-arriba {
+  from {
+    opacity: 0;
+    translate: 0 -1.5rem;
+  }
+}
+
 @keyframes salir-izquierda {
   to {
     opacity: 0;
