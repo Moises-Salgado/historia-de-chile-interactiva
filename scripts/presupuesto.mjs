@@ -84,6 +84,11 @@ for (const hoja of ['src/styles.css', 'src/mapa.css', 'src/vistas.css'].filter(e
     else if (rem < 1) errores.push(`font-size bajo 1rem (${donde(m.index)}): ${valor}`);
   }
   for (const m of css.matchAll(/(transition|animation)(-duration)?:\s*([^;}]+)/g)) {
+    // La única excepción al tope (CLAUDE.md, «Movimiento»): el Ken Burns lento del encabezado de un evento.
+    if (/\bken-burns\b/.test(m[3])) {
+      avisos.push(`Ken Burns (${donde(m.index)}): excepción al tope de 400 ms, una sola vez y sin movimiento reducido.`);
+      continue;
+    }
     for (const d of m[3].matchAll(/(?<![\w-])([\d.]+)(ms|s)\b/g)) {
       const ms = d[2] === 's' ? Number(d[1]) * 1000 : Number(d[1]);
       if (ms > 400) errores.push(`Duración de ${ms} ms (${donde(m.index)}): el tope es 400 ms.`);

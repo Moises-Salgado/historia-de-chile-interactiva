@@ -3264,6 +3264,7 @@ body[data-vista='detalle'] .minimapa-fila {
   position: relative;
   aspect-ratio: var(--proporcion, 1.5);
   max-height: var(--escenario);
+  overflow: hidden; /* el Ken Burns no sale del marco */
   background: color-mix(in srgb, var(--color) 30%, transparent);
   border-radius: 2px;
 }
@@ -3281,10 +3282,84 @@ body[data-vista='detalle'] .minimapa-fila {
   border-radius: 2px;
 }
 
-.detalle-portada[data-forma] .detalle-marco img {
+.detalle-portada[data-forma] .detalle-marco {
   box-shadow:
     0 1px 0 rgb(255 255 255 / 0.08),
     0 30px 50px -30px rgb(0 0 0 / 0.9);
+}
+
+/* Ken Burns (CLAUDE.md, «Movimiento»): con la obra ya cargada, se acerca de 1 a 1,05 en 20 s, una sola vez. Con
+   movimiento reducido, quieta. Es la única excepción al tope de 400 ms (scripts/presupuesto.mjs). */
+@media (prefers-reduced-motion: no-preference) {
+  .detalle-portada[data-forma] .detalle-marco img.cargada {
+    animation: ken-burns 20s ease-out both;
+  }
+}
+
+@keyframes ken-burns {
+  from {
+    scale: 1;
+  }
+
+  to {
+    scale: 1.05;
+  }
+}
+
+/* La obra a ancho completo (CLAUDE.md, «Dirección de arte»): arriba, entera y protagonista, con su pie y crédito en
+   una banda debajo; el titular abajo, con la bajada al lado en pantallas anchas. Un retrato (vertical) va al lado
+   del titular: a lo ancho quedaría angosto y empujaría el título bajo el pliegue. */
+.detalle-portada[data-forma]:not([data-forma='vertical']) .detalle-portada-contenido {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.detalle-portada[data-forma]:not([data-forma='vertical']) .detalle-figura {
+  order: -1;
+}
+
+@media (min-width: 60em) {
+  .detalle-portada[data-forma]:not([data-forma='vertical']) {
+    --escenario: min(56cqh, 36rem);
+  }
+
+  .detalle-portada[data-forma]:not([data-forma='vertical']) .detalle-titular {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 3rem;
+    align-items: end;
+    max-width: none;
+  }
+
+  .detalle-portada[data-forma]:not([data-forma='vertical']) .detalle-titular > * {
+    grid-column: 1;
+  }
+
+  .detalle-portada[data-forma]:not([data-forma='vertical']) .detalle-bajada {
+    grid-row: 1 / span 4;
+    grid-column: 2;
+    margin-top: 0 !important;
+  }
+
+  /* Su pie, centrado y más ancho que la obra si es angosta: la descripción en una línea y el crédito, con «Ver más
+     grande», en otra. */
+  .detalle-portada[data-forma]:not([data-forma='vertical']) .detalle-figura figcaption {
+    display: block;
+    width: min(100%, max(var(--ancho-obra), 46rem));
+    text-align: center;
+  }
+
+  .detalle-portada[data-forma]:not([data-forma='vertical']) .detalle-figura .pie {
+    display: block;
+  }
+
+  .detalle-portada[data-forma]:not([data-forma='vertical']) .ampliar {
+    margin-left: 0.75rem;
+  }
+
+  /* En un paso de historia la barra va arriba: la obra, un poco más baja, para que el título siga a la vista. */
+  .detalle-portada[data-forma]:not([data-forma='vertical']):has(.historia-barra) {
+    --escenario: min(48cqh, 32rem);
+  }
 }
 
 /* Un retrato (vertical) toma la columna que necesita y el título se queda con el resto. */
@@ -4533,6 +4608,13 @@ body[data-vista='detalle'] .minimapa-fila {
   }
 }
 
+/* Con la obra a ancho completo arriba, un poco menos alta: así el título sigue a la vista sin bajar. */
+@media (min-width: 60em) {
+  .detalle[data-nivel='nino'] .detalle-portada[data-forma]:not([data-forma='vertical']) {
+    --escenario: min(62cqh, 42rem);
+  }
+}
+
 /* ---- Modo clase (C5): la cabecera en una fila desde 75em (la marca queda como estrella y el nivel con
    rótulos cortos), «Pantalla completa», la imagen más grande y nada personal a la vista. ---- */
 .solo-clase {
@@ -5048,7 +5130,7 @@ html[data-cargando] {
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-clase]) :is(.punto, .tramo, .cartela, .detalle, .resultado, .epoca, .destacado) {
-      --tinta: var(--texto);
+      --tinta-periodo: var(--texto);
     }
   }
 }
@@ -5080,7 +5162,7 @@ html[data-cargando] {
   }
 
   :root:not([data-clase]) :is(.punto, .tramo, .cartela, .detalle, .resultado, .epoca, .destacado) {
-    --tinta: var(--color);
+    --tinta-periodo: var(--color);
   }
 
   body {
