@@ -176,6 +176,12 @@ document.addEventListener(
   (e) => {
     const img = e.target;
     if (!(img instanceof HTMLImageElement) || !img.dataset.periodo) return;
+    // La lámina que partió con la miniatura (main.js, abrir): si la grande no llega, queda la miniatura.
+    if ('previa' in img.dataset) {
+      delete img.dataset.previa;
+      img.removeAttribute('srcset');
+      return;
+    }
     img.removeAttribute('srcset');
     if (img.dataset.respaldo) {
       img.removeAttribute('src');
@@ -490,7 +496,7 @@ function cambiarBase(nueva, { enfocar = true } = {}) {
     linea.entrada();
   } else {
     // La sección nueva entra por su eje: la línea de tiempo de lado, el mapa de norte a sur (styles.css).
-    cambiarVista(aplicar, `seccion-${nueva}`);
+    cambiarVista(aplicar, `seccion-${nueva} pestana`);
   }
 }
 
@@ -707,7 +713,8 @@ function vecinosDe(ev) {
 }
 const rutaEvento = (item) => (!item ? null : item.esGrupo ? `#grupo/${item.id}` : `#evento/${item.id}`);
 
-function pintarVista(vista, desdeBoton) {
+// `previa`: la miniatura con que se abrió (ya cargada), para que la lámina crezca desde ella.
+function pintarVista(vista, desdeBoton, { previa = null } = {}) {
   const enfocar = !desdeBoton;
   let titulo;
   detenerLectura();
@@ -715,7 +722,7 @@ function pintarVista(vista, desdeBoton) {
   if (vista.tipo === 'evento') {
     const { ev } = vista;
     const { antes, despues, filtro } = vecinosDe(ev);
-    detalle.mostrar(ev, { antes, despues, nivel, regla: linea.regla(ev), enfocar, filtro });
+    detalle.mostrar(ev, { antes, despues, nivel, regla: linea.regla(ev), enfocar, filtro, previa });
     nav = { antes: rutaEvento(antes), despues: rutaEvento(despues) };
     titulo = ev.titulo;
     if (desdeBoton) anunciar(`${ev.fechaTexto}: ${ev.titulo}`);
@@ -723,7 +730,7 @@ function pintarVista(vista, desdeBoton) {
     const { ev, recorrido: r, paso } = vista;
     const antes = r.eventos[paso - 2] ?? null;
     const despues = r.eventos[paso] ?? null;
-    detalle.mostrar(ev, { antes, despues, nivel, regla: linea.regla(ev), enfocar, historia: { recorrido: r, paso } });
+    detalle.mostrar(ev, { antes, despues, nivel, regla: linea.regla(ev), enfocar, historia: { recorrido: r, paso }, previa });
     // Antes del primer paso está la presentación; después del último, el cierre.
     nav = { antes: rutaHistoria(r, paso - 1), despues: rutaHistoria(r, despues ? paso + 1 : 'fin') };
     titulo = `${ev.titulo} · ${r.titulo}`;
@@ -774,6 +781,8 @@ function pintarVista(vista, desdeBoton) {
   if (marcado) linea.seleccionar(marcado, { suave: false });
   if (vista.ev) marcarVisto(vista.ev);
   actualizarControles();
+  // Después de la imagen de esta vista, las de la anterior y la siguiente.
+  setTimeout(precargarVecinos, 600);
 }
 
 // Al pasar con Anterior y Siguiente, lo que sigue en pantalla viaja en vez de irse con la página: el punto del
@@ -783,7 +792,6 @@ function pintarVista(vista, desdeBoton) {
 const VIAJEROS = [
   ['.historia-barra', 'barra'],
   ['.historia-pasos .actual', 'paso'],
-  ['.detalle-ficha', 'ficha'],
   ['.minimapa-viajero', 'lugar'],
   ['.regla-marca', 'marca'],
 ];
@@ -794,7 +802,8 @@ function nombrarViajeros(activo) {
     const el = elDetalle.querySelector(selector);
     if (!el) continue;
     const r = el.getBoundingClientRect();
-    const aLaVista = activo && nombrados < 4 && r.height > 0 && r.bottom > marco.top && r.top < marco.bottom;
+    // Solo lo que se ve entero: la captura con nombre se dibuja completa, encima de todo (también de la barra).
+    const aLaVista = activo && nombrados < 4 && r.height > 0 && r.top >= marco.top && r.bottom <= marco.bottom;
     el.style.viewTransitionName = aLaVista ? nombre : '';
     if (aLaVista) nombrados++;
   }
@@ -825,8 +834,9 @@ document.addEventListener(
 );
 const origenDe = (ev) => {
   if (!ev || origen?.id !== ev.id || !origen.img.isConnected) return null;
+  // Solo una miniatura que se ve entera: cortada por un borde, su captura saldría completa.
   const r = origen.img.getBoundingClientRect();
-  return r.width > 0 && r.bottom > 0 && r.top < innerHeight ? origen.img : null;
+  return r.width > 0 && r.top >= 0 && r.bottom <= innerHeight && r.left >= 0 && r.right <= innerWidth ? origen.img : null;
 };
 
 function mostrarVista(vista, desdeBoton) {
@@ -852,37 +862,85 @@ function mostrarVista(vista, desdeBoton) {
   }
   const previa = vistaActual;
   const aplicar = () => pintarVista(vista, desdeBoton);
+  const mio = ++turnoVista; // una transición interrumpida (clics rápidos) no toca lo de la siguiente
+  const pestana = pestanaDe(vista.tipo) !== pestanaDe(previa?.tipo) ? ' pestana' : '';
   if (detalle.abierto) {
+    // La misma vista (un doble clic en una tarjeta): solo se enfoca, sin volver a pintarla.
+    if (mismaVista(previa, vista)) return void $('#detalle-titulo')?.focus({ preventScroll: true });
     const tipo = lado(previa, vista);
-    if (!tipo) return void cambiarVista(aplicar, tipo);
+    // Sin un lado (de un evento a un personaje, por ejemplo), la página también pasa «a través del fondo».
+    if (!tipo) return void cambiarVista(aplicar, `cambio${pestana}`);
     nombrarViajeros(true);
-    return void cambiarVista((animado) => {
+    return void cambiarVista(async (animado) => {
       aplicar();
-      if (animado) nombrarViajeros(true);
-    }, tipo)?.then(() => nombrarViajeros(false));
+      if (!animado) return;
+      ponerBanda();
+      nombrarViajeros(true);
+      // La imagen nueva (precargada) entra en la captura: el marco no aparece vacío.
+      await laminaLista(150);
+    }, `${tipo}${pestana}`)?.then(() => mio === turnoVista && nombrarViajeros(false));
   }
 
-  // Al abrir desde una miniatura (de la línea de tiempo o de una lista), crece hasta la lámina del detalle. Desde
-  // otra sección, se recuerda qué tenía el foco para devolverlo al cerrar.
+  // Al abrir desde una miniatura (de la línea de tiempo o de una lista), crece hasta la lámina del detalle: el
+  // detalle parte con esa misma imagen, ya cargada, y la cambia por la grande al terminar. Desde otra sección,
+  // se recuerda qué tenía el foco para devolverlo al cerrar.
   focoPrevio = base !== 'linea' && $(`#${base}`).contains(document.activeElement) ? document.activeElement : null;
   const miniatura = origenDe(vista.ev) ?? (base === 'linea' && vista.ev && !filtros.abierto ? linea.miniatura(vista.ev) : null);
   origen = null;
   if (miniatura) miniatura.style.viewTransitionName = LAMINA;
   cambiarVista(async (animado) => {
     if (miniatura) miniatura.style.viewTransitionName = '';
-    aplicar();
-    const lamina = laminaDetalle();
-    if (!animado || !miniatura || !lamina) return;
-    // Se espera la imagen grande (precargada al presionar la tarjeta) a lo más 250 ms; si no llega, no crece.
-    const lista = await Promise.race([lamina.decode().then(() => true, () => false), esperar(250).then(() => false)]);
-    if (!lista || !laminaALaVista(lamina)) return;
-    lamina.style.transition = 'none';
-    lamina.classList.add('cargada');
+    pintarVista(vista, desdeBoton, { previa: animado ? miniatura?.currentSrc || null : null });
+    if (!animado || !miniatura) return;
+    const lamina = await laminaLista(150);
+    if (mio !== turnoVista || !lamina || !laminaALaVista(lamina)) return;
     lamina.style.viewTransitionName = LAMINA;
-  }, 'abrir')?.then(() => {
+  }, `abrir${pestana}`)?.then(() => {
     const lamina = laminaDetalle();
-    if (lamina) lamina.style.viewTransitionName = '';
+    if (!lamina) return;
+    lamina.style.viewTransitionName = '';
+    if (lamina.dataset.srcset) {
+      lamina.srcset = lamina.dataset.srcset;
+      delete lamina.dataset.srcset;
+    }
   });
+}
+
+// La pestaña que corresponde a una vista (sin vista: la sección): «Historias», ninguna o la de la sección.
+const pestanaDe = (tipo) => (EN_HISTORIAS.has(tipo) ? 'historias' : ['pagina', 'personaje'].includes(tipo) ? null : base);
+const mismaVista = (a, b) =>
+  Boolean(a && b) && a.tipo === b.tipo && a.ev === b.ev && a.grupo === b.grupo && a.persona === b.persona && a.id === b.id && a.paso === b.paso && a.recorrido?.id === b.recorrido?.id;
+let turnoVista = 0;
+
+// La lámina del detalle, lista para la captura: espera a lo más `ms` a que se decodifique y la deja visible sin su
+// fundido. Si no llega a tiempo, la transición sigue sin ella.
+async function laminaLista(ms) {
+  const img = laminaDetalle();
+  if (!img) return null;
+  const ok = await Promise.race([img.decode().then(() => true, () => false), esperar(ms).then(() => false)]);
+  if (!ok) return null;
+  img.style.transition = 'none';
+  img.classList.add('cargada');
+  return img;
+}
+
+// El fondo del cambio de página es el de cada parte de la página nueva: el alto y el color de su banda oscura.
+function ponerBanda() {
+  const banda = elDetalle.querySelector('.detalle-portada');
+  raiz.style.setProperty('--banda-alto', `${banda ? Math.round(banda.getBoundingClientRect().bottom - elDetalle.getBoundingClientRect().top) : 0}px`);
+  if (banda) raiz.style.setProperty('--banda-color', getComputedStyle(banda).backgroundColor);
+}
+
+// La imagen grande del evento anterior y del siguiente se pide de antemano (salvo que se pidió ahorrar datos):
+// así, al avanzar, la obra ya está.
+function precargarVecinos() {
+  if (navigator.connection?.saveData) return;
+  for (const url of [nav.antes, nav.despues]) {
+    const ev = url ? vistaDeRuta(url)?.ev : null;
+    if (!ev) continue;
+    const { src, srcset, sizes } = imagenDetalle(ev.imagen.archivo);
+    Object.assign(new Image(), { sizes, srcset, src });
+  }
 }
 
 // Cierra la vista abierta y deja a la vista la sección `hacia` (por defecto, la que estaba debajo).
@@ -894,6 +952,8 @@ function cerrarDetalle(hacia = base) {
   const vuelve = Boolean(hacia === 'linea' && base === 'linea' && ev && lamina?.classList.contains('cargada') && laminaALaVista(lamina));
   if (vuelve) lamina.style.viewTransitionName = LAMINA;
   let miniatura = null;
+  ++turnoVista;
+  const pestana = pestanaDe(vistaActual?.tipo) !== hacia ? ' pestana' : '';
   const transicion = cambiarVista((animado) => {
     detalle.ocultar();
     vistaActual = null;
@@ -907,7 +967,7 @@ function cerrarDetalle(hacia = base) {
     focoPrevio = null;
     miniatura = animado && vuelve ? linea.miniatura(ev) : null;
     if (miniatura) miniatura.style.viewTransitionName = LAMINA;
-  }, 'cerrar');
+  }, `cerrar${pestana}`);
   const asentar = () => {
     if (recienVisto && base === 'linea' && !detalle.abierto) linea.asentarVisto(recienVisto);
     recienVisto = null;

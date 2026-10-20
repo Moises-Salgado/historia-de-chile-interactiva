@@ -94,3 +94,14 @@ Fuera de este plan quedan:
   - **Imágenes reemplazadas:**
     - Maipú, por el mismo Rugendas sin marco ni reflejo;
     - la crisis de 1982, por una foto de época (olla común, La Victoria, 1984) en vez de un gráfico de 2024.
+- **A6 (hecha).** Sigue la propuesta del agente de animación: un solo protagonista por acción y, lo demás, «a través del fondo», en 120 + 180 ms.
+  - **Abrir y cerrar un evento:** sin doble exposición. La lámina parte con la miniatura ya cargada, así crece de verdad, y se cambia por la grande al terminar.
+  - **Pestañas:** la marca se nombra solo si la pestaña cambia, y los rótulos quedan encima (sin píldora en blanco).
+  - **Paso de historia:**
+    - espera la imagen nueva hasta 150 ms y precarga la anterior y la siguiente;
+    - el fondo del cambio es el de la banda oscura (sin franja clara);
+    - la ficha no viaja, y lo que viaja tiene que verse entero.
+  - **Clics rápidos:** un turno impide que una transición interrumpida borre los nombres de la siguiente, y un doble clic en la misma vista solo la enfoca.
+  - **Cambio de sección:** la nueva entra cuando la vieja ya se fue.
+  - **Llegada a la portada:** 400 ms con escalones de 30 ms, y no se repite al volver a la portada.
+  - **Presupuesto:** la carga inicial pesa 116,33 KB (tope 141,63). El margen del mapa sube de 1 a 2 KB por el recuadro, la leyenda y las clases de la A4 (23,73 KB).

@@ -6,10 +6,11 @@ import { join } from 'node:path';
 import { gzipSync } from 'node:zlib';
 
 // Peso gzip antes del plan (KB; zlib con su nivel por omisión, medido sobre lo publicado en el commit 405478a):
-// la carga inicial puede crecer 8 KB; el mapa ya existía y conserva su peso con 1 KB de margen; cada módulo
-// nuevo a pedido, 15 KB, y 60 KB en total.
+// la carga inicial puede crecer 8 KB; el mapa ya existía y conserva su peso con 2 KB de margen (1 KB del plan
+// MVP y 1 KB más de la auditoría externa: el recuadro de la región, la leyenda y las clases fijas, docs/
+// PLAN_AUDITORIA.md); cada módulo nuevo a pedido, 15 KB, y 60 KB en total.
 const BASE = { inicial: 11.39 + 122.24, mapa: 21.97 };
-const TOPE = { extraInicial: 8, mapaExtra: 1, mapaCss: 3, modulo: 15, modulosTotal: 60, pagina: 2 };
+const TOPE = { extraInicial: 8, mapaExtra: 2, mapaCss: 3, modulo: 15, modulosTotal: 60, pagina: 2 };
 const DIST = 'dist';
 
 const errores = [];

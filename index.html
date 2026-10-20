@@ -59,8 +59,9 @@
         } catch {}
         // La llegada a la portada se anima solo la primera vez en la sesión (styles.css, [data-llegada]); se
         // marca aquí, antes de pintar, para que las puertas no aparezcan quietas y luego salten.
+        // (Solo si la pestaña está a la vista: abierta en segundo plano, la animación correría sin que nadie la vea.)
         try {
-          if (!sessionStorage.getItem('historia-chile:llegada')) {
+          if (!sessionStorage.getItem('historia-chile:llegada') && document.visibilityState === 'visible') {
             sessionStorage.setItem('historia-chile:llegada', 'si');
             document.documentElement.dataset.llegada = '';
           }

@@ -346,7 +346,9 @@ export function crearDetalle(
 
   /** Un evento; con `historia` ({ recorrido, paso }), como paso de una historia guiada. */
   // `filtro` ({ n }): «Anterior» y «Siguiente» recorren solo los eventos de una búsqueda o de un filtro, y se dice.
-  function mostrar(ev, { antes, despues, nivel: nivelLectura, regla = '', enfocar = true, historia = null, filtro = null }) {
+  // `previa`: la miniatura ya cargada con que se abrió el evento; la lámina parte con ella (así crece desde la
+  // miniatura) y main.js le pone la imagen grande al terminar la transición.
+  function mostrar(ev, { antes, despues, nivel: nivelLectura, regla = '', enfocar = true, historia = null, filtro = null, previa = null }) {
     iniciar(ev, nivelLectura);
     const p = periodoDe.get(ev.periodoId);
     const img = ev.imagen;
@@ -400,7 +402,7 @@ export function crearDetalle(
           // (solo si el original mide 1280 px o más, y en pantallas anchas) agranda la obra en la misma página.
           atributos: formaDe(img),
           figura: `<figure class="detalle-figura">
-            <div class="detalle-marco"><img src="${url}" srcset="${grande.srcset}" sizes="${grande.sizes}" alt=""${img.ancho ? ` width="${img.ancho}" height="${img.alto}"` : ''}
+            <div class="detalle-marco"><img src="${previa ?? url}" ${previa ? 'data-previa data-srcset' : 'srcset'}="${grande.srcset}" sizes="${grande.sizes}" alt=""${img.ancho ? ` width="${img.ancho}" height="${img.alto}"` : ''}
               fetchpriority="high" decoding="async" data-periodo="${ev.periodoId}"></div>
             <figcaption><span class="pie">${esc(img.pieDeFoto)}</span> <span class="credito">Imagen: ${creditoImagen(img)}</span>${
               img.ancho >= 1280 ? ` <button type="button" class="enlace ampliar" data-accion="ampliar" aria-pressed="false">${icono('mas')}Ver más grande</button>` : ''

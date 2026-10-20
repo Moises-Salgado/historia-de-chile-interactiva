@@ -4221,8 +4221,10 @@ body[data-vista='detalle'] .minimapa-fila {
   /* Llegada a la portada, la primera vez en la sesión (index.html pone data-llegada antes de pintar): Chile se
      descubre de norte a sur, las puertas suben (sin fundido: una de ellas es lo más grande de la pantalla) y
      las ciudades y latitudes de la puerta del mapa se encienden de norte a sur. */
+  /* 400 ms en total como máximo (escalón incluido) y escalones de 30 ms: inicio.js quita data-llegada al
+     terminar, así no se repite al volver a la portada en la misma visita. */
   :root[data-llegada] .inicio-silueta {
-    animation: silueta-llega var(--dur-larga) var(--curva-entrada) 120ms both;
+    animation: silueta-llega var(--dur-media) var(--curva-entrada) 120ms both;
   }
 
   :root[data-llegada] .puertas > li {
@@ -4230,27 +4232,27 @@ body[data-vista='detalle'] .minimapa-fila {
   }
 
   :root[data-llegada] .puertas > li:nth-child(2) {
-    animation-delay: 60ms;
+    animation-delay: 30ms;
   }
 
   :root[data-llegada] .puertas > li:nth-child(3) {
-    animation-delay: 120ms;
+    animation-delay: 60ms;
   }
 
   :root[data-llegada] :is(.puerta-ciudades circle, .puerta-latitudes > span) {
-    animation: encender var(--dur-corta) ease-out 160ms both;
+    animation: encender var(--dur-micro) ease-out 160ms both;
   }
 
   :root[data-llegada] :is(.puerta-ciudades circle:nth-child(2), .puerta-latitudes > span:nth-child(2)) {
-    animation-delay: 200ms;
+    animation-delay: 190ms;
   }
 
   :root[data-llegada] :is(.puerta-ciudades circle:nth-child(3), .puerta-latitudes > span:nth-child(3)) {
-    animation-delay: 240ms;
+    animation-delay: 220ms;
   }
 
   :root[data-llegada] :is(.puerta-ciudades circle:nth-child(n + 4), .puerta-latitudes > span:nth-child(4)) {
-    animation-delay: 280ms;
+    animation-delay: 250ms;
   }
 }
 
@@ -4589,54 +4591,105 @@ body[data-vista='detalle'] .minimapa-fila {
   object-fit: cover;
 }
 
-/* La página vieja sale primero y la nueva entra después: los textos de las dos no se enciman. Entre
-   ambas queda el fondo (el detalle está sobre la línea de tiempo, que no debe asomarse). */
-:root[data-transicion='siguiente']::view-transition-image-pair(pagina),
-:root[data-transicion='anterior']::view-transition-image-pair(pagina) {
-  background: var(--fondo);
+/* Abrir y cerrar un evento, «a través del fondo» (nunca dos páginas a medias, una sobre otra): al abrir, lo de
+   abajo se va en 120 ms y el detalle entra después, en 180 ms; al cerrar, al revés. Lo único que viaja todo el
+   cambio es la lámina (la miniatura que crece hasta la obra del detalle). La sección de abajo no sale en la
+   captura del lado del detalle. data-transicion lleva palabras («abrir pestana»): de ahí el ~=. */
+:root[data-transicion~='abrir']::view-transition-old(root),
+:root[data-transicion~='abrir']::view-transition-new(root) {
+  animation: var(--dur-micro) var(--curva-salida) both desvanecer;
 }
 
-:root[data-transicion='siguiente']::view-transition-old(pagina) {
-  animation: 0.12s ease-in both salir-izquierda;
+:root[data-transicion~='abrir']::view-transition-new(root) {
+  animation-name: aparecer;
 }
 
-:root[data-transicion='siguiente']::view-transition-new(pagina) {
-  animation: 0.2s ease-out 0.08s both entrar-derecha;
+:root[data-transicion~='abrir']::view-transition-new(pagina) {
+  animation: var(--dur-corta) var(--curva-entrada) var(--dur-micro) both aparecer;
 }
 
-:root[data-transicion='anterior']::view-transition-old(pagina) {
-  animation: 0.12s ease-in both salir-derecha;
+:root[data-transicion~='cerrar']::view-transition-old(pagina) {
+  animation: var(--dur-micro) var(--curva-salida) both desvanecer;
 }
 
-:root[data-transicion='anterior']::view-transition-new(pagina) {
-  animation: 0.2s ease-out 0.08s both entrar-izquierda;
+:root[data-transicion~='cerrar']::view-transition-old(root) {
+  animation: var(--dur-corta) var(--curva-entrada) var(--dur-micro) both desvanecer;
+}
+
+:root[data-transicion~='cerrar']::view-transition-new(root) {
+  animation: var(--dur-corta) var(--curva-entrada) var(--dur-micro) both aparecer;
+}
+
+:root:is([data-transicion~='abrir'], [data-transicion~='cerrar']) body[data-vista='detalle'] .principal > :is(#inicio, #linea, #mapa) {
+  visibility: hidden;
+}
+
+/* De una vista a otra sin un lado (de un evento a un personaje, a una página): también a través del fondo. */
+:root[data-transicion~='cambio']::view-transition-old(pagina) {
+  animation: var(--dur-micro) var(--curva-salida) both desvanecer;
+}
+
+:root[data-transicion~='cambio']::view-transition-new(pagina) {
+  animation: var(--dur-corta) var(--curva-entrada) var(--dur-micro) both aparecer;
+}
+
+::view-transition-group(lamina) {
+  animation-duration: var(--dur-media);
+  animation-timing-function: var(--curva-estandar);
+}
+
+::view-transition-old(lamina):only-child {
+  animation: var(--dur-micro) var(--curva-salida) both desvanecer;
+}
+
+/* Anterior / Siguiente: la página vieja sale primero (120 ms) y la nueva entra después (180 ms): los textos de
+   las dos no se enciman. Entre ambas queda el fondo de cada parte de la página nueva (main.js pone el alto y el
+   color de su banda): así no asoma una franja clara junto a la portada oscura. */
+:root:is([data-transicion~='siguiente'], [data-transicion~='anterior'])::view-transition-image-pair(pagina) {
+  background: linear-gradient(var(--banda-color, var(--fondo)) var(--banda-alto, 0px), var(--fondo) 0);
+}
+
+:root[data-transicion~='siguiente']::view-transition-old(pagina) {
+  animation: var(--dur-micro) var(--curva-salida) both salir-izquierda;
+}
+
+:root[data-transicion~='siguiente']::view-transition-new(pagina) {
+  animation: var(--dur-corta) var(--curva-entrada) var(--dur-micro) both entrar-derecha;
+}
+
+:root[data-transicion~='anterior']::view-transition-old(pagina) {
+  animation: var(--dur-micro) var(--curva-salida) both salir-derecha;
+}
+
+:root[data-transicion~='anterior']::view-transition-new(pagina) {
+  animation: var(--dur-corta) var(--curva-entrada) var(--dur-micro) both entrar-izquierda;
 }
 
 @keyframes salir-izquierda {
   to {
     opacity: 0;
-    translate: -2rem 0;
+    translate: -1rem 0;
   }
 }
 
 @keyframes salir-derecha {
   to {
     opacity: 0;
-    translate: 2rem 0;
+    translate: 1rem 0;
   }
 }
 
 @keyframes entrar-derecha {
   from {
     opacity: 0;
-    translate: 2.5rem 0;
+    translate: 1rem 0;
   }
 }
 
 @keyframes entrar-izquierda {
   from {
     opacity: 0;
-    translate: -2.5rem 0;
+    translate: -1rem 0;
   }
 }
 
@@ -4646,7 +4699,7 @@ body[data-vista='detalle'] .minimapa-fila {
 }
 
 /* Cambio de sección (main.js, cambiarBase): la vieja se funde y la nueva entra por su eje: la línea de tiempo
-   de lado, el mapa de norte a sur y la portada en su lugar (260 ms en total). La barra inferior sube al
+   de lado, el mapa de norte a sur y la portada en su lugar (300 ms en total). La barra inferior sube al
    aparecer y baja al irse; la marca de la pestaña se desliza (.pestanas-marca). */
 :root[data-transicion^='seccion'] .principal {
   view-transition-name: seccion;
@@ -4656,21 +4709,43 @@ body[data-vista='detalle'] .minimapa-fila {
   view-transition-name: controles;
 }
 
-/* Las marcas de la pestaña y del nivel se nombran solo en las transiciones donde se mueven (abrir o cerrar
-   «Historias» también cambia de pestaña). */
-:root:is([data-transicion^='seccion'], [data-transicion='abrir'], [data-transicion='cerrar']) .pestanas-marca {
+/* La marca de la pestaña se nombra solo cuando la pestaña cambia («pestana», main.js). Los rótulos también se
+   nombran: así quedan encima de la marca mientras se desliza (antes, la marca tapaba el rótulo: una píldora en
+   blanco). La marca del nivel, igual, solo al cambiar de nivel. */
+:root[data-transicion~='pestana'] .pestanas-marca {
   view-transition-name: pestana-marca;
 }
 
-:root[data-transicion='nivel'] .nivel-marca {
+:root[data-transicion~='pestana'] .pestana[data-seccion='inicio'] {
+  view-transition-name: pestana-inicio;
+}
+
+:root[data-transicion~='pestana'] .pestana[data-seccion='linea'] {
+  view-transition-name: pestana-linea;
+}
+
+:root[data-transicion~='pestana'] .pestana[data-seccion='mapa'] {
+  view-transition-name: pestana-mapa;
+}
+
+:root[data-transicion~='pestana'] .pestana[data-seccion='historias'] {
+  view-transition-name: pestana-historias;
+}
+
+::view-transition-group(pestana-marca) {
+  animation-duration: var(--dur-media);
+  animation-timing-function: var(--curva-estandar);
+}
+
+:root[data-transicion~='nivel'] .nivel-marca {
   view-transition-name: nivel-marca;
 }
 
-:root[data-transicion='seccion-linea'] {
+:root[data-transicion~='seccion-linea'] {
   --entra: 1.5rem 0;
 }
 
-:root[data-transicion='seccion-mapa'] {
+:root[data-transicion~='seccion-mapa'] {
   --entra: 0 -1.5rem;
 }
 
@@ -4678,8 +4753,9 @@ body[data-vista='detalle'] .minimapa-fila {
   animation: var(--dur-micro) var(--curva-salida) both desvanecer;
 }
 
+/* La sección nueva entra cuando la vieja ya se fue (a través del fondo, sin las dos a medias): 120 + 180 ms. */
 ::view-transition-new(seccion) {
-  animation: 200ms var(--curva-entrada) 60ms both entrar-seccion;
+  animation: var(--dur-corta) var(--curva-entrada) var(--dur-micro) both entrar-seccion;
 }
 
 ::view-transition-new(controles):only-child {
@@ -4690,18 +4766,17 @@ body[data-vista='detalle'] .minimapa-fila {
   animation: var(--dur-micro) var(--curva-salida) both bajar;
 }
 
-/* Anterior y Siguiente (main.js, nombrarViajeros): lo que sigue en pantalla viaja; la ficha y la barra de la
-   historia quedan quietas y su contenido cambia con un fundido, sin estirarse. Sin lugar en el evento nuevo
-   (una zona, todo Chile o el extranjero), el punto solo se funde: no hay estela ni trazo. */
+/* Anterior y Siguiente (main.js, nombrarViajeros): lo que sigue en pantalla, y se ve entero, viaja; la barra de la
+   historia queda quieta y solo cambia lo que cambia («Paso 3 de 9» → «Paso 4 de 9»), con el fundido cruzado del
+   navegador. Sin lugar en el evento nuevo (una zona, todo Chile o el extranjero), el punto solo se funde: no hay
+   estela ni trazo. */
 ::view-transition-group(lugar),
 ::view-transition-group(marca),
 ::view-transition-group(paso) {
-  animation-duration: var(--dur-larga);
+  animation-duration: var(--dur-media);
   animation-timing-function: var(--curva-estandar);
 }
 
-::view-transition-old(ficha),
-::view-transition-new(ficha),
 ::view-transition-old(barra),
 ::view-transition-new(barra) {
   height: 100%;
@@ -4709,15 +4784,8 @@ body[data-vista='detalle'] .minimapa-fila {
   object-position: top left;
 }
 
-::view-transition-old(ficha),
-::view-transition-old(barra),
 ::view-transition-old(lugar):only-child {
   animation: var(--dur-micro) var(--curva-salida) both desvanecer;
-}
-
-::view-transition-new(ficha),
-::view-transition-new(barra) {
-  animation: var(--dur-corta) var(--curva-entrada) 80ms both aparecer;
 }
 
 ::view-transition-new(lugar):only-child {

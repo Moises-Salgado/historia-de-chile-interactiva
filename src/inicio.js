@@ -38,6 +38,9 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   seccion.querySelectorAll('.curvas').forEach(curvasDeNivel);
+  // La llegada (index.html, [data-llegada]) dura 400 ms: después se quita, para que no se repita cada vez que
+  // la portada vuelve a mostrarse en la misma visita.
+  if ('llegada' in document.documentElement.dataset) setTimeout(() => delete document.documentElement.dataset.llegada, 700);
 
   // Cifras: index.html trae las de hoy; si cambian los datos, se corrigen aquí.
   const cifras = {
