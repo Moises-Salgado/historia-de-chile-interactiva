@@ -295,10 +295,7 @@ const inicio = crearInicio(seccionInicio, {
     if (radio) radio.checked = true;
     ponerNivel(valor);
   },
-  alElegirPeriodo: (id) => {
-    periodoPedido = id;
-    ir('#linea');
-  },
+  alElegirPeriodo: (id) => ir(`#linea/${id}`),
 });
 
 // «Ya visto»: los eventos abiertos se recuerdan en este navegador, solo para una marca discreta en la tarjeta.
@@ -355,9 +352,13 @@ const NOMBRE_BASE = { inicio: 'la portada', linea: 'la línea de tiempo', mapa: 
 const pestanas = [...document.querySelectorAll('.pestana')];
 let base = raiz.dataset.base in BASES ? raiz.dataset.base : 'linea';
 
+// «#linea/05»: la línea de tiempo en el período 5 (el enlace de cada período en la portada).
+const periodoDeRuta = (hash) => /^#linea\/(\d\d)$/.exec(hash)?.[1] ?? null;
 function baseDeRuta(hash) {
   if (hash === '' || hash === '#' || hash === '#inicio') return 'inicio';
   if (hash === '#linea') return 'linea';
+  const periodo = periodoDeRuta(hash);
+  if (periodo) return periodos.some((p) => p.id === periodo) ? 'linea' : null;
   if (/^#(?:mapa|lugar)(?:\/|$)/.test(hash)) return 'mapa';
   return null;
 }
@@ -373,7 +374,7 @@ function seleccionDeRuta(hash) {
   if (m && regionIds.has(m[1].toUpperCase())) return { tipo: 'region', id: m[1].toUpperCase() };
   m = /^#lugar\/([a-z0-9-]+)$/.exec(hash);
   if (m && lugarIds.has(m[1])) return { tipo: 'lugar', id: m[1] };
-  return { tipo: 'todo' };
+  return { tipo: 'todo', invalida: hash !== '#mapa' };
 }
 
 // El mapa (módulo y formas de las regiones) se carga la primera vez que se abre.
@@ -439,8 +440,11 @@ function ubicarMarca() {
   if (x < filaPestanas.scrollLeft || x + w > filaPestanas.scrollLeft + filaPestanas.clientWidth) filaPestanas.scrollLeft = x - 16;
 }
 new ResizeObserver(ubicarMarca).observe(filaPestanas);
+// En una página («Acerca de», «Para docentes», el glosario) o en la ficha de un personaje no se marca ninguna:
+// no es ninguna de las secciones, y el lector de pantalla anunciaría «página actual» en la equivocada.
 function actualizarPestanas() {
-  const actual = EN_HISTORIAS.has(vistaActual?.tipo) ? 'historias' : base;
+  const tipo = vistaActual?.tipo;
+  const actual = EN_HISTORIAS.has(tipo) ? 'historias' : ['pagina', 'personaje'].includes(tipo) ? null : base;
   for (const p of pestanas) {
     if (p.dataset.seccion === actual) p.setAttribute('aria-current', 'page');
     else p.removeAttribute('aria-current');
@@ -520,7 +524,7 @@ function vistaDeHistoria(recorrido, paso = '0') {
   if (n > recorrido.eventos.length) return { tipo: 'desconocida' };
   return { tipo: 'historia', recorrido, paso: n, ev: recorrido.eventos[n - 1] };
 }
-const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje|mapa|lugar|secuencia)\/|^#(?:historias|inicio|linea|mapa|acerca|docentes|glosario)$/.test(hash);
+const esRuta = (hash) => /^#(?:evento|grupo|historia|personaje|mapa|lugar|secuencia|linea)\/|^#(?:historias|inicio|linea|mapa|acerca|docentes|glosario)$/.test(hash);
 
 // «Acerca de», «Para docentes» y el glosario se cargan a pedido (src/paginas.js), igual que los textos de cada
 // evento (src/datos.js); si no llegan, se ofrece recargar.
@@ -529,17 +533,35 @@ let paginas = null;
 let pedido = 0;
 const datosPaginas = { eventos, periodos, recorridos };
 
-// Desde una sección se agrega una entrada al historial; entre vistas se reemplaza, así «Volver» (y el botón
-// Atrás del navegador) regresa a la sección. Sí se agrega al ir a la ficha de un personaje o al glosario, y al
-// salir de una página («Para docentes», «Acerca de», el glosario) o del cierre de una historia: «Volver» regresa
-// ahí (por ejemplo, a la secuencia que se estaba armando). Elegir lo que ya está a la vista solo lo enfoca.
+// Historial: cada vista agrega una entrada, así el botón Atrás del navegador (y el gesto de volver del celular)
+// retrocede de a un paso: al evento anterior, al paso anterior de una historia. Cada entrada recuerda cuántas
+// vistas lleva desde la sección (`n`), dónde empezó la cadena de eventos que se está recorriendo con «Anterior» y
+// «Siguiente» (`cadena`) y, dentro de una historia, dónde quedó su presentación (`historia.en`): así «Volver» sale
+// de una vez, sin recorrer cada paso. Si la vista llegó por un enlace directo, lo anterior no está en el
+// historial (`sinSeccion`) y «Volver» reemplaza la dirección. Elegir lo que ya está a la vista solo lo enfoca.
+const EN_CADENA = new Set(['evento', 'grupo']);
+function estadoPara(url) {
+  const vista = vistaDeRuta(url);
+  if (!vista || vista.tipo === 'desconocida') return { app: true, n: 0 };
+  const previo = history.state?.app ? history.state : null;
+  const desdeVista = detalle.abierto;
+  const n = desdeVista ? (previo?.n ?? 0) + 1 : 1;
+  const estado = { app: true, n };
+  if (desdeVista && (!previo || previo.sinSeccion)) estado.sinSeccion = true;
+  if (EN_CADENA.has(vista.tipo)) {
+    const sigue = desdeVista && EN_CADENA.has(vistaActual?.tipo);
+    estado.cadena = sigue ? (previo?.cadena ?? null) : desdeVista ? (previo ? previo.n : null) : 0;
+  }
+  if (vista.recorrido) {
+    const clave = rutaHistoria(vista.recorrido, 0);
+    estado.historia = desdeVista && previo?.historia?.clave === clave ? previo.historia : { clave, en: vista.tipo === 'historia-inicio' ? n : null };
+  }
+  return estado;
+}
+
 function ir(url, { desdeBoton = false } = {}) {
   const misma = location.hash === url || (baseDeRuta(url) === 'inicio' && baseDeRuta(location.hash) === 'inicio');
-  if (!misma) {
-    const agrega = !detalle.abierto || /^#(?:personaje\/|glosario$)/.test(url) || ['pagina', 'historia-fin'].includes(vistaActual?.tipo);
-    if (agrega) history.pushState({ app: true }, '', url);
-    else history.replaceState(history.state, '', url);
-  }
+  if (!misma) history.pushState(estadoPara(url), '', url);
   aplicarRuta({ desdeBoton });
 }
 
@@ -551,17 +573,44 @@ function cancelarPedido() {
   retirarAviso('cargando');
 }
 
+// Una dirección escrita con mayúsculas o con tildes codificadas («#Linea», «#mapa/BI») vale si en minúsculas es
+// una ruta conocida.
+function corregirDireccion() {
+  const hash = location.hash;
+  let limpia = hash;
+  try {
+    limpia = decodeURIComponent(hash).toLowerCase();
+  } catch {
+    return;
+  }
+  if (limpia !== hash && (vistaDeRuta(limpia) || baseDeRuta(limpia))) history.replaceState(history.state, '', limpia);
+}
+
 function aplicarRuta({ desdeBoton = false, inicial = false } = {}) {
+  retirarAviso('ruta');
+  corregirDireccion();
   const vista = vistaDeRuta();
   const destino = baseDeRuta(location.hash);
-  if (vista && vista.tipo !== 'desconocida') mostrarVista(vista, desdeBoton);
-  else if (detalle.abierto) cerrarDetalle(destino ?? base);
-  else if (destino) cambiarBase(destino, { enfocar: !inicial });
-  // Un enlace roto (un evento que no existe, una historia sin ese paso): se dice a la vista y la dirección
-  // vuelve a la sección que se está mostrando.
-  if (vista?.tipo === 'desconocida') {
+  const hash = location.hash;
+  // Un ancla de la página («Saltar al contenido» → #principal) no es una ruta: el navegador ya movió el foco.
+  if (!vista && !destino && hash.length > 1 && document.getElementById(hash.slice(1))) return;
+  // Desconocida: una vista que no existe (un evento, una historia sin ese paso), algo que no es ninguna ruta
+  // («#evento/», «#acerca/x») o un lugar del mapa que no está.
+  const rota = vista?.tipo === 'desconocida' || (!vista && !destino && hash !== '' && hash !== '#') || (destino === 'mapa' && seleccionDeRuta(hash).invalida);
+  // Un período pedido por la dirección: la línea se abre en él y la dirección queda en «#linea».
+  const periodo = !rota && periodoDeRuta(hash);
+  if (periodo) {
+    history.replaceState(history.state, '', '#linea');
+    if (base === 'linea' && !detalle.abierto) return linea.irAPeriodo(periodo, { suave: !inicial, enfocar: !inicial });
+    periodoPedido = periodo;
+  }
+  if (vista && !rota) mostrarVista(vista, desdeBoton);
+  else if (detalle.abierto) cerrarDetalle(rota ? base : (destino ?? base));
+  else if (destino && !rota) cambiarBase(destino, { enfocar: !inicial });
+  // Un enlace roto: se dice a la vista y la dirección vuelve a la sección que se está mostrando.
+  if (rota) {
     history.replaceState(null, '', BASES[base].hash);
-    avisar(`No encontramos esa página: puede que el enlace esté incompleto o sea antiguo. Estás en ${NOMBRE_BASE[base]}.`);
+    avisar(`No encontramos esa página: puede que el enlace esté incompleto o sea antiguo. Estás en ${NOMBRE_BASE[base]}.`, { clave: 'ruta' });
   }
 }
 
@@ -574,14 +623,26 @@ window.addEventListener('hashchange', () => {
   sinAnimar = false;
 });
 
-// Sin historial propio (se llegó por un enlace directo), «Volver» lleva a la sección que está debajo.
+// «Volver»: desde un paso o el cierre de una historia, a su presentación; desde un evento (o una cadena de
+// eventos recorrida con «Siguiente»), a donde empezó la cadena: la sección, la ficha de un personaje, la lista
+// de un lugar; desde lo demás (una página, un personaje, la presentación de una historia), un paso atrás.
+// Si eso no está en el historial (se llegó por un enlace directo), se reemplaza la dirección.
 function volver() {
-  if (history.state?.app) {
-    history.back();
+  const e = history.state?.app ? history.state : null;
+  const v = vistaActual;
+  const enHistoria = v?.recorrido && v.tipo !== 'historia-inicio';
+  let atras = null;
+  if (e && enHistoria) atras = e.historia?.en != null ? e.historia.en - e.n : null;
+  else if (e && EN_CADENA.has(v?.tipo)) atras = e.cadena != null ? e.cadena - e.n : null;
+  else if (e) atras = -1;
+  if (atras !== null && atras < 0) return history.go(atras);
+  if (enHistoria) {
+    const portada = rutaHistoria(v.recorrido, 0);
+    history.replaceState({ app: true, n: e?.n ?? 1, sinSeccion: true, historia: { clave: portada, en: e?.n ?? 1 } }, '', portada);
   } else {
     history.replaceState(null, '', BASES[base].hash);
-    aplicarRuta();
   }
+  aplicarRuta();
 }
 
 // ---- Transiciones: la miniatura crece hasta la lámina del detalle (y vuelve al cerrarlo) y, entre

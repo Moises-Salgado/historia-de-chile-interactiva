@@ -46,3 +46,11 @@ Fuera de este plan quedan:
   - **Filas que se desplazan de lado:** llevan un degradado en el borde con más contenido (`marcarDesborde`). En pantallas anchas, los chips del buscador van en varias filas.
   - **Cartela en el celular:** el título se corta en «…» a las dos líneas.
   - **Clics rápidos:** `conTransicion` captura `ready`.
+- **A2 (hecha).**
+  - **Historial:** cada vista agrega su entrada, y Atrás retrocede de a un paso. «Volver» sale de una vez: de un evento, adonde empezó la cadena; de un paso, a la presentación de la historia; de lo demás, un paso atrás.
+  - **Pestañas:** en las páginas y las fichas de personaje no queda ninguna marcada.
+  - **Rutas:**
+    - toda ruta inválida avisa y corrige la dirección;
+    - las mayúsculas se aceptan («#Linea»);
+    - el aviso se retira al navegar.
+  - **Períodos:** cada uno tiene su dirección, `#linea/NN`.

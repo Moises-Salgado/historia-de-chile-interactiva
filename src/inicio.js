@@ -137,7 +137,7 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
   lista.innerHTML = periodos
     .map(
       (p, i) => `
-      <li><a class="epoca" href="#linea" data-periodo="${p.id}" style="--color:${p.color}">
+      <li><a class="epoca" href="#linea/${p.id}" data-periodo="${p.id}" style="--color:${p.color}">
         <span class="epoca-num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
         <span class="epoca-nombre">${esc(p.nombre)}</span>
         <span class="epoca-fechas">${esc(p.fechasTexto)} · ${delPeriodo(p.id).length} eventos</span>
