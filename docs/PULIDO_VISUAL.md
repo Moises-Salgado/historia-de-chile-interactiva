@@ -75,3 +75,59 @@ Inconsistencias entre vistas vistas en las capturas, para las pasadas siguientes
 **Verificación final:** contraste, letra mínima, objetivos táctiles y desborde, sin problemas en claro y oscuro, en 1440 × 900 y en 390 × 844, en la portada, la línea, un evento, un paso de historia, el glosario, el mapa, un personaje y la lista de historias. Sin errores de consola.
 
 **Queda para una próxima ronda:** «Este mes en la historia» y «Elige cómo leer», en la portada, siguen como cajas. Allí cada fila se toca como un botón, así que se pueden quedar.
+
+## Auditoría 3 (en vivo, sobre el sitio publicado, 2026-10-20)
+
+**Cómo se hizo.** Manejé el sitio publicado como un visitante, con unas 60 capturas:
+- primera visita sin caché, en 1440 × 900 y en un celular de 390 × 844 táctil;
+- con la rueda, el arrastre, deslizando con el dedo, el buscador, el mapa, las historias y el modo oscuro;
+- las transiciones, en cámara lenta.
+
+**Veredicto.** Funciona y es riguroso, pero se ve como una aplicación educativa bien hecha, no como un atlas ni como una sala de museo:
+- cada módulo habla su propio idioma visual: tarjetas, chips, botones de opción, cajas teñidas, píldoras y losas de color;
+- los controles pesan más que el contenido;
+- salvo en la línea de tiempo, las imágenes van como figuras chicas.
+
+La mejor pantalla del sitio es la línea de tiempo en el tramo de la Independencia: cinco óleos de época seguidos, como una galería. Esa debería ser la identidad de todo.
+
+**Errores a la vista:**
+1. **Portada, escritorio:** «¿Primera vez? Empieza aquí» queda en x = 18, fuera de la columna (x = 72). La regla `.empieza-ir { margin: 1.25rem 0 0 }` pisa el `margin-inline: auto`.
+2. **Línea, celular:** con un título de dos líneas (`#linea/05`), las láminas tapan el botón «Leer».
+3. **Línea, escritorio:** el filete punteado del límite de período cruza el texto de la cartela.
+4. **Eje:** años repetidos bajo los puntos («1938 1938», «1962 1962», «1971 1971»), que se leen como errores.
+5. **«¿Sabías que…?» de la portada:** un retrato de 500 × 560 px sin decir quién es; el pie solo trae el autor y la licencia.
+6. **Silueta de Chile:** verde azulado en las historias, en el mini-mapa y en los pueblos, y arena cálida en el mapa.
+
+**Problemas de diseño, de más a menos grave:**
+- **Portada sin gancho:**
+  - un titular genérico y una obra encajonada a la derecha, con su pie de documento;
+  - tres puertas sin familia: una pintura, una tesela casi vacía y un collage gris;
+  - después, unas 3 pantallas en el escritorio y 6,5 en el celular de módulos distintos;
+  - los períodos son nueve losas de color sin una imagen.
+- **Controles por todas partes:**
+  - la cabecera es una barra de herramientas (nivel, «Texto», «Proyectar», lupa), con un filete rojo de lado a lado;
+  - en el celular, la cabecera ocupa 125 px en dos filas, y con las barras inferiores, cerca del 40 % de la pantalla.
+- **Línea de tiempo:**
+  - el 40 % de arriba de la pantalla queda vacío y la parte de abajo se amontona (eje, años, banda y 6 controles);
+  - con el zoom por omisión, casi la mitad de las láminas son pilas grises de «+N eventos · Acercar»;
+  - los portales de período son losas lisas.
+- **Ficha de evento:**
+  - con un retrato, la primera pantalla es título y una foto angosta, con 335 px de océano vacío entre ambos;
+  - más abajo, cinco estilos de caja en una pantalla, y una ficha lateral que parece un formulario;
+  - en el celular, la primera pantalla es solo la foto y el título queda bajo el pliegue.
+- **Buscador:** 17 chips ocupan la pantalla y los resultados quedan abajo (con «terremoto» se ven 2,5 de 7).
+- **Mapa:**
+  - la vista mejor resuelta, pero Chile mide unos 110 px de ancho, con 390 px de mar vacío hasta el panel;
+  - en el celular, la mitad de arriba es texto.
+- **Historias:**
+  - la presentación no tiene ni una imagen, y su silueta dice «2-4, 6-9»;
+  - en la lista, el degradado tapa casi todas las imágenes.
+
+**Lo que funciona y hay que conservar:**
+- la pareja Source Serif y Barlow;
+- la paleta de papel, tinta y ocre, y el modo oscuro;
+- el lenguaje cartográfico del mapa (latitudes, escala, recuadro de Rapa Nui);
+- la línea de tiempo cuando sus imágenes son de época;
+- el encabezado del evento con una obra apaisada;
+- las transiciones sin parpadeos;
+- la barra Anterior / Volver / Siguiente.
