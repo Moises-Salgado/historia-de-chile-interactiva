@@ -1918,7 +1918,7 @@ body[data-vista='detalle'] .linea {
    pantalla quedaba una franja de unos 230 px. El panel queda fijo al lado mientras se recorre. */
 .mapa-lienzo {
   width: auto;
-  height: max(calc(100cqh - 2.5rem), 62rem);
+  height: max(calc(100cqh - 2.5rem), 70rem);
   aspect-ratio: 310 / 1022;
 }
 
@@ -1934,15 +1934,18 @@ body[data-vista='detalle'] .linea {
   container-type: size; /* el panel fijo mide a lo más el alto visible (cqh) */
 }
 
+/* El mapa toma la columna que mide Chile (su leyenda se acomoda a ese ancho: antes la ensanchaba al doble y dejaba
+   un mar vacío) y el panel, a su lado, a lo más 44rem; el conjunto va centrado. */
 .mapa-contenido {
   display: grid;
   grid-template-areas:
     'figura cabeza'
     'figura panel';
   grid-template-rows: auto 1fr;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 44rem);
+  justify-content: center;
   align-items: start;
-  gap: 1.25rem 2.5rem;
+  gap: 1.25rem 4rem;
   max-width: 76rem;
   margin: 0 auto;
   padding: clamp(1.25rem, 3vw, 2rem) 1rem 3rem;
@@ -1995,6 +1998,10 @@ body[data-vista='detalle'] .linea {
   color: var(--texto-suave);
 }
 
+.mapa-pie {
+  contain: inline-size;
+}
+
 /* En una columna: el mapa se recorre de norte a sur, sin saltos; con algo elegido, el panel es una hoja fija
    abajo (con su propio desplazamiento) y el mapa sigue a la vista encima. */
 @media (max-width: 52em) {
@@ -2011,7 +2018,25 @@ body[data-vista='detalle'] .linea {
   .atlas-mapa {
     position: relative;
     justify-self: center;
-    width: min(100%, 19rem);
+    width: min(100%, 21rem);
+  }
+
+  /* En el celular, el mapa casi de entrada: sin la ceja ni la frase (la leyenda y el panel lo explican). */
+  .mapa-cabeza .ceja {
+    display: none;
+  }
+
+  .mapa-intro {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .mapa-cabeza h2 {
+    font-size: var(--t-26);
   }
 
   .mapa-lienzo {
