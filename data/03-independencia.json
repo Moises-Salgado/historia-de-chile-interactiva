@@ -148,7 +148,7 @@
     "resumenNino": "Después de Rancagua, los españoles volvieron a gobernar Chile y castigaron a muchos patriotas. Un patriota llamado Manuel Rodríguez organizó grupos que atacaban por sorpresa a las tropas realistas.",
     "resumen": "Entre 1814 y 1817, las autoridades españolas recuperaron el control de Chile, primero con Mariano Osorio y desde diciembre de 1815 con Casimiro Marcó del Pont. Muchos patriotas fueron perseguidos y un grupo de ellos fue deportado al presidio de la isla Juan Fernández. También se cerraron el Instituto Nacional y la Biblioteca Nacional. Mientras tanto, Manuel Rodríguez organizaba guerrillas y enviaba información al ejército que se preparaba en Mendoza.",
     "detalle": "Osorio entró en Santiago a comienzos de octubre de 1814 y restableció las instituciones coloniales. El 9 de noviembre de 1814 fueron detenidos varios patriotas destacados, entre ellos Juan Egaña y Manuel de Salas, que fueron enviados a la isla Juan Fernández, donde permanecieron hasta 1817. El número de deportados varía según la fuente.\n\nEl gobierno de Marcó del Pont aplicó una política más dura contra los sospechosos de apoyar a los patriotas, lo que aumentó el rechazo a la autoridad realista. Manuel Rodríguez, agente de José de San Martín, animó guerrillas en el campo y en enero de 1817 tomó por sorpresa Melipilla, lo que distrajo a las tropas realistas antes del cruce de los Andes. Muchas historias populares sobre sus disfraces y engaños provienen de la tradición oral.",
-    "personajes": ["Mariano Osorio", "Casimiro Marcó del Pont", "Manuel Rodríguez"],
+    "personajes": ["Mariano Osorio", "Casimiro Marcó del Pont", "Manuel Rodríguez", "Manuel de Salas", "José de San Martín"],
     "imagen": {
       "archivo": "Manuel_Rodríguez_p0141.png",
       "autor": "Narcisse Edmond Joseph Desmadryl",
@@ -339,7 +339,7 @@
     "resumenNino": "Chile prohibió la esclavitud: desde entonces ninguna persona podía ser dueña de otra. Fue uno de los primeros países de América en hacerlo.",
     "resumen": "El 24 de julio de 1823 se promulgó la ley que abolió por completo la esclavitud en Chile, propuesta por José Miguel Infante. Antes, en 1811, el Primer Congreso Nacional había aprobado la libertad de vientres, que declaró libres a los hijos de esclavas y prohibió traer nuevos esclavos al país. La ley de 1823 dio la libertad a todas las personas esclavizadas que quedaban en Chile. Así, Chile fue uno de los primeros países de América en abolir la esclavitud.",
     "detalle": "La libertad de vientres, impulsada por Manuel de Salas, fue aprobada en octubre de 1811, pero quienes ya eran esclavos siguieron en esa condición. En 1823, José Miguel Infante presentó el proyecto de abolición total, que también declaraba libre a toda persona esclavizada que llegara al territorio. El Senado lo aprobó el 23 de junio y fue promulgado el 24 de julio, pese a la oposición del ministro Mariano Egaña.\n\nSegún el historiador Guillermo Feliú Cruz, citado por Memoria Chilena, unas 5.000 personas se beneficiaron con la abolición. La Constitución de 1823 ratificó que en Chile no había esclavos. Investigaciones posteriores señalan que algunas aclaraciones a la ley limitaron su alcance en la práctica.",
-    "personajes": ["José Miguel Infante", "Manuel de Salas"],
+    "personajes": ["José Miguel Infante", "Manuel de Salas", "Mariano Egaña"],
     "imagen": {
       "archivo": "José_Miguel_Infante_en_Galería_nacional_(cropped).png",
       "autor": "Narcisse Edmond Joseph Desmadryl",

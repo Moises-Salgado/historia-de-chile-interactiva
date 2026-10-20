@@ -27,7 +27,7 @@ La historia de Chile, desde el poblamiento hasta hoy, en una línea de tiempo in
 - Se puede instalar como aplicación en el celular o en el computador.
 - Accesible: se maneja con teclado, mouse o pantalla táctil y funciona con lector de pantalla. El texto mide al menos 18 px, hay un botón «Texto grande», el modo oscuro es automático y se respeta la preferencia de reducir el movimiento.
 - Funciona sin conexión para lo ya visitado (Service Worker), y cada historia se puede guardar entera para usarla sin conexión.
-- Liviano: la primera carga pesa unos 110 KB comprimidos, y el texto detallado y las fuentes de cada período se piden al abrir un evento.
+- Liviano: la primera carga pesa unos 120 KB comprimidos de JavaScript y CSS (lo que mide `npm run presupuesto`), o unos 170 KB contando el HTML y las dos tipografías; el texto detallado y las fuentes de cada período se piden al abrir un evento.
 - Transiciones suaves donde el navegador las admite: la imagen de una tarjeta crece hasta el detalle, «Anterior / Siguiente» pasan la página, y los eventos ya leídos llevan una marca discreta. Si se pide reducir el movimiento, no hay animaciones.
 
 ## Uso local

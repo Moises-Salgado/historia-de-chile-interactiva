@@ -1236,6 +1236,13 @@ aplicarRuta({ inicial: true });
 if (!detalle.abierto && base === 'linea' && primeraVisita()) linea.entrada();
 animarCambios = true;
 if (!navigator.onLine) avisar(SIN_CONEXION, { duracion: 0, clave: 'conexion' });
+// Tras «Borrar mis datos» (src/paginas.js, BORRADO) la página se recarga: se confirma que se borraron.
+try {
+  if (sessionStorage.getItem('historia-chile:borrado')) {
+    sessionStorage.removeItem('historia-chile:borrado');
+    avisar('Listo: se borraron tus datos de este navegador.');
+  }
+} catch {}
 // La app arrancó: el rescate de index.html ya no aparece aunque después falle algo.
 raiz.dataset.app = 'lista';
 

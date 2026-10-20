@@ -123,3 +123,23 @@ Fuera de este plan quedan:
   - **Glosario:** índice de letras, las palabras agrupadas por inicial en dos columnas y el aviso de revisión al pie. Se corrigió la errata de «Cabildo abierto».
   - **«Acerca de» y «Para docentes»:** en pantallas anchas, las secciones van en dos columnas.
   - **Línea de tiempo:** con alto de sobra (tablet en vertical, 1366 × 768, pantallas grandes), las láminas crecen hasta 1,2 veces en vez de dejar un hueco vacío encima. Las pantallas bajas no cambian.
+- **A8 (hecha).**
+  - **Conectores de las historias:**
+    - con día, los meses se redondean: Maipú dice «Dos meses después», como su texto;
+    - «Un año después» en vez de «12 meses»;
+    - los números chicos, en palabras;
+    - con una fecha aproximada, «Unos 30 años después» (el paso 9 de «Lo esencial» ya tiene conector).
+  - **Tratado de 1881, «Para niños»:** dice que la frontera sigue las cumbres más altas «que separan las aguas que corren hacia cada lado», como los otros niveles.
+  - **Personajes:** quien tiene ficha figura en todos los eventos cuyo texto lo nombra, como promete la ficha. Se agregaron 16: Pinochet en cuatro (violaciones a los derechos humanos, crisis de 1982, protestas de 1983 y reformas de 2005), Allende en dos, y otros diez de todos los períodos.
+  - **Porcentajes:** los 69 de los textos llevan espacio duro («54,7 %»), así el signo no queda solo en otra línea.
+  - **«Borrar mis datos»:**
+    - el segundo paso dice «Sí, borrar mis datos», sin «toca»;
+    - vuelve solo a como estaba a los 8 s;
+    - después de recargar, un aviso confirma que se borraron.
+  - **Textos de la interfaz:**
+    - «Avísanos en GitHub (se necesita una cuenta)»;
+    - «Cómo citar» en formato APA, con el título en cursiva y «Recuperado el…»;
+    - en «Este mes en la historia», el proceso también dice «hace N años», contado desde su inicio.
+  - **Portada:** «hace miles de años» en vez de «hace unos 14.500 años», cuya cifra está en debate según el propio evento de Monte Verde.
+  - **Carga lenta:** antes de que llegue el JavaScript, la opción de lectura elegida y la pestaña de la sección ya se ven marcadas.
+  - **README:** la primera carga pesa 118,69 KB de JavaScript y CSS, unos 172 KB con el HTML y las dos tipografías.

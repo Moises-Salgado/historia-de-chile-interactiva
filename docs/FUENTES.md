@@ -67,12 +67,12 @@
 | Licencia de la imagen | Cantidad |
 |---|---:|
 | Dominio público | 76 |
-| CC BY-SA 4.0 | 13 |
+| CC BY-SA 4.0 | 14 |
 | CC BY 3.0 | 12 |
 | CC BY 2.0 | 6 |
 | CC BY-SA 3.0 | 6 |
 | CC BY-SA 2.0 | 4 |
-| CC BY 4.0 | 3 |
+| CC BY 4.0 | 2 |
 | CC0 1.0 | 1 |
 
 ## 01 · Pueblos originarios (Hasta 1535)
@@ -193,7 +193,7 @@
   - Imagen: [Jura Independencia Chile-Cosme San Martín.jpg](<https://commons.wikimedia.org/wiki/File:Jura_Independencia_Chile-Cosme_San_Martín.jpg>) · Cosme San Martín · Dominio público
 - **5 de abril de 1818 · Batalla de Maipú** · `1818-batalla-de-maipu`
   - Fuentes: [Memoria Chilena](<https://www.memoriachilena.gob.cl/602/w3-article-100852.html>) · [Gobierno de Argentina](<https://www.argentina.gob.ar/ejercito/maipu>) · [Wikipedia](<https://es.wikipedia.org/wiki/Batalla_de_Maip%C3%BA>)
-  - Imagen: [Batalla de Maipú, por Rugendas.jpg](<https://commons.wikimedia.org/wiki/File:Batalla_de_Maipú,_por_Rugendas.jpg>) · Johann Moritz Rugendas · Dominio público
+  - Imagen: [Battle of Maipu.jpg](<https://commons.wikimedia.org/wiki/File:Battle_of_Maipu.jpg>) · Johann Moritz Rugendas · Dominio público
 - **20 de agosto de 1820 · Zarpa la Expedición Libertadora del Perú** · `1820-expedicion-libertadora-del-peru`
   - Fuentes: [Memoria Chilena 1](<https://www.memoriachilena.gob.cl/602/w3-article-93423.html>) · [Memoria Chilena 2](<https://www.memoriachilena.gob.cl/602/w3-article-92285.html>) · [Pontificia Universidad Católica del Perú](<https://revistas.pucp.edu.pe/index.php/historica/article/download/13/18>) · [Wikipedia](<https://es.wikipedia.org/wiki/Expedici%C3%B3n_Libertadora_del_Per%C3%BA>)
   - Imagen: [Armada Chile 1era Escuadra nacional.jpg](<https://commons.wikimedia.org/wiki/File:Armada_Chile_1era_Escuadra_nacional.jpg>) · Thomas Somerscales · Dominio público
@@ -400,7 +400,7 @@
   - Imagen: [Cubierta Constitución de 1980 Chile.jpg](<https://commons.wikimedia.org/wiki/File:Cubierta_Constitución_de_1980_Chile.jpg>) · Desconocido · Dominio público
 - **1982 · Crisis económica de 1982** · `1982-crisis-economica`
   - Fuentes: [Memoria Chilena 1](<https://www.memoriachilena.gob.cl/602/w3-article-98012.html>) · [Memoria Chilena 2](<https://www.memoriachilena.gob.cl/602/w3-article-92408.html>)
-  - Imagen: [Gdp per capita growth, 1961 to 2024, CHL.svg](<https://commons.wikimedia.org/wiki/File:Gdp_per_capita_growth,_1961_to_2024,_CHL.svg>) · Our World In Data · CC BY 4.0
+  - Imagen: [Olla común, población La Victoria. Agosto de 1984.jpg](<https://commons.wikimedia.org/wiki/File:Olla_común,_población_La_Victoria._Agosto_de_1984.jpg>) · Paulo Slachevsky · CC BY-SA 4.0
 - **11 de mayo de 1983 · Jornadas de Protesta Nacional** · `1983-protestas-nacionales`
   - Fuentes: [Biblioteca del Congreso Nacional 1](<https://www.bcn.cl/historiapolitica/efemerides/index.html?dia=11&mes=Mayo>) · [Memoria Chilena 1](<https://www.memoriachilena.gob.cl/602/w3-article-96595.html>) · [Memoria Chilena 2](<https://www.memoriachilena.gob.cl/602/w3-article-92408.html>) · [Biblioteca del Congreso Nacional 2](<https://www.bcn.cl/historiapolitica/resenas_parlamentarias/wiki/Rodolfo_Seguel_Molina>)
   - Imagen: [Panfleto Tercera Jornada Protesta Nacional.jpg](<https://commons.wikimedia.org/wiki/File:Panfleto_Tercera_Jornada_Protesta_Nacional.jpg>) · Desconocido · Dominio público

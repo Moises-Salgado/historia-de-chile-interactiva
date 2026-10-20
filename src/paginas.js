@@ -214,13 +214,20 @@ export function activar(contenedor, { eventos, copiar, avisar }) {
   });
 }
 
-// «Borrar mis datos»: dos toques (sin ventanas de confirmación). Borra las preferencias, lo visto y las imágenes
-// guardadas para usar sin conexión, y recarga.
+// «Borrar mis datos»: se presiona dos veces (sin ventanas de confirmación); si no se confirma en 8 s, el botón
+// vuelve a como estaba. Borra las preferencias, lo visto y las imágenes guardadas para usar sin conexión, y
+// recarga; al volver, main.js avisa que se borraron (lee y retira la marca BORRADO).
+const BORRADO = 'historia-chile:borrado';
 async function borrarDatos(boton, avisar) {
+  const rotulo = boton.querySelector('span');
   if (!boton.dataset.confirmar) {
     boton.dataset.confirmar = 'si';
-    boton.querySelector('span').textContent = 'Toca de nuevo para borrar';
-    avisar('Toca de nuevo «Borrar mis datos» para confirmar.');
+    rotulo.textContent = 'Sí, borrar mis datos';
+    avisar('¿Seguro? Presiona otra vez el botón para borrar tus datos de este navegador.');
+    setTimeout(() => {
+      delete boton.dataset.confirmar;
+      rotulo.textContent = 'Borrar mis datos';
+    }, 8000);
     return;
   }
   try {
@@ -228,6 +235,7 @@ async function borrarDatos(boton, avisar) {
       for (const clave of Object.keys(almacen)) if (clave.startsWith('historia-chile:')) almacen.removeItem(clave);
     }
     if ('caches' in window) await Promise.all(['imagenes', 'historia-guardada'].map((n) => caches.delete(n)));
+    sessionStorage.setItem(BORRADO, 'si');
   } catch {}
   location.reload();
 }

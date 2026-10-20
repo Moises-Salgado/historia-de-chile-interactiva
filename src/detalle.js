@@ -94,30 +94,42 @@ const barraHistoria = ({ recorrido, paso }, conector = '') => `
       .join('')}</ol>
   </nav>`;
 
-// Cuánto pasó entre dos pasos seguidos, si ninguna de las dos fechas es aproximada. «Mientras tanto» si el nuevo
-// empieza antes de que termine el anterior (comparando con la menos precisa de las dos fechas); si no, desde el
-// final del anterior y solo entre fechas de igual precisión: «Ese mismo día», «Al día siguiente», «17 meses
-// después», «Al año siguiente», «57 años después».
+// Cuánto pasó entre dos pasos seguidos. «Mientras tanto» si el nuevo empieza antes de que termine el anterior
+// (comparando con la menos precisa de las dos fechas). Si no, desde el final del anterior, con la precisión de
+// la menos precisa: «Ese mismo día», «Al día siguiente», «27 días después», «Dos meses después» (con día, los
+// meses se redondean: del 12 de febrero al 5 de abril son dos, como dicen los textos), «Un año después», «17
+// meses después», «Al año siguiente», «57 años después». Si una de las dos es aproximada, «Unos 30 años
+// después» (a la decena o, desde mil años, a la centena), o nada si pasaron menos de diez.
+const NUMERO = new Intl.NumberFormat('es-CL');
+const EN_PALABRAS = ['', 'Un', 'Dos', 'Tres', 'Cuatro', 'Cinco', 'Seis', 'Siete', 'Ocho', 'Nueve', 'Diez', 'Once', 'Doce'];
+const cuantoDespues = (n, unidad, plural) => `${n < EN_PALABRAS.length ? EN_PALABRAS[n] : n} ${n === 1 ? unidad : plural} después`;
 function tiempoEntre(a, b) {
-  if (a.fechaAproximada || b.fechaAproximada) return '';
   const [x, y] = [parseFecha(a.fechaFin ?? a.fecha), parseFecha(b.fecha)];
   if (!x || !y) return '';
   const precision = (f) => (f.dia ? 3 : f.mes ? 2 : 1);
   const p = Math.min(precision(x), precision(y));
   const clave = (f) => f.anio * 10000 + (p > 1 ? f.mes * 100 : 0) + (p > 2 ? f.dia : 0);
   if (a.fechaFin && clave(y) < clave(x)) return 'Mientras tanto';
-  if (precision(x) !== precision(y)) return '';
+  if (a.fechaAproximada || b.fechaAproximada) {
+    const n = y.anio - x.anio - (x.anio < 0 && y.anio > 0 ? 1 : 0); // no hay año 0
+    const paso = n < 1000 ? 10 : 100;
+    return n < 10 ? '' : `Unos ${NUMERO.format(Math.round(n / paso) * paso)} años después`;
+  }
   if (p === 1) {
     const n = y.anio - x.anio;
-    return n === 0 ? 'Ese mismo año' : n === 1 ? 'Al año siguiente' : `${n} años después`;
+    return n === 0 ? 'Ese mismo año' : n === 1 ? 'Al año siguiente' : cuantoDespues(n, 'año', 'años');
   }
-  // Meses cumplidos (con día, el último cuenta si ya llegó su día del mes); desde los 24, en años.
-  const meses = (y.anio - x.anio) * 12 + (y.mes - x.mes) - (p === 3 && y.dia < x.dia ? 1 : 0);
-  if (meses >= 24) return `${Math.floor(meses / 12)} años después`;
-  if (meses >= 1) return meses === 1 ? 'Un mes después' : `${meses} meses después`;
-  if (p === 2) return 'Ese mismo mes';
-  const dias = Math.round((Date.UTC(y.anio, y.mes - 1, y.dia) - Date.UTC(x.anio, x.mes - 1, x.dia)) / 864e5);
-  return dias === 0 ? 'Ese mismo día' : dias === 1 ? 'Al día siguiente' : `${dias} días después`;
+  // Meses cumplidos (con día, el último cuenta si ya llegó su día del mes); desde los 24, en años cumplidos.
+  const cumplidos = (y.anio - x.anio) * 12 + (y.mes - x.mes) - (p === 3 && y.dia < x.dia ? 1 : 0);
+  let meses = cumplidos;
+  if (p === 3 && cumplidos < 24) {
+    const dias = Math.round((Date.UTC(y.anio, y.mes - 1, y.dia) - Date.UTC(x.anio, x.mes - 1, x.dia)) / 864e5);
+    if (dias < 28) return dias === 0 ? 'Ese mismo día' : dias === 1 ? 'Al día siguiente' : `${dias} días después`;
+    meses = Math.round(dias / 30.44);
+  }
+  if (meses === 0) return 'Ese mismo mes';
+  if (meses >= 24) return cuantoDespues(Math.floor(meses / 12), 'año', 'años');
+  return meses === 12 ? 'Un año después' : meses < 12 ? cuantoDespues(meses, 'mes', 'meses') : `${meses} meses después`;
 }
 
 // Países con artículo, para «en el Perú» (los demás van sin él: «en España», «en Suecia»).
@@ -553,11 +565,11 @@ export function crearDetalle(
             <details class="plegable">
               <summary><span class="para-nino">¿Cómo lo sabemos?</span><span class="no-nino">Fuentes</span> (${ev.fuentes.length})</summary>
               <ul class="fuentes">${listaFuentes(ev.fuentes)}</ul>
-              <p class="reportar">${externo(urlReporte(ev), '¿Encontraste un error? Avísanos (en GitHub)')}</p>
+              <p class="reportar">${externo(urlReporte(ev), '¿Encontraste un error? Avísanos en GitHub')} (se necesita una cuenta)</p>
             </details>
             <details class="plegable cita">
               <summary>Cómo citar</summary>
-              <p class="cita-texto"><i>Historia de Chile Interactiva</i>. (s. f.). ${esc(ev.titulo)}. Consultado el ${hoyTexto()}, de ${esc(urlCompartir(ev))}</p>
+              <p class="cita-texto">Historia de Chile Interactiva. (s. f.). <i>${esc(ev.titulo)}</i>. Recuperado el ${hoyTexto()}, de ${esc(urlCompartir(ev))}</p>
               <p>Para un trabajo, cita también las fuentes originales (arriba).</p>
               <button type="button" class="boton chico" data-accion="copiar-cita">${icono('copiar')}<span>Copiar la cita</span></button>
             </details>

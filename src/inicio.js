@@ -42,13 +42,13 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
   // la portada vuelve a mostrarse en la misma visita.
   if ('llegada' in document.documentElement.dataset) setTimeout(() => delete document.documentElement.dataset.llegada, 700);
 
-  // Cifras: index.html trae las de hoy; si cambian los datos, se corrigen aquí.
+  // Cifras: index.html trae las de hoy; si cambian los datos, se corrigen aquí. La antigüedad de los primeros
+  // habitantes va sin cifra («hace miles de años»): la de Monte Verde está en debate (lo dice su evento).
   const cifras = {
     eventos: String(eventos.length),
     periodos: String(periodos.length),
     historias: String(recorridos.length),
     lugares: String(lugares.length),
-    antiguedad: haceCuanto(eventos[0]),
   };
   for (const el of seccion.querySelectorAll('[data-cifra]')) {
     const valor = cifras[el.dataset.cifra];
@@ -201,14 +201,15 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
     }
     const resto = delMes.filter((x) => !aLaVista.includes(x));
     // «5 de octubre de 1988 · Plebiscito de 1988… · hace 37 años». Un proceso que termina en otro mes, «Comenzó el
-    // 16 de octubre de 1998» y sin «hace» (si termina en el mismo mes, como Rancagua, va como cualquier otro). El
-    // aniversario de hoy lleva «Un día como hoy». Todos con el filete de su período, sin imagen.
+    // 16 de octubre de 1998 · … · hace 28 años», contados desde su inicio (si termina en el mismo mes, como
+    // Rancagua, va como cualquier otro). El aniversario de hoy lleva «Un día como hoy». Todos con el filete de su
+    // período, sin imagen.
     const itemDelMes = ({ ev, dia }) => {
       const f = parseFecha(ev.fecha);
       const fin = ev.fechaFin ? parseFecha(ev.fechaFin) : null;
       const proceso = fin && (fin.anio !== f.anio || fin.mes !== f.mes);
       const cuando = proceso ? `Comenzó ${f.dia ? `el ${f.dia} de ` : 'en '}${MESES[f.mes - 1]} de ${f.anio}` : ev.fechaTexto;
-      const hace = proceso ? null : haceCuanto(ev);
+      const hace = haceCuanto({ ...ev, anioFin: ev.anio });
       return `<li><a href="#evento/${ev.id}" style="--color:${periodoDe.get(ev.periodoId).color}">
         <span class="empieza-mes-fecha">${dia === hoy.getDate() ? '<span class="empieza-hoy">Un día como hoy</span> ' : ''}${esc(cuando.charAt(0).toUpperCase() + cuando.slice(1))}</span>
         <span class="empieza-mes-titulo">${esc(ev.titulo)}</span>
