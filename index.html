@@ -23,6 +23,7 @@
     <meta property="og:image:alt" content="Historia de Chile Interactiva: un atlas de la historia de Chile, con la silueta del país sobre el océano." />
     <meta property="og:locale" content="es_CL" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" href="/src/fonts/source-serif-4-regular-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/src/fonts/source-serif-4-semibold-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/src/fonts/barlow-condensed-semibold-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preconnect" href="https://commons.wikimedia.org" />
@@ -58,21 +59,13 @@
             document.documentElement.dataset.primera = '';
           }
         } catch {}
-        // La llegada a la portada se anima solo la primera vez en la sesión (styles.css, [data-llegada]); se
-        // marca aquí, antes de pintar, para que las puertas no aparezcan quietas y luego salten.
-        // (Solo si la pestaña está a la vista: abierta en segundo plano, la animación correría sin que nadie la vea.)
-        try {
-          if (!sessionStorage.getItem('historia-chile:llegada') && document.visibilityState === 'visible') {
-            sessionStorage.setItem('historia-chile:llegada', 'si');
-            document.documentElement.dataset.llegada = '';
-          }
-        } catch {}
-        for (const archivo of ['Hodges_easter-island.jpg']) {
-          const l = document.createElement('link');
-          Object.assign(l, { rel: 'preload', as: 'image', fetchPriority: 'high' });
-          l.href = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(archivo) + '?width=500';
-          document.head.append(l);
-        }
+        // La obra de la portada es lo más grande de la primera pantalla: se pide ya, con el mismo srcset y sizes
+        // que su <img> (inicio.js los completa desde su evento si cambia la imagen en los datos).
+        const obra = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent('Jura_Independencia_Chile-Cosme_San_Martín.jpg');
+        const l = document.createElement('link');
+        Object.assign(l, { rel: 'preload', as: 'image', fetchPriority: 'high', imageSizes: '(max-width: 47.99em) 100vw, 30rem' });
+        l.imageSrcset = obra + '?width=500 500w, ' + obra + '?width=800 960w, ' + obra + '?width=1280 1280w';
+        document.head.append(l);
       })();
     </script>
     <script>
@@ -200,9 +193,21 @@
                 Desde los primeros habitantes, hace miles de años, hasta hoy: <span data-cifra="eventos">121</span> momentos con
                 imágenes de época y textos para niños, para todo público y para quienes quieren profundizar.
               </p>
-              <p class="empieza-ir"><button type="button" class="boton primario">¿Primera vez? Empieza aquí<svg class="icono" aria-hidden="true" focusable="false"><use href="#i-siguiente" /></svg></button></p>
             </div>
-            <svg class="inicio-silueta" viewBox="0 0 302 1006" aria-hidden="true" focusable="false"><use href="#silueta-chile" /></svg>
+            <figure class="inicio-obra">
+              <img
+                src="https://commons.wikimedia.org/wiki/Special:FilePath/Jura_Independencia_Chile-Cosme_San_Mart%C3%ADn.jpg?width=800"
+                srcset="https://commons.wikimedia.org/wiki/Special:FilePath/Jura_Independencia_Chile-Cosme_San_Mart%C3%ADn.jpg?width=500 500w, https://commons.wikimedia.org/wiki/Special:FilePath/Jura_Independencia_Chile-Cosme_San_Mart%C3%ADn.jpg?width=800 960w, https://commons.wikimedia.org/wiki/Special:FilePath/Jura_Independencia_Chile-Cosme_San_Mart%C3%ADn.jpg?width=1280 1280w"
+                sizes="(max-width: 47.99em) 100vw, 30rem"
+                width="4044"
+                height="2963"
+                alt=""
+                fetchpriority="high"
+                decoding="async"
+                data-evento="1818-proclamacion-de-la-independencia"
+              />
+              <figcaption class="credito">«Jura de la Independencia de Chile», óleo de Cosme San Martín (fines del siglo XIX).</figcaption>
+            </figure>
           </div>
           <ul class="puertas">
             <li>
@@ -238,6 +243,7 @@
               </a>
             </li>
           </ul>
+          <p class="empieza-ir"><button type="button" class="boton">¿Primera vez? Empieza aquí<svg class="icono" aria-hidden="true" focusable="false"><use href="#i-siguiente" /></svg></button></p>
           <ul class="cifras" aria-label="La historia en cifras">
             <li><b data-cifra="eventos">121</b> eventos con imagen y fuentes</li>
             <li><b data-cifra="periodos">9</b> períodos</li>

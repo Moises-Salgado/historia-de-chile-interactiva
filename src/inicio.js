@@ -38,9 +38,29 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
   const porId = new Map(eventos.map((ev) => [ev.id, ev]));
   const periodoDe = new Map(periodos.map((p) => [p.id, p]));
   seccion.querySelectorAll('.curvas').forEach(curvasDeNivel);
-  // La llegada (index.html, [data-llegada]) dura 400 ms: después se quita, para que no se repita cada vez que
-  // la portada vuelve a mostrarse en la misma visita.
-  if ('llegada' in document.documentElement.dataset) setTimeout(() => delete document.documentElement.dataset.llegada, 700);
+
+  // La obra de la portada (index.html la trae para verse antes de que cargue la app): la manda su evento, con
+  // los tamaños estándar de Commons; el pie dice qué es, enlaza al evento y lleva su crédito. Si no carga, el
+  // dibujo del período.
+  const obra = seccion.querySelector('.inicio-obra img[data-evento]');
+  const deObra = obra && porId.get(obra.dataset.evento);
+  if (deObra) {
+    const { archivo } = deObra.imagen;
+    const srcset = `${urlImagen(archivo, 500)} 500w, ${urlImagen(archivo, 800)} 960w, ${urlImagen(archivo, 1280)} 1280w`;
+    if (obra.getAttribute('srcset') !== srcset) Object.assign(obra, { srcset, src: urlImagen(archivo, 800) });
+    const figura = obra.closest('figure');
+    if (deObra.imagen.ancho) {
+      Object.assign(obra, { width: deObra.imagen.ancho, height: deObra.imagen.alto });
+      figura.style.setProperty('--proporcion', (deObra.imagen.ancho / deObra.imagen.alto).toFixed(3));
+    }
+    obra.addEventListener('error', () => {
+      obra.removeAttribute('srcset');
+      obra.src = urlPlaceholder(deObra.periodoId);
+    }, { once: true });
+    // En el celular, solo el crédito (styles.css oculta .obra-pie): así cabe todo en la primera pantalla.
+    figura.querySelector('figcaption').innerHTML =
+      `<span class="obra-pie"><a href="#evento/${deObra.id}">${esc(deObra.imagen.pieDeFoto.replace(/\.$/, ''))}</a>. </span>Imagen: ${creditoImagen(deObra.imagen)}`;
+  }
 
   // Cifras: index.html trae las de hoy; si cambian los datos, se corrigen aquí. La antigüedad de los primeros
   // habitantes va sin cifra («hace miles de años»): la de Monte Verde está en debate (lo dice su evento).
@@ -372,25 +392,31 @@ export function crearInicio(seccion, { eventos, periodos, recorridos, mapa = { r
     }
   }
 
-  // Lo que está bajo el pliegue aparece al entrar en pantalla, una sola vez (sin JavaScript, o con movimiento
-  // reducido, se ve quieto desde el comienzo). Basta con que asome su borde superior: con un porcentaje de la
-  // sección, una sección más alta que varias pantallas (celular chico, texto grande) nunca llegaba a aparecer.
-  if (!movimientoReducido() && 'IntersectionObserver' in window) {
+  // Las cifras cuentan desde cero al entrar en pantalla, en 600 ms y una sola vez (CLAUDE.md, «Movimiento»).
+  // Mientras tanto, el lector de pantalla lee el número final; con movimiento reducido quedan quietas.
+  const tablero = seccion.querySelector('.cifras');
+  if (tablero && !movimientoReducido() && 'IntersectionObserver' in window) {
     const observador = new IntersectionObserver(
       (entradas) => {
-        for (const e of entradas) {
-          if (!e.isIntersecting) continue;
-          e.target.classList.remove('por-asomar');
-          observador.unobserve(e.target);
-        }
+        if (!entradas.some((e) => e.isIntersecting)) return;
+        observador.disconnect();
+        const numeros = [...tablero.querySelectorAll('b[data-cifra]')].map((b) => {
+          const fin = Number(b.textContent);
+          b.innerHTML = `<span aria-hidden="true">0</span><span class="solo-lector">${fin}</span>`;
+          return { visible: b.firstChild, fin };
+        });
+        const inicio = performance.now();
+        const paso = (ahora) => {
+          const t = Math.min(1, (ahora - inicio) / 600);
+          const avance = 1 - (1 - t) ** 3; // frena al llegar
+          for (const { visible, fin } of numeros) visible.textContent = String(Math.round(fin * avance));
+          if (t < 1) requestAnimationFrame(paso);
+        };
+        requestAnimationFrame(paso);
       },
-      { rootMargin: '0px 0px -10% 0px' },
+      { threshold: 0.6 },
     );
-    for (const el of seccion.querySelectorAll('.cifras, .inicio-cuerpo > section')) {
-      if (el.getBoundingClientRect().top < innerHeight) continue;
-      el.classList.add('por-asomar');
-      observador.observe(el);
-    }
+    observador.observe(tablero);
   }
 
   return {
